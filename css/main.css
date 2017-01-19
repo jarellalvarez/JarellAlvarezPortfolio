@@ -126,7 +126,7 @@ h1, h2, h3, h4, h5, li {
 
 [class*="col-"] {
     float: left;
-    padding: 15px;
+
 
 }
 
@@ -181,25 +181,53 @@ h1, h2, h3, h4, h5, li {
 
 body {
     height: 100%;
+    background-color: #FAFAFA;
 }
+
 
 ul {
     list-style: none;
-    position: fixed;
 }
 
 .menu {
-    padding-top: 25px;
-    padding-left: 25px;
-    padding-bottom: 25px;
+    padding-top: 35px;
+    padding-left: 35px;
+    padding-bottom: 35px;
+    padding-right: 35px;
+    position: fixed;
 }
 
+.heroImg {
 
+  max-width: 110%;
+
+}
+
+.classContent {
+  margin-left: 500px;
+}
 
 .menuLinks {
-    padding-bottom: 50px;
-
+    padding-bottom: 30px;
 }
+
+.menuLinks{
+  padding-top: 25px;
+}
+
+.menuBg{
+  height: 100%;
+  background-color: #FFFFFF;
+}
+
+.titleDesc {
+  padding-left: 35px;
+}
+
+.menuDesc {
+  font-size: 18px;
+}
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
