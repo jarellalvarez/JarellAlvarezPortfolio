@@ -1,2 +1,0 @@
-# JarellAlvarezPortfolio
-My portfolio piece
