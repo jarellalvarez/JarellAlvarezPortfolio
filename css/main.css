@@ -217,7 +217,7 @@ ul {
 }
 
 .classContent {
-  margin-left: 500px;
+  margin-left: 300px;
 }
 
 .menuLinks {
@@ -228,20 +228,33 @@ ul {
 
 }
 
-.linkBorder {
+#webDLink {
    /* .nav-side-menu ul .active,
 .nav-side-menu li .active { */
-  border-bottom: 4px solid #3F51B5;
+  border-bottom: 4px solid #F44336;
 
+}
+
+#webDLink{
+  border-bottom: 4px solid #E91E63;
+}
+
+#SLink{
+  border-bottom: 4px solid #9C27B0;
+}
+
+#webDevLink{
+  border-bottom: 4px solid #3F51B5;
+}
+
+#ALink{
+    border-bottom: 4px solid #2196F3;
 }
 
 .menuLinks li:hover {
-     border-bottom: 4px solid #000000;
+     border-bottom: 4px solid #FFFFFF;
 }
 
-.nav-side-menu li:hover {
-  border-left: 4px solid black;
-}
 
 .menuBg{
   height: 100%;
