@@ -1,0 +1,109 @@
+
+
+.header{
+  margin: 0px auto;
+  height:80px;
+  width: 100%;
+}
+
+.header-cont {
+  width:100%;
+  position:fixed;
+  top:0px;
+  left: 0px;
+}
+
+.linksinMenu {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 81px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+  background-color: #FFFFFF;
+
+}
+
+
+.titleDesc {
+  padding-left: 42px;
+}
+
+
+.menuDesc {
+  font-size: 18px;
+}
+
+.primText {
+  opacity: 0.87;
+
+  margin-left: 40px;
+  margin-right: 50px;
+}
+
+.mainText {
+  opacity: 0.87;
+  margin-left: 70px;
+  margin-top: 14px;
+  text-align: center;
+}
+
+
+.menuLinks {
+    font-weight: 400;
+    padding-top: 15px;
+    color: black;
+    display: block;
+    padding-left: 15px;
+}
+
+.floatLeft {
+  float: left;
+}
+
+.floatRight {
+  float: right;
+}
+
+.linkBorder {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+}
+
+
+.menuLinks li:hover {
+     border-bottom: 4px solid #FFFFFF;
+}
+
+.mainLogo {
+  height: 60px;
+  margin-left: 10px;
+  margin-top: 4px;
+  padding-top: 12px;
+}
+
+#webDLink {
+   /* .nav-side-menu ul .active,
+.nav-side-menu li .active { */
+  border-bottom: 4px solid #F44336;
+
+}
+
+#webDLink{
+  border-bottom: 4px solid #E91E63;
+}
+
+#SLink{
+  border-bottom: 4px solid #9C27B0;
+}
+
+#webDevLink{
+  border-bottom: 4px solid #3F51B5;
+}
+
+#ALink{
+    border-bottom: 4px solid #2196F3;
+}
+
+/* media queries for menu, make it work like twitter? */
