@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 /*! HTML5 Boilerplate v5.3.0 | MIT License | https://html5boilerplate.com/ */
 
 /*
@@ -175,6 +175,8 @@ textarea {
    .col-10 {width: 83.33%;}
    .col-11 {width: 91.66%;}
    .col-12 {width: 100%;}
+
+
    }
 
    .grid:after {
@@ -221,9 +223,6 @@ ul {
     list-style: none;
 }
 
-
-
-
 .contentHeight{
   width: 500px;
 }
@@ -252,7 +251,7 @@ ul {
 
 .header{
   margin: 0px auto;
-  height: 80px;
+  height: 82px;
   width: 100%;
 }
 
@@ -268,7 +267,7 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  height: 62px;
+  height: 65px;
     box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
   background-color: #FFFFFF;
 
@@ -356,6 +355,10 @@ ul {
 
 .cardPad {
     width: 5%;
+}
+
+#termsPad {
+  margin-left: 20%;
 }
 
 /* media queries for menu, make it work like twitter? */
