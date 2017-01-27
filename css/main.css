@@ -253,6 +253,7 @@ ul {
   margin: 0px auto;
   height: 82px;
   width: 100%;
+    
 }
 
 .header-cont {
@@ -357,10 +358,13 @@ ul {
     width: 5%;
 }
 
-#termsPad {
-  margin-left: 20%;
+.termsPad {
+  text-align: center;
 }
 
+.topPad {
+  margin-top: 30px;
+}
 /* media queries for menu, make it work like twitter? */
 
 
