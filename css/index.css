@@ -43,3 +43,60 @@
 .socialIcons {
   height: 40px;
 }
+
+
+.topPad {
+  margin-top: 30px;
+}
+
+.listMarg {
+  margin-top: -12px;
+}
+
+.banTextList {
+  margin-left: 50%;
+}
+
+.banTextList1{
+  margin-left: 9.5%;
+}
+
+.listBan {
+  margin-top: -35px;
+}
+
+#bigTextBan{
+  margin-top: -30px;
+  font-size: 10vh;
+  color: #0091EA;
+}
+
+#banLessPad{
+  margin-top: -20px;
+}
+
+@media only screen and (max-width:320px) {
+  .cardBGNoHov {
+    height: 500px;
+  }
+  .banTextList1 {
+    margin-left: 10%;
+  }
+
+  .banTextList {
+    margin-left: 10%;
+  }
+
+}
+
+   @media only screen and (max-width: 768px) {
+     .banTextList1 {
+       margin-left: 8%;
+     }
+     .banTextList {
+       margin-left: 37%;
+     }
+     .textBanBig{
+       margin-left: -14%;
+     }
+   }
