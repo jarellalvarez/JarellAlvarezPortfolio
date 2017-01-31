@@ -274,6 +274,12 @@ ul {
 
 }
 
+.menuIcon {
+  display: none;
+  padding-right: 15px;
+  padding-top: 15px;
+  cursor: pointer;
+}
 
 .titleDesc {
   padding-left: 42px;
@@ -365,8 +371,99 @@ ul {
 .banPadBot{
   margin-bottom: 80px;
 }
+
 /* make media queries for menu, make it work like twitter? */
 
+@media screen and (max-width:1111px) {
+  ul.linksinMenu li:not(:first-child)
+  {
+    display: none;
+  }
+  ul.linksinMenu li.menuIcon {
+    float: right;
+    display: inline-block;
+  }
+}
+
+@media screen and (max-width:1111px) {
+  ul.linksinMenu.responsive {position: relative;}
+  ul.linksinMenu.responsive li.menuIcon {
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  ul.linksinMenu.responsive li {
+    float: none;
+    display: inline;
+  }
+  ul.linksinMenu.responsive li a {
+    display: block;
+    text-align: left;
+  }
+}
+
+.burgerLines1, .burgerLines2, .burgerLines3 {
+  width: 36px;
+    height: 4px;
+    background-color: #424242;
+    margin: 6px 0;
+}
+
+
+/* Rotate first bar */
+
+.change .burgerLines1 {
+    -webkit-transform: rotate(-45deg) translate(-9px, 6px) ;
+    transform: rotate(-45deg) translate(-9px, 6px) ;
+}
+
+/* Fade out the second bar */
+.change .burgerLines2 {
+    opacity: 0;
+}
+
+.change .bar3 {
+    -webkit-transform: rotate(45deg) translate(-8px, -8px) ;
+    transform: rotate(45deg) translate(-8px, -8px) ;
+}
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+li.dropdown {
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1
+}
+
+.dropdown:hover .dropdown-content {
+    display: block;
+}
 
 
 /* ==========================================================================

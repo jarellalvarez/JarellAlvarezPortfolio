@@ -75,6 +75,11 @@
   margin-top: -20px;
 }
 
+#bannerBig {
+  background-image: url("heroBan2.jpg");
+}
+
+
 @media only screen and (max-width:320px) {
   .cardBGNoHov {
     height: 500px;
