@@ -1,6 +1,9 @@
 $(document).ready(function(){
+  $( "ALinkl" ).hover(function() {
+    $( "headerHover" ).toggleClass( "newDisp" );
+  });
 // ===== Sticky Header =====
-$(window).scroll(function() {
+/*$(window).scroll(function() {
     if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
         $('#header').fadeIn(400);    // Fade in the arrow
     } else {
@@ -35,5 +38,6 @@ $('#return-to-top').click(function() {      // When arrow is clicked
         x.className += " responsive";
     } else {
         x.className = "linksinMenu";
-    }
-}
+    }*/
+    console.log("hi");
+});

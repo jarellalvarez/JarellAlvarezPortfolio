@@ -263,6 +263,7 @@ ul {
   left: 0px;
 }
 
+
 .linksinMenu {
   list-style-type: none;
   margin: 0;
@@ -273,6 +274,32 @@ ul {
   background-color: #FFFFFF;
 
 }
+
+.headerHover {
+  width:100%;
+  height: 55px;
+  position:fixed;
+  top: 65px;
+  left: 0px;
+  background-color: black;
+  opacity: 0.3;
+  display: none;
+}
+
+.newDisp {
+  background-color: blue;
+
+}
+
+.hoverlPad{
+  padding-left: 70px;
+  padding-right: 70px;
+  margin-top: -2px;
+  color: #FAFAFA;
+  font-weight: 400;
+
+}
+
 
 .menuIcon {
   display: none;
