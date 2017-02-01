@@ -1,7 +1,15 @@
 $(document).ready(function(){
-  $( "ALinkl" ).hover(function() {
-    $( "headerHover" ).toggleClass( "newDisp" );
+  $("#ALink").click(function() {
+    if ($(".headerHover").css("display") == "block"){
+$(".headerHover").css("display", "none");
+    }
+    else
+    {
+      $(".headerHover").css("display", "block");
+    }
   });
+  console.log("hi");
+});
 // ===== Sticky Header =====
 /*$(window).scroll(function() {
     if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
@@ -39,5 +47,3 @@ $('#return-to-top').click(function() {      // When arrow is clicked
     } else {
         x.className = "linksinMenu";
     }*/
-    console.log("hi");
-});
