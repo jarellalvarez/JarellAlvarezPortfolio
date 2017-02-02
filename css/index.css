@@ -58,23 +58,29 @@
 }
 
 .banTextList1{
-  margin-left: 9.5%;
+  margin-left: 11.5%
 }
 
+#banTextList2 {
+  margin-bottom: 10px;
+}
 .listBan {
   margin-top: -35px;
 }
 
 #bigTextBan{
-  margin-top: -30px;
+  margin-top: -40px;
   font-size: 10vh;
   color: #0091EA;
 }
 
 #banLessPad{
-  margin-top: -20px;
+  margin-top: -15px;
 }
 
+.banPadBot{
+  margin-bottom: 80px;
+}
 #bannerBig {
   background-image: url("heroBan2.jpg");
 }
@@ -84,6 +90,7 @@
   .cardBGNoHov {
     height: 500px;
   }
+
   .banTextList1 {
     margin-left: 10%;
   }

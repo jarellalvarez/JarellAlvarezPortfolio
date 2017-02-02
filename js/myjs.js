@@ -1,5 +1,5 @@
 $(document).ready(function(){
-  $("#ALink").click(function() {
+  $("#webDLink").click(function() {
     if ($(".headerHover").css("display") == "block"){
 $(".headerHover").css("display", "none");
     }
@@ -10,6 +10,8 @@ $(".headerHover").css("display", "none");
   });
   console.log("hi");
 });
+
+
 // ===== Sticky Header =====
 /*$(window).scroll(function() {
     if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px

@@ -370,23 +370,28 @@ li {
    /* .nav-side-menu ul .active,
 .nav-side-menu li .active { */
   border-bottom: 3px solid #F44336;
+  cursor: pointer;
 
 }
 
 #webDLink{
   border-bottom: 3px solid #E91E63;
+  cursor: pointer;
 }
 
 #SLink{
   border-bottom: 3px solid #9C27B0;
+  cursor: pointer;
 }
 
 #webDevLink{
   border-bottom: 3px solid #3F51B5;
+  cursor: pointer;
 }
 
 #ALink {
     border-bottom: 3px solid #2196F3;
+    cursor: pointer;
 }
 
 .cardPad {
@@ -396,11 +401,33 @@ li {
 .termsPad {
   text-align: center;
 }
-
-.banPadBot{
-  margin-bottom: 80px;
+.viewmore {
+background-color: #FFFFFF;
+    border: none;
+    border-radius: 2px;
+    color: black;
+    padding-right: 80px;
+    padding-left: 80px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition-delay: 0.2s;
+      box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 }
-
+/* for google material ripple effect */
+/* http://thecodeplayer.com/walkthrough/ripple-click-effect-google-material-design */
+.viewmore:hover {
+  background-color: #2196F3;
+  color: #FFF;
+}
+/* https://codepen.io/iraycd/pen/dHrxv?css-preprocessor=none */
+.viewmore:active {
+  box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2);
+    transition-delay: 0s;
+    background-color: #2196F3;
+    color: #FFF;
+}
 /* make media queries for menu, make it work like twitter? */
 
 @media screen and (max-width:1111px) {
