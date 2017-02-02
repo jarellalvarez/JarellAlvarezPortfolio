@@ -416,6 +416,8 @@ background-color: #FFFFFF;
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       transition-delay: 0.2s;
       box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 18px;
 }
 /* for google material ripple effect */
 /* http://thecodeplayer.com/walkthrough/ripple-click-effect-google-material-design */
