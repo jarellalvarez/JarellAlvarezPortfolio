@@ -158,6 +158,8 @@ textarea {
        .col-m-10 {width: 83.33%;}
        .col-m-11 {width: 91.66%;}
        .col-m-12 {width: 100%;}
+
+
    }
 
 
@@ -233,8 +235,7 @@ li {
 
 
 .articleImg {
-
-  max-width: 100%;
+    height:30vh;
 }
 
 .centerIt {
@@ -242,14 +243,28 @@ li {
 }
 
 .classContent {
-  margin-top: 90px;
+  margin-top: 50px;
 }
 
+.articleTextBod{
+    margin-top: 40px;
+    padding-left: 22%;
+    padding-right: 18%;
+}
+
+.articleTextBodRev{
+    margin-top: 40px;
+    padding-left: 15%;
+    padding-right: 1%;
+}
+
+.articleContent {
+  margin-top: 100px;
+/*  margin-left: 12%;
+  margin-right: 16%;*/
+}
 .newClassContent {
   margin-top: 30px;
-}
-.articleContent {
-    padding: 0% 30% 0% 30% !important;
 }
 
 .centerTxt {
@@ -270,6 +285,25 @@ li {
   left: 0px;
 }
 
+.articleTitle{
+  font-size: 60px;
+}
+
+.overview {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  font-size: 50px;
+  margin-top: -100px;
+}
+
+.subTitle {
+  font-family: 'Source Sans Pro', sans-serif;
+  font-weight: 600;
+  font-size: 40px;
+  margin-top: -50px;
+
+
+}
 
 .linksinMenu {
   list-style-type: none;
@@ -404,15 +438,16 @@ li {
   text-align: center;
 }
 .viewmore {
+  display: inline-block;
+      position: relative;
+      width: 120px;
+      height: 32px;
 background-color: #FFFFFF;
     border: none;
     border-radius: 2px;
     color: black;
-    padding-right: 80px;
-    padding-left: 80px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
       transition-delay: 0.2s;
       box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
@@ -443,9 +478,11 @@ background-color: #FFFFFF;
     float: right;
     display: inline-block;
   }
-}
+  .headerHover, .designHov {
+    display: none;
+  }
 
-@media screen and (max-width:1111px) {
+
   ul.linksinMenu.responsive {position: relative;}
   ul.linksinMenu.responsive li.menuIcon {
     position: absolute;
@@ -460,7 +497,7 @@ background-color: #FFFFFF;
     display: block;
     text-align: left;
   }
-}
+
 
 .burgerLines1, .burgerLines2, .burgerLines3 {
   width: 36px;
@@ -469,7 +506,16 @@ background-color: #FFFFFF;
     margin: 6px 0;
 }
 
+}
+.pText{
+  text-align: left;
+}
 
+.overviewBod{
+  padding-left: 35%;
+  padding-right: 35%;
+  text-align: left;
+}
 /* Rotate first bar */
 
 .change .burgerLines1 {
@@ -488,7 +534,7 @@ background-color: #FFFFFF;
 }
 
 #backgroundHead {
-  height: 81.6vh;
+      width: 100%;
   position: absolute;
   z-index: -1;
   top: 62px;

@@ -8,6 +8,7 @@ $(".designHov").css("display", "none");
       $(".designHov").css("display", "block");
     }
   });
+});
 /*
   $("#SLink").click(function() {
     if ($(".storyHov").css("display") == "block"){
