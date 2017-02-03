@@ -6,10 +6,12 @@ $(".designHov").css("display", "none");
     else
     {
       $(".designHov").css("display", "block");
+        $(".storyHov").css("display", "none");
+            $(".devHov").css("display", "none");
     }
   });
-});
-/*
+
+
   $("#SLink").click(function() {
     if ($(".storyHov").css("display") == "block"){
 $(".storyHov").css("display", "none");
@@ -17,10 +19,12 @@ $(".storyHov").css("display", "none");
     else
     {
       $(".storyHov").css("display", "block");
+      $(".designHov").css("display", "none");
+          $(".devHov").css("display", "none");
     }
   });
 
-});
+
 
 $("#webDevLink").click(function() {
   if ($(".devHov").css("display") == "block"){
@@ -29,12 +33,14 @@ $(".devHov").css("display", "none");
   else
   {
     $(".devHov").css("display", "block");
+    $(".storyHov").css("display", "none");
+        $(".designHov").css("display", "none");
   }
 });
 
 });
 
-*/
+
 
 // ===== Sticky Header =====
 /*$(window).scroll(function() {
