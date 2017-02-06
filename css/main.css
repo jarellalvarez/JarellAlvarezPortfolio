@@ -236,14 +236,20 @@ li {
 
 .articleImg {
     height:30vh;
+    margin-left: auto;
 }
 
 .centerIt {
   text-align: center;
 }
 
+.bigImgArticle {
+  margin-left: 21.5%;
+  margin-top: 15px;
+}
+
 .classContent {
-  margin-top: 50px;
+  margin-top: 60px;
 }
 
 .articleTextBod{
@@ -300,7 +306,7 @@ li {
   font-family: 'Source Sans Pro', sans-serif;
   font-weight: 600;
   font-size: 40px;
-  margin-top: -50px;
+  margin-top: -15px;
 
 
 }
@@ -454,6 +460,11 @@ background-color: #FFFFFF;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 18px;
 }
+
+.logoArticle{
+  margin-left: 18%;
+}
+
 /* for google material ripple effect */
 /* http://thecodeplayer.com/walkthrough/ripple-click-effect-google-material-design */
 .viewmore:hover {
@@ -508,6 +519,7 @@ background-color: #FFFFFF;
 
 }
 .pText{
+  margin-top: 30px;
   text-align: left;
 }
 
@@ -535,7 +547,7 @@ background-color: #FFFFFF;
 
 #backgroundHead {
       width: 100%;
-  position: absolute;
+  position: fixed;
   z-index: -1;
   top: 62px;
   left: 0px;
