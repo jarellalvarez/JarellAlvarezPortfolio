@@ -254,18 +254,12 @@ li {
 
 .articleTextBod{
     margin-top: 40px;
-    padding-left: 22%;
-    padding-right: 18%;
+
 }
 
-.articleTextBodRev{
-    margin-top: 40px;
-    padding-left: 15%;
-    padding-right: 1%;
-}
 
 .articleContent {
-  margin-top: 100px;
+  margin-top: 70px;
 /*  margin-left: 12%;
   margin-right: 16%;*/
 }
@@ -292,7 +286,7 @@ li {
 }
 
 .articleTitle{
-  font-size: 60px;
+  font-size: 50px;
 }
 
 .overview {
@@ -344,7 +338,9 @@ li {
 
 }
 
-
+.articleBod{
+  min-width:1000px;
+}
 .menuIcon {
   display: none;
   padding-right: 15px;
