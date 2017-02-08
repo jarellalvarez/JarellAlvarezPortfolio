@@ -40,10 +40,10 @@ padding-bottom: 30px;
   width: 100%;
 }
 
-.socialIcons {
-  height: 40px;
-}
 
+#linkedinicon{
+  height: 48px;
+}
 
 .topPad {
   margin-top: 30px;
@@ -80,18 +80,24 @@ padding-bottom: 30px;
 }
 
 .banPadBot{
-  margin-bottom: 80px;
+  margin-bottom: 6%;
 }
 #bannerBig {
   background-image: url("heroBan2.jpg");
 }
 
 
-@media only screen and (max-width:320px) {
+@media only screen and (min-width:320px) {
   .cardBGNoHov {
-    height: 500px;
+    height: auto;
   }
-
+    .homeBG{
+      position: absolute;
+    left: 0;
+    width: 100%;
+    margin-top: -4px;
+    background-color: #FAFAFA
+    }
   .banTextList1 {
     margin-left: 10%;
   }
@@ -99,10 +105,26 @@ padding-bottom: 30px;
   .banTextList {
     margin-left: 10%;
   }
-
+  .homeBody{
+    margin-top: -35%;
+  }
+  #bigTextBan{
+    margin-top: -40px;
+    font-size: 7vh;
+    margin-bottom: 20%;
+    color: #0091EA;
+  }
 }
 
-   @media only screen and (max-width: 768px) {
+.homeBG {
+  position: absolute;
+  left:0;
+  width: 100%;
+  margin-top: -3%;
+  background-color: #FAFAFA;
+}
+
+   @media only screen and (min-width: 768px) {
      .banTextList1 {
        margin-left: 8%;
      }
@@ -110,14 +132,34 @@ padding-bottom: 30px;
        margin-left: 37%;
      }
      .textBanBig{
-       margin-left: -14%;
+       margin-left: 1%;
+     }
+     .cardBGNoHov {
+       height: auto;
+     }
+     .homeBody{
+       margin-top: 70px;
+     }
+
+
+     #bigTextBan{
+       margin-top: -40px;
+       font-size: 9vh;
+       color: #0091EA;
      }
    }
 
 
-.homeBG {
-  position: absolute;
-  left:0;
-  width: 100%;
-  background-color: #FAFAFA;
-}
+   @media only screen and (min-width: 1339px) {
+     .homeBody{
+       margin-top: 70px;
+     }
+     .cardBGNoHov {
+       height: 260px;
+     }
+     #bigTextBan{
+       margin-top: -40px;
+       font-size: 9vh;
+       color: #0091EA;
+     }
+   }

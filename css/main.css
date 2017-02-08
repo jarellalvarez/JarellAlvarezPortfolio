@@ -252,10 +252,6 @@ li {
   margin-top: 60px;
 }
 
-.articleTextBod{
-    margin-top: 40px;
-
-}
 
 
 .articleContent {
@@ -515,7 +511,7 @@ background-color: #FFFFFF;
 
 }
 .pText{
-  margin-top: 30px;
+  margin-top: -6px;
   text-align: left;
 }
 
@@ -548,6 +544,101 @@ background-color: #FFFFFF;
   top: 62px;
   left: 0px;
 }
+/* ==========MEDIAQUERIES HERE=====*/
+@media only screen and (min-width:310px) {
+  .articleTextBod{
+      margin-top: 40px;
+      margin-left: 1%;
+      margin-right: 1%;
+  }
+  .articleImg{
+    margin-left: 4%;
+  }
+
+  .bigImgArticle{
+    margin-left: 0%;
+    margin-top: 20px;
+    width: 100%;
+
+}
+.pText {
+    margin-top: -6px;
+    text-align: left;
+}
+.subTitle {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 600;
+    font-size: 40px;
+    margin-top: 25px;
+}
+
+.socialIcons {
+  height: 60px;
+  padding-right: 1%;
+  cursor: pointer;
+}
+
+}
+
+
+
+  @media only screen and (min-width: 768px) {
+    .articleTextBod{
+        margin-top: 40px;
+        margin-left: 1%;
+        margin-right: 1%;
+    }
+    .bigImgArticle{
+      margin-left: 0%;
+      margin-top: 20px;
+      width: 100%;
+    }
+    .subTitle {
+        font-family: 'Source Sans Pro', sans-serif;
+        font-weight: 600;
+        font-size: 40px;
+        margin-top: -16px;
+    }
+  .homeBody{
+    margin-top: -10%;
+  }
+  .ecardH{
+
+  }
+
+
+  }
+
+@media only screen and (min-width: 909px) {
+  .articleTextBod{
+      margin-top: 40px;
+      margin-left: 4%;
+      margin-right: 8%;
+  }
+  .bigImgArticle{
+    margin-left: 2%;
+    margin-top: 20px;
+  }
+  
+
+}
+
+@media screen and (min-width:1339px) {
+  .articleTextBod{
+      margin-top: 40px;
+      margin-left: 20%;
+      margin-right: 20%;
+  }
+  .bigImgArticle{
+    margin-left: 21%;
+    margin-top: 20px;
+    width: 59%;
+  }
+
+
+}
+
+
 /* ==========================================================================
    Helper classes
    ========================================================================== */
