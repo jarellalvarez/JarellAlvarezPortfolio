@@ -397,7 +397,7 @@ li {
 
 .mainLogo {
   height: 45px;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 #webDLink {
@@ -510,9 +510,10 @@ background-color: #FFFFFF;
 }
 
 }
-.pText{
-  margin-top: -6px;
-  text-align: left;
+.pText {
+    margin-top: -20px;
+    text-align: left;
+    line-height: 170%;
 }
 
 .overviewBod{
@@ -544,6 +545,8 @@ background-color: #FFFFFF;
   top: 62px;
   left: 0px;
 }
+
+
 /* ==========MEDIAQUERIES HERE=====*/
 @media only screen and (min-width:310px) {
   .articleTextBod{
@@ -561,10 +564,7 @@ background-color: #FFFFFF;
     width: 100%;
 
 }
-.pText {
-    margin-top: -6px;
-    text-align: left;
-}
+
 .subTitle {
     font-family: 'Source Sans Pro', sans-serif;
     font-weight: 600;
@@ -619,7 +619,7 @@ background-color: #FFFFFF;
     margin-left: 2%;
     margin-top: 20px;
   }
-  
+
 
 }
 

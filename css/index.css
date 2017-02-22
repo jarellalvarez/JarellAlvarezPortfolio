@@ -12,7 +12,6 @@ padding-bottom: 30px;
    background: #fff;
      border-radius: 2px;
      height: 300px;
-      overflow: auto;
      box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
      transition: all 0.3s cubic-bezier(.25,.8,.25,1);
  }
@@ -23,13 +22,13 @@ padding-bottom: 30px;
 
 .contentText{
   padding-left: 10%;
-
+  line-height: 170%;
   padding-right: 10%;
 }
 
 .contentTitle{
   padding-left: 10%;
-  padding-top: 36px;
+  padding-top: 46px;
 }
 
 .newContent {
@@ -82,14 +81,13 @@ padding-bottom: 30px;
 .banPadBot{
   margin-bottom: 6%;
 }
-#bannerBig {
-  background-image: url("heroBan2.jpg");
-}
+
 
 
 @media only screen and (min-width:320px) {
   .cardBGNoHov {
     height: auto;
+    padding-bottom: 10%;
   }
     .homeBG{
       position: absolute;
@@ -101,6 +99,9 @@ padding-bottom: 30px;
   .banTextList1 {
     margin-left: 10%;
   }
+    .banPadBot {
+    margin-bottom: 3%;
+    }
 
   .banTextList {
     margin-left: 10%;
@@ -135,16 +136,20 @@ padding-bottom: 30px;
        margin-left: 1%;
      }
      .cardBGNoHov {
-       height: auto;
+         height: auto;
+    padding-bottom: 4%;
      }
      .homeBody{
        margin-top: 70px;
      }
+       .banPadBot {
+    margin-bottom: 2%;
+}
 
 
      #bigTextBan{
        margin-top: -40px;
-       font-size: 9vh;
+       font-size: 7vh;
        color: #0091EA;
      }
    }
@@ -154,12 +159,23 @@ padding-bottom: 30px;
      .homeBody{
        margin-top: 70px;
      }
-     .cardBGNoHov {
-       height: 260px;
+      .cardBGNoHov {
+         height: auto;
+            padding-bottom: 4%;
      }
+       .banPadBot {
+    margin-bottom: -5%;
+}
+       
      #bigTextBan{
        margin-top: -40px;
        font-size: 9vh;
        color: #0091EA;
      }
    }
+
+@media only screen and (min-width: 1644px){
+    .banPadBot {
+    margin-bottom: 7%;
+}
+}
