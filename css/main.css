@@ -235,7 +235,7 @@ li {
 
 
 .articleImg {
-    height:30vh;
+    width:80%;
     margin-left: auto;
 }
 
@@ -334,9 +334,6 @@ li {
 
 }
 
-.articleBod{
-  min-width:1000px;
-}
 .menuIcon {
   display: none;
   padding-right: 15px;
