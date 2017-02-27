@@ -205,7 +205,9 @@ p {
     font-size: 18px;
 }
 
-
+a {
+  color: #000;
+}
 h1, h2, h3, h4, h5, li {
     font-family: 'Work Sans', sans-serif;
 
@@ -241,6 +243,10 @@ li {
 
 .centerIt {
   text-align: center;
+}
+
+#dribbbleIcon{
+  height: 49px;
 }
 
 .bigImgArticle {
@@ -470,6 +476,10 @@ background-color: #FFFFFF;
 /* make media queries for menu, make it work like twitter? */
 
 @media screen and (max-width:1111px) {
+  .headerHover{
+    opacity: 0;
+    z-index: -1;
+  }
   ul.linksinMenu li:not(:first-child)
   {
     display: none;

@@ -49,12 +49,14 @@ var menuButt = document.getElementById("menuButt");
 var mobMenu = document.getElementById("mobMenu");
 var closeButt = document.getElementById("closeButt");
 var subMenuWebDes = document.getElementById("subMenuWebDes");
+var allRightMenu = document.getElementById("allRightMenu");
 
 closeButt.onclick = function () {
   mobMenu.style.display = "none";
   closeButt.style.display = "none";
   subMenuWebDes.style.display = "none";
   menuButt.style.display = "block";
+  allRightMenu.style.display=  "none";
 };
 
 
@@ -63,4 +65,5 @@ menuButt.onclick = function () {
   mobMenu.classList.add("animateCurtainLeft");
   closeButt.style.display = "block";
   menuButt.style.display = "none";
+
 };
