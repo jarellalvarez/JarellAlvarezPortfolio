@@ -117,13 +117,7 @@ padding-bottom: 30px;
   }
 }
 
-.homeBG {
-  position: absolute;
-  left:0;
-  width: 100%;
-  margin-top: -3%;
-  background-color: #FAFAFA;
-}
+
 
    @media only screen and (min-width: 768px) {
      .banTextList1 {
@@ -145,7 +139,10 @@ padding-bottom: 30px;
        .banPadBot {
     margin-bottom: 2%;
 }
+.homeBG {
+  margin-top: 2%;
 
+}
 
      #bigTextBan{
        margin-top: -40px;
@@ -166,16 +163,26 @@ padding-bottom: 30px;
        .banPadBot {
     margin-bottom: -5%;
 }
-       
+
      #bigTextBan{
        margin-top: -40px;
        font-size: 9vh;
        color: #0091EA;
      }
+     .homeBG {
+       margin-top:  100px;
+
+     }
    }
+
 
 @media only screen and (min-width: 1644px){
     .banPadBot {
     margin-bottom: 7%;
 }
+.homeBG {
+  margin-top:  -100px;
+
+}
+
 }
