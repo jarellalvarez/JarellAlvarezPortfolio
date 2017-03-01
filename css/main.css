@@ -399,6 +399,25 @@ li {
 .floatRight {
 	float: right;
 }
+.tryButt{
+    display: inline-block;
+	position: relative;
+	width: 80%;
+	height: 32px;
+	background-color: #F44336;
+	border: none;
+	border-radius: 2px;
+	color: #FFFFFF;
+    margin-top: 15px;
+    margin-left: 4%;
+	text-align: center;
+	text-decoration: none;
+	transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	transition-delay: 0.2s;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 18px;
+}
 .linkBorder {
 	display: block;
 	text-align: center;
@@ -411,6 +430,10 @@ li {
 	height: 45px;
 	margin-top: 10px;
 }
+.webdesignColour{
+    color:#F44336;
+}
+
 #webDLink {
 	/* .nav-side-menu ul .active,
 .nav-side-menu li .active { */
@@ -444,6 +467,7 @@ li {
 	position: relative;
 	width: 120px;
 	height: 32px;
+    margin-top: 15px;
 	background-color: #FFFFFF;
 	border: none;
 	border-radius: 2px;
@@ -464,6 +488,13 @@ li {
 
 
 /* http://thecodeplayer.com/walkthrough/ripple-click-effect-google-material-design */
+
+.tryButt:hover {
+	background-color: #FFFFFF;
+    color: #F44336;
+
+}
+
 
 .viewmore:hover {
 	background-color: #2196F3;
@@ -562,6 +593,7 @@ li {
 		margin-left: 1%;
 		margin-right: 1%;
 	}
+   
 	.articleImg {
 		margin-left: 4%;
 	}
@@ -588,6 +620,7 @@ li {
 		margin-left: 1%;
 		margin-right: 1%;
 	}
+ 
 	.bigImgArticle {
 		margin-left: 0%;
 		margin-top: 20px;
