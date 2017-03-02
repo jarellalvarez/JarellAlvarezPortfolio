@@ -399,7 +399,59 @@ li {
 .floatRight {
 	float: right;
 }
-.tryButt{
+.tryButtDev{
+    display: inline-block;
+	position: relative;
+	width: 66%;
+	height: 32px;
+	background-color: #3F51B5;
+	border: none;
+	border-radius: 2px;
+	color: #FFFFFF;
+    margin-top: 15px;
+    margin-left: 11%;
+	text-align: center;
+	text-decoration: none;
+	transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	transition-delay: 0.2s;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 18px;
+}
+
+.tryButtDev:hover {
+	background-color: #FFFFFF;
+	color: #3F51B5;
+}
+
+
+
+.tryButtStor{
+    display: inline-block;
+	position: relative;
+	width: 80%;
+	height: 32px;
+	background-color: #9C27B0;
+	border: none;
+	border-radius: 2px;
+	color: #FFFFFF;
+    margin-top: 15px;
+    margin-left: 4%;
+	text-align: center;
+	text-decoration: none;
+	transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	transition-delay: 0.2s;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 18px;
+}
+
+.tryButtStor:hover {
+	background-color: #FFFFFF;
+	color: #9C27B0;
+}
+
+.tryButtDes{
     display: inline-block;
 	position: relative;
 	width: 80%;
@@ -432,6 +484,12 @@ li {
 }
 .webdesignColour{
     color:#F44336;
+}
+.storyColour{
+    color:#9C27B0;
+}
+.webDevColour{
+    color:#3F51B5;
 }
 
 #webDLink {
@@ -489,7 +547,7 @@ li {
 
 /* http://thecodeplayer.com/walkthrough/ripple-click-effect-google-material-design */
 
-.tryButt:hover {
+.tryButtDes:hover {
 	background-color: #FFFFFF;
     color: #F44336;
 
@@ -593,7 +651,7 @@ li {
 		margin-left: 1%;
 		margin-right: 1%;
 	}
-   
+
 	.articleImg {
 		margin-left: 4%;
 	}
@@ -620,7 +678,7 @@ li {
 		margin-left: 1%;
 		margin-right: 1%;
 	}
- 
+
 	.bigImgArticle {
 		margin-left: 0%;
 		margin-top: 20px;

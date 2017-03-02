@@ -1,0 +1,349 @@
+.canvas1 {
+    max-width: 792px;
+    max-height: 612px;
+    display: block;
+    margin: 0 auto;
+}
+
+#canvascolor {
+  background-color: #9BE7D8;
+}
+
+audio {
+  background-color: pink;
+  width: 252px;
+  display:none;
+}
+
+p, h2 {
+  text-align: center;
+  display: block;
+  padding: 2%;
+  font-family: 'Playfair Display', serif;
+  background-color: pink;
+}
+
+body {
+  background-color: rgb(74, 143, 181);
+
+}
+
+#disp {
+   float: left;
+   display: inline;
+   margin-left: 29.2%;
+   font-size: 10px;
+   width: 700px;
+}
+
+#picname {
+  display: none;
+  background-color: pink;
+
+}
+
+#songname {
+  display: none;
+    background-color: pink;
+}
+
+
+.egg1 {
+   animation: shake 15s infinite;
+
+}
+
+
+#egg2 {
+   animation: shake 26s infinite;
+
+}
+
+#egg3 {
+    animation: tada 6s infinite;
+
+}
+
+
+#goldegg2 {
+
+  animation: shake 15s infinite;
+}
+
+#hardmodetext {
+  font-family: arial;
+  font-size: 7px;
+  color: white;
+}
+
+#defaultdisp, #hbotbasket, #hardegg, #eggmake, #imgdisp, #eggbask5, #pausebut, #eggbask1, #eggbask2, #eggbask3, #eggbask4, #golden, #turnnight, #night, #doggyhouse, #nameHodge
+{
+  display: none;
+}
+
+#underneath {
+  display: none;
+}
+
+#hardmodetext {
+  display: none;
+  font-size:20px;
+  font-family: 'Playfair Display', serif;
+}
+
+#hinttext {
+  display: none;
+  font-style:10px;
+  font-family: 'Playfair Display', serif;
+}
+
+#turnnight {
+  animation: fall 2s;
+
+}
+
+#stars {
+  animation: flash 4s infinite;
+}
+
+
+#score {
+     float: left;
+   display: inline;
+   margin-left: 27.1%;
+   font-size: 20px;
+   width: 80px;
+    height: 20px;
+    padding: 1%;
+    background-color: mistyrose;
+    font-family: 'Playfair Display', serif;
+}
+
+
+#cloudy {
+ animation: popup 100s infinite;
+}
+
+#cloud1 {
+ animation: popup 74s infinite;
+}
+
+#cloud2 {
+  animation: popup 82s infinite;
+}
+
+#butter {
+ animation: float 7s infinite;
+}
+
+#butter1 {
+ animation: float1 3s infinite;
+}
+
+#butter2 {
+ animation: float 3s infinite;
+}
+
+#butter3 {
+ animation: float1 5s infinite;
+}
+
+#butters {
+ animation: float 2.5s infinite;
+}
+
+
+
+
+@keyframes popup {
+    0% {
+
+       transform: translate3d(0px, 0px, 0px);
+    }
+    100% {
+        opacity: 0;
+       transform: translate3d(-400px, 0px, 0px);
+    }
+}
+
+
+@keyframes float {
+    0% {
+        transform: translate3d(0px, 0px, 0px);
+
+    }
+
+    25% {
+
+           transform: translate3d(6px, -2px, 0px);
+        }
+
+
+    50% {
+        transform: translate3d(8px, -20px, 0px);
+
+
+    }
+
+    75% {
+
+       transform: translate3d(6px, -2px, 0px);
+    }
+
+
+    100% {
+
+       transform: translate3d(0px, 0px, 0px);
+    }
+}
+
+@keyframes float1 {
+    0% {
+        transform: translate3d(0px, 0px, 0px);
+
+    }
+
+
+    50% {
+        transform: translate3d(2px, -30px, 0px);
+
+
+    }
+
+    75% {
+
+       transform: translate3d(4px, 2px, 0px);
+    }
+}
+
+    100% {
+
+       transform: translate3d(0px, 0px, 0px);
+    }
+}
+
+
+
+@-webkit-keyframes flash {
+  from, 50%, to {
+    opacity: 1;
+  }
+
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+@keyframes flash {
+  from, 50%, to {
+    opacity: 1;
+  }
+
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+.flash {
+  -webkit-animation-name: flash;
+  animation-name: flash;
+}
+
+@-webkit-keyframes shake {
+  from, to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+@keyframes shake {
+  from, to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%, 30%, 50%, 70%, 90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  20%, 40%, 60%, 80% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+.shake {
+  -webkit-animation-name: shake;
+  animation-name: shake;
+}
+
+@-webkit-keyframes tada {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  10%, 20% {
+        opacity: 0;
+    -webkit-transform: scale3d(.4, .9, .9) rotate3d(0, 0, 1, -10deg);
+    transform: scale3d(.4, .9, .9) rotate3d(0, 0, 1, -3deg);
+  }
+
+  30%, 50%, 70%, 90% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 60deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+  }
+
+  40%, 60%, 80% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -10deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+  }
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes tada {
+  from {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+
+  10%, 20% {
+        opacity: 0;
+    -webkit-transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -10deg);
+    transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -3deg);
+  }
+
+  30%, 50%, 70%, 90% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 60deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 3deg);
+  }
+
+  40%, 60%, 80% {
+    -webkit-transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -10deg);
+    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -3deg);
+  }
+
+  to {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+.tada {
+  -webkit-animation-name: tada;
+  animation-name: tada;
+}
