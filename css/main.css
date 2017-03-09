@@ -362,6 +362,7 @@ li {
 .hoverlPad {
 	padding-left: 70px;
 	padding-right: 70px;
+	margin-bottom: 16px;
 	margin-top: 18px;
 	color: black;
 	font-weight: 400;
@@ -431,6 +432,8 @@ margin-right: 50px;
 .tryButtDev:hover {
 	background-color: #FFFFFF;
 	color: #3F51B5;
+		transition-timing-function: ease;
+			transition: 0.3s;
 }
 
 
@@ -459,6 +462,8 @@ margin-right: 50px;
 .tryButtStor:hover {
 	background-color: #FFFFFF;
 	color: #9C27B0;
+		transition-timing-function: ease;
+			transition: 0.3s;
 }
 
 .tryButtDes{
@@ -506,6 +511,8 @@ margin-right: 50px;
 .tryButtGraph:hover {
 	background-color: #FFFFFF;
 	color: #3F51B5;
+		transition-timing-function: ease;
+			transition: 0.3s;
 }
 
 
@@ -517,6 +524,8 @@ margin-right: 50px;
 }
 .menuLinks li:hover {
 	border-bottom: 3px solid #FFFFFF;
+		transition: 0.3s;
+		transition-timing-function: ease;
 }
 .mainLogo {
 	height: 45px;
@@ -532,6 +541,13 @@ margin-right: 50px;
     color:#3F51B5;
 }
 
+
+
+.subHoverCol:hover{
+	background-color: #E0E0E0;
+	transition-timing-function: ease;
+		transition: 0.3s;
+}
 
 #webDLink {
 	border-bottom: 3px solid #E91E63;
@@ -609,13 +625,16 @@ transition-timing-function: ease;
 .tryButtDes:hover {
 	background-color: #FFFFFF;
     color: #F44336;
-
+			transition: 0.3s;
+	transition-timing-function: ease;
 }
 
 
 .viewmore:hover {
 	background-color: #2196F3;
 	color: #FFF;
+		transition: 0.3s;
+		transition-timing-function: ease;
 }
 
 /* https://codepen.io/iraycd/pen/dHrxv?css-preprocessor=none */
