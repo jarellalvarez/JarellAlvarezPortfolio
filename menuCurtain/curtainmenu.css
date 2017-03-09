@@ -2,13 +2,28 @@
   float: right;
   background-color: #EEEEEE;
   height: 100vh;
-  width: 82%;
+      width: 88%;
   position: relative;
-  right: 0;
+  right: -3%;
   z-index: 1;
    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
    display: none;
 }
+
+@media only screen and (min-width:310px) {
+  .rightMenu {
+      width: 88%;
+      right: -3%;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+  .rightMenu {
+      width: 93%;
+      right: 0%;
+    }
+}
+
 
 .animateCurtainRight{
 animation: rightCurtain ease-out 400ms;
@@ -31,6 +46,7 @@ transform-origin: 50% 50%;
 .leftMenu {
   float: left;
   background-color: #F5F5F5;
+  left: 0;
   padding: 10px;
   height: 100vh;
   width: 100%;
@@ -67,13 +83,10 @@ transform-origin: 50% 50%;
 .curtainRightLinks{
   font-size: 30px;
   list-style: none;
-  padding-top: 100px;
-  margin-left: -36px;
+  padding-top: 57px;
+  margin-left: 0px;
 }
 
-.webUnderline{
-  border-bottom: purple solid 3px;
-}
 
 .curtainlinkSpace{
   margin-right: 36px;

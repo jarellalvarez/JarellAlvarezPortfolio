@@ -293,6 +293,9 @@ li {
 #dribbbleIcon {
 	height: 49px;
 }
+#linkLogoGD{
+	height: 11%;
+}
 .bigImgArticle {
 	margin-left: 21.5%;
 	margin-top: 15px;
@@ -362,7 +365,9 @@ li {
 	margin-top: 18px;
 	color: black;
 	font-weight: 400;
+	    font-size: 15px;
 }
+
 .menuIcon {
 	display: none;
 	padding-right: 15px;
@@ -377,8 +382,9 @@ li {
 }
 .primText {
 	opacity: 0.87;
-	margin-left: 40px;
-	margin-right: 50px;
+margin-left: 40px;
+margin-bottom: 18px;
+margin-right: 50px;
 }
 .mainText {
 	opacity: 0.87;
@@ -392,6 +398,8 @@ li {
 	color: black;
 	display: block;
 	padding-left: 15px;
+    margin-top: 22px;
+    font-size: 16px;
 }
 .floatLeft {
 	float: left;
@@ -417,6 +425,7 @@ li {
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 18px;
+	z-index: -1;
 }
 
 .tryButtDev:hover {
@@ -444,6 +453,7 @@ li {
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 18px;
+	z-index: -1;
 }
 
 .tryButtStor:hover {
@@ -469,7 +479,37 @@ li {
 	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
 	font-family: 'Source Sans Pro', sans-serif;
 	font-size: 18px;
+	z-index: -1;
 }
+
+.tryButtGraph{
+    display: inline-block;
+	position: relative;
+	width: 80%;
+	height: 32px;
+	background-color: #3F51B5;
+	border: none;
+	border-radius: 2px;
+  color: #FFFFFF;
+    margin-top: 15px;
+    margin-left: 4%;
+	text-align: center;
+	text-decoration: none;
+	transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+	transition-delay: 0.2s;
+	box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+	font-family: 'Source Sans Pro', sans-serif;
+	font-size: 18px;
+	z-index: -1;
+}
+
+.tryButtGraph:hover {
+	background-color: #FFFFFF;
+	color: #3F51B5;
+}
+
+
+
 .linkBorder {
 	display: block;
 	text-align: center;
@@ -488,31 +528,50 @@ li {
 .storyColour{
     color:#9C27B0;
 }
-.webDevColour{
+.graphicDesignColour{
     color:#3F51B5;
 }
 
-#webDLink {
-	/* .nav-side-menu ul .active,
-.nav-side-menu li .active { */
-	border-bottom: 3px solid #F44336;
-	cursor: pointer;
-}
+
 #webDLink {
 	border-bottom: 3px solid #E91E63;
 	cursor: pointer;
 }
+
+#webDLink:hover{
+  background-color: #FFCDD2;
+	transition: 0.3s;
+	transition-timing-function: ease;
+}
+
 #SLink {
 	border-bottom: 3px solid #9C27B0;
 	cursor: pointer;
 }
+#SLink:hover{
+	background-color: #E1BEE7;
+	transition: 0.3s;
+	transition-timing-function: ease;
+}
+
 #webDevLink {
 	border-bottom: 3px solid #3F51B5;
 	cursor: pointer;
 }
+#webDevLink:hover{
+	background-color: #9FA8DA;
+	transition: 0.3s;
+	transition-timing-function: ease;
+}
+
 #ALink {
 	border-bottom: 3px solid #2196F3;
 	cursor: pointer;
+}
+#ALink:hover{
+	background-color: #90CAF9;
+	transition: 0.3s ;
+transition-timing-function: ease;
 }
 .cardPad {
 	width: 5%;
@@ -643,6 +702,7 @@ li {
 	left: 0px;
 }
 
+
 /* ==========MEDIAQUERIES HERE=====*/
 
 @media only screen and (min-width:310px) {
@@ -651,6 +711,9 @@ li {
 		margin-left: 1%;
 		margin-right: 1%;
 	}
+#backgroundHead {
+width: 140%;
+}
 
 	.articleImg {
 		margin-left: 4%;
@@ -667,9 +730,12 @@ li {
 		margin-top: 25px;
 	}
 	.socialIcons {
-		height: 60px;
+		height: 49px;
 		padding-right: 1%;
 		cursor: pointer;
+	}
+	.smallerIcons{
+		height: 62px;
 	}
 }
 @media only screen and (min-width: 768px) {
@@ -689,6 +755,9 @@ li {
 		font-weight: 600;
 		font-size: 40px;
 		margin-top: -16px;
+	}
+	#backgroundHead {
+	width: 100%;
 	}
 	.homeBody {
 		margin-top: -10%;
@@ -716,6 +785,12 @@ li {
 		margin-left: 21%;
 		margin-top: 20px;
 		width: 59%;
+	}
+
+	.finalLinkAd{
+		margin-left: 33%;
+		margin-top: 20px;
+		width: 35%;
 	}
 }
 

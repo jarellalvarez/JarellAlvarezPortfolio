@@ -69,9 +69,13 @@ padding-bottom: 30px;
 }
 
 #bigTextBan{
-  margin-top: -40px;
+  margin-top: -30px;
   font-size: 10vh;
   color: #0091EA;
+}
+
+.homeMarg{
+	margin-bottom: 110px;
 }
 
 #banLessPad{
@@ -81,8 +85,6 @@ padding-bottom: 30px;
 .banPadBot{
   margin-bottom: 6%;
 }
-
-
 
 @media only screen and (min-width:320px) {
   .cardBGNoHov {
@@ -110,11 +112,12 @@ padding-bottom: 30px;
     margin-top: -35%;
   }
   #bigTextBan{
-    margin-top: -40px;
+    margin-top: -20px;
     font-size: 7vh;
     margin-bottom: 20%;
-    color: #0091EA;
   }
+
+
 }
 
 
@@ -145,9 +148,9 @@ padding-bottom: 30px;
 }
 
      #bigTextBan{
-       margin-top: -40px;
+       margin-top: -30px;
        font-size: 7vh;
-       color: #0091EA;
+       margin-bottom: 20%;
      }
    }
 
@@ -165,9 +168,9 @@ padding-bottom: 30px;
 }
 
      #bigTextBan{
-       margin-top: -40px;
+       margin-top: -35px;
        font-size: 9vh;
-       color: #0091EA;
+       margin-bottom: 17%;
      }
      .homeBG {
        margin-top:  100px;
