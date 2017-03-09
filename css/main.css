@@ -384,7 +384,7 @@ li {
 .primText {
 	opacity: 0.87;
 margin-left: 40px;
-margin-bottom: 18px;
+    margin-bottom: 17px;
 margin-right: 50px;
 }
 .mainText {
@@ -550,44 +550,40 @@ margin-right: 50px;
 }
 
 #webDLink {
-	border-bottom: 3px solid #E91E63;
 	cursor: pointer;
 }
 
 #webDLink:hover{
-  background-color: #FFCDD2;
-	transition: 0.3s;
+	border-bottom: 4px solid #E91E63;
+	transition: 0.1s;
 	transition-timing-function: ease;
 }
 
 #SLink {
-	border-bottom: 3px solid #9C27B0;
 	cursor: pointer;
 }
 #SLink:hover{
-	background-color: #E1BEE7;
-	transition: 0.3s;
+	border-bottom: 4px solid #9C27B0;
+	transition: 0.1s;
 	transition-timing-function: ease;
 }
 
 #webDevLink {
-	border-bottom: 3px solid #3F51B5;
 	cursor: pointer;
 }
 #webDevLink:hover{
-	background-color: #9FA8DA;
-	transition: 0.3s;
+	border-bottom: 4px solid #3F51B5;
+	transition: 0.1s;
 	transition-timing-function: ease;
 }
 
 #ALink {
-	border-bottom: 3px solid #2196F3;
 	cursor: pointer;
 }
 #ALink:hover{
-	background-color: #90CAF9;
-	transition: 0.3s ;
-transition-timing-function: ease;
+	border-bottom: 4x solid #2196F3;
+	transition: 0.1s ;
+ transition-timing-function: ease;
 }
 .cardPad {
 	width: 5%;
