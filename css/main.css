@@ -581,7 +581,7 @@ margin-right: 50px;
 	cursor: pointer;
 }
 #ALink:hover{
-	border-bottom: 4x solid #2196F3;
+	border-bottom: 4px solid #2196F3;
 	transition: 0.1s ;
  transition-timing-function: ease;
 }
