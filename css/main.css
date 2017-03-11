@@ -18,6 +18,25 @@ html {
 	line-height: 1.4;
 }
 
+/* Let's get this party started */
+html::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+html::-webkit-scrollbar-track {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+
+/* Handle */
+html::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    background: #455A64;
+    -webkit-box-shadow: inset 0 0 6px #455A64;
+}
+
 /*
  * Remove text-shadow in selection highlight:
  * https://twitter.com/miketaylr/status/12228805301
