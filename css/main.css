@@ -430,14 +430,14 @@ margin-right: 50px;
 .tryButtDev{
     display: inline-block;
 	position: relative;
-	width: 66%;
+	width: 80%;
 	height: 32px;
 	background-color: #3F51B5;
 	border: none;
 	border-radius: 2px;
 	color: #FFFFFF;
     margin-top: 15px;
-    margin-left: 11%;
+    margin-left: 4%;
 	text-align: center;
 	text-decoration: none;
 	transition: box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1);
