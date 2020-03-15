@@ -1,0 +1,191 @@
+.cardBG {
+padding-bottom: 30px;
+  background: #fff;
+    border-radius: 2px;
+    height: auto;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+    transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+}
+
+ .cardBGNoHov{
+
+   background: #fff;
+     border-radius: 2px;
+     height: 300px;
+     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+     transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+ }
+
+.cardBG:hover {
+  box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+.contentText{
+  padding-left: 10%;
+  line-height: 170%;
+  padding-right: 10%;
+}
+
+.contentTitle{
+  padding-left: 10%;
+  padding-top: 46px;
+}
+
+.newContent {
+  margin-top: 2.2%;
+}
+
+.ftrImg {
+  width: 100%;
+}
+
+
+#linkedinicon{
+  height: 48px;
+}
+
+.topPad {
+  margin-top: 30px;
+}
+
+.listMarg {
+  margin-top: -12px;
+}
+
+.banTextList {
+  margin-left: 10%;
+}
+
+.banTextList1{
+  margin-left: 11.5%
+}
+
+#banTextList2 {
+  margin-bottom: 10px;
+}
+.listBan {
+  margin-top: -70px;
+  margin-bottom: 300px;
+}
+
+#bigTextBan{
+  margin-top: -30px;
+  font-size: 10vh;
+  color: #0091EA;
+}
+
+.homeMarg{
+	margin-bottom: 110px;
+}
+
+#banLessPad{
+  margin-top: -15px;
+}
+
+.banPadBot{
+  margin-bottom: 6%;
+}
+
+@media only screen and (min-width:320px) {
+  .cardBGNoHov {
+    height: auto;
+    padding-bottom: 10%;
+  }
+    .homeBG{
+      position: absolute;
+    left: 0;
+    width: 100%;
+    margin-top: -4px;
+    background-color: #FAFAFA
+    }
+  .banTextList1 {
+    margin-left: 10%;
+  }
+    .banPadBot {
+    margin-bottom: 3%;
+    }
+
+  .banTextList {
+    margin-left: 10%;
+  }
+  .homeBody{
+    margin-top: -35%;
+  }
+  #bigTextBan{
+    margin-top: -20px;
+    font-size: 7vh;
+    margin-bottom: 20%;
+  }
+
+
+}
+
+
+
+   @media only screen and (min-width: 768px) {
+     .banTextList1 {
+       margin-left: 8%;
+     }
+     .banTextList {
+       margin-left: 37%;
+     }
+     .textBanBig{
+       margin-left: 1%;
+     }
+     .cardBGNoHov {
+         height: auto;
+    padding-bottom: 4%;
+     }
+     .homeBody{
+       margin-top: 70px;
+     }
+       .banPadBot {
+    margin-bottom: 2%;
+}
+.homeBG {
+  margin-top: 2%;
+
+}
+
+     #bigTextBan{
+       margin-top: -30px;
+       font-size: 7vh;
+       margin-bottom: 20%;
+     }
+   }
+
+
+   @media only screen and (min-width: 1339px) {
+     .homeBody{
+       margin-top: 70px;
+     }
+      .cardBGNoHov {
+         height: auto;
+            padding-bottom: 4%;
+     }
+       .banPadBot {
+    margin-bottom: -5%;
+}
+
+     #bigTextBan{
+       margin-top: -35px;
+       font-size: 9vh;
+       margin-bottom: 17%;
+     }
+     .homeBG {
+       margin-top:  100px;
+
+     }
+   }
+
+
+@media only screen and (min-width: 1644px){
+    .banPadBot {
+    margin-bottom: 7%;
+}
+.homeBG {
+  margin-top:  -100px;
+
+}
+
+}

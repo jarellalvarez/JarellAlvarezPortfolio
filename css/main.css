@@ -12,6 +12,11 @@
    Base styles: opinionated defaults
    ========================================================================== */
 
+html, body {
+	margin: 0;
+	width: 100%;
+}
+
 html {
 	color: #222;
 	font-size: 1em;
@@ -33,8 +38,7 @@ html::-webkit-scrollbar-track {
 html::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    background: #455A64;
-    -webkit-box-shadow: inset 0 0 6px #455A64;
+    background: #8ba4d0;
 }
 
 /*
@@ -278,13 +282,19 @@ textarea {
 
 p {
 	font-family: 'Source Sans Pro', sans-serif;
-	font-size: 18px;
+	font-size: 21px;
+    margin-top: -20px;
+	text-align: left;
+	line-height: 1.58;
+	color: #474747;
 }
 a {
-	color: #000;
+	color: #455A64;
 }
+
 h1, h2, h3, h4, h5, li {
 	font-family: 'Work Sans', sans-serif;
+	color: #262626;
 }
 body {
 	height: 100%;
@@ -299,16 +309,27 @@ ul {
 li {
 	list-style: none;
 }
+
+.mainHeader{
+		margin-top: 2%;
+		width: 100%;
+	}
+
 .contentHeight {
 	width: 500px;
 }
-.articleImg {
-	width: 80%;
-	margin-left: auto;
-}
+
 .centerIt {
 	text-align: center;
 }
+.centerList {
+	float: middle;
+}
+.emoji{
+	font-size: 46;
+    margin-bottom: -10px;
+}
+
 #dribbbleIcon {
 	height: 49px;
 }
@@ -322,22 +343,26 @@ li {
 .classContent {
 	margin-top: 60px;
 }
-.articleContent {
-	margin-top: 70px;
-	/*  margin-left: 12%;
-  margin-right: 16%;*/
-}
+
 .newClassContent {
 	margin-top: 30px;
 }
+
+.subtext{
+	margin-top: 10px;
+	color: #595959;
+	font-size: 16px;
+	text-align: right;
+}
+
 .centerTxt {
 	text-align: center;
+    font-weight: 700;
+    margin-bottom: 50px;
 }
-.header {
-	margin: 0px auto;
-	height: 62px;
-	width: 100%;
-}
+
+
+
 .header-cont {
 	width: 100%;
 	position: fixed;
@@ -353,29 +378,38 @@ li {
 	font-size: 50px;
 	margin-top: -100px;
 }
-.subTitle {
+.title {
 	font-family: 'Source Sans Pro', sans-serif;
 	font-weight: 600;
-	font-size: 40px;
-	margin-top: -15px;
+	font-size: 52px;
+	margin-top: 40px;
+	margin-bottom: 40px;
 }
+
+.subTitle{
+	margin-top: 64px;
+	margin-bottom: 64px;
+	font-size:38px;
+}
+
+
 .linksinMenu {
 	list-style-type: none;
-	margin: 0;
+	margin: -1;
 	padding: 0;
 	overflow: hidden;
 	height: 65px;
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-	background-color: #FFFFFF;
+    background-color: #152034;
 }
 .headerHover {
 	width: 100%;
 	height: 55px;
 	position: fixed;
-	top: 65px;
+	top: 63px;
 	left: 0px;
 	box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
-	background-color: #F5F5F5;
+	background-color: #d1dbed;
 	display: none;
 }
 .hoverlPad {
@@ -383,7 +417,7 @@ li {
 	padding-right: 70px;
 	margin-bottom: 16px;
 	margin-top: 18px;
-	color: black;
+	color: #15203;
 	font-weight: 400;
 	    font-size: 15px;
 }
@@ -395,7 +429,7 @@ li {
 	cursor: pointer;
 }
 .titleDesc {
-	padding-left: 42px;
+	padding-left: 70px;
 }
 .menuDesc {
 	font-size: 18px;
@@ -408,14 +442,15 @@ margin-right: 50px;
 }
 .mainText {
 	opacity: 0.87;
-	font-size: 19px;
-	margin-left: 70px;
-	margin-top: 8px;
+	font-size: 24px;
+	margin-left: 20px;
+	margin-top: 16px;
 	text-align: center;
+	color:  #F1F5F8;
 }
 .menuLinks {
 	font-weight: 400;
-	color: black;
+	color:  #F1F5F8;
 	display: block;
 	padding-left: 15px;
     margin-top: 22px;
@@ -563,7 +598,7 @@ margin-right: 50px;
 
 
 .subHoverCol:hover{
-	background-color: #E0E0E0;
+	background-color: #c3d0e7;
 	transition-timing-function: ease;
 		transition: 0.3s;
 }
@@ -591,7 +626,7 @@ margin-right: 50px;
 	cursor: pointer;
 }
 #webDevLink:hover{
-	border-bottom: 4px solid #3F51B5;
+	border-bottom: 4px solid #EECC84;
 	transition: 0.1s;
 	transition-timing-function: ease;
 }
@@ -600,7 +635,7 @@ margin-right: 50px;
 	cursor: pointer;
 }
 #ALink:hover{
-	border-bottom: 4px solid #2196F3;
+	border-bottom: 4px solid #EECC84;
 	transition: 0.1s ;
  transition-timing-function: ease;
 }
@@ -609,6 +644,7 @@ margin-right: 50px;
 }
 .termsPad {
 	text-align: center;
+
 }
 .viewmore {
 	display: inline-block;
@@ -701,11 +737,6 @@ margin-right: 50px;
 		margin: 6px 0;
 	}
 }
-.pText {
-	margin-top: -20px;
-	text-align: left;
-	line-height: 170%;
-}
 .overviewBod {
 	padding-left: 35%;
 	padding-right: 35%;
@@ -742,27 +773,27 @@ margin-right: 50px;
 @media only screen and (min-width:310px) {
 	.articleTextBod {
 		margin-top: 40px;
-		margin-left: 1%;
-		margin-right: 1%;
+		margin-left: 5%;
+		margin-right: 5%;
 	}
-#backgroundHead {
-width: 140%;
-}
 
-	.articleImg {
-		margin-left: 4%;
+
+	#backgroundHead {
+	width: 140%;
 	}
+
 	.bigImgArticle {
 		margin-left: 0%;
 		margin-top: 20px;
+		max-width: 100%;
+	}
+
+	.articleImg {
+		margin-left: 1%;
+		margin-right: 1%;
 		width: 100%;
 	}
-	.subTitle {
-		font-family: 'Source Sans Pro', sans-serif;
-		font-weight: 600;
-		font-size: 40px;
-		margin-top: 25px;
-	}
+
 	.socialIcons {
 		height: 49px;
 		padding-right: 1%;
@@ -772,24 +803,29 @@ width: 140%;
 		height: 62px;
 	}
 }
+
 @media only screen and (min-width: 768px) {
 	.articleTextBod {
 		margin-top: 40px;
-		margin-left: 1%;
-		margin-right: 1%;
+		margin-left: 10%;
+		margin-right: 10%;
 	}
+
+	.articleImg {
+	margin-left: 1%;
+	margin-right: 1%;
+	width: 100%;
+}
+
+
 
 	.bigImgArticle {
 		margin-left: 0%;
 		margin-top: 20px;
-		width: 100%;
+		max-width: 100%;
 	}
-	.subTitle {
-		font-family: 'Source Sans Pro', sans-serif;
-		font-weight: 600;
-		font-size: 40px;
-		margin-top: -16px;
-	}
+
+
 	#backgroundHead {
 	width: 100%;
 	}
@@ -798,28 +834,48 @@ width: 140%;
 	}
 	.ecardH {}
 }
+
 @media only screen and (min-width: 909px) {
 	.articleTextBod {
 		margin-top: 40px;
-		margin-left: 4%;
+		margin-left: 8%;
 		margin-right: 8%;
 	}
+
+
 	.bigImgArticle {
 		margin-left: 2%;
 		margin-top: 20px;
 	}
+
+	.articleImg {
+	width: 100%;
+	}
+
+
+
+
 }
+
 @media screen and (min-width:1339px) {
 	.articleTextBod {
 		margin-top: 40px;
-		margin-left: 20%;
-		margin-right: 20%;
+		margin-left: 30%;
+		margin-right: 30%;
 	}
+
 	.bigImgArticle {
-		margin-left: 21%;
-		margin-top: 20px;
-		width: 59%;
+		margin-left: 25%;
+		margin-right: 25%;
+		margin-top: 1.5em;
+		margin-bottom: 1.5em;
+		width: 60%;
 	}
+
+	.articleImg {
+	width: 100%;
+}
+
 
 	.finalLinkAd{
 		margin-left: 33%;
