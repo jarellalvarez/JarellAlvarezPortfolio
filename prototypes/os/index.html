@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-theme="light" data-accent="yellow">
+<html lang="en" data-theme="light" data-accent="mono">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -8,14 +8,15 @@
 <style>
 /* PROTOTYPE: throwaway. Tokens first so themes are one-line changes. */
 :root{
-  --bg:#fff; --ink:#000; --ink-2:#555; --line:rgba(0,0,0,.12); --surface:#fff; --chrome:rgba(255,255,255,.72);
+  --bg:#f7f4ec; --ink:#000; --ink-2:#57534a; --line:rgba(0,0,0,.13); --surface:#fdfcf8; --chrome:rgba(253,252,248,.72); --mix:22%;
   --shadow:0 1px 2px rgba(0,0,0,.08),0 24px 60px -12px rgba(0,0,0,.28);
   --sans:ui-sans-serif,system-ui,-apple-system,"Inter Display","Inter",sans-serif;
   --serif:ui-serif,"New York","Iowan Old Style",Georgia,serif;
   --r-win:14px;
 }
-[data-theme=dark]{--bg:#000;--ink:#fff;--ink-2:#a3a3a3;--line:rgba(255,255,255,.18);--surface:#0e0e0e;--chrome:rgba(20,20,20,.72);
+[data-theme=dark]{--bg:#000;--ink:#f7f4ec;--ink-2:#a3a3a3;--line:rgba(255,255,255,.18);--surface:#0e0e0e;--chrome:rgba(20,20,20,.72);
   --shadow:0 0 0 1px rgba(255,255,255,.14),0 24px 60px -12px rgba(0,0,0,.9)}
+[data-accent=mono]{--accent:var(--ink);--on-accent:var(--bg);--mix:8%}
 [data-accent=yellow]{--accent:#ffd400;--on-accent:#000}
 [data-accent=blue]{--accent:#1447ff;--on-accent:#fff}
 [data-accent=taupe]{--accent:#9f947a;--on-accent:#000}
@@ -57,7 +58,7 @@ h1{font-size:clamp(3.25rem,13.2vw,13.5rem);font-weight:800;line-height:.86;lette
 .folder svg{width:56px;height:46px;overflow:visible;transition:transform .18s cubic-bezier(.2,.8,.2,1)}
 .folder .back{fill:var(--ink)} .folder .front{fill:var(--bg);stroke:var(--ink);stroke-width:2}
 .folder .glyph{fill:var(--ink)}
-.folder:hover,.folder:focus-visible{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.folder:hover,.folder:focus-visible{background:color-mix(in srgb,var(--accent) var(--mix),transparent)}
 .folder:hover svg,.folder:focus-visible svg{transform:translateY(-3px)}
 .folder:hover .front,.folder:focus-visible .front{fill:var(--accent)} .folder:hover .glyph,.folder:focus-visible .glyph{fill:var(--on-accent)}
 .folder:active svg{transform:scale(.96)}
@@ -98,7 +99,7 @@ h1{font-size:clamp(3.25rem,13.2vw,13.5rem);font-weight:800;line-height:.86;lette
 .toc ol{list-style:none;padding:0;display:grid;gap:1px}
 .toc a{display:block;padding:.35rem .6rem;border-radius:6px;text-decoration:none;color:var(--ink-2);border-left:2px solid transparent}
 .toc a:hover{color:var(--ink)}
-.toc a[aria-current]{color:var(--ink);font-weight:600;background:color-mix(in srgb,var(--accent) 25%,transparent);border-left-color:var(--accent)}
+.toc a[aria-current]{color:var(--ink);font-weight:600;background:color-mix(in srgb,var(--accent) var(--mix),transparent);border-left-color:var(--accent)}
 .toc .sub a{padding-left:1.4rem;font-size:.8125rem}
 .read{overflow:auto;scroll-behavior:smooth;overscroll-behavior:contain}
 article{max-width:44rem;margin:0 auto;padding:2rem 1.5rem 3rem}
@@ -145,7 +146,8 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
       <li><a href="../../Jarell%20Alvarez%20-%20Resume.pdf">Resume</a></li><li><a href="#contact" data-copy>Contact</a></li>
     </ul>
     <div class="prefs" role="group" aria-label="Theme">
-      <button class="sw" style="--c:#ffd400" data-a="yellow" aria-pressed="true"><span class="sr">Yellow accent</span></button>
+      <button class="sw" style="--c:var(--ink)" data-a="mono" aria-pressed="true"><span class="sr">No accent</span></button>
+      <button class="sw" style="--c:#ffd400" data-a="yellow" aria-pressed="false"><span class="sr">Yellow accent</span></button>
       <button class="sw" style="--c:#1447ff" data-a="blue" aria-pressed="false"><span class="sr">Blue accent</span></button>
       <button class="sw" style="--c:#9f947a" data-a="taupe" aria-pressed="false"><span class="sr">Taupe accent</span></button>
       <button class="sw" style="--c:#ff3b1f" data-a="red" aria-pressed="false"><span class="sr">Red accent</span></button>
@@ -200,7 +202,7 @@ const $=s=>document.querySelector(s), root=document.documentElement, win=$('#win
 const store={get:k=>{try{return localStorage.getItem(k)}catch{}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}}};
 function setAccent(a){root.dataset.accent=a;document.querySelectorAll('.sw').forEach(b=>b.setAttribute('aria-pressed',b.dataset.a===a));store.set('accent',a)}
 function setMode(m){root.dataset.theme=m;$('#mode').setAttribute('aria-label','Switch to '+(m==='dark'?'light':'dark')+' mode');store.set('mode',m)}
-setAccent(store.get('accent')||'yellow'); setMode(store.get('mode')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+setAccent(store.get('accent')||'mono'); setMode(store.get('mode')||'light');
 document.querySelectorAll('.sw').forEach(b=>b.onclick=()=>setAccent(b.dataset.a));
 $('#mode').onclick=()=>setMode(root.dataset.theme==='dark'?'light':'dark');
 
