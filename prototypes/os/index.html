@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en" data-theme="light" data-accent="yellow">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jarell Alvarez, Senior Product Designer (prototype)</title>
+<link rel="icon" href="../../img/jarell_alvarez_Favicon.svg">
+<style>
+/* PROTOTYPE: throwaway. Tokens first so themes are one-line changes. */
+:root{
+  --bg:#fff; --ink:#000; --ink-2:#555; --line:rgba(0,0,0,.12); --surface:#fff; --chrome:rgba(255,255,255,.72);
+  --shadow:0 1px 2px rgba(0,0,0,.08),0 24px 60px -12px rgba(0,0,0,.28);
+  --sans:ui-sans-serif,system-ui,-apple-system,"Inter Display","Inter",sans-serif;
+  --serif:ui-serif,"New York","Iowan Old Style",Georgia,serif;
+  --r-win:14px;
+}
+[data-theme=dark]{--bg:#000;--ink:#fff;--ink-2:#a3a3a3;--line:rgba(255,255,255,.18);--surface:#0e0e0e;--chrome:rgba(20,20,20,.72);
+  --shadow:0 0 0 1px rgba(255,255,255,.14),0 24px 60px -12px rgba(0,0,0,.9)}
+[data-accent=yellow]{--accent:#ffd400;--on-accent:#000}
+[data-accent=blue]{--accent:#1447ff;--on-accent:#fff}
+[data-accent=taupe]{--accent:#9f947a;--on-accent:#000}
+[data-accent=red]{--accent:#ff3b1f;--on-accent:#000}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font:100%/1.5 var(--sans);background:var(--bg);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+
+/* desktop surface: faint grid that fades toward the edges */
+.desk{position:fixed;inset:0;display:grid;grid-template-rows:auto 1fr auto}
+.desk::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 64px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/64px 100%;
+  -webkit-mask:radial-gradient(ellipse 70% 60% at 50% 45%,#000 0,transparent 75%);mask:radial-gradient(ellipse 70% 60% at 50% 45%,#000 0,transparent 75%);opacity:.55}
+
+nav.top{position:relative;display:flex;align-items:center;gap:1.5rem;padding:1rem 1.5rem;font-size:.9375rem}
+nav.top .logo{width:36px;height:36px;display:block}
+nav.top .logo{background:var(--ink);-webkit-mask:url(../../img/headerLogo.svg) center/contain no-repeat;mask:url(../../img/headerLogo.svg) center/contain no-repeat}
+nav.top ul{display:flex;gap:1.5rem;list-style:none;padding:0;margin-left:auto}
+nav.top a{text-decoration:none;font-weight:500}
+nav.top a:hover{text-decoration:underline;text-underline-offset:4px}
+.prefs{display:flex;align-items:center;gap:.5rem;padding-left:1rem;border-left:1px solid var(--line)}
+.sw{width:18px;height:18px;border-radius:50%;background:var(--c);border:1px solid var(--line)}
+.sw[aria-pressed=true]{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--ink)}
+.mode{width:32px;height:32px;display:grid;place-items:center;border-radius:8px}
+.mode:hover{background:var(--line)}
+
+main.hero{position:relative;display:grid;place-content:center;justify-items:center;text-align:center;padding:0 1rem 2rem;gap:.75rem}
+h1{font-size:clamp(3.25rem,13.2vw,13.5rem);font-weight:800;line-height:.86;letter-spacing:-.055em;font-optical-sizing:auto}
+.role{font-size:clamp(1rem,1.5vw,1.25rem);font-weight:500;margin-top:.75rem}
+.tag{font-family:var(--serif);font-style:italic;font-size:clamp(1.0625rem,1.7vw,1.5rem);color:var(--ink-2)}
+
+/* folders */
+.folders{display:flex;gap:.25rem;list-style:none;padding:0;margin-top:clamp(1.25rem,4vh,3rem)}
+.folder{position:relative;display:grid;justify-items:center;gap:.4rem;width:6.75rem;padding:.6rem .25rem .5rem;border-radius:10px;font-size:.8125rem;font-weight:500;line-height:1.2;text-decoration:none}
+.folder svg{width:56px;height:46px;overflow:visible;transition:transform .18s cubic-bezier(.2,.8,.2,1)}
+.folder .back{fill:var(--ink)} .folder .front{fill:var(--bg);stroke:var(--ink);stroke-width:2}
+.folder .glyph{fill:var(--ink)}
+.folder:hover,.folder:focus-visible{background:color-mix(in srgb,var(--accent) 22%,transparent)}
+.folder:hover svg,.folder:focus-visible svg{transform:translateY(-3px)}
+.folder:hover .front,.folder:focus-visible .front{fill:var(--accent)} .folder:hover .glyph,.folder:focus-visible .glyph{fill:var(--on-accent)}
+.folder:active svg{transform:scale(.96)}
+.folder small{display:block;font-weight:400;color:var(--ink-2);font-size:.6875rem}
+.peek{position:absolute;bottom:calc(100% - 6px);left:50%;width:200px;padding:6px 6px 0;background:var(--surface);box-shadow:var(--shadow);border-radius:6px;
+  transform:translate(-50%,14px) rotate(-3deg) scale(.9);opacity:0;pointer-events:none;transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .15s;transform-origin:50% 100%;z-index:3;text-align:left}
+.peek img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:3px}
+.peek span{display:block;padding:.45rem .25rem .55rem;font-size:.75rem;font-weight:400;line-height:1.35}
+.folder:hover .peek,.folder:focus-visible .peek{opacity:1;transform:translate(-50%,0) rotate(-3deg) scale(1)}
+
+/* dock */
+.dock{position:relative;justify-self:center;display:flex;align-items:flex-end;gap:.35rem;margin-bottom:1rem;padding:.4rem;border-radius:20px;background:var(--chrome);
+  -webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);border:1px solid var(--line);z-index:50}
+.dock a{position:relative;width:44px;height:44px;display:grid;place-items:center;border-radius:13px;transform-origin:50% 100%;will-change:transform}
+.dock a:hover,.dock a:focus-visible{background:var(--line)}
+.dock svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.tip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);padding:.2rem .55rem;border-radius:6px;background:var(--ink);color:var(--bg);font-size:.75rem;font-weight:500;white-space:nowrap;opacity:0;pointer-events:none}
+.dock a:hover .tip,.dock a:focus-visible .tip,.ctl:hover .tip,.ctl:focus-visible .tip{opacity:1}
+
+/* window */
+.win{position:fixed;left:0;top:0;width:min(720px,92vw);height:min(560px,74vh);display:grid;grid-template-rows:auto 1fr;background:var(--surface);border-radius:var(--r-win);box-shadow:var(--shadow);overflow:hidden;z-index:20;
+  transform:translate(var(--x),var(--y));opacity:0;visibility:hidden;transition:opacity .16s,visibility 0s .16s}
+.win.open{opacity:1;visibility:visible;transition:opacity .16s}
+.win.max{left:20px;top:20px;width:calc(100vw - 40px);height:calc(100vh - 40px);transform:none;z-index:60}
+.bar{display:flex;align-items:center;gap:.5rem;padding:.45rem .5rem .45rem 1rem;border-bottom:1px solid var(--line);cursor:grab;touch-action:none;user-select:none}
+.bar:active{cursor:grabbing}
+.bar strong{font-size:.8125rem;font-weight:600;margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctl{position:relative;width:32px;height:32px;display:grid;place-items:center;border-radius:8px}
+.ctl:hover{background:var(--line)} .ctl:active{transform:scale(.94)}
+.ctl svg{width:16px;height:16px;fill:none;stroke:var(--ink);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+.ctl .tip{bottom:auto;top:calc(100% + 6px);z-index:5}
+.ctl.text{width:auto;padding:0 .7rem;font-size:.8125rem;font-weight:600;background:var(--ink);color:var(--bg)}
+.body{display:grid;grid-template-columns:1fr;min-height:0}
+.win.max .body{grid-template-columns:260px 1fr}
+.toc{display:none;overflow:auto;padding:1.5rem 1rem 2rem 1.25rem;border-right:1px solid var(--line);font-size:.875rem}
+.win.max .toc{display:block}
+.toc p{font-weight:600;margin-bottom:.75rem}
+.toc ol{list-style:none;padding:0;display:grid;gap:1px}
+.toc a{display:block;padding:.35rem .6rem;border-radius:6px;text-decoration:none;color:var(--ink-2);border-left:2px solid transparent}
+.toc a:hover{color:var(--ink)}
+.toc a[aria-current]{color:var(--ink);font-weight:600;background:color-mix(in srgb,var(--accent) 25%,transparent);border-left-color:var(--accent)}
+.toc .sub a{padding-left:1.4rem;font-size:.8125rem}
+.read{overflow:auto;scroll-behavior:smooth;overscroll-behavior:contain}
+article{max-width:44rem;margin:0 auto;padding:2rem 1.5rem 3rem}
+.win.max article{max-width:62rem;padding:3.5rem 3rem 4rem}
+article h2.title{font-size:clamp(1.75rem,3.4vw,3.25rem);font-weight:800;letter-spacing:-.035em;line-height:1.02;text-wrap:balance}
+.facts{display:flex;flex-wrap:wrap;gap:.5rem 2.5rem;margin:1.25rem 0 1.75rem;padding:1rem 0;border-block:1px solid var(--line);font-size:.875rem}
+.facts dt{color:var(--ink-2)} .facts dd{font-weight:600}
+article h3{font-size:clamp(1.25rem,2vw,1.75rem);font-weight:700;letter-spacing:-.02em;line-height:1.15;margin:2.75rem 0 .75rem;scroll-margin-top:1.5rem;text-wrap:balance}
+article h4{font-size:1.0625rem;font-weight:700;margin:1.75rem 0 .5rem;scroll-margin-top:1.5rem}
+article p{max-width:38rem;margin-bottom:1rem;font-size:1.0625rem;line-height:1.6}
+article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem 0;background:var(--line)}
+.next{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line)}
+.btn{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;border-radius:999px;border:1.5px solid var(--ink);font-weight:600;font-size:.9375rem;text-decoration:none}
+.btn.solid{background:var(--ink);color:var(--bg)}
+.note{position:fixed;left:1rem;bottom:1rem;font-size:.6875rem;color:var(--ink-2);z-index:1}
+
+#toc-btn{display:none}
+@media (max-width:720px){
+  body{overflow:auto}
+  .desk{position:static;min-height:100svh}
+  nav.top ul{display:none} .prefs{margin-left:auto;border:0}
+  .folders{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;width:100%;max-width:24rem}
+  .folder{width:auto} .peek{display:none}
+  .dock{position:sticky;bottom:.75rem}
+  .win,.win.max{left:0;top:0;width:100vw;height:100svh;border-radius:0;transform:none}
+  .win.max .body{grid-template-columns:1fr} .win.max .toc{display:none}
+  .win.max.contents .toc{display:block;position:absolute;inset:49px 0 0;background:var(--surface);z-index:4;border:0}
+  .bar{cursor:default} #max{display:none} #toc-btn{display:grid}
+  .note{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition-duration:.01ms!important;scroll-behavior:auto!important}.folder svg,.peek{transform:none!important}.peek{left:calc(50% - 100px)}}
+@media (prefers-reduced-transparency:reduce){.dock{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none}}
+@media (prefers-contrast:more){:root{--line:currentColor}}
+</style>
+</head>
+<body>
+<div class="desk">
+  <nav class="top" aria-label="Main">
+    <a href="#" aria-label="Jarell Alvarez, home">
+      <span class="logo"></span>
+    </a>
+    <ul>
+      <li><a href="#work">Work</a></li><li><a href="../../aboutMe.html">About</a></li>
+      <li><a href="../../Jarell%20Alvarez%20-%20Resume.pdf">Resume</a></li><li><a href="#contact" data-copy>Contact</a></li>
+    </ul>
+    <div class="prefs" role="group" aria-label="Theme">
+      <button class="sw" style="--c:#ffd400" data-a="yellow" aria-pressed="true"><span class="sr">Yellow accent</span></button>
+      <button class="sw" style="--c:#1447ff" data-a="blue" aria-pressed="false"><span class="sr">Blue accent</span></button>
+      <button class="sw" style="--c:#9f947a" data-a="taupe" aria-pressed="false"><span class="sr">Taupe accent</span></button>
+      <button class="sw" style="--c:#ff3b1f" data-a="red" aria-pressed="false"><span class="sr">Red accent</span></button>
+      <button class="mode" id="mode" aria-label="Switch to dark mode">
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
+      </button>
+    </div>
+  </nav>
+
+  <main class="hero">
+    <h1>Jarell Alvarez</h1>
+    <p class="role">Senior Product Designer and Design Lead, Vancouver</p>
+    <p class="tag">Good design starts with better questions.</p>
+
+    <ul class="folders" id="work" aria-label="Work and more">
+      <li><a class="folder" href="#" data-soon><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><rect class="glyph" x="22" y="22" width="12" height="12"/></svg><span>MAVI Client Portal<small>Lead Product Designer</small></span></a></li>
+      <li><a class="folder" href="#" data-soon><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" d="M22 21l13 13H22z"/></svg><span>Copperleaf<small>Locked, ask for access</small></span></a></li>
+      <li><a class="folder" href="../../uiavenue.html" data-open><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" d="M23 21h10v7a6 6 0 0 1-6 6h-4z"/></svg><span>UI Avenue<small>Product Designer</small></span>
+        <span class="peek" aria-hidden="true"><img src="../../img/analytics image 2.jpg" alt=""><span>A reporting app that makes Google Analytics readable for shop owners.</span></span></a></li>
+      <li><a class="folder" href="../../aboutMe.html"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><circle class="glyph" cx="28" cy="28" r="6.5"/></svg><span>About</span></a></li>
+      <li><a class="folder" href="#" data-soon><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><circle class="glyph" cx="23" cy="28" r="4.5"/><circle class="glyph" cx="33" cy="28" r="4.5"/></svg><span>Community</span></a></li>
+      <li><a class="folder" href="#" data-soon><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" fill-rule="evenodd" d="M28 21a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg><span>Photography</span></a></li>
+    </ul>
+  </main>
+
+  <nav class="dock" aria-label="Shortcuts">
+    <a href="#" id="d-home"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v8a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/></svg><span class="tip">Home</span></a>
+    <a href="#work"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h5l2 3h7a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span class="tip">Work</span></a>
+    <a href="../../Jarell%20Alvarez%20-%20Resume.pdf"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 3h7l4 4v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1zM14 3v4h4M9 12h6M9 16h6"/></svg><span class="tip">Resume</span></a>
+    <a href="#contact" data-copy><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zM3.5 7l8.5 6 8.5-6"/></svg><span class="tip" data-tip>Contact, copy email</span></a>
+  </nav>
+</div>
+
+<section class="win" id="win" role="dialog" aria-labelledby="win-title" style="--x:0px;--y:0px">
+  <header class="bar" id="bar">
+    <strong id="win-title">UI Avenue</strong>
+    <button class="ctl" id="toc-btn" aria-label="Contents"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+    <button class="ctl text" id="max">Expand</button>
+    <button class="ctl" id="close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="tip">Close</span></button>
+  </header>
+  <div class="body">
+    <nav class="toc" aria-label="Contents"><p>Contents</p><ol id="toc"></ol></nav>
+    <div class="read" id="read" tabindex="0"><article id="art"></article></div>
+  </div>
+</section>
+<p class="note">Prototype. UI Avenue text and images are the 2019 originals, used as stand-in content.</p>
+
+<script>
+const $=s=>document.querySelector(s), root=document.documentElement, win=$('#win'), mobile=()=>matchMedia('(max-width:720px)').matches;
+
+/* theme + accent, remembered per device */
+const store={get:k=>{try{return localStorage.getItem(k)}catch{}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}}};
+function setAccent(a){root.dataset.accent=a;document.querySelectorAll('.sw').forEach(b=>b.setAttribute('aria-pressed',b.dataset.a===a));store.set('accent',a)}
+function setMode(m){root.dataset.theme=m;$('#mode').setAttribute('aria-label','Switch to '+(m==='dark'?'light':'dark')+' mode');store.set('mode',m)}
+setAccent(store.get('accent')||'yellow'); setMode(store.get('mode')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+document.querySelectorAll('.sw').forEach(b=>b.onclick=()=>setAccent(b.dataset.a));
+$('#mode').onclick=()=>setMode(root.dataset.theme==='dark'?'light':'dark');
+
+/* dock magnification: scale by pointer distance, transform only */
+const dock=$('.dock'), items=[...dock.querySelectorAll('a')], calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(!calm){dock.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;items.forEach(a=>{const r=a.getBoundingClientRect(),d=Math.abs(e.clientX-(r.left+r.width/2));a.style.transform=`scale(${1+.45*Math.max(0,1-d/110)})`;a.style.transition='transform 60ms linear'})});
+dock.addEventListener('pointerleave',()=>items.forEach(a=>{a.style.transition='transform .3s cubic-bezier(.2,.8,.2,1)';a.style.transform=''}))}
+
+/* copy email with visible confirmation; mailto stays as fallback in the real build */
+document.querySelectorAll('[data-copy]').forEach(a=>a.addEventListener('click',async e=>{e.preventDefault();const t=document.querySelector('[data-tip]');
+  try{await navigator.clipboard.writeText('hello@example.com');t.textContent='Email copied'}catch{t.textContent='hello@example.com'}
+  t.style.opacity=1;setTimeout(()=>{t.textContent='Contact, copy email';t.style.opacity=''},1800)}));
+document.querySelectorAll('[data-soon]').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+
+/* case study: read the real page so the window and the page share one source */
+let loaded=false, opener=null;
+async function load(url){
+  const doc=new DOMParser().parseFromString(await (await fetch(url)).text(),'text/html'), art=$('#art'); art.innerHTML='';
+  const facts={}; doc.querySelectorAll('.articleContent h3:not(.subTitle)').forEach(h=>{const p=h.nextElementSibling;if(p)facts[h.textContent.replace(':','').trim()]=p.textContent.trim()});
+  art.insertAdjacentHTML('beforeend','<h2 class="title">Making business analytics make sense</h2><dl class="facts">'+['Client','Role(s)','Category'].filter(k=>facts[k]).map(k=>`<div><dt>${k.replace('(s)','')}</dt><dd>${facts[k]}</dd></div>`).join('')+'</dl>');
+  let n=0; doc.querySelectorAll('.articleContent .subTitle, .articleContent p, .articleContent img.articleImage').forEach(el=>{
+    if(el.matches('.subTitle')){const sub=el.tagName==='H3',h=document.createElement(sub?'h4':'h3');h.textContent=el.textContent.trim();h.id='s'+(n++);art.append(h)}
+    else if(el.tagName==='IMG'){const i=new Image();i.src='../../'+el.getAttribute('src').replace(/^\.?\//,'');i.alt=el.alt||'';i.loading='lazy';i.width=1536;i.height=1000;art.append(i)}
+    else if(!el.closest('ul')||el.closest('ul').querySelector('h3')===null){const t=el.textContent.trim();if(t&&!el.querySelector('p')){const p=document.createElement('p');p.textContent=t;art.append(p)}}
+  });
+  art.insertAdjacentHTML('beforeend','<div class="next"><a class="btn solid" href="#" data-soon>Next: MAVI Client Portal</a><a class="btn" href="'+url+'">Open as a page</a></div>');
+  const toc=$('#toc'); toc.innerHTML=''; art.querySelectorAll('h3,h4').forEach(h=>toc.insertAdjacentHTML('beforeend',`<li class="${h.tagName==='H4'?'sub':''}"><a href="#${h.id}">${h.textContent}</a></li>`));
+  const links=[...toc.querySelectorAll('a')];
+  links.forEach(a=>a.onclick=e=>{e.preventDefault();win.classList.remove('contents');document.getElementById(a.hash.slice(1)).scrollIntoView()});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;links.forEach(a=>a.removeAttribute('aria-current'));
+    const a=links.find(a=>a.hash==='#'+e.target.id);a.setAttribute('aria-current','true');if(win.classList.contains('max'))a.scrollIntoView({block:'nearest'})}),{root:$('#read'),rootMargin:'0px 0px -75% 0px'});
+  art.querySelectorAll('h3,h4').forEach(h=>io.observe(h));
+  loaded=true;
+}
+let pos={x:0,y:0};
+function place(){win.style.setProperty('--x',pos.x+'px');win.style.setProperty('--y',pos.y+'px')}
+async function openWin(a){opener=a;if(!loaded)await load(a.getAttribute('href'));
+  if(!win.classList.contains('open')){pos={x:Math.round((innerWidth-win.offsetWidth)/2+40),y:Math.round((innerHeight-win.offsetHeight)/2-10)};place()}
+  win.classList.add('open'); if(mobile())win.classList.add('max'); $('#read').focus({preventScroll:true})}
+function closeWin(){win.classList.remove('open','max','contents');setMax(false);opener&&opener.focus()}
+function setMax(on){const r=$('#read'),ratio=r.scrollTop/Math.max(1,r.scrollHeight-r.clientHeight);win.classList.toggle('max',on);$('#max').textContent=on?'Restore':'Expand';
+  requestAnimationFrame(()=>r.scrollTop=ratio*(r.scrollHeight-r.clientHeight))}
+document.querySelectorAll('[data-open]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openWin(a)}));
+$('#close').onclick=closeWin; $('#max').onclick=()=>setMax(!win.classList.contains('max')); $('#toc-btn').onclick=()=>win.classList.toggle('contents');
+addEventListener('keydown',e=>{if(e.key==='Escape'&&win.classList.contains('open'))closeWin()});
+
+/* drag: 1:1 with the pointer, keeps the grab offset, stays on screen */
+const bar=$('#bar'); let grab=null;
+bar.addEventListener('pointerdown',e=>{if(e.target.closest('button')||win.classList.contains('max')||mobile())return;bar.setPointerCapture(e.pointerId);grab={dx:e.clientX-pos.x,dy:e.clientY-pos.y}});
+bar.addEventListener('pointermove',e=>{if(!grab)return;pos.x=Math.min(innerWidth-80,Math.max(80-win.offsetWidth,e.clientX-grab.dx));pos.y=Math.min(innerHeight-60,Math.max(0,e.clientY-grab.dy));place()});
+bar.addEventListener('pointerup',()=>grab=null); bar.addEventListener('dblclick',()=>setMax(!win.classList.contains('max')));
+</script>
+</body>
+</html>
