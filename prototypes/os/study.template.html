@@ -41,7 +41,7 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
 .story table{border-collapse:collapse;width:100%;margin:1.5rem 0;font-size:.9375rem;font-variant-numeric:tabular-nums}
 .story th,.story td{text-align:left;padding:.7rem .75rem .7rem 0;border-bottom:1px solid var(--line);vertical-align:top}
 .story th{color:var(--ink-2);font-weight:500}
-.unlocked .gate{display:none} .unlocked #story{display:block}
+.unlocked .gate,.open .gate{display:none} .unlocked #story{display:block}
 /* images stay at their real size or smaller: never upscaled */
 .story img{display:block;max-width:100%;height:auto;margin:2rem 0 .5rem;border-radius:8px;border:1px solid var(--line)}
 .story a{text-underline-offset:3px}
@@ -89,7 +89,7 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 </style>
 </head>
-<body>
+<body class="{{bodyclass}}">
 <header class="top">
   <a href="index.html">Jarell Alvarez</a>
   <span class="sp"></span>

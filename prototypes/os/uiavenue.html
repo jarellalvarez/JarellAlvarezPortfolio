@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Making business analytics make sense, UI Avenue</title>
+<link rel="icon" href="../../img/jarell_alvarez_Favicon.svg">
+<style>
+@font-face{font-family:'InstSans';src:url(fonts/instrument-sans-latin-wght-normal.woff2) format('woff2');font-weight:400 700;font-display:swap}
+@font-face{font-family:'InstSerif';src:url(fonts/instrument-serif-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'InstSerif';src:url(fonts/instrument-serif-latin-400-italic.woff2) format('woff2');font-style:italic;font-display:swap}
+:root{--bg:#f7f4ec;--ink:#2b2a28;--ink-2:#6b665c;--line:rgba(43,42,40,.14);--surface:#fdfcf8;--shape:#dedad1;--display:'InstSerif',serif;--sans:'InstSans',sans-serif;
+  --t-0:1.0625rem;--t-1:1.328rem;--t-2:1.66rem;--t-3:2.075rem;--t-4:2.594rem;--t-5:3.242rem}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+body{font:var(--t-0)/1.6 var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:inherit} button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:6px}
+header.top{display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;font-size:.9375rem;font-weight:500}
+header.top a{text-decoration:none} header.top .sp{margin-left:auto}
+.btn{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;border-radius:999px;border:1.5px solid var(--ink);background:none;font-weight:600;font-size:.9375rem;text-decoration:none;cursor:pointer}
+.btn.solid{background:var(--ink);color:var(--bg)}
+main{max-width:62rem;margin:0 auto;padding:3rem 1.5rem 5rem}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.75rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
+.facts{display:flex;flex-wrap:wrap;gap:.75rem 2.5rem;margin:1.75rem 0;padding:1rem 0;border-block:1px solid var(--line);font-size:.875rem}
+.facts dt{color:var(--ink-2)} .facts dd{font-weight:600}
+.gate{max-width:30rem;margin-top:2.5rem;padding:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.gate h2{font-size:var(--t-1);font-weight:600;line-height:1.2;margin-bottom:.4rem}
+.gate p{color:var(--ink-2);font-size:.9375rem;margin-bottom:1rem}
+.gate form{display:flex;gap:.5rem;flex-wrap:wrap}
+.gate input{flex:1;min-width:10rem;min-height:44px;padding:0 .9rem;border:1.5px solid var(--ink);border-radius:999px;background:var(--bg)}
+.gate .err{color:#a3261a;font-size:.875rem;margin:.75rem 0 0;min-height:1.3em}
+.gate .ask{margin:1rem 0 0;font-size:.875rem}
+.gate .ask button{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
+#story{display:none}
+.story h2{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-3),4vw,var(--t-5));line-height:1.1;letter-spacing:-.015em;margin:4rem 0 1rem;text-wrap:balance}
+.story p,.story li{max-width:65ch;text-wrap:pretty} .story p{margin-bottom:1rem}
+.story ul,.story ol{padding-left:1.25rem;margin-bottom:1rem} .story li{margin-bottom:.35rem}
+.story blockquote{font-family:var(--display);font-style:italic;font-size:clamp(var(--t-2),3vw,var(--t-3));line-height:1.25;max-width:36ch;margin:2.5rem 0;padding-left:1.25rem;border-left:2px solid var(--ink)}
+.story blockquote p{max-width:none;margin:0}
+.story table{border-collapse:collapse;width:100%;margin:1.5rem 0;font-size:.9375rem;font-variant-numeric:tabular-nums}
+.story th,.story td{text-align:left;padding:.7rem .75rem .7rem 0;border-bottom:1px solid var(--line);vertical-align:top}
+.story th{color:var(--ink-2);font-weight:500}
+.unlocked .gate,.open .gate{display:none} .unlocked #story{display:block}
+/* images stay at their real size or smaller: never upscaled */
+.story img{display:block;max-width:100%;height:auto;margin:2rem 0 .5rem;border-radius:8px;border:1px solid var(--line)}
+.story a{text-underline-offset:3px}
+.gate{margin-bottom:1rem}
+.story figure{margin:2.5rem 0}
+.story figure img{margin:0}
+.story figcaption{margin-top:.6rem;font-size:.875rem;color:var(--ink-2);max-width:65ch}
+.story>figure:first-child{margin-top:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1.5rem 2.5rem;margin:2.5rem 0;padding:1.75rem 0;border-block:1px solid var(--line)}
+.stats b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),5vw,4rem);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stats span{display:block;margin-top:.6rem;font-size:.9375rem;color:var(--ink-2);max-width:22ch}
+.duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem;margin:2.5rem 0;max-width:56rem}
+.duo figure{margin:0}
+.clamp{position:relative;max-height:5em;overflow:hidden}
+.clamp::after{content:"";position:absolute;inset:auto 0 0 0;height:3.2em;background:linear-gradient(to bottom,transparent,var(--surface) 92%);pointer-events:none}
+.clamp.open{max-height:none} .clamp.open::after{display:none}
+.rm{display:inline-block;margin-top:.35rem;font-size:.875rem;font-weight:600;text-decoration:underline;text-underline-offset:3px;min-height:32px;background:none;border:0;padding:0;cursor:pointer;color:inherit}
+.said{margin:4rem 0 0;padding:1.25rem 1.5rem;border-radius:14px;background:var(--surface);border:1px solid var(--line);max-width:44rem}
+.said blockquote{font-size:var(--t-0);line-height:1.6}
+.said blockquote p{margin:0;max-width:none}
+.said figcaption{margin-top:.75rem;font-size:.875rem;color:var(--ink-2)} .said figcaption strong{display:block;color:var(--ink);font-weight:600}
+/* end mark: the three pieces of the logo */
+.mark{display:flex;gap:10px;align-items:flex-end;margin:4rem 0 0;color:var(--shape)}
+.mark i{display:block;background:currentColor;height:44px}
+.mark i:nth-child(1){width:22px;border-radius:0 0 0 22px}
+.mark i:nth-child(2){width:44px;clip-path:polygon(0 0,100% 100%,0 100%)}
+.mark i:nth-child(3){width:44px;height:26px}
+.gate{position:relative;overflow:hidden}
+.gate::after{content:"";position:absolute;right:-14px;bottom:-14px;width:64px;height:64px;background:var(--shape);clip-path:polygon(100% 0,100% 100%,0 100%);opacity:.6}
+.more{margin-top:1.5rem;padding-top:2rem;border-top:1px solid var(--line)}
+.more h2{font-family:var(--display);font-weight:400;font-size:var(--t-4);line-height:1.1;margin-bottom:1.25rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem}
+.card{display:grid;gap:.35rem;align-content:start;overflow:hidden;padding:0 0 1.4rem;border:1px solid var(--line);border-radius:14px;background:var(--surface);text-decoration:none}
+.card:hover{border-color:var(--ink)}
+.card>*{margin-inline:1.25rem} .card .pv{margin:0 0 .9rem;aspect-ratio:16/9;width:100%;object-fit:cover;object-position:top;border-bottom:1px solid var(--line);background:var(--shape)}
+.card div.pv{display:flex;align-items:flex-end;justify-content:center;gap:8px;padding-bottom:18%}
+.card div.pv i{display:block;height:46px;background:var(--bg)} .card div.pv i:nth-child(1){width:23px;border-radius:0 0 0 23px} .card div.pv i:nth-child(2){width:46px;clip-path:polygon(0 0,100% 100%,0 100%)} .card div.pv i:nth-child(3){width:46px;height:27px}
+.card small{font-size:.8125rem;color:var(--ink-2)}
+.card strong{font-family:var(--display);font-weight:400;font-size:var(--t-2);line-height:1.15}
+.card span{font-size:.9375rem;color:var(--ink-2)}
+.more .contact{margin-top:1.5rem;font-size:.9375rem}
+.more .contact button{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
+.end{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:4rem;padding-top:1.5rem;border-top:1px solid var(--line)}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body class="open">
+<header class="top">
+  <a href="index.html">Jarell Alvarez</a>
+  <span class="sp"></span>
+  <a class="btn" href="index.html">Back to work</a>
+</header>
+<main>
+  <div class="lede">
+    <h1>Making business analytics make sense</h1>
+    <dl class="facts">
+      <div><dt>Company</dt><dd>UI Avenue</dd></div>
+      <div><dt>Role</dt><dd>Product Designer</dd></div>
+      <div><dt>Timeline</dt><dd>Jun 2019 to mid-2020</dd></div>
+      <div><dt>Team</dt><dd>CEO and back-end developer, front-end developer, marketers</dd></div>
+    </dl>
+  </div>
+  <div class="story"><figure><img src="../../content/uiavenue/img/screen-10.jpg" alt="UI Avenue Analytics" loading="lazy"><figcaption>UI Avenue Analytics</figcaption></figure>
+<h2>At a glance</h2>
+<p>UI Avenue was a small team of developers, designers and marketers building apps for Shopify store owners. Our first product was an analytics app that turned Google Analytics into reports a busy owner could read.</p>
+<p>I led the design: research, onboarding, wireframes, the design system and the final product.</p>
+<p>UI Avenue closed in mid-2020, at the start of the pandemic, before the app could keep going. What follows is the write-up from 2019, as I wrote it then.</p>
+<h2>Overview (2019)</h2>
+<p>Shopify is empowering independent business owners everywhere, generating billions in sales every year. With award winning support, app store and experts, we’ve set out to help owners all across the world grow and connect with their customers. UI Avenue is a small company comprised of developers and designers who have worked at a digital marketing agency for years. We’ve set out to capitalize on this platform by building business’ brands by understanding their needs and growing their online presence with a better experience. We’ve created a business intelligence app aimed to solve the complexities of google analytics with a helpful data reporting system for business’ that actually make sense of data. <strong>Problem:</strong> Google Analytics is very confusing, and provides data without clear purpose.</p>
+<h2>Exploring the Competition</h2>
+<p>Discovering who will use our app meant doing a deep dive into our competition. There were only two major players in the shopify store and both had five stars with hundreds of reviews.</p>
+<figure><img src="../../content/uiavenue/img/screen-01.jpg" alt="competition 1" loading="lazy"><figcaption>competition 1</figcaption></figure>
+<p>Our first competitor had 200+ reviews with a 4.5 rating but their homepage consisted of two columns listing every type of data out there and was a disheveled mess.</p>
+<figure><img src="../../content/uiavenue/img/screen-02.jpg" alt="competition 2" loading="lazy"><figcaption>competition 2</figcaption></figure>
+<p>Our next competitor had a stronger dashboard experience, more features, organized site structures and gave users data that they needed in an organized fashion. Key features included:</p>
+<ul>
+<li><p>User Personas</p>
+</li>
+<li><p>Goal Trackers</p>
+</li>
+<li><p>Amazing Customer Support</p>
+</li>
+<li><p>Industry Benchmarks</p>
+</li>
+</ul>
+<h2>Understanding Who Our Users Are</h2>
+<p>I consolidated my research into personas to ensure that my designs were focused on solving the problem and meeting my users’ needs. Humanizing the research helped me empathize and advocate for my user by digging down into motivations, frustrations, and their overall goals.</p>
+<figure><img src="../../content/uiavenue/img/screen-03.jpg" alt="user one" loading="lazy"><figcaption>user one</figcaption></figure>
+<figure><img src="../../content/uiavenue/img/screen-04.jpg" alt="user two" loading="lazy"><figcaption>user two</figcaption></figure>
+<h2>Roles and Responsibilities</h2>
+<p>As I mentioned earlier, we’re a very small company comprised of five marketers, designers and developers who’ve been in the digital marketing agency game for years. We’ve been acting as lean as possible, working closely on the Analytics app with each stakeholder since September 2019. I’ve been leading the design of Analytics app working closely with our CEO back end developer and our front end developer wizard part time. I’m also in charge of any future of other future apps or assisting where I’m needed.</p>
+<h2>Understanding Our Scope</h2>
+<p>With a daunting start I needed to be knowledgeable in each aspect of an online business to provide them any value. Luckily for me researching is one of my favourite things to do. Our competition has a lot of strong features and it was my job to identify those traits and research why they chose to feature those things. I incorporated some clever features such as an alerts and insights cards that can help our users what’s going on at a glance or grade reports that combines all of our data into an easy to read feature. We plan to fully launch the app in February 2020. Because this is my side gig along with my full time work, I’ve had to sadly cut out some UX processes to ensure that my full time developers time is utilized to its fullest potential. This means that when the app is launched, I will dig into more UX workflows and try to make sure our app has the best experience I can make for the future.</p>
+<h2>Process</h2>
+<p>Before I began anything, I established a Trello board to help keep myself organized and set reminders for any tasks that’s due.</p>
+<figure><img src="../../content/uiavenue/img/screen-05.jpg" alt="competition" loading="lazy"><figcaption>competition</figcaption></figure>
+<h2>Wireframing</h2>
+<p>By creating multiple wireframe iterations focusing on mobile and doing basic usability testing by getting feedback from the product stakeholders, I was able to help position us with a clear competitive advantage from the start. This was also where a majority of my brainstorming and understanding how the app started. I began to flush out different key features and how the user would interact with them. I find it easier to get all my thoughts down on paper where I can interpret things more clearly.</p>
+<figure><img src="../../content/uiavenue/img/screen-06.jpg" alt="wireframing 1" loading="lazy"><figcaption>wireframing 1</figcaption></figure>
+<figure><img src="../../content/uiavenue/img/screen-07.jpg" alt="wireframing 2" loading="lazy"><figcaption>wireframing 2</figcaption></figure>
+<p>Just a small portion of my wireframes</p>
+<h2>Understanding the Onboarding Process</h2>
+<p>During our onboarding process I’ve aimed to help users understand that we have solutions to their problems. “Customers with a positive perception of their onboarding experience are far less likely to churn within the first 21 days of using a new product” The first steps are reminders about the personal info that we’re grabbing and slowly asking users personal questions. Since our app takes a very long time to grab data from places like google analytics (unless their starting without it) our users will be given a loading bar and percentage outlining things that’s going on in the background so they’re not left alone. To further their experience, users will set up their trackable sales goals aka KPI’s (Key Performance Indicators). They’ll also be given access to the site while things are loading and seeing empty states acknowledging loading time. Prioritizing access to support during their set up and afterwards will help drive our mission to help users sort through their data and understand our app. As Julie Zhou, VP of Product Design at Facebook says: &quot;No one cares about the thing you’ve designed until they get past the beginning&quot;</p>
+<figure><img src="../../content/uiavenue/img/screen-08.jpg" alt="persona 2" loading="lazy"><figcaption>persona 2</figcaption></figure>
+<h2>Creating a Design System</h2>
+<p>I created my design system by establishing harmonious resizable layouts and testing our multiple variations of colours for charts and greys. Maintenance soon became a breeze with the help of Sketch add ons like Lazy Styles and Find and Replace Layers. The toughest challenge was creating consistent card designs, and once I ironed out how card sizes can be mixed and matched as per layout, designing for desktop was easily translated to mobile saving time.</p>
+<figure><img src="../../content/uiavenue/img/screen-09.jpg" alt="persona 2" loading="lazy"><figcaption>persona 2</figcaption></figure>
+<figure><img src="../../content/uiavenue/img/screen-10.jpg" alt="persona 2" loading="lazy"><figcaption>persona 2</figcaption></figure>
+<h2>Style Guide</h2>
+<p>I created a style guide ensuring each component is documented to ensure all of our stakeholders were kept up to date. Zeplin was a huge help when it came to exporting designs quickly to Dev.</p>
+<figure><img src="../../content/uiavenue/img/screen-11.jpg" alt="style guide" loading="lazy"><figcaption>style guide</figcaption></figure>
+<h2>Final Product</h2>
+<figure><img src="../../content/uiavenue/img/screen-12.jpg" alt="design system 1" loading="lazy"><figcaption>design system 1</figcaption></figure>
+<figure><img src="../../content/uiavenue/img/screen-13.jpg" alt="design system 2" loading="lazy"><figcaption>design system 2</figcaption></figure>
+<h2>What happened next</h2>
+<p>The plan was to launch in February 2020 and keep going: user testing, interviews, customizable reports, more personas. UI Avenue closed in mid-2020 at the start of the pandemic, so that work stopped there.</p>
+<p>Overall this was the greatest challenge of my career up to that point, and I enjoyed every minute of it while learning so much. Communication with all the stakeholders from the start is the key to any project, and understanding the users&#39; perspectives and doing plenty of research is incredibly important.</p>
+</div>
+  <section class="gate" aria-labelledby="gate-h">
+    <h2 id="gate-h">The rest is locked</h2>
+    <p>The decisions, screens and full presentation cover internal product work, so I share them on request. Enter the password from my application or message.</p>
+    <form id="unlock">
+      <label class="sr" for="pw" style="position:absolute;clip-path:inset(50%)">Password</label>
+      <input id="pw" type="password" autocomplete="off" placeholder="Password" required>
+      <button class="btn solid">Unlock</button>
+    </form>
+    <p class="err" id="err" role="alert"></p>
+    <p class="ask">No password? <button id="copy" type="button">Copy my email</button> and ask for access.</p>
+  </section>
+  <div id="story" class="story"></div>
+  
+  <div class="mark" aria-hidden="true"><i></i><i></i><i></i></div>
+  <section class="more" aria-labelledby="more-h"><h2 id="more-h">More work</h2><div class="cards"><a class="card" href="mavi.html"><div class="pv" aria-hidden="true"><i></i><i></i><i></i></div><small>MAVI</small><strong>Moving client hiring out of the inbox</strong><span>A self-serve client portal, designed and aligned across five teams in under two weeks.</span></a><a class="card" href="copperleaf.html"><img class="pv" src="../../img/copperleaf framework designer.jpg" alt="" loading="lazy"><small>Copperleaf</small><strong>Making Framework Designer easier to learn</strong><span>Research, three tested directions and a shipped guide for a complex enterprise tool.</span></a></div>
+    <p class="contact">Want to talk? <button id="copy3" type="button">Copy my email</button></p></section>
+</main>
+<script>
+const P={"s":"J+3FEpH9rnyoWp2d/F7O3A==","i":"3/3IVWVDkc97cWhy","c":"z8eNjejU/GaMvpLFQ3eqvQ=="}, $=s=>document.querySelector(s), dec=b=>Uint8Array.from(atob(b),c=>c.charCodeAt(0));
+async function open(pw){
+  const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:dec(P.s),iterations:200000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt']);
+  return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:dec(P.i)},key,dec(P.c)));
+}
+function show(html){
+  const s=$('#story'); s.innerHTML=html;
+  document.body.classList.add('unlocked');
+}
+$('#unlock').onsubmit=async e=>{e.preventDefault();$('#err').textContent='';
+  try{const h=await open($('#pw').value);try{sessionStorage.setItem('k',$('#pw').value)}catch{}show(h)}
+  catch{$('#err').textContent='That password did not work. Check it and try again.';$('#pw').select()}};
+async function copy(b){const t=b.textContent;try{await navigator.clipboard.writeText('jarellalvarez@gmail.com');b.textContent='Email copied'}catch{b.textContent='jarellalvarez@gmail.com'}setTimeout(()=>b.textContent=t,1800)}
+document.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{const o=b.previousElementSibling.classList.toggle('open');b.textContent=o?'Show less':'Read more';b.setAttribute('aria-expanded',o)});
+$('#copy').onclick=e=>copy(e.target);$('#copy3').onclick=e=>copy(e.target);
+(async()=>{let k;try{k=sessionStorage.getItem('k')}catch{} if(k)try{show(await open(k))}catch{}})();
+</script>
+</body>
+</html>

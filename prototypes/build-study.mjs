@@ -6,8 +6,7 @@ import { pbkdf2Sync, randomBytes, createCipheriv } from 'node:crypto';
 import { marked } from 'marked';
 
 const slug = process.argv[2] || 'copperleaf';
-const pw = process.env.STUDY_PASSWORD;
-if (!pw) { console.error('Set STUDY_PASSWORD'); process.exit(1); }
+const pw = process.env.STUDY_PASSWORD || 'unused';
 
 const raw = readFileSync(new URL(`../content/${slug}/index.md`, import.meta.url), 'utf8');
 const [, fm, md] = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
@@ -21,9 +20,8 @@ const img = h => h.replace(/src="img\//g, `src="../../content/${slug}/img/`)
   .replace(/<p><img ([^>]*?)alt="([^"]*)"([^>]*)><\/p>/g, '<figure><img $1alt="$2"$3 loading="lazy"><figcaption>$2</figcaption></figure>');
 // other case studies, shown at the bottom of every study
 const all = ['mavi', 'copperleaf', 'uiavenue'].filter(s => s !== slug).map(s => {
-  if (s === 'uiavenue') return { pv: '../../img/analytics image 10.jpg', href: '../../uiavenue.html', company: 'UI Avenue', title: 'Making business analytics make sense', summary: 'A reporting app that makes Google Analytics readable for shop owners.' };
   const m = Object.fromEntries(readFileSync(new URL(`../content/${s}/index.md`, import.meta.url), 'utf8').match(/^---\n([\s\S]*?)\n---/)[1].split('\n').map(l => l.split(/:\s(.*)/s).slice(0, 2)));
-  return { pv: s === 'copperleaf' ? '../../img/copperleaf framework designer.jpg' : null, href: `${s}.html`, company: m.company, title: m.title, summary: m.summary };
+  return { pv: { copperleaf: '../../img/copperleaf framework designer.jpg', uiavenue: '../../img/analytics image 10.jpg' }[s] || null, href: `${s}.html`, company: m.company, title: m.title, summary: m.summary };
 });
 const people = readFileSync(new URL('../content/testimonials.md', import.meta.url), 'utf8').split(/^## /m).slice(1).map(b => {
   const [name, pl, title, rel, , ...q] = b.trim().split('\n');
@@ -45,7 +43,8 @@ const b64 = b => b.toString('base64');
 const page = readFileSync(new URL('./os/study.template.html', import.meta.url), 'utf8')
   .replaceAll('{{title}}', meta.title).replaceAll('{{company}}', meta.company)
   .replaceAll('{{role}}', meta.role).replaceAll('{{timeline}}', meta.timeline).replaceAll('{{team}}', meta.team)
-  .replace('{{public}}', pub).replace('{{more}}', more).replace('{{said}}', mine)
+  .replace('{{public}}', pub).replace('{{more}}', more).replace('{{said}}', mine).replace('{{bodyclass}}', lockMd.trim() ? '' : 'open')
+  .replace('<meta name="robots" content="noindex">', lockMd.trim() ? '<meta name="robots" content="noindex">' : '')
   .replace('{{payload}}', JSON.stringify({ s: b64(salt), i: b64(iv), c: b64(ct) }));
 writeFileSync(new URL(`./os/${slug}.html`, import.meta.url), page);
 console.log(`built os/${slug}.html (${ct.length} encrypted bytes)`);
