@@ -9,7 +9,7 @@ const [intro, ...rest] = html.split('</p>');
 const quotes = testimonials().filter(t => t.place === 'about');
 ---
 <Page title="About Jarell Alvarez" description="Senior product designer in Vancouver. Founder of Vancouver Design Community, UX/UI instructor at BCIT, photographer.">
-  <img class="hero-photo" src={meta.photo} alt="Jarell Alvarez" width="1920" height="600" />
+  <img class="hero-photo" src={meta.photo} alt="Jarell Alvarez" width="1356" height="1356" />
   <div class="story about">
     <Fragment set:html={intro + '</p>'} />
     <div class="links">

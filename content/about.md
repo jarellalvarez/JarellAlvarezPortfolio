@@ -1,6 +1,6 @@
 ---
 title: About
-photo: /img/about_jarell_alvarez.jpg
+photo: /img/jarell-alvarez.jpg
 ---
 
 👋🏼 I'm a senior product designer in Vancouver with 9+ years of making complicated software easier to use. Right now I lead product design at MAVI, teach UX/UI at BCIT, and run a design community that got a little out of hand.
@@ -20,6 +20,10 @@ I also built Corporate Ascent for my classes, a challenge system where students 
 ## 📸 Moment Capturer
 
 I held my first camera when I was 6 on a European trip with my parents and haven't stopped taking photos ever since. These days it's 5+ years of paid work: portraits, editorial, events, and portfolios for models and businesses. There's never a moment finer than one captured through a lens. [See the photos.](https://jarell.photography/)
+
+## 🕺 Modeling
+
+The other side of the camera. I was signed with Stranger Agency for a year in 2024, and I've worked independently on paid sets and gigs for brands like OGIO, plus a wedding workshop and a few others. It's made me a better photographer, because now I know what it feels like to be told to "just act natural."
 
 ## 🏐 Volleyball
 
@@ -62,4 +66,4 @@ I love taking people out on shopping trips, giving them style pointers and hair 
 
 As the title implies, I like to go to the gym three times a week and get pumped.
 
-[JARELL] Two lines are mine, not yours, so check them: "which is the only reason I get up that early on a weekend" (hiking) and the one-sentence description of Corporate Ascent (teaching).
+[JARELL] Three lines are mine, not yours, so check them: the last sentence of Modeling, "which is the only reason I get up that early on a weekend" (hiking) and the one-sentence description of Corporate Ascent (teaching).
