@@ -7,7 +7,8 @@ timeline: 6-month design cycle (at Copperleaf Oct 2021 to Jul 2024)
 team: Product Manager, Dev Team Lead, Director of UX Research, Design Team
 tools: Figma, Dovetail, Whimsical, Jira, Mural, Pendo
 protected: true
-status: draft 2, for Jarell's review
+presentation: https://www.figma.com/slides/B4cCrbsQKWG3zmHkcteTEt
+status: draft 3, for Jarell's review
 ---
 
 <!-- DRAFT 2. Every fact comes from the case study deck.
@@ -40,6 +41,8 @@ Internal NPS for the tool ranged from -10 to +25.
 We set targets up front: cut training time by 10%, cut time and frustration on client calls by 15%, and cut misclicks by 40%.
 
 The timing mattered. Copperleaf was heading toward an IPO and wanted to package Framework Designer for clients. Our internal teams were the testing ground. If they couldn't use it comfortably, clients wouldn't either.
+
+<!-- lock -->
 
 ## What made it hard
 
@@ -106,6 +109,14 @@ So we split it.
 
 **First, the map.** Before handoff I presented it to the design team, and the feedback changed the direction late. The PMs and I realigned: the real need was helping people understand the framework, more than redesigning navigation. The map became a resource guide with overviews, diagrams and definitions. We kept it as a flat, static page on purpose to fit the budget and timeline, and reused a pattern from another Copperleaf product (help icon, hover card, full-page modal). It also set the pattern for other help resources that followed.
 
+![The first Navigation Guide, shown as a modal over Framework Designer](img/navigation-guide.jpg)
+
+![Design team feedback on the guide, with their notes in orange](img/design-team-feedback.jpg)
+
+![Layout options explored after the feedback](img/layout-explorations.jpg)
+
+![The Framework Designer Guide: a diagram of how the pieces connect, with definitions and examples below](img/resource-guide.jpg)
+
 **Then the assistant.** The idea was a helper for building value frameworks, sitting inside the tool people already used. Instead of waiting for a dev slot, I used Pendo, which we already had, in two ways: to see how people were using Framework Designer today, and to put a first version of the assistant experience in front of them. No developer time, value to users right away, and an estimated 3 months saved. It also let us keep learning before committing engineering to a full build.
 
 ## Results
@@ -130,16 +141,8 @@ So we split it.
 
 A lot of this job turned out to be translating between people who each understood one part of the problem. Some days translator, some days therapist.
 
----
+## Full presentation
 
-## Images needed (from the deck)
+This is the deck I present from. It has the full research, all three prototypes and the test sessions.
 
-1. Framework Designer before: the nested navigation
-2. Interview synthesis board (themes)
-3. Straw man sketches, a few of the 23
-4. The three mid-fi prototypes side by side
-5. Ranking results
-6. Shipped resource guide
-7. Assistant in Pendo
-
-[JARELL] The PDFs are compressed, so I'll need these exported from Figma at full size.
+[Open the presentation in Figma]({{presentation}})

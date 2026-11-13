@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Moving client hiring out of the inbox, MAVI</title>
+<link rel="icon" href="../../img/jarell_alvarez_Favicon.svg">
+<style>
+@font-face{font-family:'InstSans';src:url(fonts/instrument-sans-latin-wght-normal.woff2) format('woff2');font-weight:400 700;font-display:swap}
+@font-face{font-family:'InstSerif';src:url(fonts/instrument-serif-latin-400-normal.woff2) format('woff2');font-display:swap}
+@font-face{font-family:'InstSerif';src:url(fonts/instrument-serif-latin-400-italic.woff2) format('woff2');font-style:italic;font-display:swap}
+:root{--bg:#f7f4ec;--ink:#2b2a28;--ink-2:#6b665c;--line:rgba(43,42,40,.14);--surface:#fdfcf8;--display:'InstSerif',serif;--sans:'InstSans',sans-serif;
+  --t-0:1.0625rem;--t-1:1.328rem;--t-2:1.66rem;--t-3:2.075rem;--t-4:2.594rem;--t-5:3.242rem}
+*{box-sizing:border-box;margin:0}
+[hidden]{display:none!important}
+body{font:var(--t-0)/1.6 var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+a{color:inherit} button,input{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:6px}
+header.top{display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;font-size:.9375rem;font-weight:500}
+header.top a{text-decoration:none} header.top .sp{margin-left:auto}
+.btn{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;border-radius:999px;border:1.5px solid var(--ink);background:none;font-weight:600;font-size:.9375rem;text-decoration:none;cursor:pointer}
+.btn.solid{background:var(--ink);color:var(--bg)}
+main{max-width:62rem;margin:0 auto;padding:3rem 1.5rem 5rem}
+h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.75rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
+.facts{display:flex;flex-wrap:wrap;gap:.75rem 2.5rem;margin:1.75rem 0;padding:1rem 0;border-block:1px solid var(--line);font-size:.875rem}
+.facts dt{color:var(--ink-2)} .facts dd{font-weight:600}
+.gate{max-width:30rem;margin-top:2.5rem;padding:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.gate h2{font-size:var(--t-1);font-weight:600;line-height:1.2;margin-bottom:.4rem}
+.gate p{color:var(--ink-2);font-size:.9375rem;margin-bottom:1rem}
+.gate form{display:flex;gap:.5rem;flex-wrap:wrap}
+.gate input{flex:1;min-width:10rem;min-height:44px;padding:0 .9rem;border:1.5px solid var(--ink);border-radius:999px;background:var(--bg)}
+.gate .err{color:#a3261a;font-size:.875rem;margin:.75rem 0 0;min-height:1.3em}
+.gate .ask{margin:1rem 0 0;font-size:.875rem}
+.gate .ask button{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
+#story{display:none}
+.story h2{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-3),4vw,var(--t-5));line-height:1.1;letter-spacing:-.015em;margin:4rem 0 1rem;text-wrap:balance}
+.story p,.story li{max-width:65ch;text-wrap:pretty} .story p{margin-bottom:1rem}
+.story ul,.story ol{padding-left:1.25rem;margin-bottom:1rem} .story li{margin-bottom:.35rem}
+.story blockquote{font-family:var(--display);font-style:italic;font-size:clamp(var(--t-2),3vw,var(--t-3));line-height:1.25;max-width:36ch;margin:2.5rem 0;padding-left:1.25rem;border-left:2px solid var(--ink)}
+.story blockquote p{max-width:none;margin:0}
+.story table{border-collapse:collapse;width:100%;margin:1.5rem 0;font-size:.9375rem;font-variant-numeric:tabular-nums}
+.story th,.story td{text-align:left;padding:.7rem .75rem .7rem 0;border-bottom:1px solid var(--line);vertical-align:top}
+.story th{color:var(--ink-2);font-weight:500}
+.unlocked .gate{display:none} .unlocked #story{display:block}
+/* images stay at their real size or smaller: never upscaled */
+.story img{display:block;max-width:100%;height:auto;margin:2rem 0 .5rem;border-radius:8px;border:1px solid var(--line)}
+.story a{text-underline-offset:3px}
+.gate{margin-bottom:1rem}
+.end{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:4rem;padding-top:1.5rem;border-top:1px solid var(--line)}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a href="index.html">Jarell Alvarez</a>
+  <span class="sp"></span>
+  <a class="btn" href="index.html">Back to work</a>
+</header>
+<main>
+  <div class="lede">
+    <h1>Moving client hiring out of the inbox</h1>
+    <dl class="facts">
+      <div><dt>Company</dt><dd>MAVI</dd></div>
+      <div><dt>Role</dt><dd>Lead Product Designer</dd></div>
+      <div><dt>Timeline</dt><dd>2026</dd></div>
+      <div><dt>Team</dt><dd>Product Manager, Platform Lead, Sales, Customer Success, Co-Founder</dd></div>
+    </dl>
+  </div>
+  <div class="story"><h2>Overview</h2>
+<p>MAVI places talent with client companies. Clients were running the whole hiring process through email, manual coordination and a handful of disconnected tools. They couldn&#39;t see where things stood, and almost every step needed someone at MAVI to push it along.</p>
+<p>I led design on a new client portal: one place to review candidates, book interviews, sign agreements and keep track of the people they&#39;ve hired.</p>
+<p><strong>What I delivered</strong></p>
+<ul>
+<li>End-to-end design of the portal, from user flow to high-fidelity screens for the core flows</li>
+<li>An MVP scoped down to three actions: review candidates, schedule interviews, sign agreements</li>
+<li>A direction that the PM, Platform, Sales, Customer Success and our co-founder all signed off on before build</li>
+</ul>
+<p><strong>What changed along the way</strong></p>
+<ul>
+<li>Removed the candidate match score. Sales said a low score would be impossible to explain to a client.</li>
+<li>Cut candidate cards down to two decisions: proceed or pass.</li>
+<li>Dropped the guided dashboard flow. People jump to whatever is urgent, so everything is visible at once.</li>
+<li>Turned &quot;My Team&quot; from a list into the place clients manage trials, timesheets and feedback.</li>
+</ul>
+<p><strong>How success gets measured</strong></p>
+<ul>
+<li>Share of clients who finish account setup within 7 days</li>
+<li>Share of shared profiles reviewed within 3 days</li>
+<li>Time from accepting a profile to an interview being booked</li>
+<li>Time from contract sent to contract signed</li>
+<li>Reduction in manual follow-ups from the MAVI team, which is the main one</li>
+</ul>
+</div>
+  <section class="gate" aria-labelledby="gate-h">
+    <h2 id="gate-h">The rest is locked</h2>
+    <p>The decisions, screens and full presentation cover internal product work, so I share them on request. Enter the password from my application or message.</p>
+    <form id="unlock">
+      <label class="sr" for="pw" style="position:absolute;clip-path:inset(50%)">Password</label>
+      <input id="pw" type="password" autocomplete="off" placeholder="Password" required>
+      <button class="btn solid">Unlock</button>
+    </form>
+    <p class="err" id="err" role="alert"></p>
+    <p class="ask">No password? <button id="copy" type="button">Copy my email</button> and ask for access.</p>
+  </section>
+  <div id="story" class="story"></div>
+</main>
+<script>
+const P={"s":"hbu8HIvMgCvI+dc35YAbXg==","i":"GZHCygQctvPmHyIX","c":"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"}, $=s=>document.querySelector(s), dec=b=>Uint8Array.from(atob(b),c=>c.charCodeAt(0));
+async function open(pw){
+  const k=await crypto.subtle.importKey('raw',new TextEncoder().encode(pw),'PBKDF2',false,['deriveKey']);
+  const key=await crypto.subtle.deriveKey({name:'PBKDF2',salt:dec(P.s),iterations:200000,hash:'SHA-256'},k,{name:'AES-GCM',length:256},false,['decrypt']);
+  return new TextDecoder().decode(await crypto.subtle.decrypt({name:'AES-GCM',iv:dec(P.i)},key,dec(P.c)));
+}
+function show(html){
+  const s=$('#story'); s.innerHTML=html;
+  s.insertAdjacentHTML('beforeend','<div class="end"><a class="btn solid" href="index.html">Back to work</a><button class="btn" id="copy2" type="button">Copy my email</button></div>');
+  $('#copy2').onclick=e=>copy(e.target);
+  document.body.classList.add('unlocked');
+}
+$('#unlock').onsubmit=async e=>{e.preventDefault();$('#err').textContent='';
+  try{const h=await open($('#pw').value);try{sessionStorage.setItem('k',$('#pw').value)}catch{}show(h)}
+  catch{$('#err').textContent='That password did not work. Check it and try again.';$('#pw').select()}};
+async function copy(b){const t=b.textContent;try{await navigator.clipboard.writeText('jarellalvarez@gmail.com');b.textContent='Email copied'}catch{b.textContent='jarellalvarez@gmail.com'}setTimeout(()=>b.textContent=t,1800)}
+$('#copy').onclick=e=>copy(e.target);
+(async()=>{let k;try{k=sessionStorage.getItem('k')}catch{} if(k)try{show(await open(k))}catch{}})();
+</script>
+</body>
+</html>

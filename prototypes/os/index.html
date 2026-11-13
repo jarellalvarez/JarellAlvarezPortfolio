@@ -176,8 +176,8 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
     <p class="tag">Good design starts with better questions.</p>
 
     <ul class="folders" id="work" aria-label="Work and more">
-      <li><a class="folder" href="#" data-soon><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><rect class="glyph" x="22" y="22" width="12" height="12"/></svg><span>MAVI Client Portal<small>Lead Product Designer</small></span></a></li>
-      <li><a class="folder" href="copperleaf.html"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" d="M22 21l13 13H22z"/></svg><span>Copperleaf<small>Locked, ask for access</small></span></a></li>
+      <li><a class="folder" href="mavi.html"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><rect class="glyph" x="22" y="22" width="12" height="12"/></svg><span>MAVI Client Portal<small>Lead Product Designer</small></span></a></li>
+      <li><a class="folder" href="copperleaf.html"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" d="M22 21l13 13H22z"/></svg><span>Copperleaf<small>Product Designer</small></span></a></li>
       <li><a class="folder" href="../../uiavenue.html" data-open><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" d="M23 21h10v7a6 6 0 0 1-6 6h-4z"/></svg><span>UI Avenue<small>Product Designer</small></span>
         <span class="peek" aria-hidden="true"><img src="../../img/analytics image 2.jpg" alt=""><span>A reporting app that makes Google Analytics readable for shop owners.</span></span></a></li>
       <li><a class="folder" href="../../aboutMe.html"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><circle class="glyph" cx="28" cy="28" r="6.5"/></svg><span>About</span></a></li>
@@ -227,7 +227,7 @@ dock.addEventListener('pointerleave',()=>items.forEach(a=>{a.style.transition='t
 
 /* copy email with visible confirmation; mailto stays as fallback in the real build */
 document.querySelectorAll('[data-copy]').forEach(a=>a.addEventListener('click',async e=>{e.preventDefault();const t=document.querySelector('[data-tip]');
-  try{await navigator.clipboard.writeText('hello@example.com');t.textContent='Email copied'}catch{t.textContent='hello@example.com'}
+  try{await navigator.clipboard.writeText('jarellalvarez@gmail.com');t.textContent='Email copied'}catch{t.textContent='jarellalvarez@gmail.com'}
   t.style.opacity=1;setTimeout(()=>{t.textContent='Contact, copy email';t.style.opacity=''},1800)}));
 document.querySelectorAll('[data-soon]').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
 

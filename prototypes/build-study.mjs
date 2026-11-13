@@ -13,10 +13,14 @@ const raw = readFileSync(new URL(`../content/${slug}/index.md`, import.meta.url)
 const [, fm, md] = raw.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
 const meta = Object.fromEntries(fm.split('\n').map(l => l.split(/:\s(.*)/s).slice(0, 2)));
 const body = md
+  .replace('<!-- lock -->', '@@LOCK@@')
   .replace(/<!--[\s\S]*?-->/g, '')
   .replace(/^\[JARELL\].*$/gm, '')
-  .replace(/\n---\n\n## Images needed[\s\S]*$/, '');
-const html = marked.parse(body);
+  ;
+const img = h => h.replace(/src="img\//g, `src="../../content/${slug}/img/`);
+const [pubMd, lockMd = ''] = body.replaceAll('{{presentation}}', meta.presentation || '#').split('@@LOCK@@');
+const pub = img(marked.parse(pubMd));
+const html = img(marked.parse(lockMd));
 
 const salt = randomBytes(16), iv = randomBytes(12);
 const key = pbkdf2Sync(pw, salt, 200000, 32, 'sha256');
@@ -27,6 +31,7 @@ const b64 = b => b.toString('base64');
 const page = readFileSync(new URL('./os/study.template.html', import.meta.url), 'utf8')
   .replaceAll('{{title}}', meta.title).replaceAll('{{company}}', meta.company)
   .replaceAll('{{role}}', meta.role).replaceAll('{{timeline}}', meta.timeline).replaceAll('{{team}}', meta.team)
+  .replace('{{public}}', pub)
   .replace('{{payload}}', JSON.stringify({ s: b64(salt), i: b64(iv), c: b64(ct) }));
 writeFileSync(new URL(`./os/${slug}.html`, import.meta.url), page);
 console.log(`built os/${slug}.html (${ct.length} encrypted bytes)`);
