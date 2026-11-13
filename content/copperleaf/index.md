@@ -15,7 +15,7 @@ status: draft 4, for Jarell's review
 <!-- DRAFT 2. Every fact comes from the case study deck.
      Lines marked [JARELL] are questions, not copy. -->
 
-![The Navigation Guide inside Copperleaf Value's Framework Designer](img/navigation-guide.jpg)
+![A value model in Copperleaf Value](img/value-model.jpg)
 
 ## Overview
 
@@ -27,6 +27,8 @@ I led design on a 6-month cycle to figure out where people were getting stuck an
 
 <div class="stats"><div><b>23</b><span>interviews and test sessions with internal users</span></div><div><b>23 to 3</b><span>ideas sketched, then narrowed to three tested directions</span></div><div><b>3 months</b><span>of developer time saved on the assistant's first version</span></div></div>
 
+![The Navigation Guide inside Framework Designer](img/navigation-guide.jpg)
+
 **What came out of it**
 
 - A resource map shipped inside the product
@@ -34,6 +36,14 @@ I led design on a 6-month cycle to figure out where people were getting stuck an
 - A usability baseline (SUS 64.7) the team could measure future changes against
 
 ![The Framework Designer Guide: how the pieces of a value model connect, with definitions below](img/resource-guide.jpg)
+
+<div class="duo">
+
+![Research synthesis](img/research-1.jpg)
+
+![Wireframing](img/wireframing.jpg)
+
+</div>
 
 ## The problem
 
@@ -66,6 +76,8 @@ The tension that ran through the whole thing was flexibility versus step-by-step
 The brief was broad: make the experience better for our CX users. I worked with the PM, dev lead and our Director of UX Research to turn that into a question we could answer.
 
 > Where are users getting tripped up in Framework Designer's core workflow, and why?
+
+![The process: a mix of triple diamond and dual-track agile](img/design-process.png)
 
 **Round one: 13 interviews** to understand use cases and find the root cause. I documented everything in Dovetail, grouped it into themes, and prioritized the themes with the triad against the existing roadmap.
 

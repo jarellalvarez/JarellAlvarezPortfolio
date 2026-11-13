@@ -25,6 +25,12 @@ const all = ['mavi', 'copperleaf', 'uiavenue'].filter(s => s !== slug).map(s => 
   const m = Object.fromEntries(readFileSync(new URL(`../content/${s}/index.md`, import.meta.url), 'utf8').match(/^---\n([\s\S]*?)\n---/)[1].split('\n').map(l => l.split(/:\s(.*)/s).slice(0, 2)));
   return { href: `${s}.html`, company: m.company, title: m.title, summary: m.summary };
 });
+const people = readFileSync(new URL('../content/testimonials.md', import.meta.url), 'utf8').split(/^## /m).slice(1).map(b => {
+  const [name, pl, title, rel, , ...q] = b.trim().split('\n');
+  return { name, place: pl.replace('place: ', ''), title, when: rel.replace(/\*/g, ''), quote: q.join(' ').replace(/^> /, '') };
+});
+writeFileSync(new URL('./os/testimonials.json', import.meta.url), JSON.stringify(people.filter(p => p.place === 'window')));
+const mine = people.filter(p => p.place === slug).map(p => `<figure class="said"><blockquote><p>${p.quote}</p></blockquote><figcaption><strong>${p.name}</strong>${p.title}</figcaption></figure>`).join('');
 const more = all.map(m => `<a class="card" href="${m.href}"><small>${m.company}</small><strong>${m.title}</strong><span>${m.summary}</span></a>`).join('');
 const [pubMd, lockMd = ''] = body.replaceAll('{{presentation}}', meta.presentation || '#').split('@@LOCK@@');
 const pub = img(marked.parse(pubMd));
@@ -39,7 +45,7 @@ const b64 = b => b.toString('base64');
 const page = readFileSync(new URL('./os/study.template.html', import.meta.url), 'utf8')
   .replaceAll('{{title}}', meta.title).replaceAll('{{company}}', meta.company)
   .replaceAll('{{role}}', meta.role).replaceAll('{{timeline}}', meta.timeline).replaceAll('{{team}}', meta.team)
-  .replace('{{public}}', pub).replace('{{more}}', more)
+  .replace('{{public}}', pub).replace('{{more}}', more).replace('{{said}}', mine)
   .replace('{{payload}}', JSON.stringify({ s: b64(salt), i: b64(iv), c: b64(ct) }));
 writeFileSync(new URL(`./os/${slug}.html`, import.meta.url), page);
 console.log(`built os/${slug}.html (${ct.length} encrypted bytes)`);

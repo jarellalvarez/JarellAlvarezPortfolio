@@ -18,7 +18,7 @@ html[data-type=b]{--display:'Fraunces',serif;--sans:'Figtree',sans-serif;--serif
 html[data-type=c]{--display:'InstSerif',serif;--sans:'InstSans',sans-serif;--serif:'InstSerif',serif;--tag-style:italic;--dw:400;--dt:-.025em}
 /* PROTOTYPE: throwaway. Tokens first so themes are one-line changes. */
 :root{
-  --bg:#f7f4ec; --ink:#2b2a28; --ink-2:#6b665c; --line:rgba(0,0,0,.13); --surface:#fdfcf8; --chrome:rgba(253,252,248,.72); --mix:22%;
+  --bg:#f7f4ec; --ink:#2b2a28; --ink-2:#6b665c; --line:rgba(0,0,0,.13); --surface:#fdfcf8; --shape:#e6e2d8; --chrome:rgba(253,252,248,.72); --mix:22%;
   --shadow:0 1px 2px rgba(0,0,0,.08),0 24px 60px -12px rgba(0,0,0,.28);
   --sans:ui-sans-serif,system-ui,-apple-system,"Inter Display","Inter",sans-serif;
   --serif:ui-serif,"New York","Iowan Old Style",Georgia,serif;
@@ -26,13 +26,13 @@ html[data-type=c]{--display:'InstSerif',serif;--sans:'InstSans',sans-serif;--ser
   /* type scale, ratio 1.25 from 17px */
   --t-0:1.0625rem; --t-1:1.328rem; --t-2:1.66rem; --t-3:2.075rem; --t-4:2.594rem; --t-5:3.242rem; --t--1:.85rem; --t--2:.75rem;
 }
-[data-theme=dark]{--bg:#1f1e1c;--ink:#f7f4ec;--ink-2:#b3ada1;--line:rgba(247,244,236,.16);--surface:#292826;--chrome:rgba(41,40,38,.72);
+[data-theme=dark]{--bg:#1f1e1c;--ink:#f7f4ec;--ink-2:#b3ada1;--line:rgba(247,244,236,.16);--surface:#292826;--shape:#2a2927;--chrome:rgba(41,40,38,.72);
   --shadow:0 0 0 1px rgba(255,255,255,.14),0 24px 60px -12px rgba(0,0,0,.9)}
 [data-accent=mono]{--accent:var(--ink);--on-accent:var(--bg);--mix:8%}
-[data-accent=yellow]{--accent:#ffd400;--on-accent:#000}
-[data-accent=blue]{--accent:#1447ff;--on-accent:#fff}
-[data-accent=taupe]{--accent:#9f947a;--on-accent:#000}
-[data-accent=red]{--accent:#ff3b1f;--on-accent:#000}
+[data-accent=yellow]{--shape:color-mix(in srgb,#ffd400 30%,var(--bg));--accent:#ffd400;--on-accent:#000}
+[data-accent=blue]{--shape:color-mix(in srgb,#1447ff 14%,var(--bg));--accent:#1447ff;--on-accent:#fff}
+[data-accent=taupe]{--shape:color-mix(in srgb,#9f947a 30%,var(--bg));--accent:#9f947a;--on-accent:#000}
+[data-accent=red]{--shape:color-mix(in srgb,#ff3b1f 16%,var(--bg));--accent:#ff3b1f;--on-accent:#000}
 *{box-sizing:border-box;margin:0}
 html,body{height:100%}
 body{font:100%/1.5 var(--sans);background:var(--bg);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
@@ -43,9 +43,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* desktop surface: faint grid that fades toward the edges */
 .desk{position:fixed;inset:0;display:grid;grid-template-rows:auto 1fr auto}
-.desk::before{content:"";position:absolute;inset:0;pointer-events:none;
-  background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 64px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/64px 100%;
-  -webkit-mask:radial-gradient(ellipse 70% 60% at 50% 45%,#000 0,transparent 75%);mask:radial-gradient(ellipse 70% 60% at 50% 45%,#000 0,transparent 75%);opacity:.55}
+.backdrop{position:absolute;right:-4vw;bottom:-6vh;width:min(78vw,1200px);pointer-events:none;color:var(--shape);transform:translate(var(--px,0),var(--py,0));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.backdrop{aspect-ratio:1091/794;background:var(--shape);-webkit-mask:url(../../img/background.svg) center/contain no-repeat;mask:url(../../img/background.svg) center/contain no-repeat}
 
 nav.top{position:relative;display:flex;align-items:center;gap:1.5rem;padding:1rem 1.5rem;font-size:.9375rem}
 nav.top .logo{width:36px;height:36px;display:block}
@@ -78,6 +77,7 @@ h1{font-family:var(--display);font-size:clamp(3.25rem,13.2vw,13.5rem);font-weigh
 .peek{position:absolute;bottom:calc(100% - 6px);left:50%;width:200px;padding:6px 6px 0;background:var(--surface);box-shadow:var(--shadow);border-radius:6px;
   transform:translate(-50%,14px) rotate(-3deg) scale(.9);opacity:0;pointer-events:none;transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .15s;transform-origin:50% 100%;z-index:3;text-align:left}
 .peek img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:3px}
+.peek span:only-child{padding:.7rem .5rem .9rem}
 .peek span{display:block;padding:.45rem .25rem .55rem;font-size:.75rem;font-weight:400;line-height:1.35}
 .folder:hover .peek,.folder:focus-visible .peek{opacity:1;transform:translate(-50%,0) rotate(-3deg) scale(1)}
 
@@ -124,6 +124,14 @@ article h4{font-size:1.0625rem;font-weight:700;margin:1.75rem 0 .5rem;scroll-mar
 article p{max-width:65ch;margin-bottom:1rem;font-size:var(--t-0);line-height:1.6;text-wrap:pretty}
 .facts dd{font-variant-numeric:tabular-nums}
 article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem 0;background:var(--line)}
+.sub{color:var(--ink-2);margin:.75rem 0 2rem}
+.kw{padding:1.5rem 0;border-top:1px solid var(--line)}
+.kw blockquote p{max-width:60ch;margin:0}
+.kw blockquote.long:not(.open) p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.kw .rm{margin-top:.4rem;font-size:.875rem;font-weight:600;text-decoration:underline;text-underline-offset:3px;min-height:32px}
+.kw figcaption{margin-top:.75rem;font-size:.8125rem;color:var(--ink-2);max-width:60ch}
+.kw figcaption strong{display:block;color:var(--ink);font-size:.9375rem}
+.win.plain.max .body{grid-template-columns:1fr} .win.plain .toc,.win.plain #toc-btn{display:none!important}
 .next{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line)}
 .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;border-radius:999px;border:1.5px solid var(--ink);font-weight:600;font-size:.9375rem;text-decoration:none}
 .btn.solid{background:var(--ink);color:var(--bg)}
@@ -134,7 +142,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
   body{overflow:auto}
   .desk{position:static;min-height:100svh}
   nav.top ul{display:none} .prefs{margin-left:auto;border:0}
-  .folders{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;width:100%;max-width:24rem}
+  .folders{display:grid;grid-template-columns:repeat(4,1fr);gap:.25rem;width:100%;max-width:26rem}
   .folder{width:auto} .peek{display:none}
   .dock{position:sticky;bottom:.75rem}
   .win,.win.max{left:0;top:0;width:100vw;height:100svh;border-radius:0;transform:none}
@@ -150,6 +158,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 </head>
 <body>
 <div class="desk">
+  <div class="backdrop" aria-hidden="true"></div>
   <nav class="top" aria-label="Main">
     <a href="#" aria-label="Jarell Alvarez, home">
       <span class="logo"></span>
@@ -176,13 +185,16 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
     <p class="tag">Good design starts with better questions.</p>
 
     <ul class="folders" id="work" aria-label="Work and more">
-      <li><a class="folder" href="mavi.html"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><rect class="glyph" x="22" y="22" width="12" height="12"/></svg><span>MAVI Client Portal<small>Lead Product Designer</small></span></a></li>
-      <li><a class="folder" href="copperleaf.html"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" d="M22 21l13 13H22z"/></svg><span>Copperleaf<small>Product Designer</small></span></a></li>
+      <li><a class="folder" href="mavi.html"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><rect class="glyph" x="22" y="22" width="12" height="12"/></svg><span>MAVI Client Portal<small>Lead Product Designer</small></span>
+        <span class="peek" aria-hidden="true"><span>A self-serve client portal, designed and aligned across five teams in under two weeks. Screens are under NDA.</span></span></a></li>
+      <li><a class="folder" href="copperleaf.html"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" d="M22 21l13 13H22z"/></svg><span>Copperleaf<small>Product Designer</small></span>
+        <span class="peek" aria-hidden="true"><img src="../../img/copperleaf framework designer.jpg" alt=""><span>Research, three tested directions and a shipped guide for a complex enterprise tool.</span></span></a></li>
       <li><a class="folder" href="../../uiavenue.html" data-open><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" d="M23 21h10v7a6 6 0 0 1-6 6h-4z"/></svg><span>UI Avenue<small>Product Designer</small></span>
-        <span class="peek" aria-hidden="true"><img src="../../img/analytics image 2.jpg" alt=""><span>A reporting app that makes Google Analytics readable for shop owners.</span></span></a></li>
+        <span class="peek" aria-hidden="true"><img src="../../img/analytics image 10.jpg" alt=""><span>A reporting app that makes Google Analytics readable for shop owners.</span></span></a></li>
       <li><a class="folder" href="../../aboutMe.html"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><circle class="glyph" cx="28" cy="28" r="6.5"/></svg><span>About</span></a></li>
       <li><a class="folder" href="#" data-soon><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><circle class="glyph" cx="23" cy="28" r="4.5"/><circle class="glyph" cx="33" cy="28" r="4.5"/></svg><span>Community</span></a></li>
       <li><a class="folder" href="#" data-soon><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" fill-rule="evenodd" d="M28 21a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg><span>Photography</span></a></li>
+      <li><a class="folder" href="#kind" data-open="kind"><svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/><path class="glyph" d="M19 22h8v6l-4 5h-3l2-5h-3zm11 0h8v6l-4 5h-3l2-5h-3z"/></svg><span>Kind words</span></a></li>
     </ul>
   </main>
 
@@ -225,6 +237,8 @@ const dock=$('.dock'), items=[...dock.querySelectorAll('a')], calm=matchMedia('(
 if(!calm){dock.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;items.forEach(a=>{const r=a.getBoundingClientRect(),d=Math.abs(e.clientX-(r.left+r.width/2));a.style.transform=`scale(${1+.45*Math.max(0,1-d/110)})`;a.style.transition='transform 60ms linear'})});
 dock.addEventListener('pointerleave',()=>items.forEach(a=>{a.style.transition='transform .3s cubic-bezier(.2,.8,.2,1)';a.style.transform=''}))}
 
+/* backdrop drifts a few pixels with the pointer */
+if(!calm)addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const b=$('.backdrop');b.style.setProperty('--px',((e.clientX/innerWidth-.5)*-14)+'px');b.style.setProperty('--py',((e.clientY/innerHeight-.5)*-10)+'px')});
 /* copy email with visible confirmation; mailto stays as fallback in the real build */
 document.querySelectorAll('[data-copy]').forEach(a=>a.addEventListener('click',async e=>{e.preventDefault();const t=document.querySelector('[data-tip]');
   try{await navigator.clipboard.writeText('jarellalvarez@gmail.com');t.textContent='Email copied'}catch{t.textContent='jarellalvarez@gmail.com'}
@@ -232,7 +246,13 @@ document.querySelectorAll('[data-copy]').forEach(a=>a.addEventListener('click',a
 document.querySelectorAll('[data-soon]').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
 
 /* case study: read the real page so the window and the page share one source */
-let loaded=false, opener=null;
+let loaded=null, opener=null;
+async function kind(){
+  const list=await (await fetch('testimonials.json')).json(), art=$('#art');
+  art.innerHTML='<h2 class="title">Kind words</h2><p class="sub">From people I\'ve worked with, managed, mentored and learned from. Taken from LinkedIn, unedited.</p>'+list.map(p=>`<figure class="kw"><blockquote class="${p.quote.length>320?'long':''}"><p>${p.quote}</p></blockquote>${p.quote.length>320?'<button class="rm" aria-expanded="false">Read more</button>':''}<figcaption><strong>${p.name}</strong>${p.title}</figcaption></figure>`).join('');
+  art.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{const o=b.previousElementSibling.classList.toggle('open');b.textContent=o?'Show less':'Read more';b.setAttribute('aria-expanded',o)});
+  $('#toc').innerHTML=''; $('#win-title').textContent='Kind words'; loaded='kind';
+}
 async function load(url){
   const doc=new DOMParser().parseFromString(await (await fetch(url)).text(),'text/html'), art=$('#art'); art.innerHTML='';
   const facts={}; doc.querySelectorAll('.articleContent h3:not(.subTitle)').forEach(h=>{const p=h.nextElementSibling;if(p)facts[h.textContent.replace(':','').trim()]=p.textContent.trim()});
@@ -249,11 +269,12 @@ async function load(url){
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;links.forEach(a=>a.removeAttribute('aria-current'));
     const a=links.find(a=>a.hash==='#'+e.target.id);a.setAttribute('aria-current','true');if(win.classList.contains('max'))a.scrollIntoView({block:'nearest'})}),{root:$('#read'),rootMargin:'0px 0px -75% 0px'});
   art.querySelectorAll('h3,h4').forEach(h=>io.observe(h));
-  loaded=true;
+  $('#win-title').textContent='UI Avenue'; loaded=url;
 }
 let pos={x:0,y:0};
 function place(){win.style.setProperty('--x',pos.x+'px');win.style.setProperty('--y',pos.y+'px')}
-async function openWin(a){opener=a;if(!loaded)await load(a.getAttribute('href'));
+async function openWin(a){opener=a;const k=a.dataset.open==='kind',want=k?'kind':a.getAttribute('href');if(loaded!==want){k?await kind():await load(want);$('#read').scrollTop=0}
+  win.classList.toggle('plain',k);
   if(!win.classList.contains('open')){pos={x:Math.round((innerWidth-win.offsetWidth)/2+40),y:Math.round((innerHeight-win.offsetHeight)/2-10)};place()}
   win.classList.add('open'); if(mobile())win.classList.add('max'); $('#read').focus({preventScroll:true})}
 function closeWin(){win.classList.remove('open','max','contents');setMax(false);opener&&opener.focus()}
