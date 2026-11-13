@@ -9,7 +9,7 @@ header.top a{text-decoration:none} header.top .sp{margin-left:auto}
 .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;border-radius:999px;border:1.5px solid var(--ink);background:none;font-weight:600;font-size:.9375rem;text-decoration:none;cursor:pointer}
 .btn.solid{background:var(--ink);color:var(--bg)}
 main{max-width:62rem;margin:0 auto;padding:3rem 1.5rem 5rem}
-h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.75rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
+h1{font-family:var(--display);font-weight:var(--dw);letter-spacing:-.03em;font-size:clamp(var(--t-4),6vw,4.75rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
 .facts{display:flex;flex-wrap:wrap;gap:.75rem 2.5rem;margin:1.75rem 0;padding:1rem 0;border-block:1px solid var(--line);font-size:.875rem}
 .facts dt{color:var(--ink-2)} .facts dd{font-weight:600}
 .gate{max-width:30rem;margin-top:2.5rem;padding:1.5rem;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
@@ -21,10 +21,10 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
 .gate .ask{margin:1rem 0 0;font-size:.875rem}
 .gate .ask button:not(.mail){background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
 #story{display:none}
-.story h2{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-3),4vw,var(--t-5));line-height:1.1;letter-spacing:-.015em;margin:4rem 0 1rem;text-wrap:balance}
+.story h2{font-family:var(--display);font-weight:var(--hw);letter-spacing:-.02em;font-size:clamp(var(--t-3),4vw,var(--t-5));line-height:1.1;letter-spacing:-.015em;margin:4rem 0 1rem;text-wrap:balance}
 .story p,.story li{max-width:65ch;text-wrap:pretty} .story p{margin-bottom:1rem}
 .story ul,.story ol{padding-left:1.25rem;margin-bottom:1rem} .story li{margin-bottom:.35rem}
-.story blockquote{font-family:var(--display);font-style:italic;font-size:clamp(var(--t-2),3vw,var(--t-3));line-height:1.25;max-width:36ch;margin:2.5rem 0;padding-left:1.25rem;border-left:2px solid var(--ink)}
+.story blockquote{font-family:var(--display);font-size:clamp(var(--t-2),3vw,var(--t-3));line-height:1.25;max-width:36ch;margin:2.5rem 0;padding-left:1.25rem;border-left:2px solid var(--ink)}
 .story blockquote p{max-width:none;margin:0}
 .story table{border-collapse:collapse;width:100%;margin:1.5rem 0;font-size:.9375rem;font-variant-numeric:tabular-nums}
 .story th,.story td{text-align:left;padding:.7rem .75rem .7rem 0;border-bottom:1px solid var(--line);vertical-align:top}
@@ -39,7 +39,7 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
 .story figcaption{margin-top:.6rem;font-size:.875rem;color:var(--ink-2);max-width:65ch}
 .story>figure:first-child{margin-top:0}
 .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1.5rem 2.5rem;margin:2.5rem 0;padding:1.75rem 0;border-block:1px solid var(--line)}
-.stats b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),5vw,4rem);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stats b{display:block;font-family:var(--display);font-weight:var(--hw);letter-spacing:-.02em;font-size:clamp(var(--t-4),5vw,4rem);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
 .stats span{display:block;margin-top:.6rem;font-size:.9375rem;color:var(--ink-2);max-width:22ch}
 .duo{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem;margin:2.5rem 0;max-width:56rem}
 .duo figure{margin:0}
@@ -60,7 +60,7 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
 .gate{position:relative;overflow:hidden}
 .gate::after{content:"";position:absolute;right:-14px;bottom:-14px;width:64px;height:64px;background:var(--shape);clip-path:polygon(100% 0,100% 100%,0 100%);opacity:.6}
 .more{margin-top:1.5rem;padding-top:2rem;border-top:1px solid var(--line)}
-.more h2{font-family:var(--display);font-weight:400;font-size:var(--t-4);line-height:1.1;margin-bottom:1.25rem}
+.more h2{font-family:var(--display);font-weight:var(--hw);letter-spacing:-.02em;font-size:var(--t-4);line-height:1.1;margin-bottom:1.25rem}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem}
 .card{display:grid;gap:.35rem;align-content:start;overflow:hidden;padding:0 0 1.4rem;border:1px solid var(--line);border-radius:14px;background:var(--surface);text-decoration:none}
 .card:hover{border-color:var(--ink)}
@@ -68,7 +68,7 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
 .card div.pv{display:flex;align-items:flex-end;justify-content:center;gap:8px;padding-bottom:18%}
 .card div.pv i{display:block;height:46px;background:var(--bg)} .card div.pv i:nth-child(1){width:23px;border-radius:0 0 0 23px} .card div.pv i:nth-child(2){width:46px;clip-path:polygon(0 0,100% 100%,0 100%)} .card div.pv i:nth-child(3){width:46px;height:27px}
 .card small{font-size:.8125rem;color:var(--ink-2)}
-.card strong{font-family:var(--display);font-weight:400;font-size:var(--t-2);line-height:1.15}
+.card strong{font-family:var(--display);font-weight:var(--hw);letter-spacing:-.02em;font-size:var(--t-2);line-height:1.15}
 .card span{font-size:.9375rem;color:var(--ink-2)}
 .more .contact{margin-top:1.5rem;font-size:.9375rem}
 .more .contact button{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
@@ -85,22 +85,22 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
 .mail .tip{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translate(-50%,4px);padding:.2rem .6rem;border-radius:6px;background:var(--ink);color:var(--bg);font-size:.75rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s}
 .mail .tip.on{opacity:1;transform:translate(-50%,0)}
 .cta{margin-top:3rem;padding:2rem;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--line)}
-.cta h2{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-2),3vw,var(--t-4));line-height:1.1;text-wrap:balance;max-width:22ch}
+.cta h2{font-family:var(--display);font-weight:var(--hw);letter-spacing:-.02em;font-size:clamp(var(--t-2),3vw,var(--t-4));line-height:1.1;text-wrap:balance;max-width:22ch}
 .cta p{color:var(--ink-2);max-width:52ch;margin:.75rem 0 1.25rem}
 .cta .row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
 /* page furniture shared by About, Kind words, All work and the design system page */
-.page-title{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.75rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
+.page-title{font-family:var(--display);font-weight:var(--dw);letter-spacing:-.03em;font-size:clamp(var(--t-4),6vw,4.75rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
 .page-sub{color:var(--ink-2);max-width:60ch;margin:1rem 0 2.5rem}
 .hero-photo{display:block;width:min(100%,19rem);height:auto;aspect-ratio:1;object-fit:cover;border-radius:var(--r-card);border:1px solid var(--line)}
 .about>p:first-child{font-family:var(--display);font-size:clamp(var(--t-2),3.2vw,var(--t-4));line-height:1.2;max-width:28ch;margin:2.5rem 0 1.5rem;text-wrap:balance}
 .about h2{font-family:var(--sans);font-size:var(--t-1);font-weight:600;letter-spacing:0;line-height:1.25;margin:2.5rem 0 .5rem}
 .links{display:flex;flex-wrap:wrap;gap:.6rem;margin:0 0 2.5rem}
 .saids{display:grid;gap:1rem;margin-top:1.5rem} .saids .said{margin:0}
-.h-sec{font-family:var(--display);font-weight:400;font-size:var(--t-4);line-height:1.1;margin:5rem 0 1.25rem}
+.h-sec{font-family:var(--display);font-weight:var(--hw);letter-spacing:-.02em;font-size:var(--t-4);line-height:1.1;margin:5rem 0 1.25rem}
 .list{display:grid;gap:0;border-top:1px solid var(--line)}
 .list a{display:grid;grid-template-columns:1fr auto;gap:.25rem 1.5rem;padding:1.1rem 0;border-bottom:1px solid var(--line);text-decoration:none}
 .list a:hover strong{text-decoration:underline;text-underline-offset:4px}
-.list strong{font-family:var(--display);font-weight:400;font-size:var(--t-2);line-height:1.15}
+.list strong{font-family:var(--display);font-weight:var(--hw);letter-spacing:-.02em;font-size:var(--t-2);line-height:1.15}
 .list span{color:var(--ink-2);font-size:.9375rem} .list small{color:var(--ink-2);font-size:.875rem;white-space:nowrap}
 @media (max-width:640px){main{padding:2rem 1.1rem 4rem} header.top{padding:.75rem 1.1rem} .facts{gap:.75rem 1.5rem} .said,.cta{padding:1.1rem 1.15rem} .list a{grid-template-columns:1fr}}
 header.top a:not(.btn){display:inline-flex;align-items:center;min-height:44px}

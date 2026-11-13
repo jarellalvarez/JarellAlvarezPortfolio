@@ -13,7 +13,7 @@ import glyphs from '../lib/home-glyphs.json';
 const work = studies().map(s => ({
   href: `/work/${s.slug}/`,
   label: s.meta.company + (s.meta.company === 'MAVI' ? ' Client Portal' : ''),
-  sub: String(s.meta.role).split(',')[0],
+  sub: String(s.meta.role).split(',')[0].replace(/ I+$/, ''),
   glyph: glyphs[`/work/${s.slug}/`],
   preview: s.preview,
   previewText: s.meta.summary + (s.preview ? '' : ' Screens are under NDA.'),

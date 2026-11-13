@@ -1,10 +1,12 @@
 ---
 import '../styles/tokens.css';
+import '../styles/themes.css';
+import '../styles/style-panel.css';
 const { title, description, noindex = false } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site);
 ---
 <!doctype html>
-<html lang="en" data-theme="light" data-accent="mono">
+<html lang="en" data-theme="light" data-palette="ivory" data-font="bricolage" data-size="m">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -13,14 +15,14 @@ const url = new URL(Astro.url.pathname, Astro.site);
     {noindex && <meta name="robots" content="noindex" />}
     <link rel="canonical" href={url} />
     <link rel="icon" href="/img/jarell_alvarez_Favicon.svg" />
-    <link rel="preload" href="/fonts/instrument-serif-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href="/fonts/instrument-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/bricolage.woff2" as="font" type="font/woff2" crossorigin />
     <meta property="og:type" content="website" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={url} />
-    <script is:inline>try{var d=document.documentElement,m=localStorage.getItem("mode"),a=localStorage.getItem("accent");if(m)d.dataset.theme=m;if(a)d.dataset.accent=a}catch(e){}</script>
+    <script is:inline>try{var d=document.documentElement,g=function(k){return localStorage.getItem("style-"+k)};if(g("mode"))d.dataset.theme=g("mode");if(g("palette"))d.dataset.palette=g("palette");if(g("font"))d.dataset.font=g("font");if(g("size"))d.dataset.size=g("size")}catch(e){}</script>
     <slot name="head" />
   </head>
   <slot />
+  <script is:inline src="/js/style.js"></script>
 </html>

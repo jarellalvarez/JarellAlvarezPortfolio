@@ -1,25 +1,28 @@
-/* Design tokens. Every color, font and size on the site comes from here. */
-@font-face{font-family:'InstSans';src:url(/fonts/instrument-sans-latin-wght-normal.woff2) format('woff2');font-weight:400 700;font-style:normal;font-display:swap}
-@font-face{font-family:'InstSerif';src:url(/fonts/instrument-serif-latin-400-normal.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'InstSerif';src:url(/fonts/instrument-serif-latin-400-italic.woff2) format('woff2');font-weight:400;font-style:italic;font-display:swap}
+/* Design tokens. Colors live in themes.css; fonts, sizes and shapes live here.
+   The Style panel switches html[data-palette], [data-theme] (light/dark), [data-font] and [data-size]. */
+@font-face{font-family:'Bricolage';src:url(/fonts/bricolage.woff2) format('woff2');font-weight:200 800;font-display:swap}
+@font-face{font-family:'Familjen';src:url(/fonts/familjen.woff2) format('woff2');font-weight:400 700;font-display:swap}
+@font-face{font-family:'Syne';src:url(/fonts/syne.woff2) format('woff2');font-weight:400 800;font-display:swap}
+@font-face{font-family:'Manrope';src:url(/fonts/manrope.woff2) format('woff2');font-weight:200 800;font-display:swap}
+@font-face{font-family:'Atkinson';src:url(/fonts/atkinson-400.woff2) format('woff2');font-weight:400;font-display:swap}
+@font-face{font-family:'Atkinson';src:url(/fonts/atkinson-700.woff2) format('woff2');font-weight:700;font-display:swap}
 :root{
-  /* color */
-  --bg:#f7f4ec; --surface:#fdfcf8; --ink:#2b2a28; --ink-2:#6b665c; --line:rgba(43,42,40,.14);
-  --folder:#5f5a52; --shape:#dedad1; --toy:#b9b2a3; --chrome:rgba(253,252,248,.72); --danger:#a3261a;
-  --accent:var(--ink); --on-accent:var(--bg); --mix:8%;
-  --shadow:0 1px 2px rgba(0,0,0,.08),0 24px 60px -12px rgba(0,0,0,.28);
-  /* type */
-  --display:'InstSerif',ui-serif,Georgia,serif; --sans:'InstSans',ui-sans-serif,system-ui,sans-serif; --serif:var(--display);
-  --tag-style:italic; --dw:400; --dt:-.025em;
+  /* type: --display for the name and headings, --sans for everything else */
+  --display:'Bricolage',ui-sans-serif,system-ui,sans-serif; --sans:'Bricolage',ui-sans-serif,system-ui,sans-serif; --serif:var(--display);
+  --tag-style:normal; --dw:700; --dt:-.045em; --hw:600;
   /* scale, ratio 1.25 from 17px */
   --t--2:.75rem; --t--1:.85rem; --t-0:1.0625rem; --t-1:1.328rem; --t-2:1.66rem; --t-3:2.075rem; --t-4:2.594rem; --t-5:3.242rem;
   /* shape */
   --r-win:14px; --r-card:14px; --r-pill:999px;
+  --shadow:0 1px 2px rgba(0,0,0,.08),0 24px 60px -12px rgba(0,0,0,.28);
 }
-[data-theme=dark]{--bg:#1f1e1c;--surface:#292826;--ink:#f7f4ec;--ink-2:#b3ada1;--line:rgba(247,244,236,.16);
-  --folder:#bdb6a8;--shape:#3a3835;--toy:#6f6a60;--chrome:rgba(41,40,38,.72);--danger:#ff8a7a;
-  --shadow:0 0 0 1px rgba(255,255,255,.14),0 24px 60px -12px rgba(0,0,0,.9)}
-[data-accent=yellow]{--accent:#ffd400;--on-accent:#000;--mix:22%;--toy:var(--accent)}
-[data-accent=blue]{--accent:#1447ff;--on-accent:#fff;--mix:22%;--toy:var(--accent)}
-[data-accent=taupe]{--accent:#9f947a;--on-accent:#000;--mix:22%;--toy:var(--accent)}
-[data-accent=red]{--accent:#ff3b1f;--on-accent:#000;--mix:22%;--toy:var(--accent)}
+[data-theme=dark]{--shadow:0 0 0 1px rgba(255,255,255,.14),0 24px 60px -12px rgba(0,0,0,.9)}
+
+/* font pairings */
+[data-font=familjen]{--display:'Familjen',ui-sans-serif,system-ui,sans-serif;--sans:'Familjen',ui-sans-serif,system-ui,sans-serif;--dw:700;--dt:-.04em}
+[data-font=syne]{--display:'Syne',ui-sans-serif,system-ui,sans-serif;--sans:'Manrope',ui-sans-serif,system-ui,sans-serif;--dw:800;--dt:-.035em}
+[data-font=atkinson]{--display:'Atkinson',ui-sans-serif,system-ui,sans-serif;--sans:'Atkinson',ui-sans-serif,system-ui,sans-serif;--dw:700;--dt:-.02em}
+
+/* text size: everything is sized in rem, so this scales the whole site */
+html{font-size:100%}
+[data-size=s]{font-size:93.75%} [data-size=l]{font-size:112.5%} [data-size=xl]{font-size:125%}

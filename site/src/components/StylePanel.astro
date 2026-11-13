@@ -1,0 +1,63 @@
+---
+// The Style panel: theme, light/dark, font, text size, randomize. Behavior in /js/style.js.
+const palettes = [
+  ['ivory', 'Ivory', '#f7f4ec', '#2b2a28', '#5f5a52'],
+  ['stone', 'Stone', '#eef0f1', '#1f2328', '#2d5bd6'],
+  ['sage', 'Sage', '#eef1ea', '#1f2a22', '#2f6b45'],
+  ['ink', 'Ink', '#eef1f8', '#141b33', '#2443b8'],
+  ['clay', 'Clay', '#f6ece6', '#2e1f19', '#a8452a'],
+  ['contrast', 'High contrast', '#ffffff', '#000000', '#0033cc'],
+];
+const fonts = [
+  ['bricolage', 'Bricolage', 'Bricolage'],
+  ['familjen', 'Familjen', 'Familjen'],
+  ['syne', 'Syne', 'Syne'],
+  ['atkinson', 'Atkinson', 'Atkinson'],
+];
+const sizes = [['s', 'Small', 'A'], ['m', 'Default', 'A'], ['l', 'Large', 'A'], ['xl', 'Extra large', 'A']];
+---
+<div class="style">
+  <button class="style-btn" id="style-btn" aria-expanded="false" aria-controls="style-panel" aria-label="Change the look of this site">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
+    <span class="style-label">Style</span>
+  </button>
+  <div class="style-panel" id="style-panel" role="dialog" aria-label="Style">
+    <fieldset>
+      <legend>Theme</legend>
+      <div class="opts themes">
+        {palettes.map(([v, n, bg, ink, ac]) => (
+          <button type="button" data-k="palette" data-v={v} aria-pressed="false" title={n}>
+            <span class="chip" style={`background:${bg};color:${ink}`}><i style={`background:${ink}`}></i><i style={`background:${ac}`}></i></span>
+            <span>{n}</span>
+          </button>
+        ))}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Mode</legend>
+      <div class="seg2"><button type="button" data-k="mode" data-v="light" aria-pressed="true">Light</button><button type="button" data-k="mode" data-v="dark" aria-pressed="false">Dark</button></div>
+    </fieldset>
+    <fieldset>
+      <legend>Font</legend>
+      <div class="opts fonts">
+        {fonts.map(([v, n, fam]) => (
+          <button type="button" data-k="font" data-v={v} aria-pressed="false"><b style={`font-family:'${fam}'`}>Aa</b><span>{n}</span></button>
+        ))}
+      </div>
+    </fieldset>
+    <fieldset>
+      <legend>Text size</legend>
+      <div class="seg4">
+        {sizes.map(([v, n, t], i) => <button type="button" data-k="size" data-v={v} aria-pressed="false" aria-label={n} style={`font-size:${.8 + i * .15}rem`}>{t}</button>)}
+      </div>
+    </fieldset>
+    <div class="style-actions">
+      <button type="button" class="btn solid" id="style-random">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="15.5" cy="15.5" r="1.4" fill="currentColor"/><circle cx="15.5" cy="8.5" r="1.4" fill="currentColor"/><circle cx="8.5" cy="15.5" r="1.4" fill="currentColor"/></svg>
+        Randomize
+      </button>
+      <button type="button" class="btn" id="style-reset">Reset</button>
+    </div>
+    <p class="style-status" id="style-status" role="status" aria-live="polite"></p>
+  </div>
+</div>

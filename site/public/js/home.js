@@ -1,19 +1,5 @@
 const $=s=>document.querySelector(s), root=document.documentElement, win=$('#win'), mobile=()=>matchMedia('(max-width:720px)').matches;
 
-/* theme + accent, remembered per device */
-const store={get:k=>{try{return localStorage.getItem(k)}catch{}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch{}}};
-function setAccent(a){root.dataset.accent=a;document.querySelectorAll('.sw').forEach(b=>b.setAttribute('aria-pressed',b.dataset.a===a));store.set('accent',a)}
-function bump(){const t=$('#theme');t.classList.remove('pop');void t.offsetWidth;t.classList.add('pop')}
-function setMode(m){root.dataset.theme=m;document.querySelectorAll('.seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.m===m));store.set('mode',m)}
-setAccent(store.get('accent')||'mono'); setMode(store.get('mode')||'light');
-const tm=$('#tmenu'), tb=$('#theme');
-function menu(on){tm.classList.toggle('on',on);tb.setAttribute('aria-expanded',on)}
-tb.onclick=e=>{e.stopPropagation();menu(!tm.classList.contains('on'))};
-tm.onclick=e=>e.stopPropagation();
-document.querySelectorAll('.sw').forEach(b=>b.onclick=()=>{setAccent(b.dataset.a);bump();menu(false)});
-document.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>{setMode(b.dataset.m);bump()});
-addEventListener('click',()=>menu(false));
-addEventListener('keydown',e=>{if(e.key==='Escape'&&tm.classList.contains('on')){menu(false);tb.focus()}});
 document.querySelectorAll('.folder svg').forEach(v=>v.querySelector('.front').insertAdjacentHTML('beforebegin','<rect class="paper" x="10" y="6" width="36" height="24" rx="2"/>'));
 
 /* dock magnification: scale by pointer distance, transform only */
