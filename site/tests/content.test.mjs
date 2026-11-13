@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { webcrypto } from 'node:crypto';
 import { study, studies, testimonials, encrypt, render } from '../src/lib/content.mjs';
 
@@ -55,4 +55,9 @@ test('stats, paired images and study images render from plain Markdown', () => {
 
 test('case studies come out in their set order', () => {
   assert.deepEqual(studies().map(s => s.slug), ['mavi', 'copperleaf', 'ui-avenue']);
+});
+
+test('images below the lock are not published as files (run after build)', { skip: !existsSync(new URL('../dist/work/mavi/', import.meta.url)) }, () => {
+  const published = readdirSync(new URL('../dist/work/mavi/', import.meta.url));
+  for (const f of ['dashboard-comparison.webp', 'candidates-comparison.webp', 'mvp-flow.webp']) assert.ok(!published.includes(f), f);
 });

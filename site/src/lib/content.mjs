@@ -36,7 +36,11 @@ export function encrypt(html, password) {
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 
 // Markdown plus three small additions: {{stats}}, {{presentation}} and :::pair ... ::: for two images side by side.
-export function render(md, { dir, meta }) {
+const cache = new URL('../../.cache/img/', import.meta.url);
+const webp = f => f.replace(/\.(png|jpe?g)$/i, '.webp');
+
+// locked = true embeds images inside the HTML so they travel encrypted with the text
+export function render(md, { dir, meta }, locked = false) {
   const stats = (meta.stats || []).map(s => `<div><b>${esc(s.value)}</b><span>${esc(s.label)}</span></div>`).join('');
   const src = md
     .replace(/<!--(?! lock -->)[\s\S]*?-->/g, '')
@@ -45,7 +49,11 @@ export function render(md, { dir, meta }) {
     .replace(/^:::pair\s*$/gm, '<div class="duo">\n').replace(/^:::\s*$/gm, '\n</div>');
   return marked.parse(src)
     .replace(/<p>\{\{stats\}\}<\/p>/g, stats ? `<div class="stats">${stats}</div>` : '')
-    .replace(/src="img\//g, `src="/work/${dir}/`)
+    .replace(/src="img\/([^"]+)"/g, (_, f) => {
+      const file = new URL(`${dir}/${webp(f)}`, cache);
+      if (locked && existsSync(file)) return `src="data:image/webp;base64,${readFileSync(file).toString('base64')}"`;
+      return `src="/work/${dir}/${existsSync(file) ? webp(f) : f}"`;
+    })
     .replace(/<p><img ([^>]*?)alt="([^"]*)"([^>]*)><\/p>/g, '<figure><img $1alt="$2"$3 loading="lazy"><figcaption>$2</figcaption></figure>');
 }
 
@@ -57,7 +65,7 @@ export function study(slug, password) {
   return {
     meta: entry.meta,
     publicHtml: render(pub, entry),
-    payload: isLocked ? encrypt(render(locked, entry), password) : null,
+    payload: isLocked ? encrypt(render(locked, entry, true), password) : null,
     quotes: testimonials().filter(p => p.place === entry.dir),
     more: all.filter(s => s.slug !== slug),
   };
