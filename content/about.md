@@ -1,5 +1,5 @@
 ---
-status: draft 1, for Jarell's review. Lines marked [JARELL] are questions, not copy
+status: draft 2, for Jarell's review. Lines marked [JARELL] are questions, not copy
 photo: ../../img/about_jarell_alvarez.jpg
 ---
 
@@ -13,9 +13,9 @@ I started Vancouver Design Community because I wanted more designers to talk to.
 
 ## 🍎 Teaching
 
-I teach UX/UI design at BCIT, which is the same place I learned it. I like classes where people make things, get critiqued, and try again, and I'd rather ask a student a good question than hand them the answer. It's turned into one of my favourite parts of the week.
+I teach UX/UI design at BCIT, which is the same place I learned it. I love being in front of students, coaching them and watching them get sharper. We do hands-on workshops every week, and I run regular surveys and feedback so I know what they're thinking and feeling, not what I assume they are.
 
-[JARELL] Anything specific to add? Which course, how long you've taught, a moment that stuck with you.
+I also built Corporate Ascent for my classes, a challenge system where students take on design briefs the way a real team would.
 
 ## 📸 Moment Capturer
 
@@ -23,17 +23,19 @@ I held my first camera when I was 6 on a European trip with my parents and haven
 
 ## 🏐 Volleyball
 
-[JARELL] I only have the topic here, so this is a placeholder in your voice: "I will happily lose an entire evening to volleyball. I'm not saying I'm the best on the court, but I am definitely the loudest." What's true: position, league or drop-in, how often, indoor or beach?
+I started playing in early 2025, on the beach, with no idea what I was doing. Now I play at a very high level and earned MVP with the first team I played on. Indoor is my favourite. It gets me sweating, moving and into a flow state, and it's taught me a lot about communication, teamwork and making smart decisions fast.
 
 ## 🤖 AI Enthusiast
 
-I use AI the way I'd use a very fast, slightly overconfident junior designer: great for getting somewhere quickly, and I still check the work. This site was built with it.
-
-[JARELL] What do you actually use day to day, and what should this say you've made with it? The last sentence is true of this portfolio, but say the word and I'll cut it.
+I like building with AI. Right now that's Corporate Ascent 2.0 for my classes, and this portfolio, which I designed and built with it. I have a long list of other things I want to make.
 
 ## 🥾 Hiking
 
-[JARELL] Placeholder: "Living next to mountains and not walking up them feels rude." A favourite trail or a best / worst hike story would make this yours.
+Summer is hiking season. I'm part of a hiking group, which is the only reason I get up that early on a weekend.
+
+## 📚 Book Club
+
+I'm in a book club that mostly reads fantasy. We've done Brandon Sanderson, Murakami and Babel, and right now we're on The Devils by Joe Abercrombie.
 
 ## ♟️ Board Game Nerd
 
@@ -45,9 +47,8 @@ I love testing recipes for weekly meal prep and have a knack for staying late on
 
 ## ✈️ Worldly Travels
 
-I’ve travelled to 21 countries and have learned so much about cultures and getting out of my comfort zone. I’ve taken solo trips that have given me inspiration, creativity and learning how to be comfortable alone.
+I’ve travelled to 23 countries and have learned so much about cultures and getting out of my comfort zone. I’ve taken solo trips that have given me inspiration, creativity and learning how to be comfortable alone.
 
-[JARELL] 21 was the 2020 number, and your deck mentions Japan. What's the count now?
 
 ## 🎵 Classifying Music
 
@@ -60,3 +61,5 @@ I love taking people out on shopping trips, giving them style pointers and hair 
 ## 💪🏽 Lifting Weights Repeatedly
 
 As the title implies, I like to go to the gym three times a week and get pumped.
+
+[JARELL] Two lines are mine, not yours, so check them: "which is the only reason I get up that early on a weekend" (hiking) and the one-sentence description of Corporate Ascent (teaching).

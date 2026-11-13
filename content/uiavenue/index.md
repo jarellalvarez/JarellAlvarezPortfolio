@@ -19,9 +19,7 @@ UI Avenue was a small team of developers, designers and marketers building apps 
 
 I led the design: research, onboarding, wireframes, the design system and the final product.
 
-UI Avenue closed in mid-2020, at the start of the pandemic, before the app could keep going. What follows is the write-up from 2019, as I wrote it then.
-
-[JARELL] Did the app launch before the company closed? One line and I'll state it plainly here.
+The app launched. A few months later, in mid-2020 at the start of the pandemic, UI Avenue closed. What follows is the write-up from 2019, as I wrote it then.
 
 ## Overview (2019)
 
@@ -107,6 +105,6 @@ I created a style guide ensuring each component is documented to ensure all of o
 
 ## What happened next
 
-The plan was to launch in February 2020 and keep going: user testing, interviews, customizable reports, more personas. UI Avenue closed in mid-2020 at the start of the pandemic, so that work stopped there.
+We launched the app. The plan after that was to keep going: user testing, interviews, customizable reports, more personas. A few months later, in mid-2020 at the start of the pandemic, UI Avenue closed, so that work stopped there.
 
 Overall this was the greatest challenge of my career up to that point, and I enjoyed every minute of it while learning so much. Communication with all the stakeholders from the start is the key to any project, and understanding the users' perspectives and doing plenty of research is incredibly important.
