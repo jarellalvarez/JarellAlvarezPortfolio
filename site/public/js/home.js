@@ -28,7 +28,7 @@ toys.onclick=play; if(!calm)(function loop(){setTimeout(()=>{play();loop()},6000
 document.querySelectorAll('[data-copy]').forEach(a=>a.addEventListener('click',async e=>{e.preventDefault();const t=document.querySelector('[data-tip]');
   try{await navigator.clipboard.writeText('jarellalvarez@gmail.com');t.textContent='Email copied'}catch{t.textContent='jarellalvarez@gmail.com'}
   t.style.opacity=1;setTimeout(()=>{t.textContent='Contact, copy email';t.style.opacity=''},1800)}));
-document.querySelectorAll('[data-soon]').forEach(a=>a.addEventListener('click',e=>e.preventDefault()));
+
 
 /* case study: read the real page so the window and the page share one source */
 let loaded=null, opener=null;
@@ -50,7 +50,7 @@ async function load(url){
   const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;links.forEach(a=>a.removeAttribute('aria-current'));
     const a=links.find(a=>a.hash==='#'+e.target.id);a.setAttribute('aria-current','true');if(win.classList.contains('max'))a.scrollIntoView({block:'nearest'})}),{root:$('#read'),rootMargin:'0px 0px -75% 0px'});
   heads.forEach(h=>io.observe(h));
-  $('#win-title').textContent='UI Avenue'; loaded=url;
+  $('#win-title').textContent=doc.querySelector('.facts dd')?.textContent||doc.title; loaded=url;
 }
 let pos={x:0,y:0};
 function place(){win.style.setProperty('--x',pos.x+'px');win.style.setProperty('--y',pos.y+'px')}

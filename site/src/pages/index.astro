@@ -1,14 +1,76 @@
 ---
 import Base from '../layouts/Base.astro';
+import HomeNav from '../components/HomeNav.astro';
+import Folder from '../components/Folder.astro';
+import Shapes from '../components/Shapes.astro';
+import Dock from '../components/Dock.astro';
+import Window from '../components/Window.astro';
 import '../styles/home.css';
-import markup from '../fragments/home.html?raw';
+import { studies } from '../lib/content.mjs';
+import glyphs from '../lib/home-glyphs.json';
+
+// Case studies come from the editor, in their set order. A study opens in the window when it has no locked section.
+const work = studies().map(s => ({
+  href: `/work/${s.slug}/`,
+  label: s.meta.company + (s.meta.company === 'MAVI' ? ' Client Portal' : ''),
+  sub: String(s.meta.role).split(',')[0],
+  glyph: glyphs[`/work/${s.slug}/`],
+  preview: s.preview,
+  previewText: s.meta.summary + (s.preview ? '' : ' Screens are under NDA.'),
+  open: s.md.includes('<!-- lock -->') ? undefined : true,
+}));
+const extras = [
+ {
+  "href": "/about/",
+  "label": "About",
+  "glyph": "<circle class=\"glyph\" cx=\"28\" cy=\"28\" r=\"6.5\"/>"
+ },
+ {
+  "href": "https://join.slack.com/t/vandesigncommunity/shared_invite/zt-4af1yypit-~LvOH0pQSN2XCb5oP_tG9A",
+  "label": "Community",
+  "glyph": "<circle class=\"glyph\" cx=\"23\" cy=\"28\" r=\"4.5\"/><circle class=\"glyph\" cx=\"33\" cy=\"28\" r=\"4.5\"/>",
+  "external": true,
+  "previewText": "Vancouver Design Community: 4,200+ designers. Opens the Slack invite."
+ },
+ {
+  "href": "https://jarell.photography/",
+  "label": "Photography",
+  "external": true,
+  "previewText": "Portraits, editorial and events. Opens jarell.photography.",
+  "glyph": "<path class=\"glyph\" fill-rule=\"evenodd\" d=\"M28 21a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z\"/>"
+ },
+ {
+  "href": "#kind",
+  "label": "Kind words",
+  "glyph": "<path class=\"glyph\" d=\"M19 22h8v6l-4 5h-3l2-5h-3zm11 0h8v6l-4 5h-3l2-5h-3z\"/>",
+  "open": "kind"
+ }
+];
 ---
 <Base
   title="Jarell Alvarez, Senior Product Designer"
   description="Senior product designer and design lead in Vancouver. B2B SaaS, enterprise software and complex workflows made easier to use."
 >
   <body>
-    <Fragment set:html={markup} />
+<div class="desk">
+  <HomeNav />
+  <main class="hero">
+    <h1>Jarell Alvarez</h1>
+    <p class="role">Senior Product Designer and Design Lead, Vancouver</p>
+    <p class="tag">Good design starts with better questions.</p>
+    <p class="fine">Prototype preview. Content and images are still being finalized.</p>
+
+    <ul class="folders" id="work" aria-label="Work and more">
+      {work.map(f => <Folder {...f} />)}
+      {extras.map(f => <Folder {...f} />)}
+    </ul>
+  </main>
+
+  <Shapes />
+  <Dock />
+</div>
+
+<Window />
     <script is:inline src="/js/home.js"></script>
   </body>
 </Base>

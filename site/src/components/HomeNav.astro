@@ -1,0 +1,25 @@
+  <nav class="top" aria-label="Main">
+    <a href="/" aria-label="Jarell Alvarez, home">
+      <span class="logo"></span>
+    </a>
+    <ul>
+      <li><a href="/work/">Work</a></li><li><a href="/about/">About</a></li>
+      <li><a href="/resume.pdf">Resume</a></li><li><a href="#contact" data-copy>Contact</a></li>
+    </ul>
+    <div class="prefs">
+      <button class="mode" id="theme" aria-label="Theme and colors" aria-expanded="false" aria-controls="tmenu">
+        <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 0 0 18z" fill="currentColor"/></svg>
+      </button>
+      <div class="tmenu" id="tmenu" role="group" aria-label="Theme and colors">
+        <div class="seg"><button data-m="light" aria-pressed="true">Light</button><button data-m="dark" aria-pressed="false">Dark</button></div>
+        <p>Accent color</p>
+        <div class="sws">
+          <button class="sw" style="--c:var(--ink)" data-a="mono" aria-pressed="true"><span class="sr">None</span></button>
+          <button class="sw" style="--c:#ffd400" data-a="yellow" aria-pressed="false"><span class="sr">Yellow</span></button>
+          <button class="sw" style="--c:#1447ff" data-a="blue" aria-pressed="false"><span class="sr">Blue</span></button>
+          <button class="sw" style="--c:#9f947a" data-a="taupe" aria-pressed="false"><span class="sr">Taupe</span></button>
+          <button class="sw" style="--c:#ff3b1f" data-a="red" aria-pressed="false"><span class="sr">Red</span></button>
+        </div>
+      </div>
+    </div>
+  </nav>
