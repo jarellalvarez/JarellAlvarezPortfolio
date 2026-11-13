@@ -10,10 +10,17 @@ protected: true
 presentation: https://www.figma.com/slides/B4cCrbsQKWG3zmHkcteTEt
 summary: Research, three tested directions and a shipped guide for a complex enterprise tool.
 status: draft 4, for Jarell's review
+order: 2
+preview: /img/preview-copperleaf.jpg
+stats:
+  - value: "23"
+    label: "interviews and test sessions with internal users"
+  - value: "23 to 3"
+    label: "ideas sketched, then narrowed to three tested directions"
+  - value: "3 months"
+    label: "of developer time saved on the assistant's first version"
 ---
 
-<!-- DRAFT 2. Every fact comes from the case study deck.
-     Lines marked [JARELL] are questions, not copy. -->
 
 ![A value model in Copperleaf Value](img/value-model.jpg)
 
@@ -25,7 +32,7 @@ It was powerful and hard to learn. Our own customer success and tech sales teams
 
 I led design on a 6-month cycle to figure out where people were getting stuck and what would help the most, the fastest.
 
-<div class="stats"><div><b>23</b><span>interviews and test sessions with internal users</span></div><div><b>23 to 3</b><span>ideas sketched, then narrowed to three tested directions</span></div><div><b>3 months</b><span>of developer time saved on the assistant's first version</span></div></div>
+{{stats}}
 
 ![The Navigation Guide inside Framework Designer](img/navigation-guide.jpg)
 
@@ -37,13 +44,13 @@ I led design on a 6-month cycle to figure out where people were getting stuck an
 
 ![The Framework Designer Guide: how the pieces of a value model connect, with definitions below](img/resource-guide.jpg)
 
-<div class="duo">
+:::pair
 
 ![Research synthesis](img/research-1.jpg)
 
 ![Wireframing](img/wireframing.jpg)
 
-</div>
+:::
 
 ## The problem
 
@@ -108,11 +115,9 @@ Three directions made it through:
 
 I built mid-fi prototypes of all three and tested them with 6 users over 4 days. Same scenario each time: create a prompt from scratch and add it to a questionnaire. Then each person ranked the three.
 
-| Solution | Score (out of 18) | What people said |
-| --- | --- | --- |
-| Clippy assistant | 15 | Right amount of guidance without changing the UI they already knew |
-| Choose Your Own Adventure | 14 | Easy to follow, fewer mistakes, but they missed the normal menu |
-| Overworld map | 7 | Helpful once found, but the map button was hard to spot |
+- **Clippy assistant: 15 out of 18.** Right amount of guidance without changing the UI they already knew.
+- **Choose Your Own Adventure: 14.** Easy to follow, fewer mistakes, but they missed the normal menu.
+- **Overworld map: 7.** Helpful once found, but the map button was hard to spot.
 
 > Right amount of guidance again, without necessarily having to go down a completely different path with the UI.
 

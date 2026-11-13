@@ -8,10 +8,16 @@ team: Product Manager, Platform Lead, Sales, Customer Success, Co-Founder
 protected: true
 summary: A self-serve client portal, designed and aligned across five teams in under two weeks.
 status: draft 2, for Jarell's review. Title is a placeholder
+order: 1
+stats:
+  - value: "12 days"
+    label: "from brief to high-fidelity screens ready for build"
+  - value: "5 groups"
+    label: "aligned on one direction: product, platform, sales, customer success, leadership"
+  - value: "3 actions"
+    label: "in the first release, with everything else deferred"
 ---
 
-<!-- DRAFT 1. Every fact comes from Jarell's case study doc. Names are replaced with roles.
-     Lines marked [JARELL] are questions, not copy. -->
 
 ## Overview
 
@@ -19,7 +25,7 @@ MAVI places talent with client companies. Clients were running the whole hiring 
 
 I led design on a new client portal: one place to review candidates, book interviews, sign agreements and keep track of the people they've hired.
 
-<div class="stats"><div><b>12 days</b><span>from brief to high-fidelity screens ready for build</span></div><div><b>5 groups</b><span>aligned on one direction: product, platform, sales, customer success, leadership</span></div><div><b>3 actions</b><span>in the first release, with everything else deferred</span></div></div>
+{{stats}}
 
 **What I delivered**
 

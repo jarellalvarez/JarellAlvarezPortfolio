@@ -4,12 +4,12 @@ import Quote from '../components/Quote.astro';
 import Mark from '../components/Mark.astro';
 import EmailButton from '../components/EmailButton.astro';
 import { about, testimonials } from '../lib/content.mjs';
-const { html } = about();
+const { html, meta } = about();
 const [intro, ...rest] = html.split('</p>');
 const quotes = testimonials().filter(t => t.place === 'about');
 ---
 <Page title="About Jarell Alvarez" description="Senior product designer in Vancouver. Founder of Vancouver Design Community, UX/UI instructor at BCIT, photographer.">
-  <img class="hero-photo" src="/img/about_jarell_alvarez.jpg" alt="Jarell Alvarez" width="1920" height="600" />
+  <img class="hero-photo" src={meta.photo} alt="Jarell Alvarez" width="1920" height="600" />
   <div class="story about">
     <Fragment set:html={intro + '</p>'} />
     <div class="links">

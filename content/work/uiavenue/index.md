@@ -1,15 +1,16 @@
 ---
 title: Making business analytics make sense
-slug: uiavenue
+slug: ui-avenue
 company: UI Avenue
 role: Product Designer
 timeline: Jun 2019 to mid-2020
 team: CEO and back-end developer, front-end developer, marketers
 summary: A reporting app that makes Google Analytics readable for shop owners.
 status: draft 1, for Jarell's review. Body text is the 2019 original, unchanged
+order: 3
+preview: /img/preview-ui-avenue.jpg
 ---
 
-<!-- Overview and ending are new. Everything between is the 2019 write-up, word for word. -->
 
 ![UI Avenue Analytics](img/screen-10.jpg)
 

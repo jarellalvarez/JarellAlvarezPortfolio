@@ -1,6 +1,6 @@
 ---
-status: draft 2, for Jarell's review. Lines marked [JARELL] are questions, not copy
-photo: ../../img/about_jarell_alvarez.jpg
+title: About
+photo: /img/about_jarell_alvarez.jpg
 ---
 
 👋🏼 I'm a senior product designer in Vancouver with 9+ years of making complicated software easier to use. Right now I lead product design at MAVI, teach UX/UI at BCIT, and run a design community that got a little out of hand.

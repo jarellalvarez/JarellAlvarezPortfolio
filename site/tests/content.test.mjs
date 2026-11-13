@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, existsSync } from 'node:fs';
 import { webcrypto } from 'node:crypto';
-import { study, testimonials, encrypt, STUDIES } from '../src/lib/content.mjs';
+import { study, studies, testimonials, encrypt, render } from '../src/lib/content.mjs';
 
 const dec = b => Uint8Array.from(Buffer.from(b, 'base64'));
 async function decrypt(p, pw) {
@@ -30,7 +30,7 @@ test('MAVI and Copperleaf are locked, UI Avenue is open', () => {
 });
 
 test('public part never contains locked text or notes to Jarell', () => {
-  for (const s of STUDIES) {
+  for (const s of studies()) {
     const { publicHtml } = study(s.slug, 'x');
     assert.ok(!publicHtml.includes('[JARELL]'), s.slug);
     assert.ok(!publicHtml.includes('@@LOCK@@'), s.slug);
@@ -45,4 +45,14 @@ test('built pages do not leak locked text (run after build)', { skip: !existsSyn
   const m = readFileSync(new URL('../dist/work/mavi/index.html', import.meta.url), 'utf8');
   assert.ok(!c.includes('Clippy') && !c.includes('figma.com'));
   assert.ok(!m.includes('match score') && !m.includes('20% match'));
+});
+
+test('stats, paired images and study images render from plain Markdown', () => {
+  const html = render('{{stats}}\n\n:::pair\n\n![a](img/a.jpg)\n\n![b](img/b.jpg)\n\n:::\n', { dir: 'x', meta: { stats: [{ value: '3', label: 'things' }] } });
+  assert.match(html, /<div class="stats"><div><b>3<\/b><span>things<\/span><\/div><\/div>/);
+  assert.match(html, /<div class="duo">[\s\S]*src="\/work\/x\/a\.jpg"[\s\S]*src="\/work\/x\/b\.jpg"[\s\S]*<\/div>/);
+});
+
+test('case studies come out in their set order', () => {
+  assert.deepEqual(studies().map(s => s.slug), ['mavi', 'copperleaf', 'ui-avenue']);
 });

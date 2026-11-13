@@ -1,29 +1,28 @@
-// Reads case studies and testimonials from /content and prepares them for pages.
-import { readFileSync } from 'node:fs';
+// Reads case studies, testimonials and the About text from /content and prepares them for pages.
+// The admin editor (/admin) writes to the same files.
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { pbkdf2Sync, randomBytes, createCipheriv } from 'node:crypto';
 import { marked } from 'marked';
+import matter from 'gray-matter';
 
 const root = new URL('../../../content/', import.meta.url);
 const read = p => readFileSync(new URL(p, root), 'utf8');
 
-// folder name in /content -> URL slug
-export const STUDIES = [
-  { dir: 'mavi', slug: 'mavi', preview: null },
-  { dir: 'copperleaf', slug: 'copperleaf', preview: '/img/preview-copperleaf.jpg' },
-  { dir: 'uiavenue', slug: 'ui-avenue', preview: '/img/preview-ui-avenue.jpg' },
-];
+export const LOCK = '<!-- lock -->';
 
-function parse(dir) {
-  const [, fm, md] = read(`${dir}/index.md`).match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  const meta = Object.fromEntries(fm.split('\n').map(l => l.split(/:\s(.*)/s).slice(0, 2)));
-  return { meta, md };
+// Every folder in /content/work with an index.md is a case study. `order` sets the sequence.
+export function studies() {
+  return readdirSync(new URL('work/', root), { withFileTypes: true })
+    .filter(d => d.isDirectory() && existsSync(new URL(`work/${d.name}/index.md`, root)))
+    .map(d => {
+      const { data, content } = matter(read(`work/${d.name}/index.md`));
+      return { dir: d.name, slug: data.slug || d.name, preview: data.preview || null, meta: data, md: content };
+    })
+    .sort((a, b) => (a.meta.order ?? 99) - (b.meta.order ?? 99));
 }
 
 export function testimonials() {
-  return read('testimonials.md').split(/^## /m).slice(1).map(b => {
-    const [name, place, title, , , ...q] = b.trim().split('\n');
-    return { name, place: place.replace('place: ', ''), title, quote: q.join(' ').replace(/^> /, '') };
-  });
+  return JSON.parse(read('testimonials.json')).items;
 }
 
 export function encrypt(html, password) {
@@ -34,31 +33,39 @@ export function encrypt(html, password) {
   return { s: salt.toString('base64'), i: iv.toString('base64'), c: ct.toString('base64') };
 }
 
-export function study(slug, password) {
-  const entry = STUDIES.find(s => s.slug === slug);
-  const { meta, md } = parse(entry.dir);
-  const body = md
-    .replace('<!-- lock -->', '@@LOCK@@')
-    .replace(/<!--[\s\S]*?-->/g, '')
+const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+// Markdown plus three small additions: {{stats}}, {{presentation}} and :::pair ... ::: for two images side by side.
+export function render(md, { dir, meta }) {
+  const stats = (meta.stats || []).map(s => `<div><b>${esc(s.value)}</b><span>${esc(s.label)}</span></div>`).join('');
+  const src = md
+    .replace(/<!--(?! lock -->)[\s\S]*?-->/g, '')
     .replace(/^\[JARELL\].*$/gm, '')
-    .replaceAll('{{presentation}}', meta.presentation || '#');
-  const html = m => marked.parse(m)
-    .replace(/src="img\//g, `src="/work/${entry.dir}/`)
+    .replaceAll('{{presentation}}', meta.presentation || '#')
+    .replace(/^:::pair\s*$/gm, '<div class="duo">\n').replace(/^:::\s*$/gm, '\n</div>');
+  return marked.parse(src)
+    .replace(/<p>\{\{stats\}\}<\/p>/g, stats ? `<div class="stats">${stats}</div>` : '')
+    .replace(/src="img\//g, `src="/work/${dir}/`)
     .replace(/<p><img ([^>]*?)alt="([^"]*)"([^>]*)><\/p>/g, '<figure><img $1alt="$2"$3 loading="lazy"><figcaption>$2</figcaption></figure>');
-  const [pub, locked = ''] = body.split('@@LOCK@@');
+}
+
+export function study(slug, password) {
+  const all = studies();
+  const entry = all.find(s => s.slug === slug);
+  const [pub, locked = ''] = entry.md.split(LOCK);
   const isLocked = locked.trim().length > 0;
   return {
-    meta,
-    publicHtml: html(pub),
-    payload: isLocked ? encrypt(html(locked), password) : null,
+    meta: entry.meta,
+    publicHtml: render(pub, entry),
+    payload: isLocked ? encrypt(render(locked, entry), password) : null,
     quotes: testimonials().filter(p => p.place === entry.dir),
-    more: STUDIES.filter(s => s.slug !== slug).map(s => ({ ...s, meta: parse(s.dir).meta })),
+    more: all.filter(s => s.slug !== slug),
   };
 }
 
 export function about() {
-  const [, fm, md] = read('about.md').match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-  return { html: marked.parse(md.replace(/^\[JARELL\].*$/gm, '')) };
+  const { data, content } = matter(read('about.md'));
+  return { meta: data, html: marked.parse(content.replace(/^\[JARELL\].*$/gm, '')) };
 }
 
 // Older case studies kept as they were in 2020, reachable from the Work page.

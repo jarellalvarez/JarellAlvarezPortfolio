@@ -4,11 +4,11 @@ import Quote from '../../components/Quote.astro';
 import WorkCard from '../../components/WorkCard.astro';
 import Mark from '../../components/Mark.astro';
 import EmailButton from '../../components/EmailButton.astro';
-import { STUDIES, study } from '../../lib/content.mjs';
+import { studies, study } from '../../lib/content.mjs';
 import { studyPassword } from '../../lib/password.mjs';
 
 export function getStaticPaths() {
-  return STUDIES.map(s => ({ params: { slug: s.slug } }));
+  return studies().map(s => ({ params: { slug: s.slug } }));
 }
 const { meta, publicHtml, payload, quotes, more } = study(Astro.params.slug, studyPassword());
 ---

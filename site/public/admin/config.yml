@@ -1,0 +1,89 @@
+# Settings for the /admin editor. It edits the files in /content and saves them to GitHub.
+backend:
+  name: github
+  repo: jarellalvarez/JarellAlvarezPortfolio
+  branch: claude/confident-wozniak-8n4wv1   # change to the branch the live site builds from at launch
+  commit_messages:
+    create: 'Content: add {{collection}} "{{slug}}"'
+    update: 'Content: update {{collection}} "{{slug}}"'
+    delete: 'Content: remove {{collection}} "{{slug}}"'
+    uploadMedia: 'Content: upload {{path}}'
+    deleteMedia: 'Content: remove {{path}}'
+local_backend: true            # lets the editor run on your own computer without logging in
+media_folder: site/public/img  # general uploads
+public_folder: /img
+site_url: https://jarellalvarez.com
+logo_url: /img/jarell_alvarez_Favicon.svg
+
+collections:
+  - name: studies
+    label: Case studies
+    label_singular: Case study
+    folder: content/work
+    path: '{{slug}}/index'
+    slug: '{{fields.slug}}'
+    media_folder: img           # images are stored next to each case study
+    public_folder: img
+    create: true
+    summary: '{{order}}. {{company}}: {{title}}'
+    sortable_fields: [order, title]
+    fields:
+      - { name: title, label: Title }
+      - { name: slug, label: Web address, hint: 'Short, lowercase, no spaces. The page lives at /work/this-value/' }
+      - { name: company, label: Company }
+      - { name: role, label: Role }
+      - { name: timeline, label: Timeline }
+      - { name: team, label: Team }
+      - { name: summary, label: One-line summary, widget: text, hint: Shown on cards and in search results }
+      - { name: order, label: Order on the site, widget: number, value_type: int, min: 1, hint: 1 comes first }
+      - { name: preview, label: Card preview image, widget: image, required: false, media_folder: /site/public/img, public_folder: /img, hint: Leave empty for NDA work. The logo shapes show instead }
+      - { name: presentation, label: Presentation link, required: false, hint: 'Used wherever the text says {{presentation}}' }
+      - name: stats
+        label: Number row
+        label_singular: Number
+        widget: list
+        required: false
+        hint: 'Appears where the text says {{stats}}. Only use numbers you can back up'
+        summary: '{{fields.value}}: {{fields.label}}'
+        fields:
+          - { name: value, label: Number }
+          - { name: label, label: What it means }
+      - { name: status, label: Note to self, required: false, hint: Not shown on the site }
+      - { name: protected, label: Has a locked section, widget: boolean, required: false, hint: 'For your own reference. The lock itself is the "Lock from here" block in the text' }
+      - { name: body, label: Case study, widget: markdown, hint: 'Everything after a "Lock from here" block is password protected' }
+
+  - name: pages
+    label: Pages
+    files:
+      - name: about
+        label: About
+        file: content/about.md
+        fields:
+          - { name: title, label: Title }
+          - { name: photo, label: Photo, widget: image, media_folder: /site/public/img, public_folder: /img }
+          - { name: body, label: About text, widget: markdown, hint: 'First paragraph is the big intro. Each "Heading 2" starts a new blurb' }
+      - name: testimonials
+        label: Testimonials
+        file: content/testimonials.json
+        fields:
+          - name: items
+            label: Testimonials
+            label_singular: Testimonial
+            widget: list
+            summary: '{{fields.name}} ({{fields.place}})'
+            fields:
+              - { name: name, label: Name }
+              - { name: title, label: Title }
+              - { name: relationship, label: How you know them, required: false }
+              - name: place
+                label: Where it appears
+                widget: select
+                hint: Each person shows in one place only
+                options:
+                  - { label: Kind words page and window, value: window }
+                  - { label: About page, value: about }
+                  - { label: MAVI case study, value: mavi }
+                  - { label: Copperleaf case study, value: copperleaf }
+                  - { label: UI Avenue case study, value: uiavenue }
+                  - { label: Hidden, value: hidden }
+              - { name: quote, label: Quote, widget: text }

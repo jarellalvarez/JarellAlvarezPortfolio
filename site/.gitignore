@@ -4,3 +4,5 @@ dist/
 .env
 public/work/
 public/2020/
+public/admin/vendor/
+public/admin/preview.css
