@@ -48,3 +48,15 @@ Typed cursor tooltip and cursor modes, idle grid response, multiple layered wind
 ## Blocked
 
 - Yaya Ehsan reference site and the Figma moodboard are not reachable from the cloud session. Screenshots needed.
+
+## Added 2026-11-13
+
+| Decision |
+| --- |
+| Featured order: MAVI Client Portal, Copperleaf, UI Avenue |
+| Ivory base approved. Ink is charcoal (#2B2A28), no pure black. Dark mode is charcoal with ivory text |
+| Light mode loads by default. No accent by default, four optional accents |
+| Copperleaf study is password protected. Each study also gets a presentation mode |
+| Copperleaf results: deck figures only. The 25% / 18% / 3.5x from the 2025 write-up are dropped until a source is found |
+| Copperleaf quote credited to Sharmeen, Design Manager |
+| Typeface: choosing between Bricolage Grotesque, Fraunces + Figtree, Instrument Serif + Instrument Sans |

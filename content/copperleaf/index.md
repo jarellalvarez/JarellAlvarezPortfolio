@@ -7,10 +7,10 @@ timeline: 6-month design cycle (at Copperleaf Oct 2021 to Jul 2024)
 team: Product Manager, Dev Team Lead, Director of UX Research, Design Team
 tools: Figma, Dovetail, Whimsical, Jira, Mural, Pendo
 protected: true
-status: draft 1, for Jarell's review
+status: draft 2, for Jarell's review
 ---
 
-<!-- DRAFT 1. Every fact comes from the case study deck or the 2025 write-up.
+<!-- DRAFT 2. Every fact comes from the case study deck.
      Lines marked [JARELL] are questions, not copy. -->
 
 ## Overview
@@ -24,12 +24,8 @@ I led design on a 6-month cycle to figure out where people were getting stuck an
 **What came out of it**
 
 - A resource map shipped inside the product
-- A guided assistant built in Pendo with no developer time, which saved an estimated 3 months of build
-- Training time down 25%
-- Error rate down 18%
-- People used the in-product help 3.5x more than the static documentation
-
-[JARELL] Where and when were the 25%, 18% and 3.5x measured? One line is enough. An interviewer will ask.
+- A first version of a guided assistant, tried out through Pendo with no developer time, which saved an estimated 3 months of build
+- A usability baseline (SUS 64.7) the team could measure future changes against
 
 ## The problem
 
@@ -40,6 +36,8 @@ Framework Designer fixed that on paper. In practice, new hires were slow to buil
 > It's really hard to make any changes to a questionnaire specifically, like maybe you need to remove a prompt or you need to change the order.
 
 Internal NPS for the tool ranged from -10 to +25.
+
+We set targets up front: cut training time by 10%, cut time and frustration on client calls by 15%, and cut misclicks by 40%.
 
 The timing mattered. Copperleaf was heading toward an IPO and wanted to package Framework Designer for clients. Our internal teams were the testing ground. If they couldn't use it comfortably, clients wouldn't either.
 
@@ -108,23 +106,19 @@ So we split it.
 
 **First, the map.** Before handoff I presented it to the design team, and the feedback changed the direction late. The PMs and I realigned: the real need was helping people understand the framework, more than redesigning navigation. The map became a resource guide with overviews, diagrams and definitions. We kept it as a flat, static page on purpose to fit the budget and timeline, and reused a pattern from another Copperleaf product (help icon, hover card, full-page modal). It also set the pattern for other help resources that followed.
 
-**Then the assistant.** Instead of waiting for a dev slot, I built the MVP in Pendo, a tool we already had. No developer time, value to users right away, and an estimated 3 months saved. It also let us keep learning what people needed before committing engineering to a full build.
-
-[JARELL] Your 2025 write-up calls this an AI chatbot fine-tuned on Copperleaf docs. The deck describes a Pendo-built guide. Which is accurate, or did one come after the other? I'll word it to match.
+**Then the assistant.** The idea was a helper for building value frameworks, sitting inside the tool people already used. Instead of waiting for a dev slot, I used Pendo, which we already had, in two ways: to see how people were using Framework Designer today, and to put a first version of the assistant experience in front of them. No developer time, value to users right away, and an estimated 3 months saved. It also let us keep learning before committing engineering to a full build.
 
 ## Results
 
 - Resource guide shipped in the product
-- Assistant MVP live through Pendo, with about 3 months of dev time saved
-- Training time reduced by 25%
-- Error rate down 18%
-- In-product help used 3.5x more than static documentation
+- First version of the assistant tried through Pendo, with about 3 months of dev time saved
+- Three directions tested with users before any build: assistant 15, guides 14, map 7 (out of 18)
 - SUS baseline of 64.7 set for measuring future changes
 
-> You excelled in staying focused on the original problem, collaborating effectively, and aligning on solutions.
-> Design Manager, Copperleaf
+[JARELL] If you have any follow-up numbers against the three targets (training time, client calls, misclicks), they go here. Without them this section stays as is.
 
-[JARELL] OK to use this quote, and with her name or just the title?
+> You excelled in staying focused on the original problem, collaborating effectively, and aligning on solutions.
+> Sharmeen, Design Manager, Copperleaf
 
 ## What I learned
 
