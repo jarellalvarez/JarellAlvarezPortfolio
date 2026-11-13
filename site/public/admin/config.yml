@@ -3,6 +3,8 @@ backend:
   name: github
   repo: jarellalvarez/JarellAlvarezPortfolio
   branch: claude/confident-wozniak-8n4wv1   # change to the branch the live site builds from at launch
+  base_url: https://api.netlify.com   # Netlify handles the GitHub login
+  site_domain: famous-clafoutis-2b6656.netlify.app
   commit_messages:
     create: 'Content: add {{collection}} "{{slug}}"'
     update: 'Content: update {{collection}} "{{slug}}"'

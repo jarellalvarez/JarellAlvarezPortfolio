@@ -35,7 +35,7 @@ I like building with AI. Right now that's Corporate Ascent 2.0 for my classes, a
 
 ## 🥾 Hiking
 
-Summer is hiking season. I'm part of a hiking group, which is the only reason I get up that early on a weekend.
+Summer is hiking season. I'm part of a hiking group, which is the only reason I get up that early on a weekend. I also spent two months researching the perfect backpack and boots before my first real hike, so yes, I'm a very typical Vancouver hiker.
 
 ## 📚 Book Club
 
@@ -66,4 +66,3 @@ I love taking people out on shopping trips, giving them style pointers and hair 
 
 As the title implies, I like to go to the gym three times a week and get pumped.
 
-[JARELL] Three lines are mine, not yours, so check them: the last sentence of Modeling, "which is the only reason I get up that early on a weekend" (hiking) and the one-sentence description of Corporate Ascent (teaching).

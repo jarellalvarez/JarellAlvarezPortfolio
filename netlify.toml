@@ -1,0 +1,15 @@
+# Netlify settings. The new site lives in /site; the 2020 site at the repo root is copied in as /2020/.
+[build]
+  base = "site"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+  # STUDY_PASSWORD is set in Netlify (Site configuration > Environment variables), never in this file.
+
+# keep the editor and locked pages out of search engines
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Robots-Tag = "noindex"
