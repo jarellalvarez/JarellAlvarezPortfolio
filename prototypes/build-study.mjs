@@ -21,17 +21,17 @@ const img = h => h.replace(/src="img\//g, `src="../../content/${slug}/img/`)
   .replace(/<p><img ([^>]*?)alt="([^"]*)"([^>]*)><\/p>/g, '<figure><img $1alt="$2"$3 loading="lazy"><figcaption>$2</figcaption></figure>');
 // other case studies, shown at the bottom of every study
 const all = ['mavi', 'copperleaf', 'uiavenue'].filter(s => s !== slug).map(s => {
-  if (s === 'uiavenue') return { href: '../../uiavenue.html', company: 'UI Avenue', title: 'Making business analytics make sense', summary: 'A reporting app that makes Google Analytics readable for shop owners.' };
+  if (s === 'uiavenue') return { pv: '../../img/analytics image 10.jpg', href: '../../uiavenue.html', company: 'UI Avenue', title: 'Making business analytics make sense', summary: 'A reporting app that makes Google Analytics readable for shop owners.' };
   const m = Object.fromEntries(readFileSync(new URL(`../content/${s}/index.md`, import.meta.url), 'utf8').match(/^---\n([\s\S]*?)\n---/)[1].split('\n').map(l => l.split(/:\s(.*)/s).slice(0, 2)));
-  return { href: `${s}.html`, company: m.company, title: m.title, summary: m.summary };
+  return { pv: s === 'copperleaf' ? '../../img/copperleaf framework designer.jpg' : null, href: `${s}.html`, company: m.company, title: m.title, summary: m.summary };
 });
 const people = readFileSync(new URL('../content/testimonials.md', import.meta.url), 'utf8').split(/^## /m).slice(1).map(b => {
   const [name, pl, title, rel, , ...q] = b.trim().split('\n');
   return { name, place: pl.replace('place: ', ''), title, when: rel.replace(/\*/g, ''), quote: q.join(' ').replace(/^> /, '') };
 });
 writeFileSync(new URL('./os/testimonials.json', import.meta.url), JSON.stringify(people.filter(p => p.place === 'window')));
-const mine = people.filter(p => p.place === slug).map(p => `<figure class="said"><blockquote><p>${p.quote}</p></blockquote><figcaption><strong>${p.name}</strong>${p.title}</figcaption></figure>`).join('');
-const more = all.map(m => `<a class="card" href="${m.href}"><small>${m.company}</small><strong>${m.title}</strong><span>${m.summary}</span></a>`).join('');
+const mine = people.filter(p => p.place === slug).map(p => `<figure class="said"><blockquote class="${p.quote.length > 240 ? 'clamp' : ''}"><p>${p.quote}</p></blockquote>${p.quote.length > 240 ? '<button class="rm" aria-expanded="false">Read more</button>' : ''}<figcaption><strong>${p.name}</strong>${p.title}</figcaption></figure>`).join('');
+const more = all.map(m => `<a class="card" href="${m.href}">${m.pv ? `<img class="pv" src="${m.pv}" alt="" loading="lazy">` : '<div class="pv" aria-hidden="true"><i></i><i></i><i></i></div>'}<small>${m.company}</small><strong>${m.title}</strong><span>${m.summary}</span></a>`).join('');
 const [pubMd, lockMd = ''] = body.replaceAll('{{presentation}}', meta.presentation || '#').split('@@LOCK@@');
 const pub = img(marked.parse(pubMd));
 const html = img(marked.parse(lockMd));
