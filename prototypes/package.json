@@ -1,0 +1,1 @@
+{"name":"portfolio-prototypes","private":true,"type":"module","scripts":{"study":"node build-study.mjs"},"devDependencies":{"marked":"^14.1.0"}}
