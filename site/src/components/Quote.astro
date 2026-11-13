@@ -1,0 +1,9 @@
+---
+const { name, title, quote } = Astro.props;
+const long = quote.length > 240;
+---
+<figure class="said">
+  <blockquote class={long ? 'clamp' : ''}><p>{quote}</p></blockquote>
+  {long && <button class="rm" aria-expanded="false">Read more</button>}
+  <figcaption><strong>{name}</strong>{title}</figcaption>
+</figure>

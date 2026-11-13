@@ -1,9 +1,4 @@
-
-@font-face{font-family:'InstSans';src:url(/fonts/instrument-sans-latin-wght-normal.woff2) format('woff2');font-weight:400 700;font-display:swap}
-@font-face{font-family:'InstSerif';src:url(/fonts/instrument-serif-latin-400-normal.woff2) format('woff2');font-display:swap}
-@font-face{font-family:'InstSerif';src:url(/fonts/instrument-serif-latin-400-italic.woff2) format('woff2');font-style:italic;font-display:swap}
-:root{--bg:#f7f4ec;--ink:#2b2a28;--ink-2:#6b665c;--line:rgba(43,42,40,.14);--surface:#fdfcf8;--shape:#dedad1;--display:'InstSerif',serif;--sans:'InstSans',sans-serif;
-  --t-0:1.0625rem;--t-1:1.328rem;--t-2:1.66rem;--t-3:2.075rem;--t-4:2.594rem;--t-5:3.242rem}
+/* Shared page styles and components: header, buttons, facts, stats, figures, lock card, quotes, cards. */
 *{box-sizing:border-box;margin:0}
 [hidden]{display:none!important}
 body{font:var(--t-0)/1.6 var(--sans);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
@@ -22,7 +17,7 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
 .gate p{color:var(--ink-2);font-size:.9375rem;margin-bottom:1rem}
 .gate form{display:flex;gap:.5rem;flex-wrap:wrap}
 .gate input{flex:1;min-width:10rem;min-height:44px;padding:0 .9rem;border:1.5px solid var(--ink);border-radius:999px;background:var(--bg)}
-.gate .err{color:#a3261a;font-size:.875rem;margin:.75rem 0 0;min-height:1.3em}
+.gate .err{color:var(--danger);font-size:.875rem;margin:.75rem 0 0;min-height:1.3em}
 .gate .ask{margin:1rem 0 0;font-size:.875rem}
 .gate .ask button{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
 #story{display:none}
@@ -81,3 +76,33 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
 
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+
+/* email button: label first, then the address with a copy icon */
+.mail{position:relative;display:inline-flex;align-items:center;gap:.5rem;min-height:44px;padding:0 1.1rem;border-radius:var(--r-pill);border:1.5px solid var(--ink);background:var(--ink);color:var(--bg);font-weight:600;font-size:.9375rem;cursor:pointer}
+.mail svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;display:none}
+.mail.shown{background:none;color:var(--ink)} .mail.shown svg{display:block}
+.mail:active{transform:scale(.97)}
+.mail .tip{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translate(-50%,4px);padding:.2rem .6rem;border-radius:6px;background:var(--ink);color:var(--bg);font-size:.75rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s}
+.mail .tip.on{opacity:1;transform:translate(-50%,0)}
+.cta{margin-top:3rem;padding:2rem;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--line)}
+.cta h2{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-2),3vw,var(--t-4));line-height:1.1;text-wrap:balance;max-width:22ch}
+.cta p{color:var(--ink-2);max-width:52ch;margin:.75rem 0 1.25rem}
+.cta .row{display:flex;flex-wrap:wrap;gap:.6rem;align-items:center}
+/* page furniture shared by About, Kind words, All work and the design system page */
+.page-title{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.75rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
+.page-sub{color:var(--ink-2);max-width:60ch;margin:1rem 0 2.5rem}
+.hero-photo{display:block;width:100%;max-height:22rem;object-fit:cover;border-radius:var(--r-card);border:1px solid var(--line)}
+.about>p:first-child{font-family:var(--display);font-size:clamp(var(--t-2),3.2vw,var(--t-4));line-height:1.2;max-width:28ch;margin:2.5rem 0 1.5rem;text-wrap:balance}
+.about h2{font-family:var(--sans);font-size:var(--t-1);font-weight:600;letter-spacing:0;line-height:1.25;margin:2.5rem 0 .5rem}
+.links{display:flex;flex-wrap:wrap;gap:.6rem;margin:0 0 2.5rem}
+.saids{display:grid;gap:1rem;margin-top:1.5rem} .saids .said{margin:0}
+.h-sec{font-family:var(--display);font-weight:400;font-size:var(--t-4);line-height:1.1;margin:5rem 0 1.25rem}
+.list{display:grid;gap:0;border-top:1px solid var(--line)}
+.list a{display:grid;grid-template-columns:1fr auto;gap:.25rem 1.5rem;padding:1.1rem 0;border-bottom:1px solid var(--line);text-decoration:none}
+.list a:hover strong{text-decoration:underline;text-underline-offset:4px}
+.list strong{font-family:var(--display);font-weight:400;font-size:var(--t-2);line-height:1.15}
+.list span{color:var(--ink-2);font-size:.9375rem} .list small{color:var(--ink-2);font-size:.875rem;white-space:nowrap}
+@media (max-width:640px){main{padding:2rem 1.1rem 4rem} header.top{padding:.75rem 1.1rem} .facts{gap:.75rem 1.5rem} .said,.cta{padding:1.1rem 1.15rem} .list a{grid-template-columns:1fr}}
+header.top a:not(.btn){display:inline-flex;align-items:center;min-height:44px}
+header.top{gap:1.1rem}
+.rm{min-height:44px}

@@ -1,0 +1,55 @@
+---
+// Living reference for the design system. Not linked from the site and hidden from search.
+import Page from '../layouts/Page.astro';
+import Quote from '../components/Quote.astro';
+import WorkCard from '../components/WorkCard.astro';
+import EmailButton from '../components/EmailButton.astro';
+import Mark from '../components/Mark.astro';
+const colors = [['--bg', 'Page'], ['--surface', 'Surface'], ['--ink', 'Ink'], ['--ink-2', 'Secondary text'], ['--folder', 'Folders'], ['--shape', 'Shapes'], ['--toy', 'Corner shapes'], ['--line', 'Lines'], ['--danger', 'Error']];
+const accents = [['#2b2a28', 'None (default)'], ['#ffd400', 'Yellow'], ['#1447ff', 'Blue'], ['#9f947a', 'Taupe'], ['#ff3b1f', 'Red']];
+const scale = [['--t-5', 'Display'], ['--t-4', 'Section'], ['--t-3', 'Large'], ['--t-2', 'Card title'], ['--t-1', 'Lead'], ['--t-0', 'Body'], ['--t--1', 'Small'], ['--t--2', 'Fine print']];
+---
+<Page title="Design system, Jarell Alvarez" description="Tokens and components used across the portfolio." noindex cta={false}>
+  <h1 class="page-title">Design system</h1>
+  <p class="page-sub">Everything on the site is built from these. Tokens live in <code>src/styles/tokens.css</code>, components in <code>src/components/</code>. Switch light and dark on the homepage and reload to see this page in both.</p>
+
+  <h2 class="h-sec">Color</h2>
+  <div class="ds-grid">{colors.map(([v, n]) => <div class="sw-card"><i style={`background:var(${v})`}></i><b>{n}</b><code>{v}</code></div>)}</div>
+  <h3 class="ds-h">Accents (visitor's choice)</h3>
+  <div class="ds-grid">{accents.map(([c, n]) => <div class="sw-card"><i style={`background:${c}`}></i><b>{n}</b><code>{c}</code></div>)}</div>
+
+  <h2 class="h-sec">Type</h2>
+  <p><b>Instrument Serif</b> for names, headings and quotes. <b>Instrument Sans</b> for everything else.</p>
+  <div class="ds-type">{scale.map(([v, n]) => <div><span style={`font-size:var(${v});font-family:${['--t-5', '--t-4', '--t-3', '--t-2'].includes(v) ? 'var(--display)' : 'var(--sans)'};line-height:1.15`}>{n}</span><code>{v}</code></div>)}</div>
+
+  <h2 class="h-sec">Buttons</h2>
+  <div class="links"><a class="btn solid" href="#">Primary</a><a class="btn" href="#">Secondary</a><EmailButton /></div>
+
+  <h2 class="h-sec">Facts and stats</h2>
+  <dl class="facts"><div><dt>Company</dt><dd>Example</dd></div><div><dt>Role</dt><dd>Lead Product Designer</dd></div><div><dt>Timeline</dt><dd>12 days</dd></div></dl>
+  <div class="stats"><div><b>23</b><span>label under a number</span></div><div><b>3 months</b><span>label under a number</span></div></div>
+
+  <h2 class="h-sec">Quote</h2>
+  <Quote name="Name Surname" title="Title, Company" quote="Short quotes show in full. Long ones fade after three lines and get a Read more link, like this one, which keeps going long enough to pass the limit so the fade and the toggle can be seen working on this page. It keeps going a little further still so there is something left to reveal when it opens." />
+
+  <h2 class="h-sec">Work cards</h2>
+  <div class="cards">
+    <WorkCard href="#" company="Company" title="With a preview image" summary="One line on what the project is." preview="/img/preview-copperleaf.jpg" />
+    <WorkCard href="#" company="Company" title="Without one (NDA)" summary="Shows the logo shapes instead of a screen." />
+  </div>
+
+  <h2 class="h-sec">Lock card</h2>
+  <section class="gate"><h2>The rest is locked</h2><p>Shown on case studies with protected sections.</p><form onsubmit="return false"><input type="password" placeholder="Password" aria-label="Password" /><button class="btn solid">Unlock</button></form></section>
+
+  <h2 class="h-sec">End mark</h2>
+  <Mark />
+</Page>
+<style>
+  .ds-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(9.5rem,1fr));gap:1rem}
+  .sw-card{display:grid;gap:.2rem;font-size:.875rem}
+  .sw-card i{display:block;height:4.5rem;border-radius:10px;border:1px solid var(--line)}
+  .sw-card code,.ds-type code{font-size:.75rem;color:var(--ink-2)}
+  .ds-h{font-size:var(--t-1);font-weight:600;margin:2rem 0 1rem}
+  .ds-type{display:grid;gap:1rem}
+  .ds-type div{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--line);padding-bottom:.75rem}
+</style>

@@ -1,0 +1,13 @@
+---
+import Page from '../layouts/Page.astro';
+import Quote from '../components/Quote.astro';
+import Mark from '../components/Mark.astro';
+import { testimonials } from '../lib/content.mjs';
+const quotes = testimonials().filter(t => t.place === 'window');
+---
+<Page title="Kind words about Jarell Alvarez" description="Recommendations from people Jarell has worked with, managed, mentored and learned from.">
+  <h1 class="page-title">Kind words</h1>
+  <p class="page-sub">From people I've worked with, managed, mentored and learned from. Taken from LinkedIn, unedited.</p>
+  <div class="saids">{quotes.map(q => <Quote {...q} />)}</div>
+  <Mark />
+</Page>

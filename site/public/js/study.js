@@ -11,7 +11,4 @@ function show(html){
 if($('#unlock'))$('#unlock').onsubmit=async e=>{e.preventDefault();$('#err').textContent='';
   try{const h=await open($('#pw').value);try{sessionStorage.setItem('k',$('#pw').value)}catch{}show(h)}
   catch{$('#err').textContent='That password did not work. Check it and try again.';$('#pw').select()}};
-async function copy(b){const t=b.textContent;try{await navigator.clipboard.writeText('jarellalvarez@gmail.com');b.textContent='Email copied'}catch{b.textContent='jarellalvarez@gmail.com'}setTimeout(()=>b.textContent=t,1800)}
-document.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{const o=b.previousElementSibling.classList.toggle('open');b.textContent=o?'Show less':'Read more';b.setAttribute('aria-expanded',o)});
-if($('#copy'))$('#copy').onclick=e=>copy(e.target);$('#copy3').onclick=e=>copy(e.target);
 if(P)(async()=>{let k;try{k=sessionStorage.getItem('k')}catch{} if(k)try{show(await open(k))}catch{}})();

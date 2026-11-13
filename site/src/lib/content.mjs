@@ -55,3 +55,15 @@ export function study(slug, password) {
     more: STUDIES.filter(s => s.slug !== slug).map(s => ({ ...s, meta: parse(s.dir).meta })),
   };
 }
+
+export function about() {
+  const [, fm, md] = read('about.md').match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
+  return { html: marked.parse(md.replace(/^\[JARELL\].*$/gm, '')) };
+}
+
+// Older case studies kept as they were in 2020, reachable from the Work page.
+export const EARLIER = [
+  { href: '/2020/chiropractor.html', title: 'Realigning Chiropractor Clinics', note: 'Freelance, 2019' },
+  { href: '/2020/automotiveindustry.html', title: 'Redefining the Automotive Industry', note: 'Convertus, 2017 to 2019' },
+  { href: '/2020/landingpageredesign.html', title: 'Redesigning Auto Landing Pages', note: 'Convertus, 2018 to 2019' },
+];

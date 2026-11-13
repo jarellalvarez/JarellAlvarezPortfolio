@@ -1,0 +1,9 @@
+---
+const { href, company, title, summary, preview } = Astro.props;
+---
+<a class="card" href={href}>
+  {preview ? <img class="pv" src={preview} alt="" loading="lazy" /> : <div class="pv" aria-hidden="true"><i></i><i></i><i></i></div>}
+  <small>{company}</small>
+  <strong>{title}</strong>
+  <span>{summary}</span>
+</a>

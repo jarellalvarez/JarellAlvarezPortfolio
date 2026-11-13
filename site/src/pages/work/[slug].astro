@@ -1,6 +1,9 @@
 ---
-import Base from '../../layouts/Base.astro';
-import '../../styles/study.css';
+import Page from '../../layouts/Page.astro';
+import Quote from '../../components/Quote.astro';
+import WorkCard from '../../components/WorkCard.astro';
+import Mark from '../../components/Mark.astro';
+import EmailButton from '../../components/EmailButton.astro';
 import { STUDIES, study } from '../../lib/content.mjs';
 import { studyPassword } from '../../lib/password.mjs';
 
@@ -8,64 +11,42 @@ export function getStaticPaths() {
   return STUDIES.map(s => ({ params: { slug: s.slug } }));
 }
 const { meta, publicHtml, payload, quotes, more } = study(Astro.params.slug, studyPassword());
-const long = q => q.length > 240;
 ---
-<Base title={`${meta.title}, ${meta.company}`} description={meta.summary} noindex={!!payload} htmlAttrs={{ 'data-theme': 'light' }}>
-  <body class={payload ? '' : 'open'}>
-    <header class="top">
-      <a href="/">Jarell Alvarez</a>
-      <span class="sp"></span>
-      <a class="btn" href="/">Back to work</a>
-    </header>
-    <main>
-      <div class="lede">
-        <h1>{meta.title}</h1>
-        <dl class="facts">
-          <div><dt>Company</dt><dd>{meta.company}</dd></div>
-          <div><dt>Role</dt><dd>{meta.role}</dd></div>
-          <div><dt>Timeline</dt><dd>{meta.timeline}</dd></div>
-          <div><dt>Team</dt><dd>{meta.team}</dd></div>
-        </dl>
-      </div>
-      <div class="story" set:html={publicHtml} />
-      {payload && (
-        <section class="gate" aria-labelledby="gate-h">
-          <h2 id="gate-h">The rest is locked</h2>
-          <p>The decisions, screens and full presentation cover internal product work, so I share them on request. Enter the password from my application or message.</p>
-          <form id="unlock">
-            <label for="pw" class="sr">Password</label>
-            <input id="pw" type="password" autocomplete="off" placeholder="Password" required />
-            <button class="btn solid">Unlock</button>
-          </form>
-          <p class="err" id="err" role="alert"></p>
-          <p class="ask">No password? <button id="copy" type="button">Copy my email</button> and ask for access.</p>
-        </section>
-      )}
-      <div id="story" class="story"></div>
-      {quotes.map(q => (
-        <figure class="said">
-          <blockquote class={long(q.quote) ? 'clamp' : ''}><p>{q.quote}</p></blockquote>
-          {long(q.quote) && <button class="rm" aria-expanded="false">Read more</button>}
-          <figcaption><strong>{q.name}</strong>{q.title}</figcaption>
-        </figure>
-      ))}
-      <div class="mark" aria-hidden="true"><i></i><i></i><i></i></div>
-      <section class="more" aria-labelledby="more-h">
-        <h2 id="more-h">More work</h2>
-        <div class="cards">
-          {more.map(m => (
-            <a class="card" href={`/work/${m.slug}/`}>
-              {m.preview ? <img class="pv" src={m.preview} alt="" loading="lazy" /> : <div class="pv" aria-hidden="true"><i></i><i></i><i></i></div>}
-              <small>{m.meta.company}</small>
-              <strong>{m.meta.title}</strong>
-              <span>{m.meta.summary}</span>
-            </a>
-          ))}
-        </div>
-        <p class="contact">Want to talk? <button id="copy3" type="button">Copy my email</button></p>
-      </section>
-    </main>
+<Page title={`${meta.title}, ${meta.company}`} description={meta.summary} noindex={!!payload} bodyClass={payload ? '' : 'open'}>
+  <div class="lede">
+    <h1>{meta.title}</h1>
+    <dl class="facts">
+      <div><dt>Company</dt><dd>{meta.company}</dd></div>
+      <div><dt>Role</dt><dd>{meta.role}</dd></div>
+      <div><dt>Timeline</dt><dd>{meta.timeline}</dd></div>
+      <div><dt>Team</dt><dd>{meta.team}</dd></div>
+    </dl>
+  </div>
+  <div class="story" set:html={publicHtml} />
+  {payload && (
+    <section class="gate" aria-labelledby="gate-h">
+      <h2 id="gate-h">The rest is locked</h2>
+      <p>The decisions, screens and full presentation cover internal product work, so I share them on request. Enter the password from my application or message.</p>
+      <form id="unlock">
+        <label for="pw" class="sr">Password</label>
+        <input id="pw" type="password" autocomplete="off" placeholder="Password" required />
+        <button class="btn solid">Unlock</button>
+      </form>
+      <p class="err" id="err" role="alert"></p>
+      <p class="ask">No password? Ask me for it. <EmailButton /></p>
+    </section>
+  )}
+  <div id="story" class="story"></div>
+  {quotes.map(q => <Quote {...q} />)}
+  <Mark />
+  <section class="more" aria-labelledby="more-h">
+    <h2 id="more-h">More work</h2>
+    <div class="cards">
+      {more.map(m => <WorkCard href={`/work/${m.slug}/`} company={m.meta.company} title={m.meta.title} summary={m.meta.summary} preview={m.preview} />)}
+    </div>
+  </section>
+  <Fragment slot="after">
     {payload && <script is:inline type="application/json" id="payload" set:html={JSON.stringify(payload)} />}
     <script is:inline src="/js/study.js"></script>
-  </body>
-</Base>
+  </Fragment>
+</Page>

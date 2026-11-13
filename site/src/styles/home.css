@@ -1,25 +1,4 @@
-
-@font-face{font-family:'InstSans';src:url(/fonts/instrument-sans-latin-wght-normal.woff2) format('woff2');font-weight:400 700;font-style:normal;font-display:swap}
-@font-face{font-family:'InstSerif';src:url(/fonts/instrument-serif-latin-400-normal.woff2) format('woff2');font-weight:400;font-style:normal;font-display:swap}
-@font-face{font-family:'InstSerif';src:url(/fonts/instrument-serif-latin-400-italic.woff2) format('woff2');font-weight:400;font-style:italic;font-display:swap}
-html[data-type=c]{--display:'InstSerif',serif;--sans:'InstSans',sans-serif;--serif:'InstSerif',serif;--tag-style:italic;--dw:400;--dt:-.025em}
-/* PROTOTYPE: throwaway. Tokens first so themes are one-line changes. */
-:root{
-  --bg:#f7f4ec; --ink:#2b2a28; --ink-2:#6b665c; --line:rgba(0,0,0,.13); --surface:#fdfcf8; --folder:#5f5a52; --toy:#b9b2a3; --chrome:rgba(253,252,248,.72); --mix:22%;
-  --shadow:0 1px 2px rgba(0,0,0,.08),0 24px 60px -12px rgba(0,0,0,.28);
-  --sans:ui-sans-serif,system-ui,-apple-system,"Inter Display","Inter",sans-serif;
-  --serif:ui-serif,"New York","Iowan Old Style",Georgia,serif;
-  --r-win:14px; --display:var(--sans); --tag-style:italic; --dw:800; --dt:-.055em;
-  /* type scale, ratio 1.25 from 17px */
-  --t-0:1.0625rem; --t-1:1.328rem; --t-2:1.66rem; --t-3:2.075rem; --t-4:2.594rem; --t-5:3.242rem; --t--1:.85rem; --t--2:.75rem;
-}
-[data-theme=dark]{--bg:#1f1e1c;--ink:#f7f4ec;--ink-2:#b3ada1;--line:rgba(247,244,236,.16);--surface:#292826;--folder:#bdb6a8;--toy:#6f6a60;--chrome:rgba(41,40,38,.72);
-  --shadow:0 0 0 1px rgba(255,255,255,.14),0 24px 60px -12px rgba(0,0,0,.9)}
-[data-accent=mono]{--accent:var(--ink);--on-accent:var(--bg);--mix:8%}
-[data-accent=yellow]{--toy:var(--accent);--accent:#ffd400;--on-accent:#000}
-[data-accent=blue]{--toy:var(--accent);--accent:#1447ff;--on-accent:#fff}
-[data-accent=taupe]{--toy:var(--accent);--accent:#9f947a;--on-accent:#000}
-[data-accent=red]{--toy:var(--accent);--accent:#ff3b1f;--on-accent:#000}
+/* Homepage desktop: folders, dock, windows, theme menu, shapes. */
 *{box-sizing:border-box;margin:0}
 html,body{height:100%}
 body{font:100%/1.5 var(--sans);background:var(--bg);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
@@ -94,7 +73,7 @@ h1{font-family:var(--display);font-size:clamp(3.25rem,13.2vw,13.5rem);font-weigh
 .folder:hover svg,.folder:focus-visible svg{transform:translateY(-3px) scale(1.06)}
 .folder:hover .front,.folder:focus-visible .front{fill:var(--accent)} .folder:hover .glyph,.folder:focus-visible .glyph{fill:var(--on-accent)}
 .folder:active svg{transform:scale(.96)}
-.folder small{display:block;font-weight:400;color:var(--ink-2);font-size:.6875rem}
+.folder small{display:block;font-weight:400;color:var(--ink-2);font-size:.75rem}
 .peek{position:absolute;bottom:calc(100% - 6px);left:50%;width:200px;padding:6px 6px 0;background:var(--surface);box-shadow:var(--shadow);border-radius:6px;
   transform:translate(-50%,14px) rotate(-3deg) scale(.9);opacity:0;pointer-events:none;transition:transform .22s cubic-bezier(.2,.8,.2,1),opacity .15s;transform-origin:50% 100%;z-index:3;text-align:left}
 .peek img{display:block;width:100%;aspect-ratio:3/2;object-fit:cover;border-radius:3px}
@@ -166,7 +145,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 @media (max-width:720px){
   body{overflow:auto}
   .desk{position:static;min-height:100svh}
-  nav.top{gap:.6rem;padding:.75rem .9rem} nav.top ul{gap:.8rem;font-size:.8125rem} nav.top .logo{width:30px;height:30px}
+  nav.top{gap:.5rem;padding:.6rem .8rem} nav.top ul{gap:.7rem;font-size:.8125rem} nav.top ul a{display:inline-flex;align-items:center;min-height:44px} nav.top .logo{width:30px;height:30px} nav.top>a{display:grid;place-items:center;min-width:44px;min-height:44px} .mode{width:44px;height:44px}
   .folders{display:grid;grid-template-columns:repeat(4,1fr);gap:.25rem;width:100%;max-width:26rem}
   .folder{width:auto} .peek{display:none}
   .dock{position:sticky;bottom:.75rem}

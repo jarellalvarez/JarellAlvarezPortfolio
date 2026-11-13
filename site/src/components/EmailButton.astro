@@ -1,0 +1,9 @@
+---
+// Shows "Send me an email". On click it copies the address, shows it with a copy icon, and flashes "Copied".
+const { email = 'jarellalvarez@gmail.com', label = 'Send me an email' } = Astro.props;
+---
+<button class="mail" type="button" data-email={email}>
+  <span class="label">{label}</span>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V6a2 2 0 0 1 2-2h9"/></svg>
+  <span class="tip" role="status"></span>
+</button>

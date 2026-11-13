@@ -1,0 +1,19 @@
+---
+// Standard page: header, main column, contact block, shared styles and scripts.
+import Base from './Base.astro';
+import Header from '../components/Header.astro';
+import Cta from '../components/Cta.astro';
+import '../styles/site.css';
+const { cta = true, bodyClass = '', ...rest } = Astro.props;
+---
+<Base {...rest}>
+  <body class={bodyClass}>
+    <Header />
+    <main>
+      <slot />
+      {cta && <Cta />}
+    </main>
+    <slot name="after" />
+    <script is:inline src="/js/site.js"></script>
+  </body>
+</Base>
