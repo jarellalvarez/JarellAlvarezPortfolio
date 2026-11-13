@@ -8,11 +8,14 @@ team: Product Manager, Dev Team Lead, Director of UX Research, Design Team
 tools: Figma, Dovetail, Whimsical, Jira, Mural, Pendo
 protected: true
 presentation: https://www.figma.com/slides/B4cCrbsQKWG3zmHkcteTEt
-status: draft 3, for Jarell's review
+summary: Research, three tested directions and a shipped guide for a complex enterprise tool.
+status: draft 4, for Jarell's review
 ---
 
 <!-- DRAFT 2. Every fact comes from the case study deck.
      Lines marked [JARELL] are questions, not copy. -->
+
+![The Navigation Guide inside Copperleaf Value's Framework Designer](img/navigation-guide.jpg)
 
 ## Overview
 
@@ -22,11 +25,15 @@ It was powerful and hard to learn. Our own customer success and tech sales teams
 
 I led design on a 6-month cycle to figure out where people were getting stuck and what would help the most, the fastest.
 
+<div class="stats"><div><b>23</b><span>interviews and test sessions with internal users</span></div><div><b>23 to 3</b><span>ideas sketched, then narrowed to three tested directions</span></div><div><b>3 months</b><span>of developer time saved on the assistant's first version</span></div></div>
+
 **What came out of it**
 
 - A resource map shipped inside the product
 - A first version of a guided assistant, tried out through Pendo with no developer time, which saved an estimated 3 months of build
 - A usability baseline (SUS 64.7) the team could measure future changes against
+
+![The Framework Designer Guide: how the pieces of a value model connect, with definitions below](img/resource-guide.jpg)
 
 ## The problem
 
@@ -109,15 +116,13 @@ So we split it.
 
 **First, the map.** Before handoff I presented it to the design team, and the feedback changed the direction late. The PMs and I realigned: the real need was helping people understand the framework, more than redesigning navigation. The map became a resource guide with overviews, diagrams and definitions. We kept it as a flat, static page on purpose to fit the budget and timeline, and reused a pattern from another Copperleaf product (help icon, hover card, full-page modal). It also set the pattern for other help resources that followed.
 
-![The first Navigation Guide, shown as a modal over Framework Designer](img/navigation-guide.jpg)
-
 ![Design team feedback on the guide, with their notes in orange](img/design-team-feedback.jpg)
 
 ![Layout options explored after the feedback](img/layout-explorations.jpg)
 
-![The Framework Designer Guide: a diagram of how the pieces connect, with definitions and examples below](img/resource-guide.jpg)
-
 **Then the assistant.** The idea was a helper for building value frameworks, sitting inside the tool people already used. Instead of waiting for a dev slot, I used Pendo, which we already had, in two ways: to see how people were using Framework Designer today, and to put a first version of the assistant experience in front of them. No developer time, value to users right away, and an estimated 3 months saved. It also let us keep learning before committing engineering to a full build.
+
+![Pendo's Resource Center, shown here for reference. The assistant's first version used this pattern](img/pendo-resource-center.jpg)
 
 ## Results
 

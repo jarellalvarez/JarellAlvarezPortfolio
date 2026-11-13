@@ -3,10 +3,11 @@ title: Moving client hiring out of the inbox
 slug: mavi
 company: MAVI
 role: Lead Product Designer
-timeline: 2026
+timeline: Apr 24 to May 6, 2026
 team: Product Manager, Platform Lead, Sales, Customer Success, Co-Founder
 protected: true
-status: draft 1, for Jarell's review. Title is a placeholder
+summary: A self-serve client portal, designed and aligned across five teams in under two weeks.
+status: draft 2, for Jarell's review. Title is a placeholder
 ---
 
 <!-- DRAFT 1. Every fact comes from Jarell's case study doc. Names are replaced with roles.
@@ -18,6 +19,8 @@ MAVI places talent with client companies. Clients were running the whole hiring 
 
 I led design on a new client portal: one place to review candidates, book interviews, sign agreements and keep track of the people they've hired.
 
+<div class="stats"><div><b>12 days</b><span>from brief to high-fidelity screens ready for build</span></div><div><b>5 groups</b><span>aligned on one direction: product, platform, sales, customer success, leadership</span></div><div><b>3 actions</b><span>in the first release, with everything else deferred</span></div></div>
+
 **What I delivered**
 
 - End-to-end design of the portal, from user flow to high-fidelity screens for the core flows
@@ -26,22 +29,19 @@ I led design on a new client portal: one place to review candidates, book interv
 
 **What changed along the way**
 
-- Removed the candidate match score. Sales said a low score would be impossible to explain to a client.
-- Cut candidate cards down to two decisions: proceed or pass.
-- Dropped the guided dashboard flow. People jump to whatever is urgent, so everything is visible at once.
-- Turned "My Team" from a list into the place clients manage trials, timesheets and feedback.
+- Removed a metric that looked helpful but would have created doubt for clients.
+- Cut the main decision screen down to two choices.
+- Dropped a guided, step-by-step flow. People act on whatever is urgent, so nothing is gated.
+- Turned the post-hire area from a list into a working hub.
 
 **How success gets measured**
 
-- Share of clients who finish account setup within 7 days
-- Share of shared profiles reviewed within 3 days
-- Time from accepting a profile to an interview being booked
-- Time from contract sent to contract signed
-- Reduction in manual follow-ups from the MAVI team, which is the main one
+- How quickly new clients get set up
+- How fast clients review and act on what they're sent
+- Time between each step of the hiring process
+- How much less the MAVI team has to follow up by hand, which is the main one
 
-[JARELL] The doc says the build didn't match the designs and development restarts by end of 2026, so there are no live results yet. I've written this as "what I delivered" and "how success gets measured" and left the dev situation out. If anything has shipped or been measured since, tell me and it goes at the top.
-
-[JARELL] Timeline: I put 2026. What were the actual start and end months?
+[JARELL] Results go here once the portal is live and measured. Ask me later.
 
 <!-- lock -->
 

@@ -46,6 +46,23 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
 .story img{display:block;max-width:100%;height:auto;margin:2rem 0 .5rem;border-radius:8px;border:1px solid var(--line)}
 .story a{text-underline-offset:3px}
 .gate{margin-bottom:1rem}
+.story figure{margin:2.5rem 0}
+.story figure img{margin:0}
+.story figcaption{margin-top:.6rem;font-size:.875rem;color:var(--ink-2);max-width:65ch}
+.story>figure:first-child{margin-top:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(11rem,1fr));gap:1.5rem 2.5rem;margin:2.5rem 0;padding:1.75rem 0;border-block:1px solid var(--line)}
+.stats b{display:block;font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),5vw,4rem);line-height:1;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stats span{display:block;margin-top:.6rem;font-size:.9375rem;color:var(--ink-2);max-width:22ch}
+.more{margin-top:5rem;padding-top:2rem;border-top:1px solid var(--line)}
+.more h2{font-family:var(--display);font-weight:400;font-size:var(--t-4);line-height:1.1;margin-bottom:1.25rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(16rem,1fr));gap:1rem}
+.card{display:grid;gap:.35rem;padding:1.25rem 1.25rem 1.4rem;border:1px solid var(--line);border-radius:14px;background:var(--surface);text-decoration:none}
+.card:hover{border-color:var(--ink)}
+.card small{font-size:.8125rem;color:var(--ink-2)}
+.card strong{font-family:var(--display);font-weight:400;font-size:var(--t-2);line-height:1.15}
+.card span{font-size:.9375rem;color:var(--ink-2)}
+.more .contact{margin-top:1.5rem;font-size:.9375rem}
+.more .contact button{background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
 .end{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:4rem;padding-top:1.5rem;border-top:1px solid var(--line)}
 
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
@@ -80,6 +97,8 @@ h1{font-family:var(--display);font-weight:400;font-size:clamp(var(--t-4),6vw,4.7
     <p class="ask">No password? <button id="copy" type="button">Copy my email</button> and ask for access.</p>
   </section>
   <div id="story" class="story"></div>
+  <section class="more" aria-labelledby="more-h"><h2 id="more-h">More work</h2><div class="cards">{{more}}</div>
+    <p class="contact">Want to talk? <button id="copy3" type="button">Copy my email</button></p></section>
 </main>
 <script>
 const P={{payload}}, $=s=>document.querySelector(s), dec=b=>Uint8Array.from(atob(b),c=>c.charCodeAt(0));
@@ -90,15 +109,13 @@ async function open(pw){
 }
 function show(html){
   const s=$('#story'); s.innerHTML=html;
-  s.insertAdjacentHTML('beforeend','<div class="end"><a class="btn solid" href="index.html">Back to work</a><button class="btn" id="copy2" type="button">Copy my email</button></div>');
-  $('#copy2').onclick=e=>copy(e.target);
   document.body.classList.add('unlocked');
 }
 $('#unlock').onsubmit=async e=>{e.preventDefault();$('#err').textContent='';
   try{const h=await open($('#pw').value);try{sessionStorage.setItem('k',$('#pw').value)}catch{}show(h)}
   catch{$('#err').textContent='That password did not work. Check it and try again.';$('#pw').select()}};
 async function copy(b){const t=b.textContent;try{await navigator.clipboard.writeText('jarellalvarez@gmail.com');b.textContent='Email copied'}catch{b.textContent='jarellalvarez@gmail.com'}setTimeout(()=>b.textContent=t,1800)}
-$('#copy').onclick=e=>copy(e.target);
+$('#copy').onclick=e=>copy(e.target);$('#copy3').onclick=e=>copy(e.target);
 (async()=>{let k;try{k=sessionStorage.getItem('k')}catch{} if(k)try{show(await open(k))}catch{}})();
 </script>
 </body>
