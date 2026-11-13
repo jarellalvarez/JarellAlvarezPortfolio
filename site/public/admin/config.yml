@@ -2,7 +2,7 @@
 backend:
   name: github
   repo: jarellalvarez/JarellAlvarezPortfolio
-  branch: claude/confident-wozniak-8n4wv1   # change to the branch the live site builds from at launch
+  branch: master   # Netlify builds the live site from master
   base_url: https://api.netlify.com   # Netlify handles the GitHub login
   site_domain: famous-clafoutis-2b6656.netlify.app
   commit_messages:
