@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import '../styles/home.css';
+import markup from '../fragments/home.html?raw';
+---
+<Base
+  title="Jarell Alvarez, Senior Product Designer"
+  description="Senior product designer and design lead in Vancouver. B2B SaaS, enterprise software and complex workflows made easier to use."
+  htmlAttrs={{ 'data-theme': 'light', 'data-accent': 'mono', 'data-type': 'c' }}
+>
+  <body>
+    <Fragment set:html={markup} />
+    <script is:inline src="/js/home.js"></script>
+  </body>
+</Base>
