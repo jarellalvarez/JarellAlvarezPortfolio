@@ -13,22 +13,25 @@ const LOCK = '<!-- lock -->';
 const refs = md => [...md.matchAll(/\(img\/([^)\s]+)\)/g)].map(m => m[1]);
 export const webp = f => f.replace(/\.(png|jpe?g)$/i, '.webp');
 
-const workDir = new URL('content/work/', root);
-const dirs = readdirSync(workDir, { withFileTypes: true }).filter(d => d.isDirectory() && existsSync(new URL(`${d.name}/img`, workDir))).map(d => d.name);
-rmSync(new URL('work', pub), { recursive: true, force: true });
 let n = 0, before = 0, after = 0;
-for (const dir of dirs) {
-  const src = new URL(`${dir}/img/`, workDir), out = new URL(`${dir}/`, cache);
-  mkdirSync(out, { recursive: true }); mkdirSync(new URL(`work/${dir}/`, pub), { recursive: true });
-  const { content } = matter(readFileSync(new URL(`${dir}/index.md`, workDir), 'utf8'));
-  const publicRefs = new Set(refs(content.split(LOCK)[0]));
-  for (const f of readdirSync(src)) {
-    if (!/\.(png|jpe?g)$/i.test(f)) continue;
-    const target = new URL(webp(f), out), input = new URL(f, src);
-    before += readFileSync(input).length;
-    if (!existsSync(target)) await sharp(readFileSync(input)).resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 80 }).toFile(target.pathname);
-    after += readFileSync(target).length; n++;
-    if (publicRefs.has(f)) cpSync(target, new URL(`work/${dir}/${webp(f)}`, pub));
+for (const [coll, out] of [['work', 'work'], ['earlier', 'earlier-img']]) {
+  const collDir = new URL(`content/${coll}/`, root);
+  if (!existsSync(collDir)) continue;
+  rmSync(new URL(out, pub), { recursive: true, force: true });
+  const dirs = readdirSync(collDir, { withFileTypes: true }).filter(d => d.isDirectory() && existsSync(new URL(`${d.name}/img`, collDir))).map(d => d.name);
+  for (const dir of dirs) {
+    const src = new URL(`${dir}/img/`, collDir), cdir = new URL(`${coll}/${dir}/`, cache);
+    mkdirSync(cdir, { recursive: true }); mkdirSync(new URL(`${out}/${dir}/`, pub), { recursive: true });
+    const { content } = matter(readFileSync(new URL(`${dir}/index.md`, collDir), 'utf8'));
+    const publicRefs = new Set(refs(content.split(LOCK)[0]));
+    for (const f of readdirSync(src)) {
+      if (!/\.(png|jpe?g)$/i.test(f)) continue;
+      const target = new URL(webp(f), cdir), input = new URL(f, src);
+      before += readFileSync(input).length;
+      if (!existsSync(target)) await sharp(readFileSync(input)).resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 80 }).toFile(target.pathname);
+      after += readFileSync(target).length; n++;
+      if (publicRefs.has(f)) cpSync(target, new URL(`${out}/${dir}/${webp(f)}`, pub));
+    }
   }
 }
 console.log(`[portfolio] ${n} images: ${(before / 1e6).toFixed(1)} MB -> ${(after / 1e6).toFixed(1)} MB`);

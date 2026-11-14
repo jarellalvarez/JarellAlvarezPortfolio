@@ -1,52 +1,8 @@
 ---
-import Page from '../../layouts/Page.astro';
-import Quote from '../../components/Quote.astro';
-import WorkCard from '../../components/WorkCard.astro';
-import Mark from '../../components/Mark.astro';
-import EmailButton from '../../components/EmailButton.astro';
-import { studies, study } from '../../lib/content.mjs';
-import { studyPassword } from '../../lib/password.mjs';
-
+import StudyPage from '../../components/StudyPage.astro';
+import { studies } from '../../lib/content.mjs';
 export function getStaticPaths() {
   return studies().map(s => ({ params: { slug: s.slug } }));
 }
-const { meta, publicHtml, payload, quotes, more } = study(Astro.params.slug, studyPassword());
 ---
-<Page title={`${meta.title}, ${meta.company}`} description={meta.summary} noindex={!!payload} bodyClass={payload ? '' : 'open'}>
-  <div class="lede">
-    <h1>{meta.title}</h1>
-    <dl class="facts">
-      <div><dt>Company</dt><dd>{meta.company}</dd></div>
-      <div><dt>Role</dt><dd>{meta.role}</dd></div>
-      <div><dt>Timeline</dt><dd>{meta.timeline}</dd></div>
-      <div><dt>Team</dt><dd>{meta.team}</dd></div>
-    </dl>
-  </div>
-  <div class="story" set:html={publicHtml} />
-  {payload && (
-    <section class="gate" aria-labelledby="gate-h">
-      <h2 id="gate-h">The rest is locked</h2>
-      <p>The decisions, screens and full presentation cover internal product work, so I share them on request. Enter the password from my application or message.</p>
-      <form id="unlock">
-        <label for="pw" class="sr">Password</label>
-        <input id="pw" type="password" autocomplete="off" placeholder="Password" required />
-        <button class="btn solid">Unlock</button>
-      </form>
-      <p class="err" id="err" role="alert"></p>
-      <p class="ask">No password? Ask me for it. <EmailButton /></p>
-    </section>
-  )}
-  <div id="story" class="story"></div>
-  {quotes.map(q => <Quote {...q} />)}
-  <Mark />
-  <section class="more" aria-labelledby="more-h">
-    <h2 id="more-h">More work</h2>
-    <div class="cards">
-      {more.map(m => <WorkCard href={`/work/${m.slug}/`} company={m.meta.company} title={m.meta.title} summary={m.meta.summary} preview={m.preview} />)}
-    </div>
-  </section>
-  <Fragment slot="after">
-    {payload && <script is:inline type="application/json" id="payload" set:html={JSON.stringify(payload)} />}
-    <script is:inline src="/js/study.js"></script>
-  </Fragment>
-</Page>
+<StudyPage slug={Astro.params.slug} />

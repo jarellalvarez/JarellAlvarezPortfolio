@@ -1,0 +1,8 @@
+---
+import StudyPage from '../../../components/StudyPage.astro';
+import { studies } from '../../../lib/content.mjs';
+export function getStaticPaths() {
+  return studies('earlier').map(s => ({ params: { slug: s.slug } }));
+}
+---
+<StudyPage slug={Astro.params.slug} coll="earlier" />

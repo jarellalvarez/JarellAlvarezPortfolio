@@ -135,7 +135,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
   .win,.win.max{left:0!important;top:0!important;width:100vw!important;height:100svh!important;border-radius:0;transform:none!important}
   .win.max .body{grid-template-columns:1fr} .win.max .toc{display:none}
   .win.max.contents .toc{display:block;position:absolute;inset:49px 0 0;background:var(--surface);z-index:4;border:0}
-  .bar{cursor:default} .max-btn{display:none} .toc-btn{display:grid}
+  .bar{cursor:default} .max-btn{display:none!important} .toc-btn{display:grid}
   .toys{display:none}
 }
 @media (prefers-reduced-motion:reduce){.toys i{animation:none!important}*{transition-duration:.01ms!important;scroll-behavior:auto!important}.folder svg,.peek{transform:none!important}.peek{left:calc(50% - 100px)}}
@@ -171,3 +171,34 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 .win .about>p:first-child{font-family:var(--display);font-weight:var(--hw);font-size:var(--t-2);line-height:1.25;max-width:30ch}
 .win .about h2{font-size:var(--t-1);font-weight:600;margin:2rem 0 .4rem}
 .win .about .links{display:none}
+/* Logo shapes always read rectangle, rounded bar, triangle */
+.toys i:nth-child(3){order:-1}
+
+/* Window buttons: yellow minimize, green expand, red close. Big hit area, small colored dot */
+.lights{display:flex;align-items:center;gap:0}
+.light{position:relative;width:32px;height:32px;display:grid;place-items:center;border:0;background:none;padding:0;cursor:pointer;border-radius:50%}
+.light::before{content:"";position:absolute;width:14px;height:14px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 .5px rgba(0,0,0,.25);transition:transform .15s cubic-bezier(.3,1.6,.5,1)}
+.light svg{position:relative;width:10px;height:10px;fill:none;stroke:rgba(0,0,0,.72);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .12s}
+.min-btn{--c:#febc2e} .max-btn{--c:#28c840} .close-btn{--c:#ff5f57}
+.lights:hover .light svg,.light:focus-visible svg{opacity:1}
+.light:hover::before{transform:scale(1.12)} .light:active::before{transform:scale(.9)}
+.light:focus-visible{outline:2px solid var(--ink);outline-offset:0}
+[data-palette=contrast] .light svg{opacity:1}
+.win.max .max-btn svg path{d:path("M8 4v4H4M4 8l4-4")}
+.open-page{font-size:.8125rem;font-weight:500;color:var(--ink-2);text-decoration:underline;text-underline-offset:3px;padding:.4rem .5rem;border-radius:6px;white-space:nowrap}
+.open-page:hover{color:var(--ink)}
+/* Minimized windows */
+.tray{position:fixed;left:50%;bottom:5.4rem;transform:translateX(-50%);display:flex;gap:.4rem;z-index:55;max-width:calc(100vw - 2rem);flex-wrap:wrap;justify-content:center}
+.tray button{display:inline-flex;align-items:center;gap:.4rem;min-height:36px;padding:0 .8rem;border-radius:999px;border:1px solid var(--line);background:var(--chrome);-webkit-backdrop-filter:blur(16px);backdrop-filter:blur(16px);color:var(--ink);font:500 .8125rem/1 var(--sans);cursor:pointer;box-shadow:0 4px 14px -6px rgba(0,0,0,.3)}
+.tray button::before{content:"";width:8px;height:8px;border-radius:50%;background:#febc2e}
+.tray button:hover{border-color:var(--ink)}
+.win.minimized{display:none}
+@media (max-width:720px){.open-page{display:none} .tray{bottom:6rem}}
+
+/* Grid glow that follows the pointer */
+.desk::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .4s;
+  background:linear-gradient(color-mix(in srgb,var(--ink) 22%,transparent) 1px,transparent 1px) 0 0/100% 64px,linear-gradient(90deg,color-mix(in srgb,var(--ink) 22%,transparent) 1px,transparent 1px) 0 0/64px 100%;
+  -webkit-mask:radial-gradient(180px circle at var(--mx,50%) var(--my,50%),#000,transparent 70%);mask:radial-gradient(180px circle at var(--mx,50%) var(--my,50%),#000,transparent 70%)}
+.desk.lit::after{opacity:1}
+:where(.desk>*){position:relative;z-index:1}
+@media (prefers-reduced-motion:reduce){.desk::after{display:none}}

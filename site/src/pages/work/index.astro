@@ -2,18 +2,19 @@
 import Page from '../../layouts/Page.astro';
 import WorkCard from '../../components/WorkCard.astro';
 import Mark from '../../components/Mark.astro';
-import { studies, EARLIER } from '../../lib/content.mjs';
+import { studies } from '../../lib/content.mjs';
 const featured = studies();
 ---
 <Page title="Work, Jarell Alvarez" description="Product design case studies: MAVI client portal, Copperleaf Framework Designer, UI Avenue analytics, and earlier work.">
   <h1 class="page-title">Work</h1>
-  <p class="page-sub">Three recent projects, then the older ones as I wrote them at the time.</p>
+  <p class="page-sub">Three recent projects, then earlier ones from 2017 to 2019.</p>
   <div class="cards">
     {featured.map(m => <WorkCard href={`/work/${m.slug}/`} company={m.meta.company} title={m.meta.title} summary={m.meta.summary} preview={m.preview} />)}
   </div>
   <h2 class="h-sec">Earlier work</h2>
-  <div class="list">
-    {EARLIER.map(e => <a href={e.href}><strong>{e.title}</strong><small>{e.note}</small></a>)}
+  <div class="cards">
+    {studies('earlier').map(m => <WorkCard href={`/work/earlier/${m.slug}/`} company={m.meta.company} title={m.meta.title} summary={m.meta.summary} preview={m.preview} />)}
   </div>
+  <p style="margin-top:1rem"><a href="/work/earlier/">All earlier work</a></p>
   <Mark />
 </Page>

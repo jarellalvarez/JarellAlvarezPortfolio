@@ -1,0 +1,48 @@
+---
+// Shared case-study page: used for featured studies and earlier work.
+import Page from '../layouts/Page.astro';
+import Quote from './Quote.astro';
+import WorkCard from './WorkCard.astro';
+import Mark from './Mark.astro';
+import EmailButton from './EmailButton.astro';
+import { study } from '../lib/content.mjs';
+import { studyPassword } from '../lib/password.mjs';
+const { slug, coll = 'work' } = Astro.props;
+const { meta, publicHtml, payload, quotes, more } = study(slug, studyPassword(), coll);
+const facts = [['Company', meta.company], ['Role', meta.role], ['Timeline', meta.timeline], ['Team', meta.team]].filter(([, v]) => v);
+---
+<Page title={`${meta.title}, ${meta.company}`} description={meta.summary} noindex={!!payload} bodyClass={payload ? '' : 'open'}>
+  <div class="lede">
+    <h1>{meta.title}</h1>
+    <dl class="facts">
+      {facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
+    </dl>
+  </div>
+  <div class="story" set:html={publicHtml} />
+  {payload && (
+    <section class="gate" aria-labelledby="gate-h">
+      <h2 id="gate-h">The rest is locked</h2>
+      <p>The decisions, screens and full presentation cover internal product work, so I share them on request. Enter the password from my application or message.</p>
+      <form id="unlock">
+        <label for="pw" class="sr">Password</label>
+        <input id="pw" type="password" autocomplete="off" placeholder="Password" required />
+        <button class="btn solid">Unlock</button>
+      </form>
+      <p class="err" id="err" role="alert"></p>
+      <p class="ask">No password? Ask me for it. <EmailButton /></p>
+    </section>
+  )}
+  <div id="story" class="story"></div>
+  {quotes.map(q => <Quote {...q} />)}
+  <Mark />
+  <section class="more" aria-labelledby="more-h">
+    <h2 id="more-h">{coll === 'work' ? 'More work' : 'Recent work'}</h2>
+    <div class="cards">
+      {more.map(m => <WorkCard href={`/work/${m.slug}/`} company={m.meta.company} title={m.meta.title} summary={m.meta.summary} preview={m.preview} />)}
+    </div>
+  </section>
+  <Fragment slot="after">
+    {payload && <script is:inline type="application/json" id="payload" set:html={JSON.stringify(payload)} />}
+    <script is:inline src="/js/study.js"></script>
+  </Fragment>
+</Page>

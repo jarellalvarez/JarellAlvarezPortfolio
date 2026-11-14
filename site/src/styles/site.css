@@ -106,3 +106,12 @@ h1{font-family:var(--display);font-weight:var(--dw);letter-spacing:-.03em;font-s
 header.top a:not(.btn){display:inline-flex;align-items:center;min-height:44px}
 header.top{gap:1.1rem}
 .rm{min-height:44px}
+/* Logo shapes always read rectangle, rounded bar, triangle */
+.mark i:nth-child(3),.card div.pv i:nth-child(3){order:-1}
+
+/* Back to the previous page, top left on every inner page */
+header.top .back{gap:.35rem;padding:0 .9rem 0 .6rem;border-radius:var(--r-pill);border:1.5px solid var(--line);font-weight:600}
+header.top .back:hover{border-color:var(--ink)}
+header.top .back svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+header.top .me{color:var(--ink-2)}
+@media (max-width:640px){header.top .me{display:none} header.top{gap:.6rem}}

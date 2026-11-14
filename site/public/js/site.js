@@ -17,3 +17,17 @@ document.querySelectorAll('.mail').forEach(b => {
     tip.classList.add('on'); clearTimeout(t); t = setTimeout(() => tip.classList.remove('on'), 2000);
   };
 });
+
+// Stat numbers count up once when they come into view
+(() => {
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches) return;
+  const io = new IntersectionObserver(es => es.forEach(e => {
+    if (!e.isIntersecting) return; io.unobserve(e.target);
+    const el = e.target, full = el.textContent, m = full.match(/\d+(\.\d+)?/); if (!m) return;
+    const end = parseFloat(m[0]), t0 = performance.now(), dur = 900;
+    const tick = t => { const k = Math.min(1, (t - t0) / dur), v = Math.round(end * (1 - (1 - k) ** 3));
+      el.textContent = full.replace(m[0], String(v)); if (k < 1) requestAnimationFrame(tick); else el.textContent = full; };
+    requestAnimationFrame(tick);
+  }), { threshold: .6 });
+  document.querySelectorAll('.stats b').forEach(b => io.observe(b));
+})();

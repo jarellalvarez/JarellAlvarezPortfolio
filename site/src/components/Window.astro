@@ -5,8 +5,12 @@
     <header class="bar">
       <strong class="wtitle"></strong>
       <button class="ctl toc-btn" aria-label="Contents"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
-      <button class="ctl text max-btn" aria-label="Expand window">Expand</button>
-      <button class="ctl close-btn" aria-label="Close window"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="tip">Close</span></button>
+      <a class="open-page" href="/">Open as page</a>
+      <div class="lights">
+        <button class="light min-btn" aria-label="Minimize window" title="Minimize"><svg viewBox="0 0 12 12"><path d="M3 6h6"/></svg></button>
+        <button class="light max-btn" aria-label="Expand window" title="Expand"><svg viewBox="0 0 12 12"><path d="M4 8V4h4M8 4L4 8" /></svg></button>
+        <button class="light close-btn" aria-label="Close window" title="Close"><svg viewBox="0 0 12 12"><path d="M3.5 3.5l5 5M8.5 3.5l-5 5"/></svg></button>
+      </div>
     </header>
     <div class="body">
       <nav class="toc" aria-label="Contents"><p>Contents</p><ol></ol></nav>
@@ -16,6 +20,9 @@
     <span class="grip br" data-edge="right" title="Drag to resize" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M14 5L5 14M14 10L10 14"/></svg></span>
   </section>
 </template>
+
+<!-- Minimized windows wait here, just above the dock -->
+<div class="tray" id="tray" aria-label="Minimized windows"></div>
 
 <!-- Asks before a folder leaves the site -->
 <dialog class="leave" id="leave" aria-labelledby="leave-h">

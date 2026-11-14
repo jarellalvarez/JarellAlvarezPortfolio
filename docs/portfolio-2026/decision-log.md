@@ -60,3 +60,14 @@ Typed cursor tooltip and cursor modes, idle grid response, multiple layered wind
 | Copperleaf results: deck figures only. The 25% / 18% / 3.5x from the 2025 write-up are dropped until a source is found |
 | Copperleaf quote credited to Sharmeen, Design Manager |
 | Typeface: choosing between Bricolage Grotesque, Fraunces + Figtree, Instrument Serif + Instrument Sans |
+
+## Added 2026-11-14
+
+| Decision |
+| --- |
+| Window controls are colored dots on the right: yellow minimize (to a tray above the dock, or back from full size), green expand, red close. Replaces the earlier "no macOS dots" call, at Jarell's request |
+| Every internal folder opens a window; several can be open at once. Community and Photography confirm before opening a new tab |
+| Logo shape trio always reads rectangle, rounded bar, triangle |
+| Earlier work (3 studies from 2017 to 2019) lives at /work/earlier/, wording unchanged |
+| Every inner page has a Back button to the previous page |
+| Default text size Large; default font Bricolage Grotesque; serif removed |

@@ -23,9 +23,9 @@ const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 function focusWin(w){w.style.zIndex=++zTop;document.querySelectorAll('.win.focused').forEach(x=>x.classList.remove('focused'));w.classList.add('focused')}
 function place(w){w.style.transform=`translate(${w._x}px,${w._y}px)`}
 function setMax(w,on){const r=w.querySelector('.read'),ratio=r.scrollTop/Math.max(1,r.scrollHeight-r.clientHeight);w.classList.toggle('max',on);
-  const b=w.querySelector('.max-btn');b.textContent=on?'Minimize':'Expand';b.setAttribute('aria-label',on?'Minimize window':'Expand window');
+  const b=w.querySelector('.max-btn');b.setAttribute('aria-label',on?'Exit full size':'Expand window');b.title=on?'Exit full size':'Expand';
   requestAnimationFrame(()=>r.scrollTop=ratio*(r.scrollHeight-r.clientHeight))}
-function closeWin(w){wins.delete(w._key);w.remove();w._opener?.focus();const top=[...document.querySelectorAll('.win')].sort((a,b)=>b.style.zIndex-a.style.zIndex)[0];if(top)focusWin(top)}
+function closeWin(w){if(w._closing)return;w._closing=true;grow(w,w._opener,true).then(()=>{wins.delete(w._key);w._tab?.remove();w.remove()});w._opener?.focus();setTimeout(()=>{const top=[...document.querySelectorAll('.win')].sort((a,b)=>b.style.zIndex-a.style.zIndex)[0];if(top)focusWin(top)},0)}
 
 async function fill(w,key,url){
   const art=w.querySelector('.art'), tocList=w.querySelector('.toc ol'), uid=key.replace(/\W/g,'');
@@ -56,8 +56,9 @@ async function fill(w,key,url){
 
 async function openWin(a){
   const kind=a.dataset.open, url=a.getAttribute('href'), key=kind==='kind'||kind==='about'?kind:url;
-  if(wins.has(key)){const w=wins.get(key);focusWin(w);w.querySelector('.read').focus({preventScroll:true});return}
+  if(wins.has(key)){const w=wins.get(key);if(w.classList.contains('minimized'))restore(w);focusWin(w);w.querySelector('.read').focus({preventScroll:true});return}
   const w=tpl.content.firstElementChild.cloneNode(true);w._key=key;w._opener=a;wins.set(key,w);
+  w.querySelector('.open-page').href=key==='kind'?'/kind-words/':url;
   const t=w.querySelector('.wtitle');t.id='wt-'+(++opened);w.setAttribute('aria-labelledby',t.id);t.textContent='Loading';
   document.body.append(w);w.classList.add('open');focusWin(w);
   // open above the folder row so the other folders stay clickable, cascading so several can sit side by side
@@ -66,6 +67,7 @@ async function openWin(a){
   const W=w.offsetWidth,H=w.offsetHeight;
   w._x=Math.max(8,Math.min(innerWidth-W-8,(innerWidth-W)/2-150+step*60));w._y=Math.max(8,Math.min(innerHeight-H-8,72+step*28));place(w);
   if(mobile())w.classList.add('max');
+  grow(w,a,false);
   wire(w);
   try{t.textContent=await fill(w,key,url)}catch{t.textContent='Could not load';w.querySelector('.art').innerHTML='<p>This did not load. <a href="'+url+'">Open it as a page</a>.</p>'}
   w.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{const o=b.previousElementSibling.classList.toggle('open');b.textContent=o?'Show less':'Read more';b.setAttribute('aria-expanded',o)});
@@ -76,6 +78,7 @@ function wire(w){
   w.addEventListener('pointerdown',()=>focusWin(w),true);
   w.querySelector('.close-btn').onclick=()=>closeWin(w);
   w.querySelector('.max-btn').onclick=()=>setMax(w,!w.classList.contains('max'));
+  w.querySelector('.min-btn').onclick=()=>minimize(w);
   w.querySelector('.toc-btn').onclick=()=>w.classList.toggle('contents');
   const bar=w.querySelector('.bar');let grab=null;
   bar.addEventListener('pointerdown',e=>{if(e.target.closest('button')||w.classList.contains('max')||mobile())return;bar.setPointerCapture(e.pointerId);grab={dx:e.clientX-w._x,dy:e.clientY-w._y}});
@@ -119,3 +122,44 @@ document.querySelectorAll('.folder').forEach(f=>{
 if(!calm){const fs=[...document.querySelectorAll('.folder')];
   fs.forEach((f,i)=>f.animate([{transform:`translate(${(Math.random()-.5)*innerWidth*.7}px,${(Math.random()-.5)*innerHeight*.6}px) rotate(${(Math.random()-.5)*40}deg)`,opacity:0},{opacity:1,offset:.25},{transform:'none',opacity:1}],
     {duration:620,delay:i*40,easing:'cubic-bezier(.2,1.25,.4,1)',fill:'backwards'}))}
+
+/* Yellow: expanded goes back to floating; floating goes to a tab above the dock */
+const tray=$('#tray');
+function minimize(w){
+  if(w.classList.contains('max')){setMax(w,false);return}
+  const tab=document.createElement('button');tab.type='button';tab.textContent=w.querySelector('.wtitle').textContent;tab.setAttribute('aria-label','Restore '+tab.textContent+' window');
+  tab.onclick=()=>restore(w);w._tab=tab;tray.append(tab);
+  const r=w.getBoundingClientRect(),t=tab.getBoundingClientRect();
+  const done=()=>{w.classList.add('minimized');w.classList.remove('focused');tab.focus()};
+  if(calm)return done();
+  w.animate([{transform:w.style.transform,opacity:1},{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top-r.height/2}px) scale(.08)`,opacity:.2}],{duration:260,easing:'cubic-bezier(.4,0,.6,1)'}).onfinish=done;
+}
+function restore(w){
+  const tab=w._tab;w.classList.remove('minimized');focusWin(w);
+  if(!calm&&tab){const t=tab.getBoundingClientRect(),r=w.getBoundingClientRect();
+    w.animate([{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top-r.height/2}px) scale(.08)`,opacity:.2},{transform:w.style.transform,opacity:1}],{duration:300,easing:'cubic-bezier(.2,1.2,.4,1)'})}
+  tab?.remove();w._tab=null;w.querySelector('.read').focus({preventScroll:true});
+}
+
+/* Windows grow out of the folder that opened them and shrink back into it on close */
+function grow(w,from,back){
+  if(calm||!from||mobile()||w.classList.contains('max'))return Promise.resolve();
+  const f=from.getBoundingClientRect(),r=w.getBoundingClientRect();
+  const start=`translate(${f.left+f.width/2-r.width/2}px,${f.top+f.height/2-r.height/2}px) scale(.12)`, end=w.style.transform||'none';
+  const a=w.animate(back?[{transform:end,opacity:1},{transform:start,opacity:0}]:[{transform:start,opacity:0},{transform:end,opacity:1}],
+    {duration:back?220:300,easing:back?'cubic-bezier(.4,0,.8,.4)':'cubic-bezier(.2,1.15,.35,1)'});
+  return a.finished.catch(()=>{});
+}
+
+/* Folder preview text types itself in on hover or focus */
+document.querySelectorAll('.folder .peek > span').forEach(t=>{
+  const full=t.textContent, f=t.closest('.folder');let timer;
+  const type=()=>{if(calm)return;clearInterval(timer);let i=0;t.textContent='';timer=setInterval(()=>{t.textContent=full.slice(0,i+=2);if(i>=full.length){t.textContent=full;clearInterval(timer)}},22)};
+  f.addEventListener('pointerenter',type);f.addEventListener('focus',type);
+  f.addEventListener('pointerleave',()=>{clearInterval(timer);t.textContent=full});
+});
+
+/* The background grid lights up softly around the pointer */
+if(!calm){const desk=$('.desk');let q=0;
+  addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||q)return;q=requestAnimationFrame(()=>{q=0;desk.style.setProperty('--mx',e.clientX+'px');desk.style.setProperty('--my',e.clientY+'px');desk.classList.add('lit')})});
+  document.addEventListener('pointerleave',()=>desk.classList.remove('lit'))}

@@ -11,12 +11,13 @@ const read = p => readFileSync(new URL(p, root), 'utf8');
 export const LOCK = '<!-- lock -->';
 
 // Every folder in /content/work with an index.md is a case study. `order` sets the sequence.
-export function studies() {
-  return readdirSync(new URL('work/', root), { withFileTypes: true })
-    .filter(d => d.isDirectory() && existsSync(new URL(`work/${d.name}/index.md`, root)))
+// coll is 'work' (featured) or 'earlier' (the 2019 studies, kept as written)
+export function studies(coll = 'work') {
+  return readdirSync(new URL(`${coll}/`, root), { withFileTypes: true })
+    .filter(d => d.isDirectory() && existsSync(new URL(`${coll}/${d.name}/index.md`, root)))
     .map(d => {
-      const { data, content } = matter(read(`work/${d.name}/index.md`));
-      return { dir: d.name, slug: data.slug || d.name, preview: data.preview || null, meta: data, md: content };
+      const { data, content } = matter(read(`${coll}/${d.name}/index.md`));
+      return { coll, dir: d.name, slug: data.slug || d.name, preview: data.preview || null, meta: data, md: content };
     })
     .sort((a, b) => (a.meta.order ?? 99) - (b.meta.order ?? 99));
 }
@@ -40,7 +41,7 @@ const cache = new URL('../../.cache/img/', import.meta.url);
 const webp = f => f.replace(/\.(png|jpe?g)$/i, '.webp');
 
 // locked = true embeds images inside the HTML so they travel encrypted with the text
-export function render(md, { dir, meta }, locked = false) {
+export function render(md, { dir, meta, coll = 'work' }, locked = false) {
   const stats = (meta.stats || []).map(s => `<div><b>${esc(s.value)}</b><span>${esc(s.label)}</span></div>`).join('');
   const src = md
     .replace(/<!--(?! lock -->)[\s\S]*?-->/g, '')
@@ -50,15 +51,15 @@ export function render(md, { dir, meta }, locked = false) {
   return marked.parse(src)
     .replace(/<p>\{\{stats\}\}<\/p>/g, stats ? `<div class="stats">${stats}</div>` : '')
     .replace(/src="img\/([^"]+)"/g, (_, f) => {
-      const file = new URL(`${dir}/${webp(f)}`, cache);
+      const file = new URL(`${coll}/${dir}/${webp(f)}`, cache);
       if (locked && existsSync(file)) return `src="data:image/webp;base64,${readFileSync(file).toString('base64')}"`;
-      return `src="/work/${dir}/${existsSync(file) ? webp(f) : f}"`;
+      return `src="/${coll === 'work' ? 'work' : 'earlier-img'}/${dir}/${existsSync(file) ? webp(f) : f}"`;
     })
     .replace(/<p><img ([^>]*?)alt="([^"]*)"([^>]*)><\/p>/g, '<figure><img $1alt="$2"$3 loading="lazy"><figcaption>$2</figcaption></figure>');
 }
 
-export function study(slug, password) {
-  const all = studies();
+export function study(slug, password, coll = 'work') {
+  const all = studies(coll);
   const entry = all.find(s => s.slug === slug);
   const [pub, locked = ''] = entry.md.split(LOCK);
   const isLocked = locked.trim().length > 0;
@@ -67,7 +68,7 @@ export function study(slug, password) {
     publicHtml: render(pub, entry),
     payload: isLocked ? encrypt(render(locked, entry, true), password) : null,
     quotes: testimonials().filter(p => p.place === entry.dir),
-    more: all.filter(s => s.slug !== slug),
+    more: coll === 'work' ? all.filter(s => s.slug !== slug) : studies('work'),
   };
 }
 
@@ -76,9 +77,3 @@ export function about() {
   return { meta: data, html: marked.parse(content.replace(/^\[JARELL\].*$/gm, '')) };
 }
 
-// Older case studies kept as they were in 2020, reachable from the Work page.
-export const EARLIER = [
-  { href: '/2020/chiropractor.html', title: 'Realigning Chiropractor Clinics', note: 'Freelance, 2019' },
-  { href: '/2020/automotiveindustry.html', title: 'Redefining the Automotive Industry', note: 'Convertus, 2017 to 2019' },
-  { href: '/2020/landingpageredesign.html', title: 'Redesigning Auto Landing Pages', note: 'Convertus, 2018 to 2019' },
-];

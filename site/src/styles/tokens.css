@@ -26,3 +26,12 @@
 /* text size: everything is sized in rem, so this scales the whole site */
 html{font-size:100%}
 [data-size=s]{font-size:93.75%} [data-size=l]{font-size:112.5%} [data-size=xl]{font-size:125%}
+
+/* Page-to-page cross-fade where the browser supports it */
+@view-transition{navigation:auto}
+::view-transition-old(root){animation:vt-out .18s ease-in both} ::view-transition-new(root){animation:vt-in .26s ease-out both}
+@keyframes vt-out{to{opacity:0}} @keyframes vt-in{from{opacity:0}}
+@media (prefers-reduced-motion:reduce){@view-transition{navigation:none}}
+/* Press feedback on anything you can click */
+.btn:active,.style-btn:active,.mail:active,.card:active{transform:scale(.97)}
+.btn,.style-btn,.card{transition:transform .12s ease-out}
