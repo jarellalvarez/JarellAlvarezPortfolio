@@ -1,12 +1,12 @@
 ---
 // One desktop folder. `open` makes it open in a window instead of navigating ("kind" for Kind words, true for a case study).
-const { href, label, sub, glyph, preview, previewText, open, external } = Astro.props;
+const { href, label, glyph, preview, previewText, open, external } = Astro.props;
 const DEFAULT_GLYPH = '<rect class="glyph" x="22" y="22" width="12" height="12"/>';
 ---
 <li>
   <a class="folder" href={href} data-open={open === true ? '' : open} target={external ? '_blank' : undefined} rel={external ? 'noopener' : undefined}>
     <Fragment set:html={'<svg viewBox="0 0 56 46" aria-hidden="true"><path class="back" d="M2 6a4 4 0 0 1 4-4h14l5 6h25a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4z"/><rect class="front" x="3" y="13" width="50" height="30" rx="3.5"/>' + (glyph || DEFAULT_GLYPH) + '</svg>'} />
-    <span>{label}{sub && <small>{sub}</small>}</span>
+    <span>{label}</span>
     {(preview || previewText) && (
       <span class="peek" aria-hidden="true">{preview && <img src={preview} alt="" />}<span>{previewText}</span></span>
     )}

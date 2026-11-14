@@ -4,7 +4,7 @@
   const btn = $('#style-btn'), panel = $('#style-panel');
   if (!btn || !panel) return;
   const OPTS = { palette: ['ivory', 'stone', 'sage', 'ink', 'clay', 'contrast'], mode: ['light', 'dark'], font: ['bricolage', 'familjen', 'syne', 'atkinson'], size: ['s', 'm', 'l', 'xl'] };
-  const DEFAULT = { palette: 'ivory', mode: 'light', font: 'bricolage', size: 'm' };
+  const DEFAULT = { palette: 'ivory', mode: 'light', font: 'bricolage', size: 'l' };
   const attr = { palette: 'palette', mode: 'theme', font: 'font', size: 'size' };
   const get = k => { try { return localStorage.getItem('style-' + k); } catch { return null; } };
   const put = (k, v) => { try { localStorage.setItem('style-' + k, v); } catch {} };

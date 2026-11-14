@@ -8,43 +8,24 @@ import Window from '../components/Window.astro';
 import '../styles/home.css';
 import { studies } from '../lib/content.mjs';
 import glyphs from '../lib/home-glyphs.json';
+import { links } from '../lib/links.mjs';
 
 // Case studies come from the editor, in their set order. A study opens in the window when it has no locked section.
 const work = studies().map(s => ({
   href: `/work/${s.slug}/`,
   label: s.meta.company + (s.meta.company === 'MAVI' ? ' Client Portal' : ''),
-  sub: String(s.meta.role).split(',')[0].replace(/ I+$/, ''),
   glyph: glyphs[`/work/${s.slug}/`],
-  preview: s.preview,
-  previewText: s.meta.summary + (s.preview ? '' : ' Screens are under NDA.'),
-  open: s.md.includes('<!-- lock -->') ? undefined : true,
+  preview: s.preview || (s.slug === 'mavi' ? '/img/preview-mavi.webp' : null),
+  previewText: s.meta.summary,
+  // QA H-05: MAVI opens in the window too; studies without a lock always do
+  open: (s.slug === 'mavi' || !s.md.includes('<!-- lock -->')) ? true : undefined,
 }));
+const about = 'I\'m a senior product designer in Vancouver with 9+ years of making complicated software easier to use.';
 const extras = [
- {
-  "href": "/about/",
-  "label": "About",
-  "glyph": "<circle class=\"glyph\" cx=\"28\" cy=\"28\" r=\"6.5\"/>"
- },
- {
-  "href": "https://join.slack.com/t/vandesigncommunity/shared_invite/zt-4af1yypit-~LvOH0pQSN2XCb5oP_tG9A",
-  "label": "Community",
-  "glyph": "<circle class=\"glyph\" cx=\"23\" cy=\"28\" r=\"4.5\"/><circle class=\"glyph\" cx=\"33\" cy=\"28\" r=\"4.5\"/>",
-  "external": true,
-  "previewText": "Vancouver Design Community: 4,200+ designers. Opens the Slack invite."
- },
- {
-  "href": "https://jarell.photography/",
-  "label": "Photography",
-  "external": true,
-  "previewText": "Portraits, editorial and events. Opens jarell.photography.",
-  "glyph": "<path class=\"glyph\" fill-rule=\"evenodd\" d=\"M28 21a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z\"/>"
- },
- {
-  "href": "#kind",
-  "label": "Kind words",
-  "glyph": "<path class=\"glyph\" d=\"M19 22h8v6l-4 5h-3l2-5h-3zm11 0h8v6l-4 5h-3l2-5h-3z\"/>",
-  "open": "kind"
- }
+  { href: '/about/', label: 'About', glyph: '<circle class="glyph" cx="28" cy="28" r="6.5"/>', preview: '/img/jarell-alvarez.jpg', previewText: about },
+  { href: links.vdc, label: 'Community', glyph: '<circle class="glyph" cx="23" cy="28" r="4.5"/><circle class="glyph" cx="33" cy="28" r="4.5"/>', external: true, previewText: 'Vancouver Design Community: 4,200+ designers, socials, talks and portfolio reviews.' },
+  { href: links.photography, label: 'Photography', glyph: "<path class=\"glyph\" fill-rule=\"evenodd\" d=\"M28 21a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z\"/>", external: true, previewText: 'Portraits, editorial and events. Opens jarell.photography.' },
+  { href: '#kind', label: 'Kind words', glyph: '<path class="glyph" d="M19 22h8v6l-4 5h-3l2-5h-3zm11 0h8v6l-4 5h-3l2-5h-3z"/>', open: 'kind', previewText: 'Recommendations from people I\'ve worked with, managed and mentored.' },
 ];
 ---
 <Base

@@ -13,9 +13,9 @@ const quotes = testimonials().filter(t => t.place === 'about');
   <div class="story about">
     <Fragment set:html={intro + '</p>'} />
     <div class="links">
-      <a class="btn solid" href="/resume.pdf">Resume</a>
+      <a class="btn solid" href="/resume.pdf" target="_blank" rel="noopener">Resume</a>
       <EmailButton />
-      <a class="btn" href="https://ca.linkedin.com/in/jarellalvarez">LinkedIn</a>
+      <a class="btn" href="https://ca.linkedin.com/in/jarellalvarez" target="_blank" rel="noopener">Connect with me on LinkedIn</a>
     </div>
     <Fragment set:html={rest.join('</p>')} />
   </div>

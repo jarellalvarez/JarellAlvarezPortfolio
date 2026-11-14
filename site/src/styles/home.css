@@ -43,9 +43,9 @@ h1{font-family:var(--display);font-size:clamp(3.25rem,13.2vw,13.5rem);font-weigh
 .tag{font-family:var(--serif);font-style:var(--tag-style);font-size:clamp(1.0625rem,1.7vw,1.5rem);color:var(--ink-2)}
 
 /* folders */
-.folders{display:flex;gap:.25rem;list-style:none;padding:0;margin-top:clamp(1.25rem,4vh,3rem)}
-.folder{position:relative;display:grid;justify-items:center;gap:.4rem;width:6.75rem;padding:.6rem .25rem .5rem;border-radius:10px;font-size:.8125rem;font-weight:500;line-height:1.2;text-decoration:none}
-.folder svg{width:56px;height:46px;overflow:visible;transition:transform .18s cubic-bezier(.2,.8,.2,1)}
+.folders{display:flex;gap:1.1rem;list-style:none;padding:0;margin-top:clamp(1.25rem,4vh,3rem)}
+.folder{position:relative;display:grid;justify-items:center;gap:.5rem;width:8.5rem;font-size:.9375rem!important;padding:.6rem .25rem .5rem;border-radius:10px;font-size:.8125rem;font-weight:500;line-height:1.2;text-decoration:none}
+.folder svg{width:84px;height:69px;overflow:visible;transition:transform .18s cubic-bezier(.2,.8,.2,1)}
 .folder .back{fill:var(--folder)} .folder .front{fill:var(--bg);stroke:var(--folder);stroke-width:2}
 .folder .glyph{fill:var(--folder)}
 .folder .paper{fill:var(--surface);stroke:var(--folder);stroke-width:1.5;transform-box:fill-box;transform-origin:50% 100%;transition:transform .22s cubic-bezier(.2,.8,.2,1)}
@@ -74,7 +74,7 @@ h1{font-family:var(--display);font-size:clamp(3.25rem,13.2vw,13.5rem);font-weigh
 .dock a:hover .tip,.dock a:focus-visible .tip,.ctl:hover .tip,.ctl:focus-visible .tip{opacity:1}
 
 /* window */
-.win{position:fixed;left:0;top:0;width:min(720px,92vw);height:min(560px,74vh);display:grid;grid-template-rows:auto 1fr;background:var(--surface);border-radius:var(--r-win);box-shadow:var(--shadow);overflow:hidden;z-index:20;
+.win{position:fixed;left:0;top:0;width:min(1100px,90vw);height:min(760px,86vh);display:grid;grid-template-rows:auto 1fr;background:var(--surface);border-radius:var(--r-win);box-shadow:var(--shadow);overflow:hidden;z-index:20;
   transform:translate(var(--x),var(--y));opacity:0;visibility:hidden;transition:opacity .16s,visibility 0s .16s}
 .win.open{opacity:1;visibility:visible;transition:opacity .16s}
 .win.max{left:20px;top:20px;width:calc(100vw - 40px);height:calc(100vh - 40px);transform:none;z-index:60}
@@ -141,3 +141,18 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 @media (prefers-reduced-motion:reduce){.toys i{animation:none!important}*{transition-duration:.01ms!important;scroll-behavior:auto!important}.folder svg,.peek{transform:none!important}.peek{left:calc(50% - 100px)}}
 @media (prefers-reduced-transparency:reduce){.dock{background:var(--surface);backdrop-filter:none;-webkit-backdrop-filter:none}}
 @media (prefers-contrast:more){:root{--line:currentColor}}
+
+/* QA W-04: no drag or resize affordance while expanded */
+.win.max .bar{cursor:default} .win.max .grip{display:none}
+/* QA W-02: resize grips in both bottom corners */
+.grip{position:absolute;bottom:0;width:22px;height:22px;z-index:6;touch-action:none;display:grid;place-items:center;color:var(--ink-2)}
+.grip.br{right:0;cursor:nwse-resize} .grip.bl{left:0;cursor:nesw-resize}
+.grip svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+.grip.bl svg{transform:scaleX(-1)}
+.grip:hover{color:var(--ink)}
+/* QA H-03: dragged folders */
+.folder.dragging{z-index:40;cursor:grabbing;transition:none!important}
+.folder.dragging .peek{display:none}
+/* QA D-03: copied address stays readable and selectable */
+.dock .tip.copied{opacity:1;user-select:text;pointer-events:auto}
+@media (max-width:720px){.grip{display:none} .folders{gap:.25rem} .folder{width:auto} .folder svg{width:64px;height:52px}}
