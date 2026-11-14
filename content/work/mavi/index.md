@@ -9,6 +9,7 @@ protected: true
 summary: A self-serve client portal, designed and aligned across five teams in under two weeks.
 status: draft 2, for Jarell's review. Title is a placeholder
 order: 1
+preview: /img/preview-mavi.webp
 stats:
   - value: "12 days"
     label: "from brief to high-fidelity screens ready for build"
@@ -18,6 +19,8 @@ stats:
     label: "in the first release, with everything else deferred"
 ---
 
+
+![Two dashboard directions compared during the project](img/dashboard-comparison.png)
 
 ## Overview
 

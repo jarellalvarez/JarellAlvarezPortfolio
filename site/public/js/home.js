@@ -81,9 +81,9 @@ function wire(w){
   w.querySelector('.min-btn').onclick=()=>minimize(w);
   w.querySelector('.toc-btn').onclick=()=>w.classList.toggle('contents');
   const bar=w.querySelector('.bar');let grab=null;
-  bar.addEventListener('pointerdown',e=>{if(e.target.closest('button')||w.classList.contains('max')||mobile())return;bar.setPointerCapture(e.pointerId);grab={dx:e.clientX-w._x,dy:e.clientY-w._y}});
+  bar.addEventListener('pointerdown',e=>{if(e.target.closest('button,a,.lights')||w.classList.contains('max')||mobile())return;bar.setPointerCapture(e.pointerId);grab={dx:e.clientX-w._x,dy:e.clientY-w._y}});
   bar.addEventListener('pointermove',e=>{if(!grab)return;w._x=Math.min(innerWidth-80,Math.max(80-w.offsetWidth,e.clientX-grab.dx));w._y=Math.min(innerHeight-60,Math.max(0,e.clientY-grab.dy));place(w)});
-  bar.addEventListener('pointerup',()=>grab=null);bar.addEventListener('dblclick',e=>{if(!e.target.closest('button'))setMax(w,!w.classList.contains('max'))});
+  bar.addEventListener('pointerup',()=>grab=null);bar.addEventListener('dblclick',e=>{if(!e.target.closest('button,a,.lights'))setMax(w,!w.classList.contains('max'))});
   w.querySelectorAll('.grip').forEach(g=>g.addEventListener('pointerdown',e=>{
     if(w.classList.contains('max')||mobile())return;e.preventDefault();e.stopPropagation();g.setPointerCapture(e.pointerId);g.classList.add('active');w.classList.add('resizing');
     const r=w.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,left=g.dataset.edge==='left';
@@ -120,8 +120,8 @@ document.querySelectorAll('.folder').forEach(f=>{
 
 /* QA H-04: folders start scattered and snap into the row, once per load */
 if(!calm){const fs=[...document.querySelectorAll('.folder')];
-  fs.forEach((f,i)=>f.animate([{transform:`translate(${(Math.random()-.5)*innerWidth*.7}px,${(Math.random()-.5)*innerHeight*.6}px) rotate(${(Math.random()-.5)*40}deg)`,opacity:0},{opacity:1,offset:.25},{transform:'none',opacity:1}],
-    {duration:620,delay:i*40,easing:'cubic-bezier(.2,1.25,.4,1)',fill:'backwards'}))}
+  fs.forEach((f,i)=>f.animate([{transform:`translate(${(Math.random()-.5)*innerWidth*.9}px,${(Math.random()-.5)*innerHeight*.8}px) rotate(${(Math.random()-.5)*70}deg) scale(.6)`,opacity:0},{opacity:1,offset:.25},{transform:'none',opacity:1}],
+    {duration:mobile()?650:1000,delay:i*70,easing:'cubic-bezier(.2,1.35,.4,1)',fill:'backwards'}))}
 
 /* Yellow: expanded goes back to floating; floating goes to a tab above the dock */
 const tray=$('#tray');
@@ -147,7 +147,7 @@ function grow(w,from,back){
   const f=from.getBoundingClientRect(),r=w.getBoundingClientRect();
   const start=`translate(${f.left+f.width/2-r.width/2}px,${f.top+f.height/2-r.height/2}px) scale(.12)`, end=w.style.transform||'none';
   const a=w.animate(back?[{transform:end,opacity:1},{transform:start,opacity:0}]:[{transform:start,opacity:0},{transform:end,opacity:1}],
-    {duration:back?220:300,easing:back?'cubic-bezier(.4,0,.8,.4)':'cubic-bezier(.2,1.15,.35,1)'});
+    {duration:back?280:480,easing:back?'cubic-bezier(.5,0,.8,.3)':'cubic-bezier(.18,1.3,.35,1)'});
   return a.finished.catch(()=>{});
 }
 

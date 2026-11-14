@@ -31,3 +31,7 @@ document.querySelectorAll('.mail').forEach(b => {
   }), { threshold: .6 });
   document.querySelectorAll('.stats b').forEach(b => io.observe(b));
 })();
+
+// Sticky header gets a shadow once you scroll
+(() => { const h = document.getElementById('top-bar'); if (!h) return;
+  const f = () => h.classList.toggle('scrolled', scrollY > 8); addEventListener('scroll', f, { passive: true }); f(); })();

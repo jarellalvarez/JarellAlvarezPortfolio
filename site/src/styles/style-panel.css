@@ -31,3 +31,13 @@
 .style-status{margin:.75rem 0 0;font-size:.8125rem;color:var(--ink-2);min-height:1.2em}
 @media (max-width:720px){.style-label{display:none} .style-btn{padding:0;width:44px;justify-content:center}}
 @media (prefers-reduced-motion:reduce){.style-panel,.style-panel.on{transition:none} .style-btn.pop svg,#style-random.roll svg{animation:none}}
+
+/* On phones the Style panel slides up from the bottom */
+@media (max-width:720px){
+  .style-panel{position:fixed;left:0;right:0;top:auto;bottom:0;width:auto;max-height:82svh;border-radius:20px 20px 0 0;padding:1.25rem 1rem calc(1.25rem + env(safe-area-inset-bottom));
+    transform:translateY(100%);transform-origin:50% 100%;opacity:1;box-shadow:0 -10px 40px -10px rgba(0,0,0,.45);}
+  .style-panel.on{box-shadow:0 0 0 100vmax rgba(0,0,0,.35)}
+  .style-panel.on{transform:none}
+  .style-panel::before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:var(--line);margin:-.5rem auto .9rem}
+  .opts.themes{grid-template-columns:repeat(3,1fr)} .opts.fonts{grid-template-columns:repeat(4,1fr)}
+}

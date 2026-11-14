@@ -10,6 +10,10 @@ const { cta = true, bodyClass = '', ...rest } = Astro.props;
   <body class={bodyClass}>
     <Header />
     <main>
+      <a class="back" href="/" id="back-link">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        <span id="back-label">Back to Home</span>
+      </a>
       <slot />
       {cta && <Cta />}
     </main>

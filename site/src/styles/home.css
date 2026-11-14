@@ -171,8 +171,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 .win .about>p:first-child{font-family:var(--display);font-weight:var(--hw);font-size:var(--t-2);line-height:1.25;max-width:30ch}
 .win .about h2{font-size:var(--t-1);font-weight:600;margin:2rem 0 .4rem}
 .win .about .links{display:none}
-/* Logo shapes always read rectangle, rounded bar, triangle */
-.toys i:nth-child(3){order:-1}
+
 
 /* Window buttons: yellow minimize, green expand, red close. Big hit area, small colored dot */
 .lights{display:flex;align-items:center;gap:0}
@@ -197,8 +196,31 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 
 /* Grid glow that follows the pointer */
 .desk::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:0;opacity:0;transition:opacity .4s;
-  background:linear-gradient(color-mix(in srgb,var(--ink) 22%,transparent) 1px,transparent 1px) 0 0/100% 64px,linear-gradient(90deg,color-mix(in srgb,var(--ink) 22%,transparent) 1px,transparent 1px) 0 0/64px 100%;
-  -webkit-mask:radial-gradient(180px circle at var(--mx,50%) var(--my,50%),#000,transparent 70%);mask:radial-gradient(180px circle at var(--mx,50%) var(--my,50%),#000,transparent 70%)}
+  background:linear-gradient(color-mix(in srgb,var(--ink) 38%,transparent) 1px,transparent 1px) 0 0/100% 64px,linear-gradient(90deg,color-mix(in srgb,var(--ink) 38%,transparent) 1px,transparent 1px) 0 0/64px 100%;
+  -webkit-mask:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),#000,transparent 70%);mask:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),#000,transparent 70%)}
 .desk.lit::after{opacity:1}
 :where(.desk>*){position:relative;z-index:1}
 @media (prefers-reduced-motion:reduce){.desk::after{display:none}}
+
+.bar .lights,.bar .open-page,.bar button{cursor:pointer}
+.win.max .bar .lights,.win.max .bar button{cursor:pointer}
+
+/* Folders hop on hover */
+@media (prefers-reduced-motion:no-preference){
+  .folder:hover svg,.folder:focus-visible svg{animation:hop-f .5s cubic-bezier(.3,1.5,.5,1)}
+  @keyframes hop-f{0%{transform:none}30%{transform:translateY(-10px) scale(1.08,.94) rotate(-3deg)}60%{transform:translateY(-3px) scale(.97,1.04)}100%{transform:translateY(-3px) scale(1.06)}}
+  .hero h1{animation:rise .8s cubic-bezier(.2,1,.3,1) both} .hero .role{animation:rise .8s .12s cubic-bezier(.2,1,.3,1) both} .hero .tag{animation:rise .8s .22s cubic-bezier(.2,1,.3,1) both}
+  .dock{animation:dock-in .7s .5s cubic-bezier(.2,1.3,.4,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(24px)}}
+  @keyframes dock-in{from{opacity:0;transform:translateY(40px)}}
+}
+
+/* Phones: windows become full-screen sheets that respect the notch and home bar */
+@media (max-width:720px){
+  .win .bar{padding-top:max(.45rem,env(safe-area-inset-top));min-height:56px}
+  .win .read{padding-bottom:env(safe-area-inset-bottom)}
+  .win .light{width:44px;height:44px} .win .light::before{width:18px;height:18px} .win .light svg{opacity:1}
+  .dock{margin-bottom:calc(.75rem + env(safe-area-inset-bottom))}
+  .folder svg{width:68px;height:56px} .folder{padding:.6rem .1rem}
+}
+@media (max-width:720px){.win{z-index:120!important}}

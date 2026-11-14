@@ -9,7 +9,7 @@
   const link = document.getElementById('back-link'), label = document.getElementById('back-label');
   if (!link) return;
   const target = prev && prev.path !== here.path ? prev : { path: '/', name: 'Home' };
-  const short = target.name.length > 28 ? target.name.slice(0, 26) + '…' : target.name;
+  const short = target.name.length > 40 ? target.name.slice(0, 38) + '…' : target.name;
   link.href = target.path; label.textContent = 'Back to ' + short; link.setAttribute('aria-label', 'Back to ' + target.name);
   link.addEventListener('click', e => {
     if (prev && prev.path === target.path && document.referrer.startsWith(location.origin)) { e.preventDefault(); history.back(); }

@@ -59,5 +59,5 @@ test('case studies come out in their set order', () => {
 
 test('images below the lock are not published as files (run after build)', { skip: !existsSync(new URL('../dist/work/mavi/', import.meta.url)) }, () => {
   const published = readdirSync(new URL('../dist/work/mavi/', import.meta.url));
-  for (const f of ['dashboard-comparison.webp', 'candidates-comparison.webp', 'mvp-flow.webp']) assert.ok(!published.includes(f), f);
+  for (const f of ['candidates-comparison.webp', 'mvp-flow.webp', 'navigation-comparison.webp']) assert.ok(!published.includes(f), f);
 });
