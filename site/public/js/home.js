@@ -17,88 +17,6 @@ document.querySelectorAll('[data-copy]').forEach(a=>a.addEventListener('click',a
   t.textContent=(ok?'Copied: ':'')+email;t.classList.add('copied');copyStatus.textContent=ok?'Email address copied: '+email:email;
   clearTimeout(t._h);t._h=setTimeout(()=>{t.textContent='Contact, copy email';t.classList.remove('copied');copyStatus.textContent=''},3000)}));
 
-/* Windows: one per folder, several can be open at once. Click a window to bring it to the front. */
-const tpl=$('#win-tpl'), wins=new Map(); let zTop=20, opened=0;
-const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-function focusWin(w){w.style.zIndex=++zTop;document.querySelectorAll('.win.focused').forEach(x=>x.classList.remove('focused'));w.classList.add('focused')}
-function place(w){w.style.transform=`translate(${w._x}px,${w._y}px)`}
-function setMax(w,on){const r=w.querySelector('.read'),ratio=r.scrollTop/Math.max(1,r.scrollHeight-r.clientHeight);w.classList.toggle('max',on);
-  const b=w.querySelector('.max-btn');b.setAttribute('aria-label',on?'Exit full size':'Expand window');b.title=on?'Exit full size':'Expand';
-  requestAnimationFrame(()=>r.scrollTop=ratio*(r.scrollHeight-r.clientHeight))}
-const topWin=()=>[...document.querySelectorAll('.win:not(.minimized)')].filter(w=>!w._closing).sort((a,b)=>b.style.zIndex-a.style.zIndex)[0];
-function closeWin(w){if(w._closing)return;w._closing=true;grow(w,w._opener,true).then(()=>{wins.delete(w._key);w._tab?.remove();w.remove()});w._opener?.focus();setTimeout(()=>{const top=topWin();if(top)focusWin(top)},0)}
-
-async function fill(w,key,url){
-  const art=w.querySelector('.art'), tocList=w.querySelector('.toc ol'), uid=key.replace(/\W/g,'');
-  if(key==='kind'){
-    const list=await (await fetch('/testimonials.json')).json();
-    art.innerHTML='<h2 class="title">Kind words</h2><p class="sub">From people I\'ve worked with, managed, mentored and learned from. Taken from LinkedIn, unedited.</p>'+list.map(p=>`<figure class="kw"><blockquote class="${p.quote.length>320?'clamp':''}"><p>${esc(p.quote)}</p></blockquote>${p.quote.length>320?'<button class="rm" aria-expanded="false">Read more</button>':''}<figcaption><strong>${esc(p.name)}</strong>${esc(p.title)}</figcaption></figure>`).join('');
-    w.classList.add('plain'); return 'Kind words';
-  }
-  const doc=new DOMParser().parseFromString(await (await fetch(url)).text(),'text/html');
-  if(key==='about'){
-    const photo=doc.querySelector('.hero-photo');
-    art.innerHTML=(photo?photo.outerHTML:'')+'<div class="story about">'+doc.querySelector('.story.about').innerHTML+'</div><div class="next"><a class="btn solid" href="/about/">Open as a page</a></div>';
-    w.classList.add('plain'); return 'About';
-  }
-  art.innerHTML='<h2 class="title">'+esc(doc.querySelector('.lede h1').textContent)+'</h2>'+doc.querySelector('.facts').outerHTML+'<div class="story">'+doc.querySelector('.story').innerHTML+'</div>'+
-    (doc.querySelector('.gate')
-      ?'<div class="next"><p>The rest of this case study is password protected.</p><a class="btn solid" href="'+url+'">Open as a page to unlock</a></div>'
-      :'<div class="next"><a class="btn solid" href="'+url+'">Open as a page</a></div>');
-  const heads=[...art.querySelectorAll('.story h2,.story h3')]; heads.forEach((h,i)=>h.id=uid+'-s'+i);
-  tocList.innerHTML=heads.map(h=>`<li class="${h.tagName==='H3'?'sub':''}"><a href="#${h.id}">${esc(h.textContent)}</a></li>`).join('');
-  const links=[...tocList.querySelectorAll('a')];
-  links.forEach(a=>a.onclick=e=>{e.preventDefault();w.classList.remove('contents');art.querySelector(a.hash).scrollIntoView()});
-  const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;links.forEach(a=>a.removeAttribute('aria-current'));
-    const a=links.find(a=>a.hash==='#'+e.target.id);a?.setAttribute('aria-current','true');if(w.classList.contains('max'))a?.scrollIntoView({block:'nearest'})}),{root:w.querySelector('.read'),rootMargin:'0px 0px -75% 0px'});
-  heads.forEach(h=>io.observe(h));
-  return doc.querySelector('.facts dd')?.textContent||doc.title;
-}
-
-async function openWin(a){
-  const kind=a.dataset.open, url=a.getAttribute('href'), key=kind==='kind'||kind==='about'?kind:url;
-  if(wins.has(key)){const w=wins.get(key);if(w.classList.contains('minimized'))restore(w);focusWin(w);w.querySelector('.read').focus({preventScroll:true});return}
-  const w=tpl.content.firstElementChild.cloneNode(true);w._key=key;w._opener=a;wins.set(key,w);
-  w.querySelector('.open-page').href=key==='kind'?'/kind-words/':url;
-  const t=w.querySelector('.wtitle');t.id='wt-'+(++opened);w.setAttribute('aria-labelledby',t.id);t.textContent='Loading';
-  document.body.append(w);w.classList.add('open');focusWin(w);
-  // open above the folder row so the other folders stay clickable, cascading so several can sit side by side
-  const step=(opened-1)%6, row=document.querySelector('.folders').getBoundingClientRect().top;
-  if(!mobile()){w.style.width=Math.min(900,innerWidth*.62)+'px';w.style.height=Math.max(320,Math.min(620,row-96-step*28))+'px'}
-  const W=w.offsetWidth,H=w.offsetHeight;
-  w._x=Math.max(8,Math.min(innerWidth-W-8,(innerWidth-W)/2-150+step*60));w._y=Math.max(8,Math.min(innerHeight-H-8,72+step*28));place(w);
-  if(mobile())w.classList.add('max');
-  grow(w,a,false);
-  wire(w);
-  try{t.textContent=await fill(w,key,url)}catch{t.textContent='Could not load';w.querySelector('.art').innerHTML='<p>This did not load. <a href="'+url+'">Open it as a page</a>.</p>'}
-  w.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{const o=b.previousElementSibling.classList.toggle('open');b.textContent=o?'Show less':'Read more';b.setAttribute('aria-expanded',o)});
-  w.querySelector('.read').focus({preventScroll:true});
-}
-
-function wire(w){
-  w.addEventListener('pointerdown',()=>focusWin(w),true);
-  w.querySelector('.close-btn').onclick=()=>closeWin(w);
-  w.querySelector('.max-btn').onclick=()=>setMax(w,!w.classList.contains('max'));
-  w.querySelector('.min-btn').onclick=()=>minimize(w);
-  w.querySelector('.toc-btn').onclick=()=>w.classList.toggle('contents');
-  const bar=w.querySelector('.bar');let grab=null;
-  bar.addEventListener('pointerdown',e=>{if(e.target.closest('button,a,.lights')||w.classList.contains('max')||mobile())return;bar.setPointerCapture(e.pointerId);grab={dx:e.clientX-w._x,dy:e.clientY-w._y}});
-  bar.addEventListener('pointermove',e=>{if(!grab)return;w._x=Math.min(innerWidth-80,Math.max(80-w.offsetWidth,e.clientX-grab.dx));w._y=Math.min(innerHeight-60,Math.max(0,e.clientY-grab.dy));place(w)});
-  bar.addEventListener('pointerup',()=>grab=null);bar.addEventListener('dblclick',e=>{if(!e.target.closest('button,a,.lights'))setMax(w,!w.classList.contains('max'))});
-  w.querySelectorAll('.grip').forEach(g=>g.addEventListener('pointerdown',e=>{
-    if(w.classList.contains('max')||mobile())return;e.preventDefault();e.stopPropagation();g.setPointerCapture(e.pointerId);g.classList.add('active');w.classList.add('resizing');
-    const r=w.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,left=g.dataset.edge==='left';
-    const move=ev=>{const dx=ev.clientX-sx,dy=ev.clientY-sy;
-      let nw=left?r.width-dx:r.width+dx;nw=Math.max(420,Math.min(nw,left?r.right:innerWidth-r.left));
-      const nh=Math.max(320,Math.min(r.height+dy,innerHeight-r.top));
-      w.style.width=nw+'px';w.style.height=nh+'px';if(left){w._x=r.right-nw;place(w)}};
-    const up=()=>{g.classList.remove('active');w.classList.remove('resizing');g.removeEventListener('pointermove',move);g.removeEventListener('pointerup',up)};
-    g.addEventListener('pointermove',move);g.addEventListener('pointerup',up)}));
-}
-
-document.querySelectorAll('.folder[data-open]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openWin(a)}));
-addEventListener('keydown',e=>{if(e.key!=='Escape'||document.querySelector('dialog[open],.style-panel.on'))return;const top=topWin();if(top)closeWin(top)});
-
 /* Folders that leave the site ask first */
 const leave=$('#leave');
 document.querySelectorAll('.folder[target="_blank"]').forEach(a=>a.addEventListener('click',e=>{
@@ -125,23 +43,201 @@ if(!calm){const fs=[...document.querySelectorAll('.folder')];
   fs.forEach((f,i)=>f.animate([{transform:`translate(${(Math.random()-.5)*innerWidth*.9}px,${(Math.random()-.5)*innerHeight*.8}px) rotate(${(Math.random()-.5)*70}deg) scale(.6)`,opacity:0},{opacity:1,offset:.25},{transform:'none',opacity:1}],
     {duration:mobile()?650:1000,delay:i*70,easing:'cubic-bezier(.2,1.35,.4,1)',fill:'backwards'}))}
 
-/* Yellow: expanded goes back to floating; floating goes to a tab above the dock */
-const tray=$('#tray');
-function minimize(w){
-  if(w.classList.contains('max')){setMax(w,false);return}
-  if(w._tab)return;
-  const tab=document.createElement('button');tab.type='button';tab.textContent=w.querySelector('.wtitle').textContent;tab.setAttribute('aria-label','Restore '+tab.textContent+' window');
-  tab.onclick=()=>restore(w);w._tab=tab;tray.append(tab);
-  const r=w.getBoundingClientRect(),t=tab.getBoundingClientRect();
-  const done=()=>{w.classList.add('minimized');w.classList.remove('focused');tab.focus()};
-  if(calm)return done();
-  w.animate([{transform:w.style.transform,opacity:1},{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top-r.height/2}px) scale(.08)`,opacity:.2}],{duration:260,easing:'cubic-bezier(.4,0,.6,1)'}).onfinish=done;
+/* Windows work like browser windows with tabs. A folder opens as a tab in the front window.
+   Drag a tab out of the strip and it becomes its own window. Click the desktop and windows tuck away. */
+const tpl=$('#win-tpl'), ptpl=$('#pane-tpl'), panes=new Map(), tray=$('#tray'); let zTop=20, uid=0, recent=[];
+const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const keyOf=a=>{const k=a.dataset.open;return k==='kind'||k==='about'?k:a.getAttribute('href')};
+const nameOf=a=>a.querySelector('span').textContent.trim();
+const shown=w=>w.isConnected&&!w._min&&!w._closing;
+const wins=()=>[...document.querySelectorAll('.win')].filter(shown);
+const topWin=()=>wins().sort((a,b)=>b.style.zIndex-a.style.zIndex)[0];
+const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+function focusWin(w){w.style.zIndex=++zTop;document.querySelectorAll('.win.focused').forEach(x=>x.classList.remove('focused'));w.classList.add('focused')}
+function place(w){w.style.transform=`translate(${w._x}px,${w._y}px)`}
+function setMax(w,on){const r=w._active.querySelector('.read'),ratio=r.scrollTop/Math.max(1,r.scrollHeight-r.clientHeight);w.classList.toggle('max',on);
+  const b=w.querySelector('.max-btn');b.setAttribute('aria-label',on?'Exit full size':'Expand window');b.title=on?'Exit full size':'Expand';
+  requestAnimationFrame(()=>r.scrollTop=ratio*(r.scrollHeight-r.clientHeight))}
+// about a quarter narrower than before, so two windows fit side by side
+function size(){const row=document.querySelector('.folders').getBoundingClientRect().top;return{w:Math.min(675,innerWidth*.465),h:Math.max(320,Math.min(620,row-96))}}
+
+function newWin(b,x,y){
+  const w=tpl.content.firstElementChild.cloneNode(true);document.body.append(w);w.classList.add('open');
+  if(mobile())w.classList.add('max');else{w.style.width=b.w+'px';w.style.height=b.h+'px'}
+  w._x=clamp(x,8,innerWidth-w.offsetWidth-8);w._y=clamp(y,8,innerHeight-w.offsetHeight-8);place(w);wire(w);focusWin(w);return w}
+
+function label(p,short,full){p._short=short;p._full=full;p._tab.querySelector('.tl').textContent=short;p._tab.title=full;p._tab.querySelector('.tx').setAttribute('aria-label','Close '+short)}
+function attach(w,p,before){p._win=w;w.querySelector('.tabs').insertBefore(p._tab,before||null);w.append(p);activate(p)}
+function activate(p){const w=p._win;w._active=p;
+  w.querySelectorAll(':scope>.body').forEach(b=>b.hidden=b!==p);
+  const tabs=[...w.querySelectorAll('.tab')];
+  tabs.forEach(t=>{const on=t===p._tab;t.classList.toggle('on',on);t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});
+  w.classList.toggle('solo',tabs.length<2);w.classList.toggle('plain',!!p._plain);w.classList.remove('contents');
+  w.setAttribute('aria-label',p._full||p._short);w.querySelector('.open-page').href=p._page;
+  p._tab.scrollIntoView({block:'nearest',inline:'nearest'})}
+function closePane(p){const w=p._win,tabs=[...w.querySelectorAll('.tab')];
+  if(tabs.length===1)return closeWin(w);
+  const i=tabs.indexOf(p._tab);panes.delete(p._key);p._tab.remove();p.remove();
+  if(w._active===p){const n=(tabs[i+1]||tabs[i-1])._pane;activate(n);n._tab.focus()}else activate(w._active);
+  renderTray()}
+function closeWin(w){if(w._closing)return;w._closing=true;const op=w._active?._opener;
+  w.querySelectorAll(':scope>.body').forEach(p=>panes.delete(p._key));
+  grow(w,op,true).then(()=>w.remove());renderTray();op?.focus();
+  setTimeout(()=>{const t=topWin();if(t)focusWin(t)},0)}
+
+function makeTab(p){
+  const t=document.createElement('div');t.className='tab';t.setAttribute('role','tab');t.id='tab-'+(++uid);t._pane=p;p._tab=t;
+  t.setAttribute('aria-controls',p.id);p.setAttribute('aria-labelledby',t.id);
+  t.innerHTML='<span class="tl"></span><button class="tx" type="button" tabindex="-1"><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3.5 3.5l5 5M8.5 3.5l-5 5"/></svg></button>';
+  t.addEventListener('click',e=>{if(t._dragged)return;if(e.target.closest('.tx'))closePane(p);else{activate(p);focusWin(p._win)}});
+  t.addEventListener('auxclick',e=>{if(e.button===1){e.preventDefault();closePane(p)}});
+  t.addEventListener('keydown',e=>{const tabs=[...p._win.querySelectorAll('.tab')],i=tabs.indexOf(t);
+    if(e.key==='ArrowRight'||e.key==='ArrowLeft'){e.preventDefault();const n=tabs[(i+(e.key==='ArrowRight'?1:-1)+tabs.length)%tabs.length];activate(n._pane);n.focus()}
+    else if(e.key==='Delete'||e.key==='Backspace'){e.preventDefault();closePane(p)}});
+  t.addEventListener('pointerdown',e=>dragTab(t,e));
+  return t}
+
+/* Move a window with the pointer, only after it travels 4px, so a near-miss on a button never moves it */
+function dragWin(w,e,el){
+  if(w.classList.contains('max')||mobile())return;
+  const sx=e.clientX,sy=e.clientY,gx=sx-w._x,gy=sy-w._y;let on=false;el.setPointerCapture(e.pointerId);
+  const mv=ev=>{if(!on&&Math.hypot(ev.clientX-sx,ev.clientY-sy)<4)return;on=true;el._dragged=true;w.classList.add('moving');
+    w._x=clamp(ev.clientX-gx,80-w.offsetWidth,innerWidth-80);w._y=clamp(ev.clientY-gy,0,innerHeight-60);place(w)};
+  const up=()=>{el.removeEventListener('pointermove',mv);el.removeEventListener('pointerup',up);el.removeEventListener('pointercancel',up);w.classList.remove('moving');setTimeout(()=>el._dragged=false)};
+  el.addEventListener('pointermove',mv);el.addEventListener('pointerup',up);el.addEventListener('pointercancel',up)}
+
+/* Tabs: drag along the strip to reorder, drag out to tear off into a new window. A lone tab moves its window */
+function dragTab(t,e){
+  if(e.button!==0||e.target.closest('.tx')||mobile())return;
+  const p=t._pane,w=p._win,strip=w.querySelector('.tabs');activate(p);focusWin(w);
+  if(w.querySelectorAll('.tab').length<2)return dragWin(w,e,t);
+  e.preventDefault();const sx=e.clientX,sy=e.clientY;let on=false,ghost=null;t.setPointerCapture(e.pointerId);
+  const mv=ev=>{
+    if(!on&&Math.hypot(ev.clientX-sx,ev.clientY-sy)<5)return;
+    if(!on){on=true;t._dragged=true;t.classList.add('dragging')}
+    const r=strip.getBoundingClientRect(),inside=ev.clientY>r.top-28&&ev.clientY<r.bottom+28&&ev.clientX>r.left-48&&ev.clientX<r.right+48;
+    if(inside){
+      if(ghost){ghost.remove();ghost=null;t.classList.remove('torn')}
+      const sib=[...strip.children].find(o=>{if(o===t)return false;const b=o.getBoundingClientRect();return ev.clientX>b.left&&ev.clientX<b.right});
+      if(sib){const b=sib.getBoundingClientRect();strip.insertBefore(t,ev.clientX<b.left+b.width/2?sib:sib.nextSibling)}
+    }else{
+      if(!ghost){ghost=mini(p);t.classList.add('torn')}
+      ghost.style.transform=`translate(${ev.clientX-24}px,${ev.clientY-14}px)`}};
+  const up=ev=>{t.removeEventListener('pointermove',mv);t.removeEventListener('pointerup',up);t.removeEventListener('pointercancel',up);
+    t.classList.remove('dragging','torn');setTimeout(()=>t._dragged=false);
+    if(ghost){const g=ghost.getBoundingClientRect();ghost.remove();if(ev.type==='pointerup')tearOff(p,ev.clientX,ev.clientY,g)}};
+  t.addEventListener('pointermove',mv);t.addEventListener('pointerup',up);t.addEventListener('pointercancel',up)}
+
+// a very small live copy of the window that follows the pointer
+function mini(p){
+  const g=document.createElement('div');g.className='ghost';g.setAttribute('aria-hidden','true');
+  g.innerHTML='<div class="gbar"><i></i><span></span></div><div class="gbody"></div>';g.querySelector('span').textContent=p._short;
+  const art=p.querySelector('.art').cloneNode(true);art.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));g.querySelector('.gbody').append(art);
+  document.body.append(g);if(!calm)g.animate([{scale:.3,opacity:0},{scale:1,opacity:1}],{duration:280,easing:'cubic-bezier(.2,1.4,.4,1)'});return g}
+
+function tearOff(p,x,y,g){
+  const old=p._win,tabs=[...old.querySelectorAll('.tab')],i=tabs.indexOf(p._tab),b={w:old.offsetWidth,h:old.offsetHeight};
+  p._tab.remove();p.remove();activate((tabs[i+1]||tabs[i-1])._pane);
+  const w=newWin(b,x-48,y-20);attach(w,p);focusWin(w);
+  if(!calm){const r=w.getBoundingClientRect();
+    w.animate([{transform:`translate(${g.left+g.width/2-r.width/2}px,${g.top+g.height/2-r.height/2}px) scale(${g.width/r.width},${g.height/r.height})`,opacity:.7},{transform:w.style.transform,opacity:1}],{duration:340,easing:'cubic-bezier(.2,1.2,.4,1)'})}
+  p.querySelector('.read').focus({preventScroll:true});renderTray()}
+
+async function fill(p,key,url){
+  const art=p.querySelector('.art'), tocList=p.querySelector('.toc ol');
+  if(key==='kind'){
+    const list=await (await fetch('/testimonials.json')).json();
+    art.innerHTML='<h2 class="title">Kind words</h2><p class="sub">From people I\'ve worked with, managed, mentored and learned from. Taken from LinkedIn, unedited.</p>'+list.map(x=>`<figure class="kw"><blockquote class="${x.quote.length>320?'clamp':''}"><p>${esc(x.quote)}</p></blockquote>${x.quote.length>320?'<button class="rm" aria-expanded="false">Read more</button>':''}<figcaption><strong>${esc(x.name)}</strong>${esc(x.title)}</figcaption></figure>`).join('');
+    p._plain=true; return 'Kind words';
+  }
+  const doc=new DOMParser().parseFromString(await (await fetch(url)).text(),'text/html');
+  if(key==='about'){
+    const photo=doc.querySelector('.hero-photo');
+    art.innerHTML=(photo?photo.outerHTML:'')+'<div class="story about">'+doc.querySelector('.story.about').innerHTML+'</div><div class="next"><a class="btn solid" href="/about/">Open as a page</a></div>';
+    p._plain=true; return 'About Jarell';
+  }
+  const title=doc.querySelector('.lede h1').textContent;
+  art.innerHTML='<h2 class="title">'+esc(title)+'</h2>'+doc.querySelector('.facts').outerHTML+'<div class="story">'+doc.querySelector('.story').innerHTML+'</div>'+
+    (doc.querySelector('.gate')
+      ?'<div class="next"><p>The rest of this case study is password protected.</p><a class="btn solid" href="'+url+'">Open as a page to unlock</a></div>'
+      :'<div class="next"><a class="btn solid" href="'+url+'">Open as a page</a></div>');
+  const heads=[...art.querySelectorAll('.story h2,.story h3')]; heads.forEach((h,i)=>h.id=p.id+'-s'+i);
+  tocList.innerHTML=heads.map(h=>`<li class="${h.tagName==='H3'?'sub':''}"><a href="#${h.id}">${esc(h.textContent)}</a></li>`).join('');
+  const links=[...tocList.querySelectorAll('a')];
+  links.forEach(a=>a.onclick=e=>{e.preventDefault();p._win.classList.remove('contents');art.querySelector(a.hash).scrollIntoView()});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(!e.isIntersecting)return;links.forEach(a=>a.removeAttribute('aria-current'));
+    const a=links.find(a=>a.hash==='#'+e.target.id);a?.setAttribute('aria-current','true');if(p._win.classList.contains('max'))a?.scrollIntoView({block:'nearest'})}),{root:p.querySelector('.read'),rootMargin:'0px 0px -75% 0px'});
+  heads.forEach(h=>io.observe(h));
+  return title;
+}
+
+async function openWin(a){
+  const key=keyOf(a),name=nameOf(a);
+  recent=[{key,a},...recent.filter(r=>r.key!==key)].slice(0,8);
+  if(panes.has(key)){const p=panes.get(key),w=p._win;activate(p);if(w._min)restore(w);else{focusWin(w);p.querySelector('.read').focus({preventScroll:true})}renderTray();return}
+  const p=ptpl.content.firstElementChild.cloneNode(true);p.id='pane-'+(++uid);p._key=key;p._opener=a;p._page=key==='kind'?'/kind-words/':a.getAttribute('href');panes.set(key,p);
+  makeTab(p);label(p,name,name);
+  let w=topWin();const fresh=!w;
+  if(fresh){const b=size();w=newWin(b,(innerWidth-b.w)/2,72)}
+  attach(w,p);focusWin(w);
+  if(fresh)grow(w,a,false);else if(!calm)p._tab.animate([{transform:'translateY(6px) scale(.85)',opacity:0},{transform:'none',opacity:1}],{duration:240,easing:'cubic-bezier(.2,1.3,.4,1)'});
+  renderTray();
+  try{label(p,name,await fill(p,key,a.getAttribute('href')))}catch{p.querySelector('.art').innerHTML='<p>This did not load. <a href="'+p._page+'">Open it as a page</a>.</p>'}
+  if(p._win._active===p)activate(p);
+  p.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{const o=b.previousElementSibling.classList.toggle('open');b.textContent=o?'Show less':'Read more';b.setAttribute('aria-expanded',o)});
+  if(p._win._active===p)p.querySelector('.read').focus({preventScroll:true});
+}
+
+function wire(w){
+  w.addEventListener('pointerdown',()=>focusWin(w),true);
+  w.querySelector('.close-btn').onclick=()=>closeWin(w);
+  w.querySelector('.max-btn').onclick=()=>setMax(w,!w.classList.contains('max'));
+  w.querySelector('.min-btn').onclick=()=>minimize(w);
+  w.querySelector('.toc-btn').onclick=()=>w.classList.toggle('contents');
+  const bar=w.querySelector('.bar');
+  bar.addEventListener('pointerdown',e=>{if(!e.target.closest('button,a,.lights,.tab'))dragWin(w,e,bar)});
+  bar.addEventListener('dblclick',e=>{if(!e.target.closest('button,a,.lights,.tab'))setMax(w,!w.classList.contains('max'))});
+  w.querySelectorAll('.grip').forEach(g=>g.addEventListener('pointerdown',e=>{
+    if(w.classList.contains('max')||mobile())return;e.preventDefault();e.stopPropagation();g.setPointerCapture(e.pointerId);g.classList.add('active');w.classList.add('resizing');
+    const r=w.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,left=g.dataset.edge==='left';
+    const move=ev=>{const dx=ev.clientX-sx,dy=ev.clientY-sy;
+      let nw=left?r.width-dx:r.width+dx;nw=Math.max(420,Math.min(nw,left?r.right:innerWidth-r.left));
+      const nh=Math.max(320,Math.min(r.height+dy,innerHeight-r.top));
+      w.style.width=nw+'px';w.style.height=nh+'px';if(left){w._x=r.right-nw;place(w)}};
+    const up=()=>{g.classList.remove('active');w.classList.remove('resizing');g.removeEventListener('pointermove',move);g.removeEventListener('pointerup',up)};
+    g.addEventListener('pointermove',move);g.addEventListener('pointerup',up)}));
+}
+
+document.querySelectorAll('.folder[data-open]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openWin(a)}));
+addEventListener('keydown',e=>{if(e.key!=='Escape'||document.querySelector('dialog[open],.style-panel.on'))return;const top=topWin();if(top)closeWin(top)});
+// clicking empty desktop tucks open windows away
+document.addEventListener('pointerdown',e=>{if(mobile()||e.button!==0||e.target.closest('a,button,input,select,textarea,label,dialog,.win,.tray,.style-panel,.ghost,[role=dialog]'))return;wins().forEach(w=>minimize(w,true))});
+
+/* Recent: up to 3 pages opened before that are not on screen right now, bottom right */
+function renderTray(){
+  const items=recent.filter(r=>{const p=panes.get(r.key);return !p||p._win._min}).slice(0,3);
+  tray.replaceChildren(...items.map(r=>{const p=panes.get(r.key),b=document.createElement('button');b.type='button';b.dataset.key=r.key;if(p)b.className='min';
+    b.textContent=nameOf(r.a);b.title=(p?'Restore ':'Reopen ')+b.textContent;b.setAttribute('aria-label',b.title);
+    b.onclick=()=>{const q=panes.get(r.key);if(q){activate(q);restore(q._win)}else openWin(r.a)};return b}));
+  document.querySelectorAll('.folder[data-open]').forEach(f=>{const p=panes.get(keyOf(f));f.classList.toggle('was-open',!!p&&!!p._win._min)})}
+
+/* Yellow: expanded goes back to floating; floating tucks into Recent. Clicking the desktop tucks it away too */
+function minimize(w,away){
+  if(w._min||w._closing)return;
+  if(w.classList.contains('max')){if(!away)return setMax(w,false);setMax(w,false)}
+  w._min=true;w.classList.remove('focused');renderTray();
+  const item=tray.querySelector(`[data-key="${CSS.escape(w._active._key)}"]`);
+  const done=()=>{if(!w._min)return;w.classList.add('minimized');if(!away)item?.focus()};
+  if(calm||!item)return done();
+  const r=w.getBoundingClientRect(),t=item.getBoundingClientRect();
+  w.animate([{transform:w.style.transform,opacity:1},{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top+t.height/2-r.height/2}px) scale(.06)`,opacity:0}],{duration:280,easing:'cubic-bezier(.4,0,.6,1)'}).onfinish=done;
 }
 function restore(w){
-  const tab=w._tab;w.classList.remove('minimized');focusWin(w);
-  if(!calm&&tab){const t=tab.getBoundingClientRect(),r=w.getBoundingClientRect();
-    w.animate([{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top-r.height/2}px) scale(.08)`,opacity:.2},{transform:w.style.transform,opacity:1}],{duration:300,easing:'cubic-bezier(.2,1.2,.4,1)'})}
-  tab?.remove();w._tab=null;w.querySelector('.read').focus({preventScroll:true});
+  const t=tray.querySelector(`[data-key="${CSS.escape(w._active._key)}"]`)?.getBoundingClientRect();
+  w._min=false;w.classList.remove('minimized');focusWin(w);
+  if(!calm&&t){const r=w.getBoundingClientRect();
+    w.animate([{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top+t.height/2-r.height/2}px) scale(.06)`,opacity:0},{transform:w.style.transform,opacity:1}],{duration:320,easing:'cubic-bezier(.2,1.2,.4,1)'})}
+  renderTray();w._active.querySelector('.read').focus({preventScroll:true});
 }
 
 /* Windows grow out of the folder that opened them and shrink back into it on close */

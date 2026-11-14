@@ -224,3 +224,45 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
   .folder svg{width:68px;height:56px} .folder{padding:.6rem .1rem}
 }
 @media (max-width:720px){.win{z-index:120!important}}
+/* Round 13: browser-style tabs in the title bar */
+.bar{gap:.25rem;padding:.3rem .35rem .3rem .45rem}
+.tabs{display:flex;align-items:center;gap:2px;min-width:0;flex:0 1 auto;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.spacer{flex:1 1 1.5rem;min-width:1.5rem;align-self:stretch}
+.tab{position:relative;display:flex;align-items:center;gap:.2rem;flex:0 1 190px;min-width:76px;height:36px;padding:0 5px 0 .75rem;border-radius:10px;color:var(--ink-2);font:500 .8125rem/1 var(--sans);cursor:pointer;user-select:none;touch-action:none;transition:background .15s,color .15s,opacity .15s}
+.tab .tl{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tab:hover{background:color-mix(in srgb,var(--ink) 6%,transparent);color:var(--ink)}
+.tab.on{background:color-mix(in srgb,var(--ink) 10%,transparent);color:var(--ink);font-weight:600}
+.tab:focus-visible{outline:2px solid var(--ink);outline-offset:-2px}
+.win.solo .tab{cursor:grab}
+.tx{flex:none;width:26px;height:26px;padding:0;border:0;border-radius:50%;background:none;display:grid;place-items:center;color:inherit;cursor:pointer;opacity:0;transition:opacity .12s,background .12s}
+.tx svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round}
+.tab:hover .tx,.tab.on .tx,.tab:focus-within .tx{opacity:1}
+.tx:hover{background:color-mix(in srgb,var(--ink) 16%,transparent)}
+.tab.dragging{cursor:grabbing;background:var(--surface);box-shadow:0 6px 16px -8px rgba(0,0,0,.45);z-index:2}
+.tab.torn{opacity:.3}
+.win .body[hidden]{display:none}
+.win.moving{user-select:none} .win.moving .read{pointer-events:none}
+/* Bigger window buttons with a padded no-drag zone around them */
+.lights{padding:0 2px 0 8px;cursor:default}
+.light{width:40px;height:40px} .light::before{width:16px;height:16px} .light svg{width:11px;height:11px}
+/* Mini window that follows a tab dragged out of the strip */
+.ghost{position:fixed;left:0;top:0;width:220px;height:150px;border-radius:12px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden;pointer-events:none;z-index:400}
+.gbar{display:flex;align-items:center;gap:.4rem;height:26px;padding:0 .6rem;border-bottom:1px solid var(--line);font:600 .6875rem/1 var(--sans);color:var(--ink);white-space:nowrap}
+.gbar i{flex:none;width:8px;height:8px;border-radius:50%;background:#28c840}
+.gbody{height:calc(100% - 26px);overflow:hidden}
+.gbody article{width:675px;padding:1.5rem;transform:scale(.32);transform-origin:0 0}
+/* Recent windows, bottom right, quiet */
+.tray{left:auto;right:1.25rem;bottom:4.6rem;transform:none;flex-direction:column;align-items:flex-end;flex-wrap:nowrap;gap:.3rem;max-width:15rem}
+.tray button{min-height:32px;max-width:15rem;padding:0 .75rem;font-size:.75rem;color:var(--ink-2);box-shadow:none;opacity:.8;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;transition:opacity .15s,color .15s,border-color .15s}
+.tray button::before{flex:none;width:6px;height:6px;background:color-mix(in srgb,var(--ink) 35%,transparent)}
+.tray button.min::before{background:#febc2e}
+.tray button:hover,.tray button:focus-visible{opacity:1;color:var(--ink)}
+/* A folder whose window is tucked away */
+.folder.was-open{border-radius:16px;background:color-mix(in srgb,var(--ink) 6%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ink) 28%,transparent)}
+@media (max-width:720px){
+  .min-btn{display:none!important} .tray{display:none}
+  .tab{touch-action:auto;min-width:96px} .tab .tx{opacity:1}
+}
+.bar>.lights,.bar>.open-page,.bar>.toc-btn{flex:none}
+.folder.was-open{background:color-mix(in srgb,var(--ink) 4%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 20%,transparent)}
