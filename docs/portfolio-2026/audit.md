@@ -12,3 +12,33 @@
 | Round 9 | accessibility | Style panel: 6 themes x light/dark checked by an automated test (text and errors 4.5:1, accents and folders 3:1). Keyboard and Escape work, status announced to screen readers, no overflow at 360px for all fonts and sizes | |
 
 Not yet run: ui-ux-pro-max, no-ai-slop, webapp-testing, code-review, security-review.
+
+## Code review and security review (2026-11-14)
+
+Code review (high effort) found 10 issues; 9 fixed, 1 left on purpose.
+
+| Finding | Outcome |
+| --- | --- |
+| Escape could close a hidden, minimized window | Fixed |
+| Back button pointed forward after going back | Fixed (per-tab page trail) |
+| Escape on the Style panel also closed a window | Fixed |
+| Double-clicking minimize made two tray tabs | Fixed |
+| A cancelled folder drag could swallow the next click | Fixed |
+| Window title inserted into the page unescaped | Fixed |
+| Replaced images kept a stale compressed copy | Fixed (rebuilds when the source is newer) |
+| No security headers | Fixed (frame, nosniff, referrer, permissions in netlify.toml) |
+| Image fallback path was never published | Fixed |
+| Password kept in session storage to stay unlocked for the visit | Kept: no third-party scripts run on the site, and it only lives until the tab closes |
+
+Security review (manual; the review tool could not run in this repo):
+
+| Check | Result |
+| --- | --- |
+| Password or notes in the built site | None. `[JARELL]` notes and draft status are stripped |
+| Locked text or locked images readable without the password | No. Text and images are encrypted together |
+| Source maps or env files published | None |
+| Old phone number on the 2020 archive pages | Was published; now removed at build |
+| New-tab links without `noopener` | 2020 pages had some; now fixed at build |
+| `innerHTML` from fetched pages | Same-site pages only; titles and testimonial text are escaped |
+| Password strength | The lock runs in the browser, so a weak password can be guessed offline. "LockedOutofHeaven" is long enough; avoid short ones |
+| Editor | Login through GitHub via Netlify; no keys in the repo |

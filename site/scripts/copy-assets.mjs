@@ -3,7 +3,7 @@
 // 2. Copies only the images used in the PUBLIC part of each study into public/work/.
 //    Images used only below the lock are left out; the build embeds them inside the encrypted section.
 // 3. Copies the 2020 archive, the editor files and the editor preview styles.
-import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import sharp from 'sharp';
 import matter from 'gray-matter';
 
@@ -28,9 +28,13 @@ for (const [coll, out] of [['work', 'work'], ['earlier', 'earlier-img']]) {
       if (!/\.(png|jpe?g)$/i.test(f)) continue;
       const target = new URL(webp(f), cdir), input = new URL(f, src);
       before += readFileSync(input).length;
-      if (!existsSync(target)) await sharp(readFileSync(input)).resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 80 }).toFile(target.pathname);
-      after += readFileSync(target).length; n++;
-      if (publicRefs.has(f)) cpSync(target, new URL(`${out}/${dir}/${webp(f)}`, pub));
+      let file = target, name = webp(f);
+      if (!existsSync(target) || statSync(target).mtimeMs < statSync(input).mtimeMs) {
+        try { await sharp(readFileSync(input)).resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 80 }).toFile(target.pathname); }
+        catch (err) { console.warn(`[portfolio] could not convert ${coll}/${dir}/${f}, using the original:`, err.message); rmSync(target, { force: true }); cpSync(input, new URL(f, cdir)); file = new URL(f, cdir); name = f; }
+      }
+      after += readFileSync(file).length; n++;
+      if (publicRefs.has(f)) cpSync(file, new URL(`${out}/${dir}/${name}`, pub));
     }
   }
 }
@@ -38,7 +42,11 @@ console.log(`[portfolio] ${n} images: ${(before / 1e6).toFixed(1)} MB -> ${(afte
 
 rmSync(new URL('2020', pub), { recursive: true, force: true });
 mkdirSync(new URL('2020', pub), { recursive: true });
-for (const f of readdirSync(root)) if (f.endsWith('.html')) cpSync(new URL(f, root), new URL(`2020/${f}`, pub));
+// 2020 pages: drop the old phone number and make new-tab links safe
+for (const f of readdirSync(root)) if (f.endsWith('.html'))
+  writeFileSync(new URL(`2020/${f}`, pub), readFileSync(new URL(f, root), 'utf8')
+    .replace(/<p[^>]*>\s*778-867-2408\s*<\/p>/g, '').replace(/778[-. ]?867[-. ]?2408/g, '')
+    .replace(/target="_blank"(?![^>]*rel=)/g, 'target="_blank" rel="noopener"'));
 for (const d of ['css', 'img', 'js']) cpSync(new URL(d, root), new URL(`2020/${d}`, pub), { recursive: true });
 
 // the admin editor is served from our own files, not an outside CDN

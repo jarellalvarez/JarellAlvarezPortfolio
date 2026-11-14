@@ -25,7 +25,8 @@ function place(w){w.style.transform=`translate(${w._x}px,${w._y}px)`}
 function setMax(w,on){const r=w.querySelector('.read'),ratio=r.scrollTop/Math.max(1,r.scrollHeight-r.clientHeight);w.classList.toggle('max',on);
   const b=w.querySelector('.max-btn');b.setAttribute('aria-label',on?'Exit full size':'Expand window');b.title=on?'Exit full size':'Expand';
   requestAnimationFrame(()=>r.scrollTop=ratio*(r.scrollHeight-r.clientHeight))}
-function closeWin(w){if(w._closing)return;w._closing=true;grow(w,w._opener,true).then(()=>{wins.delete(w._key);w._tab?.remove();w.remove()});w._opener?.focus();setTimeout(()=>{const top=[...document.querySelectorAll('.win')].sort((a,b)=>b.style.zIndex-a.style.zIndex)[0];if(top)focusWin(top)},0)}
+const topWin=()=>[...document.querySelectorAll('.win:not(.minimized)')].filter(w=>!w._closing).sort((a,b)=>b.style.zIndex-a.style.zIndex)[0];
+function closeWin(w){if(w._closing)return;w._closing=true;grow(w,w._opener,true).then(()=>{wins.delete(w._key);w._tab?.remove();w.remove()});w._opener?.focus();setTimeout(()=>{const top=topWin();if(top)focusWin(top)},0)}
 
 async function fill(w,key,url){
   const art=w.querySelector('.art'), tocList=w.querySelector('.toc ol'), uid=key.replace(/\W/g,'');
@@ -40,7 +41,7 @@ async function fill(w,key,url){
     art.innerHTML=(photo?photo.outerHTML:'')+'<div class="story about">'+doc.querySelector('.story.about').innerHTML+'</div><div class="next"><a class="btn solid" href="/about/">Open as a page</a></div>';
     w.classList.add('plain'); return 'About';
   }
-  art.innerHTML='<h2 class="title">'+doc.querySelector('.lede h1').textContent+'</h2>'+doc.querySelector('.facts').outerHTML+'<div class="story">'+doc.querySelector('.story').innerHTML+'</div>'+
+  art.innerHTML='<h2 class="title">'+esc(doc.querySelector('.lede h1').textContent)+'</h2>'+doc.querySelector('.facts').outerHTML+'<div class="story">'+doc.querySelector('.story').innerHTML+'</div>'+
     (doc.querySelector('.gate')
       ?'<div class="next"><p>The rest of this case study is password protected.</p><a class="btn solid" href="'+url+'">Open as a page to unlock</a></div>'
       :'<div class="next"><a class="btn solid" href="'+url+'">Open as a page</a></div>');
@@ -96,7 +97,7 @@ function wire(w){
 }
 
 document.querySelectorAll('.folder[data-open]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openWin(a)}));
-addEventListener('keydown',e=>{if(e.key!=='Escape'||document.querySelector('dialog[open]'))return;const top=[...document.querySelectorAll('.win')].sort((a,b)=>b.style.zIndex-a.style.zIndex)[0];if(top)closeWin(top)});
+addEventListener('keydown',e=>{if(e.key!=='Escape'||document.querySelector('dialog[open],.style-panel.on'))return;const top=topWin();if(top)closeWin(top)});
 
 /* Folders that leave the site ask first */
 const leave=$('#leave');
@@ -107,7 +108,8 @@ document.querySelectorAll('.folder[target="_blank"]').forEach(a=>a.addEventListe
 /* QA H-03: folders can be dragged like desktop icons. Under 5px it's a click, past it a move. Off on touch and phones */
 document.querySelectorAll('.folder').forEach(f=>{
   let st=null,moved=false;
-  f.addEventListener('pointerdown',e=>{if(e.pointerType!=='mouse'||e.button!==0||mobile())return;const m=new DOMMatrix(getComputedStyle(f).transform);st={x:e.clientX,y:e.clientY,tx:m.e,ty:m.f,r:f.getBoundingClientRect()};moved=false});
+  f.addEventListener('pointercancel',()=>{st=null;moved=false;f.classList.remove('dragging')});
+  f.addEventListener('pointerdown',e=>{moved=false;if(e.pointerType!=='mouse'||e.button!==0||mobile())return;const m=new DOMMatrix(getComputedStyle(f).transform);st={x:e.clientX,y:e.clientY,tx:m.e,ty:m.f,r:f.getBoundingClientRect()};moved=false});
   f.addEventListener('pointermove',e=>{if(!st)return;const dx=e.clientX-st.x,dy=e.clientY-st.y;
     if(!moved&&Math.hypot(dx,dy)<5)return;
     if(!moved){moved=true;f.setPointerCapture(e.pointerId);f.classList.add('dragging')}
@@ -127,6 +129,7 @@ if(!calm){const fs=[...document.querySelectorAll('.folder')];
 const tray=$('#tray');
 function minimize(w){
   if(w.classList.contains('max')){setMax(w,false);return}
+  if(w._tab)return;
   const tab=document.createElement('button');tab.type='button';tab.textContent=w.querySelector('.wtitle').textContent;tab.setAttribute('aria-label','Restore '+tab.textContent+' window');
   tab.onclick=()=>restore(w);w._tab=tab;tray.append(tab);
   const r=w.getBoundingClientRect(),t=tab.getBoundingClientRect();

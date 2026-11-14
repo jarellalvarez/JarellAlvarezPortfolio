@@ -52,7 +52,8 @@ export function render(md, { dir, meta, coll = 'work' }, locked = false) {
     .replace(/<p>\{\{stats\}\}<\/p>/g, stats ? `<div class="stats">${stats}</div>` : '')
     .replace(/src="img\/([^"]+)"/g, (_, f) => {
       const file = new URL(`${coll}/${dir}/${webp(f)}`, cache);
-      if (locked && existsSync(file)) return `src="data:image/webp;base64,${readFileSync(file).toString('base64')}"`;
+      const orig = new URL(`${coll}/${dir}/${f}`, cache), use = existsSync(file) ? file : orig;
+      if (locked && existsSync(use)) return `src="data:image/${use === file ? 'webp' : f.split('.').pop().replace('jpg', 'jpeg')};base64,${readFileSync(use).toString('base64')}"`;
       return `src="/${coll === 'work' ? 'work' : 'earlier-img'}/${dir}/${existsSync(file) ? webp(f) : f}"`;
     })
     .replace(/<p><img ([^>]*?)alt="([^"]*)"([^>]*)><\/p>/g, '<figure><img $1alt="$2"$3 loading="lazy"><figcaption>$2</figcaption></figure>');
