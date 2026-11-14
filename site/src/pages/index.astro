@@ -17,14 +17,13 @@ const work = studies().map(s => ({
   glyph: glyphs[`/work/${s.slug}/`],
   preview: s.preview || (s.slug === 'mavi' ? '/img/preview-mavi.webp' : null),
   previewText: s.meta.summary,
-  // QA H-05: MAVI opens in the window too; studies without a lock always do
-  open: (s.slug === 'mavi' || !s.md.includes('<!-- lock -->')) ? true : undefined,
+  open: true,
 }));
 const about = 'I\'m a senior product designer in Vancouver with 9+ years of making complicated software easier to use.';
 const extras = [
-  { href: '/about/', label: 'About', glyph: '<circle class="glyph" cx="28" cy="28" r="6.5"/>', preview: '/img/jarell-alvarez.jpg', previewText: about },
-  { href: links.vdc, label: 'Community', glyph: '<circle class="glyph" cx="23" cy="28" r="4.5"/><circle class="glyph" cx="33" cy="28" r="4.5"/>', external: true, previewText: 'Vancouver Design Community: 4,200+ designers, socials, talks and portfolio reviews.' },
-  { href: links.photography, label: 'Photography', glyph: "<path class=\"glyph\" fill-rule=\"evenodd\" d=\"M28 21a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z\"/>", external: true, previewText: 'Portraits, editorial and events. Opens jarell.photography.' },
+  { href: '/about/', label: 'About', open: 'about', glyph: '<circle class="glyph" cx="28" cy="28" r="6.5"/>', preview: '/img/jarell-alvarez.jpg', previewText: about },
+  { href: links.vdc, label: 'Community', preview: '/img/preview-vdc.webp', glyph: '<circle class="glyph" cx="23" cy="28" r="4.5"/><circle class="glyph" cx="33" cy="28" r="4.5"/>', external: true, previewText: 'Vancouver Design Community: 4,200+ designers, socials, talks and portfolio reviews.' },
+  { href: links.photography, label: 'Photography', preview: '/img/preview-photography.webp', glyph: "<path class=\"glyph\" fill-rule=\"evenodd\" d=\"M28 21a7 7 0 1 1 0 14 7 7 0 0 1 0-14zm0 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6z\"/>", external: true, previewText: 'Portraits, editorial and events. Opens jarell.photography.' },
   { href: '#kind', label: 'Kind words', glyph: '<path class="glyph" d="M19 22h8v6l-4 5h-3l2-5h-3zm11 0h8v6l-4 5h-3l2-5h-3z"/>', open: 'kind', previewText: 'Recommendations from people I\'ve worked with, managed and mentored.' },
 ];
 ---

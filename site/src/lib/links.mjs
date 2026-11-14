@@ -2,6 +2,6 @@
 export const links = {
   vdc: 'https://vancouverdesigncommunity.webflow.io/',
   photography: 'https://jarell.photography/',
-  linkedin: 'https://ca.linkedin.com/in/jarellalvarez',
+  linkedin: 'https://www.linkedin.com/in/jarellalvarez/',
   email: 'jarellalvarez@gmail.com',
 };

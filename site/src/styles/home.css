@@ -77,7 +77,7 @@ h1{font-family:var(--display);font-size:clamp(3.25rem,13.2vw,13.5rem);font-weigh
 .win{position:fixed;left:0;top:0;width:min(1100px,90vw);height:min(760px,86vh);display:grid;grid-template-rows:auto 1fr;background:var(--surface);border-radius:var(--r-win);box-shadow:var(--shadow);overflow:hidden;z-index:20;
   transform:translate(var(--x),var(--y));opacity:0;visibility:hidden;transition:opacity .16s,visibility 0s .16s}
 .win.open{opacity:1;visibility:visible;transition:opacity .16s}
-.win.max{left:20px;top:20px;width:calc(100vw - 40px);height:calc(100vh - 40px);transform:none;z-index:60}
+.win.max{left:20px!important;top:20px!important;width:calc(100vw - 40px)!important;height:calc(100vh - 40px)!important;transform:none!important}
 .bar{display:flex;align-items:center;gap:.5rem;padding:.45rem .5rem .45rem 1rem;border-bottom:1px solid var(--line);cursor:grab;touch-action:none;user-select:none}
 .bar:active{cursor:grabbing}
 .bar strong{font-size:.8125rem;font-weight:600;margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -118,13 +118,13 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 .rm{display:inline-block;margin-top:.35rem;font-size:.875rem;font-weight:600;text-decoration:underline;text-underline-offset:3px;min-height:32px;background:none;border:0;padding:0;cursor:pointer;color:inherit}
 .kw figcaption{margin-top:.75rem;font-size:.8125rem;color:var(--ink-2);max-width:60ch}
 .kw figcaption strong{display:block;color:var(--ink);font-size:.9375rem}
-.win.plain.max .body{grid-template-columns:1fr} .win.plain .toc,.win.plain #toc-btn{display:none!important}
+.win.plain.max .body{grid-template-columns:1fr} .win.plain .toc,.win.plain .toc-btn{display:none!important}
 .next{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line)}
 .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;border-radius:999px;border:1.5px solid var(--ink);font-weight:600;font-size:.9375rem;text-decoration:none}
 .btn.solid{background:var(--ink);color:var(--bg)}
 .note{position:fixed;left:1rem;bottom:1rem;font-size:.6875rem;color:var(--ink-2);z-index:1}
 
-#toc-btn{display:none}
+.toc-btn{display:none}
 @media (max-width:720px){
   body{overflow:auto}
   .desk{position:static;min-height:100svh}
@@ -132,10 +132,10 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
   .folders{display:grid;grid-template-columns:repeat(4,1fr);gap:.25rem;width:100%;max-width:26rem}
   .folder{width:auto} .peek{display:none}
   .dock{position:sticky;bottom:.75rem}
-  .win,.win.max{left:0;top:0;width:100vw;height:100svh;border-radius:0;transform:none}
+  .win,.win.max{left:0!important;top:0!important;width:100vw!important;height:100svh!important;border-radius:0;transform:none!important}
   .win.max .body{grid-template-columns:1fr} .win.max .toc{display:none}
   .win.max.contents .toc{display:block;position:absolute;inset:49px 0 0;background:var(--surface);z-index:4;border:0}
-  .bar{cursor:default} #max{display:none} #toc-btn{display:grid}
+  .bar{cursor:default} .max-btn{display:none} .toc-btn{display:grid}
   .toys{display:none}
 }
 @media (prefers-reduced-motion:reduce){.toys i{animation:none!important}*{transition-duration:.01ms!important;scroll-behavior:auto!important}.folder svg,.peek{transform:none!important}.peek{left:calc(50% - 100px)}}
@@ -144,15 +144,30 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 
 /* QA W-04: no drag or resize affordance while expanded */
 .win.max .bar{cursor:default} .win.max .grip{display:none}
-/* QA W-02: resize grips in both bottom corners */
-.grip{position:absolute;bottom:0;width:22px;height:22px;z-index:6;touch-action:none;display:grid;place-items:center;color:var(--ink-2)}
-.grip.br{right:0;cursor:nwse-resize} .grip.bl{left:0;cursor:nesw-resize}
-.grip svg{width:10px;height:10px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round}
+/* Resize grips in both bottom corners: a big forgiving hit area with a clear icon */
+.grip{position:absolute;bottom:0;width:40px;height:40px;z-index:6;touch-action:none;display:grid;place-items:center;color:var(--ink-2);border-radius:12px}
+.grip.br{right:0;cursor:nwse-resize;border-bottom-right-radius:var(--r-win)} .grip.bl{left:0;cursor:nesw-resize;border-bottom-left-radius:var(--r-win)}
+.grip svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;transition:transform .15s}
 .grip.bl svg{transform:scaleX(-1)}
-.grip:hover{color:var(--ink)}
+.grip:hover,.grip.active{color:var(--ink);background:color-mix(in srgb,var(--ink) 8%,transparent)}
+.grip.br:hover svg{transform:scale(1.25)} .grip.bl:hover svg{transform:scaleX(-1) scale(1.25)}
+.win.resizing{user-select:none} .win.resizing .read{pointer-events:none}
+.win.focused{box-shadow:var(--shadow),0 0 0 1.5px color-mix(in srgb,var(--ink) 30%,transparent)}
+/* leave-site confirmation */
+.leave{border:0;border-radius:var(--r-card);padding:1.5rem;max-width:24rem;background:var(--surface);color:var(--ink);box-shadow:var(--shadow);font-family:var(--sans)}
+.leave::backdrop{background:color-mix(in srgb,#000 35%,transparent)}
+.leave h2{font-size:var(--t-1);font-weight:600;margin-bottom:.5rem} .leave p{color:var(--ink-2);margin-bottom:1.25rem}
+.leave-row{display:flex;gap:.5rem;justify-content:flex-end}
+.leave .btn{min-height:44px;padding:0 1.1rem;border-radius:999px;border:1.5px solid var(--ink);background:none;color:var(--ink);font-weight:600;cursor:pointer}
+.leave .btn.solid{background:var(--ink);color:var(--bg)}
 /* QA H-03: dragged folders */
 .folder.dragging{z-index:40;cursor:grabbing;transition:none!important}
 .folder.dragging .peek{display:none}
 /* QA D-03: copied address stays readable and selectable */
 .dock .tip.copied{opacity:1;user-select:text;pointer-events:auto}
 @media (max-width:720px){.grip{display:none} .folders{gap:.25rem} .folder{width:auto} .folder svg{width:64px;height:52px}}
+/* About inside a window */
+.win .hero-photo{display:block;width:min(100%,14rem);height:auto;aspect-ratio:1;object-fit:cover;border-radius:var(--r-card);margin:0 0 1.5rem}
+.win .about>p:first-child{font-family:var(--display);font-weight:var(--hw);font-size:var(--t-2);line-height:1.25;max-width:30ch}
+.win .about h2{font-size:var(--t-1);font-weight:600;margin:2rem 0 .4rem}
+.win .about .links{display:none}

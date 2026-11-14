@@ -1,15 +1,30 @@
-<!-- The case-study window. Filled by /js/home.js from the real page, so it always matches the page. -->
-<section class="win" id="win" role="dialog" aria-labelledby="win-title" style="--x:0px;--y:0px">
-  <header class="bar" id="bar">
-    <strong id="win-title">UI Avenue</strong>
-    <button class="ctl" id="toc-btn" aria-label="Contents"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
-    <button class="ctl text" id="max">Expand</button>
-    <button class="ctl" id="close" aria-label="Close"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="tip">Close</span></button>
-  </header>
-  <div class="body">
-    <nav class="toc" aria-label="Contents"><p>Contents</p><ol id="toc"></ol></nav>
-    <div class="read" id="read" tabindex="0"><article id="art"></article></div>
-  </div>
-  <span class="grip bl" data-edge="left" aria-hidden="true"><svg viewBox="0 0 10 10"><path d="M9 3L3 9M9 7L7 9"/></svg></span>
-  <span class="grip br" data-edge="right" aria-hidden="true"><svg viewBox="0 0 10 10"><path d="M9 3L3 9M9 7L7 9"/></svg></span>
-</section>
+<!-- Window template. home.js clones one per folder, so several can be open at once.
+     Each is filled from the real page, so a window always matches its page. -->
+<template id="win-tpl">
+  <section class="win" role="dialog" aria-modal="false">
+    <header class="bar">
+      <strong class="wtitle"></strong>
+      <button class="ctl toc-btn" aria-label="Contents"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
+      <button class="ctl text max-btn" aria-label="Expand window">Expand</button>
+      <button class="ctl close-btn" aria-label="Close window"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg><span class="tip">Close</span></button>
+    </header>
+    <div class="body">
+      <nav class="toc" aria-label="Contents"><p>Contents</p><ol></ol></nav>
+      <div class="read" tabindex="0"><article class="art"></article></div>
+    </div>
+    <span class="grip bl" data-edge="left" title="Drag to resize" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M14 5L5 14M14 10L10 14"/></svg></span>
+    <span class="grip br" data-edge="right" title="Drag to resize" aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M14 5L5 14M14 10L10 14"/></svg></span>
+  </section>
+</template>
+
+<!-- Asks before a folder leaves the site -->
+<dialog class="leave" id="leave" aria-labelledby="leave-h">
+  <form method="dialog">
+    <h2 id="leave-h">Open in a new tab?</h2>
+    <p id="leave-p"></p>
+    <div class="leave-row">
+      <button class="btn" value="cancel" autofocus>Cancel</button>
+      <button class="btn solid" value="go">Open</button>
+    </div>
+  </form>
+</dialog>
