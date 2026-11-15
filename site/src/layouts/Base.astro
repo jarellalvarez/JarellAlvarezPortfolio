@@ -20,6 +20,8 @@ const url = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={url} />
+    <meta property="og:image" content={new URL("/img/og.jpg", Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
     <script is:inline>try{var d=document.documentElement,g=function(k){return localStorage.getItem("style-"+k)};if(g("mode"))d.dataset.theme=g("mode");if(g("palette"))d.dataset.palette=g("palette");if(g("font"))d.dataset.font=g("font");if(g("size"))d.dataset.size=g("size")}catch(e){}</script>
     <slot name="head" />
   </head>

@@ -146,3 +146,16 @@ header.top .me{white-space:nowrap}
 .saids{grid-template-columns:minmax(0,1fr)} .said,.said blockquote{min-width:0;overflow-wrap:anywhere}
 .stats>*{min-width:0;overflow-wrap:anywhere} @media (max-width:720px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
 h1,h2,h3,h4{overflow-wrap:break-word;hyphens:auto} .story h2,.story h3{min-width:0}
+/* Presentation mode */
+.present-btn{margin:0 0 1.5rem}
+.deck{position:fixed;inset:0;width:100vw;height:100vh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--bg);color:var(--ink);display:grid;grid-template-rows:1fr auto}
+.deck:not([open]){display:none}
+.deck::backdrop{background:var(--bg)}
+.deck .slide{overflow:auto;padding:clamp(1.5rem,6vh,5rem) clamp(1.25rem,8vw,9rem);display:grid;align-content:safe center;font-size:clamp(1.05rem,1.5vw,1.45rem);line-height:1.5}
+.deck .slide>*{max-width:62rem;margin-inline:auto;width:100%}
+.deck .slide h1{font-family:var(--display);font-weight:var(--hw);font-size:clamp(2.2rem,6vw,5.5rem);line-height:1.02;letter-spacing:-.02em}
+.deck .slide h2{font-family:var(--display);font-weight:var(--hw);font-size:clamp(1.8rem,4vw,3.6rem);line-height:1.08;margin:0 auto 1rem}
+.deck .slide img{max-height:42vh;width:auto;max-width:100%;object-fit:contain;border-radius:var(--r-card)}
+.deck-bar{display:flex;gap:.6rem;align-items:center;justify-content:center;padding:.75rem 1rem max(.75rem,env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+.deck-bar .count{min-width:5rem;text-align:center;font-variant-numeric:tabular-nums;color:var(--ink-2)}
+.deck-bar button:disabled{opacity:.4}

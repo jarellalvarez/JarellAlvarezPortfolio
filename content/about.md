@@ -1,6 +1,6 @@
 ---
 title: About
-photo: /img/jarell-alvarez.jpg
+photo: /img/jarell-alvarez.webp
 ---
 
 👋🏼 I'm a senior product designer in Vancouver with 9+ years of making complicated software easier to use. Right now I lead product design at MAVI, teach UX/UI at BCIT, and run a design community that got a little out of hand.

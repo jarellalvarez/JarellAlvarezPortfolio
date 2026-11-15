@@ -271,3 +271,7 @@ document.querySelectorAll('.folder .peek > span').forEach(t=>{
 if(!calm){const desk=$('.desk');let q=0;
   addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||q)return;q=requestAnimationFrame(()=>{q=0;desk.style.setProperty('--mx',e.clientX+'px');desk.style.setProperty('--my',e.clientY+'px');desk.classList.add('lit')})});
   document.addEventListener('pointerleave',()=>desk.classList.remove('lit'))}
+
+/* Folder preview images load only when a folder is first hovered or focused */
+document.querySelectorAll('.folder').forEach(f=>{const img=f.querySelector('.peek img[data-src]');if(!img)return;
+  const load=()=>{if(!img.src)img.src=img.dataset.src};f.addEventListener('pointerenter',load,{once:true});f.addEventListener('focus',load,{once:true})});

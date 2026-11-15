@@ -11,7 +11,7 @@ presentation: https://www.figma.com/slides/B4cCrbsQKWG3zmHkcteTEt
 summary: Research, three tested directions and a shipped guide for a complex enterprise tool.
 status: draft 4, for Jarell's review
 order: 2
-preview: /img/preview-copperleaf.jpg
+preview: /img/preview-copperleaf.webp
 stats:
   - value: "23"
     label: "interviews and test sessions with internal users"

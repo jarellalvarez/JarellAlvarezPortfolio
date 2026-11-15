@@ -8,7 +8,7 @@ team: CEO and back-end developer, front-end developer, marketers
 summary: A reporting app that makes Google Analytics readable for shop owners.
 status: draft 1, for Jarell's review. Body text is the 2019 original, unchanged
 order: 3
-preview: /img/preview-ui-avenue.jpg
+preview: /img/preview-ui-avenue.webp
 ---
 
 

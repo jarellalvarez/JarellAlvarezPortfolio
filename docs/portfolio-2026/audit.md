@@ -56,3 +56,15 @@ w3.org is blocked from this session, so the check follows WCAG 2.2 from memory a
 | Style button's spoken name contains its visible word "Style" | 2.5.3 Label in Name | Fixed |
 | Works in portrait and landscape | 1.3.4 Orientation | Pass |
 | Not checked automatically | | Screen reader walkthrough, Windows High Contrast, real 400% browser zoom on a device |
+
+## Backlog pass against the original plan (2026-11-15)
+
+| Plan item | Status |
+| --- | --- |
+| Presentation mode for case studies | Done: Present button on every study, one slide per section, arrows/space/Back/Next, full screen, Escape exits. Locked sections join after unlock |
+| Dock Home dead link (`#`) | Fixed, goes to `/` |
+| Remove `prototypes/` once the real site replaced it | Done |
+| Link previews for sharing | Added `og:image` (homepage hero, 1200x630) and large-card tags |
+| Lighthouse mobile | Home 97/100/100/100, Copperleaf 91/100/100/66, About 97/100/100/100 (perf/a11y/best/SEO). Copperleaf SEO is low on purpose: locked studies are `noindex` |
+| Image weight | Folder previews load on first hover; JPG previews and headshot converted to WebP (LCP 6.4s to 2.4s on home) |
+| Waiting on Jarell | Prevue HR study, Q-2 dock icon, live `/admin` save test, domain for `og:image` (set to jarellalvarez.com), Round 2 ideas (music, concierge) |
