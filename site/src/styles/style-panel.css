@@ -41,3 +41,4 @@
   .style-panel::before{content:"";display:block;width:40px;height:5px;border-radius:3px;background:var(--line);margin:-.5rem auto .9rem}
   .opts.themes{grid-template-columns:repeat(3,1fr)} .opts.fonts{grid-template-columns:repeat(4,1fr)}
 }
+.opts button{min-width:0;overflow-wrap:anywhere}

@@ -42,3 +42,17 @@ Security review (manual; the review tool could not run in this repo):
 | `innerHTML` from fetched pages | Same-site pages only; titles and testimonial text are escaped |
 | Password strength | The lock runs in the browser, so a weak password can be guessed offline. "LockedOutofHeaven" is long enough; avoid short ones |
 | Editor | Login through GitHub via Netlify; no keys in the repo |
+
+## Accessibility at every size (WCAG 2.2 AA, 2026-11-15)
+
+w3.org is blocked from this session, so the check follows WCAG 2.2 from memory and was run with automated tests.
+
+| Check | Criterion | Result |
+| --- | --- | --- |
+| No sideways scroll at 320x568, 320x256 (1280 at 400% zoom), 568x320, 768x1024, 1024x768, 1280x800, 1920x1080, 2560x1440, on 9 pages | 1.4.10 Reflow | Pass after fixes: homepage grid, folders (3 across under 375px), top nav, quotes, stats, long headings, tooltips |
+| Same sizes with text spacing raised (line 1.5, letters .12em, words .16em, paragraphs 2em) | 1.4.12 Text Spacing | Pass |
+| Buttons and links at least 24x24 (inline text links exempt) | 2.5.8 Target Size | Pass |
+| axe-core WCAG 2.0 to 2.2 AA rules, light and dark, 9 pages | Contrast, names, roles, structure | 0 violations |
+| Style button's spoken name contains its visible word "Style" | 2.5.3 Label in Name | Fixed |
+| Works in portrait and landscape | 1.3.4 Orientation | Pass |
+| Not checked automatically | | Screen reader walkthrough, Windows High Contrast, real 400% browser zoom on a device |

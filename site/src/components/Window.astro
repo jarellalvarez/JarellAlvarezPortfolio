@@ -4,6 +4,10 @@
   <section class="win" role="dialog" aria-modal="false">
     <header class="bar">
       <div class="tabs" role="tablist" aria-label="Open pages"></div>
+      <div class="more">
+        <button class="ctl more-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-label="All tabs" title="All tabs" hidden>…</button>
+        <div class="more-menu" role="menu" hidden></div>
+      </div>
       <span class="spacer"></span>
       <button class="ctl toc-btn" aria-label="Contents"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h10"/></svg></button>
       <a class="open-page" href="/">Open as page</a>
@@ -24,8 +28,7 @@
   </div>
 </template>
 
-<!-- Up to 3 recently opened pages that are not on screen, bottom right -->
-<nav class="tray" id="tray" aria-label="Recent windows"></nav>
+
 
 <!-- Asks before a folder leaves the site -->
 <dialog class="leave" id="leave" aria-labelledby="leave-h">

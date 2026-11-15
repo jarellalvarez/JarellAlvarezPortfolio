@@ -266,3 +266,24 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 }
 .bar>.lights,.bar>.open-page,.bar>.toc-btn{flex:none}
 .folder.was-open{background:color-mix(in srgb,var(--ink) 4%,transparent);box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--ink) 20%,transparent)}
+/* Round 14: no Recent list; occupied folders; tab overflow menu */
+.folder.was-open .paper{fill:color-mix(in srgb,var(--folder) 70%,var(--surface))}
+.more-btn[hidden]{display:none}
+.more{position:relative;flex:none}
+.more-btn{width:36px;height:36px;font:700 1rem/1 var(--sans);letter-spacing:.05em}
+.more-menu{position:absolute;top:calc(100% + 6px);left:0;min-width:12rem;max-width:min(18rem,80vw);max-height:60vh;overflow:auto;padding:.3rem;border-radius:12px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);z-index:10;display:grid}
+.more-menu[hidden]{display:none}
+.more-menu button{text-align:left;min-height:40px;padding:0 .75rem;border:0;border-radius:8px;background:none;color:var(--ink);font:500 .875rem/1.2 var(--sans);cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.more-menu button:hover,.more-menu button:focus-visible{background:color-mix(in srgb,var(--ink) 8%,transparent)}
+.more-menu button[aria-checked=true]{font-weight:700}
+.more-menu button[aria-checked=true]::before{content:"● ";font-size:.6em;vertical-align:middle}
+.tab{min-width:110px}
+/* WCAG 1.4.10 reflow: the top nav fits at 320px (400% zoom) */
+@media (max-width:374px){nav.top{gap:.25rem;padding:.5rem .5rem} nav.top ul{gap:.45rem;font-size:.75rem} nav.top .style-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)} nav.top .style-btn{min-width:44px;padding:0;justify-content:center}}
+.desk{grid-template-columns:minmax(0,1fr)} .hero{min-width:0} .hero h1{overflow-wrap:anywhere}
+main.hero{grid-template-columns:minmax(0,100%)} main.hero>*{max-width:100%}
+@media (max-width:720px){.folders{grid-template-columns:repeat(4,minmax(0,1fr))} .folder{min-width:0;overflow-wrap:anywhere}} @media (max-width:374px){.folders{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:374px){nav.top ul{flex-wrap:wrap;justify-content:flex-end;row-gap:0;min-width:0}}
+.style .tip{left:auto;right:0;transform:none}
+.dock [data-copy] .tip{left:auto;right:0;transform:none}
+.win{grid-template-columns:minmax(0,1fr)} .bar{min-width:0}

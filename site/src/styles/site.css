@@ -142,3 +142,7 @@ header.top a:not(.btn){min-width:44px;justify-content:center;padding:0 .35rem}
   .duo{grid-template-columns:1fr}
 }
 header.top .me{white-space:nowrap}
+/* WCAG 1.4.10 / 1.4.12: long words and wider spacing never push past the screen */
+.saids{grid-template-columns:minmax(0,1fr)} .said,.said blockquote{min-width:0;overflow-wrap:anywhere}
+.stats>*{min-width:0;overflow-wrap:anywhere} @media (max-width:720px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}}
+h1,h2,h3,h4{overflow-wrap:break-word;hyphens:auto} .story h2,.story h3{min-width:0}

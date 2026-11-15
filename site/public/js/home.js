@@ -45,7 +45,7 @@ if(!calm){const fs=[...document.querySelectorAll('.folder')];
 
 /* Windows work like browser windows with tabs. A folder opens as a tab in the front window.
    Drag a tab out of the strip and it becomes its own window. Click the desktop and windows tuck away. */
-const tpl=$('#win-tpl'), ptpl=$('#pane-tpl'), panes=new Map(), tray=$('#tray'); let zTop=20, uid=0, recent=[];
+const tpl=$('#win-tpl'), ptpl=$('#pane-tpl'), panes=new Map(); let zTop=20, uid=0;
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const keyOf=a=>{const k=a.dataset.open;return k==='kind'||k==='about'?k:a.getAttribute('href')};
 const nameOf=a=>a.querySelector('span').textContent.trim();
@@ -173,7 +173,6 @@ async function fill(p,key,url){
 
 async function openWin(a){
   const key=keyOf(a),name=nameOf(a);
-  recent=[{key,a},...recent.filter(r=>r.key!==key)].slice(0,8);
   if(panes.has(key)){const p=panes.get(key),w=p._win;activate(p);if(w._min)restore(w);else{focusWin(w);p.querySelector('.read').focus({preventScroll:true})}renderTray();return}
   const p=ptpl.content.firstElementChild.cloneNode(true);p.id='pane-'+(++uid);p._key=key;p._opener=a;p._page=key==='kind'?'/kind-words/':a.getAttribute('href');panes.set(key,p);
   makeTab(p);label(p,name,name);
@@ -193,7 +192,7 @@ function wire(w){
   w.querySelector('.close-btn').onclick=()=>closeWin(w);
   w.querySelector('.max-btn').onclick=()=>setMax(w,!w.classList.contains('max'));
   w.querySelector('.min-btn').onclick=()=>minimize(w);
-  w.querySelector('.toc-btn').onclick=()=>w.classList.toggle('contents');
+  w.querySelector('.toc-btn').onclick=()=>w.classList.toggle('contents');moreMenu(w);
   const bar=w.querySelector('.bar');
   bar.addEventListener('pointerdown',e=>{if(!e.target.closest('button,a,.lights,.tab'))dragWin(w,e,bar)});
   bar.addEventListener('dblclick',e=>{if(!e.target.closest('button,a,.lights,.tab'))setMax(w,!w.classList.contains('max'))});
@@ -211,29 +210,39 @@ function wire(w){
 document.querySelectorAll('.folder[data-open]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openWin(a)}));
 addEventListener('keydown',e=>{if(e.key!=='Escape'||document.querySelector('dialog[open],.style-panel.on'))return;const top=topWin();if(top)closeWin(top)});
 // clicking empty desktop tucks open windows away
-document.addEventListener('pointerdown',e=>{if(mobile()||e.button!==0||e.target.closest('a,button,input,select,textarea,label,dialog,.win,.tray,.style-panel,.ghost,[role=dialog]'))return;wins().forEach(w=>minimize(w,true))});
+document.addEventListener('pointerdown',e=>{if(mobile()||e.button!==0||e.target.closest('a,button,input,select,textarea,label,dialog,.win,.style-panel,.ghost,[role=dialog]'))return;wins().forEach(w=>minimize(w,true))});
 
-/* Recent: up to 3 pages opened before that are not on screen right now, bottom right */
-function renderTray(){
-  const items=recent.filter(r=>{const p=panes.get(r.key);return !p||p._win._min}).slice(0,3);
-  tray.replaceChildren(...items.map(r=>{const p=panes.get(r.key),b=document.createElement('button');b.type='button';b.dataset.key=r.key;if(p)b.className='min';
-    b.textContent=nameOf(r.a);b.title=(p?'Restore ':'Reopen ')+b.textContent;b.setAttribute('aria-label',b.title);
-    b.onclick=()=>{const q=panes.get(r.key);if(q){activate(q);restore(q._win)}else openWin(r.a)};return b}));
-  document.querySelectorAll('.folder[data-open]').forEach(f=>{const p=panes.get(keyOf(f));f.classList.toggle('was-open',!!p&&!!p._win._min)})}
+/* A folder whose window is tucked away looks occupied: outlined, tinted, darker paper inside */
+function renderTray(){document.querySelectorAll('.folder[data-open]').forEach(f=>{const p=panes.get(keyOf(f));f.classList.toggle('was-open',!!p&&!!p._win._min)})}
 
-/* Yellow: expanded goes back to floating; floating tucks into Recent. Clicking the desktop tucks it away too */
+/* Too many tabs to fit: a "…" button lists them all; picking one brings it into view */
+function overflow(w){const strip=w.querySelector('.tabs'),btn=w.querySelector('.more-btn');btn.hidden=strip.scrollWidth<=strip.clientWidth+1}
+function moreMenu(w){const btn=w.querySelector('.more-btn'),menu=w.querySelector('.more-menu');
+  const close=()=>{menu.hidden=true;btn.setAttribute('aria-expanded','false')};
+  btn.onclick=()=>{if(!menu.hidden)return close();
+    menu.replaceChildren(...[...w.querySelectorAll('.tab')].map(t=>{const i=document.createElement('button');i.type='button';i.setAttribute('role','menuitemradio');i.setAttribute('aria-checked',t.classList.contains('on'));i.textContent=t._pane._short;i.title=t._pane._full;
+      i.onclick=()=>{close();activate(t._pane);t.focus()};return i}));
+    menu.hidden=false;btn.setAttribute('aria-expanded','true');menu.querySelector('[aria-checked=true]')?.focus()};
+  menu.addEventListener('keydown',e=>{const it=[...menu.children],i=it.indexOf(document.activeElement);
+    if(e.key==='Escape'){e.stopPropagation();close();btn.focus()}
+    if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();it[(i+(e.key==='ArrowDown'?1:-1)+it.length)%it.length].focus()}});
+  document.addEventListener('pointerdown',e=>{if(!menu.hidden&&!e.target.closest('.more'))close()});
+  new ResizeObserver(()=>overflow(w)).observe(w.querySelector('.tabs'));
+  new MutationObserver(()=>overflow(w)).observe(w.querySelector('.tabs'),{childList:true})}
+
+/* Yellow: expanded goes back to floating; floating tucks back into its folder. Clicking the desktop tucks it away too */
 function minimize(w,away){
   if(w._min||w._closing)return;
   if(w.classList.contains('max')){if(!away)return setMax(w,false);setMax(w,false)}
   w._min=true;w.classList.remove('focused');renderTray();
-  const item=tray.querySelector(`[data-key="${CSS.escape(w._active._key)}"]`);
-  const done=()=>{if(!w._min)return;w.classList.add('minimized');if(!away)item?.focus()};
+  const item=w._active._opener;
+  const done=()=>{if(!w._min)return;w.classList.add('minimized');if(!away)item?.focus({preventScroll:true})};
   if(calm||!item)return done();
   const r=w.getBoundingClientRect(),t=item.getBoundingClientRect();
   w.animate([{transform:w.style.transform,opacity:1},{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top+t.height/2-r.height/2}px) scale(.06)`,opacity:0}],{duration:280,easing:'cubic-bezier(.4,0,.6,1)'}).onfinish=done;
 }
 function restore(w){
-  const t=tray.querySelector(`[data-key="${CSS.escape(w._active._key)}"]`)?.getBoundingClientRect();
+  const t=w._active._opener?.getBoundingClientRect();
   w._min=false;w.classList.remove('minimized');focusWin(w);
   if(!calm&&t){const r=w.getBoundingClientRect();
     w.animate([{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top+t.height/2-r.height/2}px) scale(.06)`,opacity:0},{transform:w.style.transform,opacity:1}],{duration:320,easing:'cubic-bezier(.2,1.2,.4,1)'})}
