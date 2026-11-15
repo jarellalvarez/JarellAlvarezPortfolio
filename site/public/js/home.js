@@ -1,6 +1,6 @@
 const $=s=>document.querySelector(s), root=document.documentElement, mobile=()=>matchMedia('(max-width:720px)').matches;
 
-document.querySelectorAll('.folder svg').forEach(v=>v.querySelector('.front').insertAdjacentHTML('beforebegin','<rect class="paper" x="10" y="6" width="36" height="24" rx="2"/>'));
+document.querySelectorAll('.folder svg').forEach(v=>{v.querySelector('.front').insertAdjacentHTML('beforebegin','<rect class="paper" x="10" y="6" width="36" height="24" rx="2"/>');v.insertAdjacentHTML('beforeend','<g class="clock"><circle cx="28" cy="28" r="7.5"/><path d="M28 24v4.5l3 2"/></g>')});
 
 /* dock magnification: scale by pointer distance, transform only */
 const dock=$('.dock'), items=[...dock.querySelectorAll('a')], calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
