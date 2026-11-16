@@ -63,6 +63,14 @@ collections:
         fields:
           - { name: title, label: Title }
           - { name: photo, label: Photo, widget: image, media_folder: /site/public/img, public_folder: /img }
+          - { name: summary, label: Summary (shown above "Chat with me about"), widget: text }
+          - name: timeline
+            label: Work history
+            widget: list
+            fields:
+              - { name: years, label: Years }
+              - { name: role, label: Role }
+              - { name: org, label: Company }
           - { name: body, label: About text, widget: markdown, hint: 'First paragraph is the big intro. Each "Heading 2" starts a new blurb' }
       - name: testimonials
         label: Testimonials

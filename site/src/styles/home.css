@@ -143,7 +143,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 @media (prefers-contrast:more){:root{--line:currentColor}}
 
 /* QA W-04: no drag or resize affordance while expanded */
-.win.max .bar{cursor:default} .win.max .grip{display:none}
+.win.max .bar{cursor:default}
 /* Resize grips in both bottom corners: a big forgiving hit area with a clear icon */
 .grip{position:absolute;bottom:0;width:40px;height:40px;z-index:6;touch-action:none;display:grid;place-items:center;color:var(--ink-2);border-radius:12px}
 .grip.br{right:0;cursor:nwse-resize;border-bottom-right-radius:var(--r-win)} .grip.bl{left:0;cursor:nesw-resize;border-bottom-left-radius:var(--r-win)}
@@ -324,3 +324,6 @@ main.hero{grid-template-columns:minmax(0,100%)} main.hero>*{max-width:100%}
 @media (prefers-reduced-motion:reduce){.coach{animation:none}}
 .coach{pointer-events:none} .coach button{pointer-events:auto}
 body.nosel,body.nosel *{user-select:none;-webkit-user-select:none}
+/* Folder preview text: exactly two lines, padding outside the clamp so a third line never peeks through */
+.folder .peek>span:not(:empty){padding:0;margin:.45rem .3rem .6rem;line-height:1.35;max-height:2.7em}
+.folder .peek>span:only-child{margin:.7rem .5rem .8rem}

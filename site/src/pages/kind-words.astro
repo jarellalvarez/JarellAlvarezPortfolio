@@ -7,7 +7,8 @@ const quotes = testimonials().filter(t => t.place === 'window');
 ---
 <Page title="Kind words about Jarell Alvarez" description="Recommendations from people Jarell has worked with, managed, mentored and learned from.">
   <h1 class="page-title">Kind words</h1>
-  <p class="page-sub">From people I've worked with, managed, mentored and learned from. Taken from LinkedIn, unedited.</p>
+  <p class="page-sub">23 recommendations from managers, product managers, engineers, designers, client teams and people I've mentored, across Convertus, Copperleaf, MAVI and Vancouver Design Community. What comes up most: grounding work in research and design principles, making complex things clear, mentoring and running groups well, and being positive and easy to work with.</p>
+  <p class="fine-sub">Taken from LinkedIn, unedited.</p>
   <div class="saids">{quotes.map(q => <Quote {...q} />)}</div>
   <Mark />
 </Page>

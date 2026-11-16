@@ -35,3 +35,27 @@ document.querySelectorAll('.mail').forEach(b => {
 // Sticky header gets a shadow once you scroll
 (() => { const h = document.getElementById('top-bar'); if (!h) return;
   const f = () => h.classList.toggle('scrolled', scrollY > 8); addEventListener('scroll', f, { passive: true }); f(); })();
+
+// Contents sidebar for case studies and About, built from the page's own headings; stays in view on wide screens
+(() => {
+  const main = document.querySelector('main');
+  if (!main || !document.querySelector('.lede, .story.about')) return;
+  const build = () => {
+    main.querySelector('.page-toc')?.remove();
+    const heads = [...main.querySelectorAll('.story h2, .story h3, main>h2.h-sec')].filter(h => h.offsetParent || h.closest('.clamp'));
+    if (heads.length < 2) return;
+    heads.forEach((h, i) => { if (!h.id) h.id = 's-' + i; });
+    const nav = document.createElement('nav'); nav.className = 'page-toc'; nav.setAttribute('aria-label', 'Contents');
+    nav.innerHTML = '<p>Contents</p><ol>' + heads.map(h => `<li${h.tagName === 'H3' ? ' class="sub"' : ''}><a href="#${h.id}"></a></li>`).join('') + '</ol>';
+    nav.querySelectorAll('a').forEach((a, i) => { a.textContent = heads[i].textContent.trim(); a.onclick = () => {
+      const c = heads[i].closest('.clamp'); if (c && !c.classList.contains('open')) c.nextElementSibling?.click(); }; });
+    main.prepend(nav); document.body.classList.add('has-toc');
+    const links = [...nav.querySelectorAll('a')];
+    const io = new IntersectionObserver(es => es.forEach(e => { if (!e.isIntersecting) return;
+      links.forEach(a => a.removeAttribute('aria-current')); links.find(a => a.hash === '#' + e.target.id)?.setAttribute('aria-current', 'true'); }), { rootMargin: '0px 0px -70% 0px' });
+    heads.forEach(h => io.observe(h));
+  };
+  build();
+  // rebuild after a locked case study is unlocked
+  new MutationObserver(build).observe(document.getElementById('story') || document.createElement('i'), { childList: true });
+})();

@@ -151,3 +151,33 @@ h1,h2,h3,h4{overflow-wrap:break-word;hyphens:auto} .story h2,.story h3{min-width
 .cta-head h2{font-size:1em;margin:0}
 .cta-face{flex:none;width:2.2em;height:2.2em;border-radius:50%;object-fit:cover}
 @media (max-width:640px){.cta-head{flex-direction:column;align-items:flex-start;gap:.75rem}}
+/* About: summary, read-more body, work history */
+.exec{font-size:var(--t-1);line-height:1.55;max-width:62ch}
+.about-more.clamp{max-height:16rem}
+.about-more.clamp::after{height:8rem;background:linear-gradient(to bottom,transparent,var(--bg) 92%)}
+.timeline{list-style:none;padding:0;margin:1rem 0 0;display:grid;gap:0;border-left:2px solid var(--line)}
+.timeline.clamp{max-height:15.5rem}
+.timeline.clamp::after{background:linear-gradient(to bottom,transparent,var(--bg) 92%)}
+.timeline li{position:relative;display:grid;grid-template-columns:9rem 1fr;column-gap:1rem;padding:.6rem 0 .6rem 1.25rem}
+.timeline li::before{content:"";position:absolute;left:-6px;top:1.05rem;width:10px;height:10px;border-radius:50%;background:var(--bg);border:2px solid var(--ink)}
+.timeline .yr{grid-row:span 2;color:var(--ink-2);font-size:.875rem;font-variant-numeric:tabular-nums;padding-top:.15rem}
+.timeline li>span:last-child{color:var(--ink-2)}
+@media (max-width:640px){.timeline li{grid-template-columns:1fr} .timeline .yr{grid-row:auto}}
+.fine-sub{font-size:.875rem;color:var(--ink-2);margin:-1.75rem 0 2rem}
+/* Fixed contents sidebar on case studies and About, like the window view */
+.page-toc{display:none}
+@media (min-width:1100px){
+  body.has-toc main{max-width:80rem;display:grid;grid-template-columns:13rem minmax(0,1fr);column-gap:3.5rem}
+  body.has-toc main>*{grid-column:2;min-width:0}
+  .page-toc{display:block;grid-column:1!important;grid-row:1/span 999;align-self:start;position:sticky;top:5.5rem;max-height:calc(100vh - 7rem);overflow:auto;padding:1.25rem 0;font-size:.875rem;border-right:1px solid var(--line)}
+  .page-toc p{font-weight:600;margin:0 0 .75rem .6rem}
+  .page-toc ol{list-style:none;padding:0 1rem 0 0;margin:0;display:grid;gap:1px}
+  .page-toc a{display:block;padding:.35rem .6rem;border-radius:6px;text-decoration:none;color:var(--ink-2);border-left:2px solid transparent}
+  .page-toc a:hover{color:var(--ink)}
+  .page-toc a[aria-current]{color:var(--ink);font-weight:600;border-left-color:var(--ink);background:color-mix(in srgb,var(--ink) 6%,transparent)}
+}
+main h2[id],main h3[id]{scroll-margin-top:6rem}
+.timeline{border-left:0;padding-left:8px}
+.timeline li{border-left:2px solid var(--line)}
+.timeline li::before{left:-7px}
+main>.rm{justify-self:start}

@@ -150,7 +150,7 @@ async function fill(p,key,url){
   const art=p.querySelector('.art'), tocList=p.querySelector('.toc ol');
   if(key==='kind'){
     const list=await (await fetch('/testimonials.json')).json();
-    art.innerHTML='<h2 class="title">Kind words</h2><p class="sub">From people I\'ve worked with, managed, mentored and learned from. Taken from LinkedIn, unedited.</p>'+list.map(x=>`<figure class="kw"><blockquote class="${x.quote.length>320?'clamp':''}"><p>${esc(x.quote)}</p></blockquote>${x.quote.length>320?'<button class="rm" aria-expanded="false">Read more</button>':''}<figcaption><strong>${esc(x.name)}</strong>${esc(x.title)}</figcaption></figure>`).join('');
+    art.innerHTML='<h2 class="title">Kind words</h2><p class="sub">23 recommendations from managers, product managers, engineers, designers, client teams and people I\'ve mentored, across Convertus, Copperleaf, MAVI and Vancouver Design Community. What comes up most: grounding work in research and design principles, making complex things clear, mentoring and running groups well, and being positive and easy to work with.</p><p class="sub" style="font-size:.875rem">Taken from LinkedIn, unedited.</p>'+list.map(x=>`<figure class="kw"><blockquote class="${x.quote.length>320?'clamp':''}"><p>${esc(x.quote)}</p></blockquote>${x.quote.length>320?'<button class="rm" aria-expanded="false">Read more</button>':''}<figcaption><strong>${esc(x.name)}</strong>${esc(x.title)}</figcaption></figure>`).join('');
     p._plain=true; return 'Kind words';
   }
   const doc=new DOMParser().parseFromString(await (await fetch(url)).text(),'text/html');
@@ -201,7 +201,8 @@ function wire(w){
   bar.addEventListener('dblclick',e=>{if(!e.target.closest('button,a,.lights,.tab'))setMax(w,!w.classList.contains('max'))});
   w.querySelectorAll('.grip').forEach(g=>g.addEventListener('dblclick',()=>setMax(w,true)));
   w.querySelectorAll('.grip').forEach(g=>g.addEventListener('pointerdown',e=>{
-    if(e.detail>1)return;if(w.classList.contains('max')||mobile())return;e.preventDefault();e.stopPropagation();g.setPointerCapture(e.pointerId);g.classList.add('active');w.classList.add('resizing');
+    if(e.detail>1||mobile())return;
+    if(w.classList.contains('max')){const m=w.getBoundingClientRect();setMax(w,false);w.style.width=m.width+'px';w.style.height=m.height+'px';w._x=m.left;w._y=m.top;place(w)}e.preventDefault();e.stopPropagation();g.setPointerCapture(e.pointerId);g.classList.add('active');w.classList.add('resizing');
     const r=w.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,left=g.dataset.edge==='left';
     const move=ev=>{const dx=ev.clientX-sx,dy=ev.clientY-sy;
       let nw=left?r.width-dx:r.width+dx;nw=Math.max(420,Math.min(nw,left?r.right:innerWidth-r.left));
@@ -316,12 +317,12 @@ function greenMenu(w){
 (()=>{let seen;try{seen=localStorage.getItem('tip-drag')}catch{seen='1'}
   if(seen||mobile()||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
   const done=()=>{try{localStorage.setItem('tip-drag','1')}catch{}tip.remove();f.classList.remove('stray')};
-  const fs=[...document.querySelectorAll('.folders .folder')],f=fs[fs.length-1];if(!f)return;
+  const f=[...document.querySelectorAll('.folders .folder')].find(x=>/MAVI/.test(x.textContent));if(!f)return;
   const tip=document.createElement('div');tip.className='coach';tip.setAttribute('role','status');
-  const step=n=>{tip.innerHTML=`<p><b>${n} of 2</b> ${n===1?'Folders move. Drag this one anywhere.':'Nice. Now click a folder to open it.'}</p><button type="button">Skip</button>`;tip.querySelector('button').onclick=done;put()};
+  const step=n=>{tip.innerHTML=`<p><b>${n} of 2</b> ${n===1?'Folders move. Try dragging MAVI Client Portal.':'Nice. Now click it to open the case study.'}</p><button type="button">Skip</button>`;tip.querySelector('button').onclick=done;put()};
   const put=()=>{const r=f.getBoundingClientRect();tip.style.left=Math.max(8,Math.min(innerWidth-tip.offsetWidth-8,r.left+r.width/2-tip.offsetWidth/2))+'px';tip.style.top=Math.max(8,r.top-tip.offsetHeight-14)+'px'};
-  setTimeout(()=>{f.classList.add('stray');f.style.transform='translate(34px,-46px) rotate(-9deg)';document.body.append(tip);step(1);setTimeout(put,calm?0:560);
+  setTimeout(()=>{f.classList.add('stray');f.style.transform='translate(0,-14px) rotate(-6deg)';document.body.append(tip);step(1);setTimeout(put,calm?0:560);
     document.addEventListener('folderdragged',()=>{step(2);setTimeout(put,50)},{once:true});
-    document.querySelectorAll('.folder').forEach(x=>x.addEventListener('click',()=>{if(tip.isConnected&&tip.textContent.startsWith('2'))done()}));
+    f.addEventListener('click',()=>{if(tip.isConnected&&tip.textContent.startsWith('2'))done()});
     addEventListener('resize',()=>tip.isConnected&&put())},calm?0:1100);
 })();

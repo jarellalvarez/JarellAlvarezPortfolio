@@ -6,6 +6,10 @@ import EmailButton from '../components/EmailButton.astro';
 import { about, testimonials } from '../lib/content.mjs';
 const { html, meta } = about();
 const [intro, ...rest] = html.split('</p>');
+// Show the first blurb, then fade into "Read more" from Teaching onward
+const restHtml = rest.join('</p>'), cut = restHtml.search(/<h2[^>]*>[^<]*Teaching/);
+const [shown, more] = cut > 0 ? [restHtml.slice(0, cut), restHtml.slice(cut)] : [restHtml, ''];
+const timeline = meta.timeline || [];
 const quotes = testimonials().filter(t => t.place === 'about');
 ---
 <Page title="About Jarell Alvarez" description="Senior product designer in Vancouver. Founder of Vancouver Design Community, UX/UI instructor at BCIT, photographer.">
@@ -17,8 +21,15 @@ const quotes = testimonials().filter(t => t.place === 'about');
       <EmailButton />
       <a class="btn" href="https://www.linkedin.com/in/jarellalvarez/" target="_blank" rel="noopener">Connect with me on LinkedIn</a>
     </div>
-    <Fragment set:html={rest.join('</p>')} />
+    {meta.summary && <><h2 class="h-sec">At a glance</h2><p class="exec">{meta.summary}</p></>}
+    <Fragment set:html={shown} />
+    {more && <><div class="clamp about-more"><Fragment set:html={more} /></div><button class="rm" aria-expanded="false">Read more</button></>}
   </div>
+  {timeline.length > 0 && <>
+    <h2 class="h-sec">Work history</h2>
+    <ol class="timeline clamp">{timeline.map(t => <li><span class="yr">{t.years}</span><strong>{t.role}</strong><span>{t.org}</span></li>)}</ol>
+    <button class="rm" aria-expanded="false">Read more</button>
+  </>}
   <h2 class="h-sec">Kind words</h2>
   <div class="saids">{quotes.map(q => <Quote {...q} />)}</div>
   <p style="margin-top:1.25rem"><a href="/kind-words/">Read the rest</a></p>
