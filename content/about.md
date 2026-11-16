@@ -7,15 +7,15 @@ summary: >-
   and earlier helped build B2B platforms at Convertus and UI Avenue. My strength is the messy middle:
   research, systems thinking and accessibility, worked out closely with product and engineering so it ships.
 timeline:
-  - { years: "2026 to now", role: "Lead Product Designer", org: "MAVI" }
-  - { years: "2024 to now", role: "Design Instructor, D3 Program", org: "BCIT" }
-  - { years: "2024", role: "Contract Product Designer", org: "Steel Croissant" }
-  - { years: "2021 to 2024", role: "Senior Product Designer", org: "Copperleaf" }
-  - { years: "2021 to now", role: "Photographer", org: "Freelance" }
-  - { years: "2020 to now", role: "Founder", org: "Vancouver Design Community" }
-  - { years: "2020", role: "Contract UX Researcher", org: "Prevue HR" }
-  - { years: "2019 to 2021", role: "Founding Product Designer", org: "UI Avenue" }
-  - { years: "2017 to 2019", role: "Senior Product UI/UX Designer", org: "Convertus" }
+  - { years: "2026 to now", role: "Lead Product Designer", org: "MAVI", note: "Own end-to-end design for AI-assisted hiring, vetting and scheduling workflows." }
+  - { years: "2024 to now", role: "Design Instructor, D3 Program", org: "BCIT", note: "Teach UX/UI, usability testing, accessibility and systems thinking." }
+  - { years: "2024", role: "Contract Product Designer", org: "Steel Croissant", note: "Contract product design, end to end." }
+  - { years: "2021 to 2024", role: "Senior Product Designer", org: "Copperleaf", note: "Enterprise analytics, AI-powered GIS maps and design systems for asset investment." }
+  - { years: "2021 to now", role: "Photographer", org: "Freelance", note: "Portraits, editorial and events for models, agencies and brands." }
+  - { years: "2020 to now", role: "Founder", org: "Vancouver Design Community", note: "Built a 4,200+ member community with workshops, talks and portfolio reviews." }
+  - { years: "2020", role: "Contract UX Researcher", org: "Prevue HR", note: "Contract user research and usability testing." }
+  - { years: "2019 to 2021", role: "Founding Product Designer", org: "UI Avenue", note: "First designer on an analytics app for shop owners, from research to launch." }
+  - { years: "2017 to 2019", role: "Senior Product UI/UX Designer", org: "Convertus", note: "B2B automotive platforms, dealership workflows and reusable UI components." }
 ---
 
 👋🏼 I'm a senior product designer in Vancouver with 9+ years of making complicated software easier to use. Right now I lead product design at MAVI, teach UX/UI at BCIT, and run a design community that got a little out of hand.

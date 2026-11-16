@@ -215,7 +215,7 @@ function wire(w){
 document.querySelectorAll('.folder[data-open]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openWin(a)}));
 addEventListener('keydown',e=>{if(e.key!=='Escape'||document.querySelector('dialog[open],.style-panel.on'))return;const top=topWin();if(top)closeWin(top)});
 // clicking empty desktop tucks open windows away
-document.addEventListener('pointerdown',e=>{if(mobile()||e.button!==0||e.target.closest('a,button,input,select,textarea,label,dialog,.win,.coach,.style-panel,.ghost,[role=dialog]'))return;wins().forEach(w=>minimize(w,true))});
+document.addEventListener('pointerdown',e=>{if(mobile()||e.button!==0||e.target.closest('a,button,input,select,textarea,label,dialog,.win,.coach,.buddy,.style-panel,.ghost,[role=dialog]'))return;wins().forEach(w=>minimize(w,true))});
 
 /* A folder whose window is tucked away looks occupied: outlined, tinted, darker paper inside */
 function renderTray(){document.querySelectorAll('.folder[data-open]').forEach(f=>{const p=panes.get(keyOf(f));f.classList.toggle('was-open',!!p&&!!p._win._min)})}

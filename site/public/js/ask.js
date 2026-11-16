@@ -51,6 +51,8 @@
     if (!dlg.open) dlg.showModal(); input.value = ''; render(); input.focus();
     if (!data) try { data = (await (await fetch('/ask.json')).json()).items; render(); } catch { list.innerHTML = '<li class="ask-note">Search did not load. <a href="mailto:jarellalvarez@gmail.com">Email Jarell</a>.</li>'; }
   }
+  // shared with the homepage helper's chat
+  window.Ask = { load: async () => data || (data = (await (await fetch('/ask.json')).json()).items), find: q => (data || []).map(d => [d, score(d, q)]).filter(([, s]) => s >= 1).sort((a, b) => b[1] - a[1]).map(([d]) => d) };
   document.addEventListener('click', e => { const t = e.target.closest('[data-ask]'); if (t) { e.preventDefault(); open(); } });
   addEventListener('keydown', e => {
     if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName) && !document.activeElement.isContentEditable)) { e.preventDefault(); open(); }

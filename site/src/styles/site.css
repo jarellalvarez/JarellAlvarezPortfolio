@@ -184,3 +184,9 @@ main>.rm{justify-self:start}
 /* Read more always opens fully, whatever the collapsed height */
 .clamp.open{max-height:none!important} .clamp.open::after{display:none!important}
 @media (max-width:420px){header.top{gap:.35rem;padding-inline:.75rem;font-size:.875rem} header.top .me{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:0 1 auto} header.top a:not(.me){padding-inline:.25rem}}
+.timeline .note{grid-column:2;color:var(--ink-2);font-size:.9375rem;line-height:1.5;margin-top:.15rem}
+@media (max-width:640px){.timeline .note{grid-column:1}}
+/* Pop color, used sparingly: one highlight per view */
+.page-toc a[aria-current]{border-left-color:var(--pop)}
+.timeline li:first-child::before{border-color:var(--pop);background:var(--pop)}
+.exec::first-line{color:inherit}

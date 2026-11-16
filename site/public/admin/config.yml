@@ -71,6 +71,7 @@ collections:
               - { name: years, label: Years }
               - { name: role, label: Role }
               - { name: org, label: Company }
+              - { name: note, label: One-line summary, required: false }
           - { name: body, label: About text, widget: markdown, hint: 'First paragraph is the big intro. Each "Heading 2" starts a new blurb' }
       - name: ask
         label: Ask Jarell answers

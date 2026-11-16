@@ -15,6 +15,7 @@ for (const { name, vars } of blocks) {
       assert.ok(ratio(vars[fg], vars[bg]) >= 4.5, `${fg} on ${bg}: ${ratio(vars[fg], vars[bg]).toFixed(2)}`);
   });
   test(`${name}: accents, folders and button labels pass 3:1 / 4.5:1`, () => {
+    assert.ok(ratio(vars.pop, vars.bg) >= 4.5 && ratio(vars.pop, vars.surface) >= 4.5, `pop ${ratio(vars.pop, vars.bg).toFixed(2)}`);
     assert.ok(ratio(vars.accent, vars.bg) >= 3, `accent ${ratio(vars.accent, vars.bg).toFixed(2)}`);
     assert.ok(ratio(vars.folder, vars.bg) >= 3, `folder ${ratio(vars.folder, vars.bg).toFixed(2)}`);
     assert.ok(ratio(vars['on-accent'], vars.accent) >= 4.5, `on-accent ${ratio(vars['on-accent'], vars.accent).toFixed(2)}`);

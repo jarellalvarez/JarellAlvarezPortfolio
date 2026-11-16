@@ -329,3 +329,44 @@ body.nosel,body.nosel *{user-select:none;-webkit-user-select:none}
 .folder .peek>span:only-child{margin:.7rem .5rem .8rem}
 /* Folder preview text: three lines */
 .folder .peek>span:not(:empty){-webkit-line-clamp:3;max-height:4.05em}
+main.hero .role{color:var(--pop)}
+/* Helper: a hand-doodled sticky note, bottom left */
+.buddy{position:fixed;left:1.25rem;bottom:1rem;z-index:60;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem}
+.bbtn{width:76px;height:84px;padding:0;border:0;background:none;cursor:pointer;transform-origin:50% 100%;border-radius:14px}
+.bbtn:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
+.bbtn svg{width:100%;height:100%;overflow:visible;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.bbtn .note{fill:color-mix(in srgb,var(--pop) 18%,var(--surface))}
+.bbtn .fold{fill:color-mix(in srgb,var(--pop) 30%,var(--surface))}
+.bbtn .line{stroke-width:2;opacity:.45}
+.bbtn .eyes ellipse{fill:var(--surface)}
+.bbtn .pupil{fill:var(--ink);stroke:none}
+.bbtn .brows,.bbtn .eyes{transition:transform .18s cubic-bezier(.3,1.6,.5,1)}
+.bbtn.curious .brows{transform:translateY(-4px)}
+.bbtn.blink .eyes{transform:scaleY(.1);transform-origin:50% 44px;transform-box:view-box}
+.bbtn.wiggle{animation:bwig .7s ease-in-out}
+.bbtn.tap{animation:btap .8s ease-in-out}
+.bbtn.hop{animation:bhop .5s cubic-bezier(.3,1.5,.5,1)}
+@keyframes bwig{25%{rotate:-7deg}50%{rotate:6deg}75%{rotate:-3deg}}
+@keyframes btap{20%,60%{translate:0 -3px;rotate:4deg}40%,80%{translate:0 0;rotate:0deg}}
+@keyframes bhop{40%{translate:0 -10px;scale:1.05 .95}}
+.bsay{position:relative;margin:0;padding:.45rem .75rem;border-radius:12px;background:var(--surface);border:2px solid var(--ink);font:500 .875rem/1.2 var(--sans);opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .25s}
+.bsay.on{opacity:1;transform:none}
+.bchat{width:min(22rem,calc(100vw - 2.5rem));max-height:min(30rem,calc(100svh - 9rem));display:grid;grid-template-rows:auto 1fr auto auto;border-radius:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.bchat[hidden]{display:none}
+.bchat header{display:flex;align-items:center;justify-content:space-between;padding:.5rem .5rem .5rem 1rem;border-bottom:1px solid var(--line)}
+.bx{width:36px;height:36px;border:0;border-radius:50%;background:none;color:var(--ink);font-size:1.3rem;cursor:pointer}
+.bx:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)}
+.blog{list-style:none;margin:0;padding:.75rem;overflow:auto;display:grid;gap:.5rem;align-content:start;font-size:.9375rem;line-height:1.45}
+.blog li{max-width:88%;padding:.55rem .75rem;border-radius:14px}
+.blog li p{margin:0} .blog li a{display:inline-block;margin-top:.35rem;font-weight:600}
+.blog .bot{background:color-mix(in srgb,var(--ink) 6%,transparent);border-bottom-left-radius:4px}
+.blog .me{justify-self:end;background:var(--ink);color:var(--bg);border-bottom-right-radius:4px}
+.bchips{display:flex;flex-wrap:wrap;gap:.35rem;padding:0 .75rem .6rem}
+.bchips button{min-height:32px;padding:.3rem .65rem;border-radius:999px;border:1px solid var(--line);background:none;color:var(--ink);font:500 .8125rem/1.2 var(--sans);cursor:pointer;text-align:left}
+.bchips button:hover{border-color:var(--ink)}
+.bform{display:flex;gap:.4rem;padding:.5rem;border-top:1px solid var(--line)}
+.bform input{flex:1;min-width:0;min-height:40px;padding:0 .75rem;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.bform button{width:40px;height:40px;border:0;border-radius:50%;background:var(--ink);color:var(--bg);font-size:1.1rem;cursor:pointer}
+@media (max-width:720px){.buddy{left:.75rem;bottom:5.5rem} .bbtn{width:58px;height:64px}}
+@media (prefers-reduced-motion:reduce){.bbtn,.bbtn *{animation:none!important;transition:none!important}}
+.bsay{color:var(--ink);visibility:hidden} .bsay.on{visibility:visible}
