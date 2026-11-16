@@ -61,7 +61,7 @@ w3.org is blocked from this session, so the check follows WCAG 2.2 from memory a
 
 | Plan item | Status |
 | --- | --- |
-| Presentation mode for case studies | Done: Present button on every study, one slide per section, arrows/space/Back/Next, full screen, Escape exits. Locked sections join after unlock |
+| Presentation mode for case studies | Built, then removed at Jarell's request (Nov 15) |
 | Dock Home dead link (`#`) | Fixed, goes to `/` |
 | Remove `prototypes/` once the real site replaced it | Done |
 | Link previews for sharing | Added `og:image` (homepage hero, 1200x630) and large-card tags |

@@ -19,7 +19,11 @@
   function pop() { btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop'); }
   for (const k in OPTS) set(k, get(k) || DEFAULT[k], false);
 
-  const open = on => { panel.classList.toggle('on', on); btn.setAttribute('aria-expanded', on); if (on) panel.querySelector('[aria-pressed=true]')?.focus(); };
+  // On the homepage the header sits in the desktop layer, under windows and folders; float the panel above everything
+  const lift = () => { if (!btn.closest('.desk')) return; if (panel.parentElement !== document.body) document.body.append(panel);
+    panel.style.zIndex = 500; if (matchMedia('(max-width:720px)').matches) { panel.style.position = panel.style.top = panel.style.right = ''; return; }
+    const r = btn.getBoundingClientRect(); panel.style.position = 'fixed'; panel.style.top = (r.bottom + 8) + 'px'; panel.style.right = (innerWidth - r.right) + 'px'; };
+  const open = on => { if (on) lift(); panel.classList.toggle('on', on); btn.setAttribute('aria-expanded', on); if (on) panel.querySelector('[aria-pressed=true]')?.focus(); };
   btn.addEventListener('click', e => { e.stopPropagation(); open(!panel.classList.contains('on')); });
   panel.addEventListener('click', e => e.stopPropagation());
   addEventListener('click', () => open(false));

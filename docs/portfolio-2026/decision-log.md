@@ -71,3 +71,9 @@ Typed cursor tooltip and cursor modes, idle grid response, multiple layered wind
 | Earlier work (3 studies from 2017 to 2019) lives at /work/earlier/, wording unchanged |
 | Every inner page has a Back button to the previous page |
 | Default text size Large; default font Bricolage Grotesque; serif removed |
+
+| Nov 15 | Presentation mode dropped from the site and the plan |
+| Nov 15 | Backlog: Prevue HR case study (hard to find, less relevant, still good work) |
+| Nov 15 | Backlog: sharper case-study images. Jarell reviews each study later; then re-export soft images at 2x, raise WebP quality for screenshots, check on a 2x screen |
+| Nov 16 | "Ask Jarell": free smart search + scripted answers, built so AI can be added later. Audience: recruiters, case-study walkthroughs, personality |
+| Nov 16 | Hand-drawn layer on homepage, case studies and About, from Jarell's marker drawings |

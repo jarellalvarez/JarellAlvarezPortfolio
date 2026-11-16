@@ -33,7 +33,7 @@ document.querySelectorAll('.folder').forEach(f=>{
     if(!moved){moved=true;f.setPointerCapture(e.pointerId);f.classList.add('dragging')}
     const cx=Math.max(-st.r.left,Math.min(dx,innerWidth-st.r.right)),cy=Math.max(-st.r.top,Math.min(dy,innerHeight-st.r.bottom));
     f.style.transform=`translate(${st.tx+cx}px,${st.ty+cy}px)`});
-  f.addEventListener('pointerup',()=>{st=null;f.classList.remove('dragging')});
+  f.addEventListener('pointerup',()=>{st=null;f.classList.remove('dragging');if(moved)document.dispatchEvent(new Event('folderdragged'))});
   f.addEventListener('click',e=>{if(moved){e.preventDefault();e.stopImmediatePropagation();moved=false}},true);
   f.addEventListener('dragstart',e=>e.preventDefault());
 });
@@ -41,7 +41,7 @@ document.querySelectorAll('.folder').forEach(f=>{
 /* QA H-04: folders start scattered and snap into the row, once per load */
 if(!calm){const fs=[...document.querySelectorAll('.folder')];
   fs.forEach((f,i)=>f.animate([{transform:`translate(${(Math.random()-.5)*innerWidth*.9}px,${(Math.random()-.5)*innerHeight*.8}px) rotate(${(Math.random()-.5)*70}deg) scale(.6)`,opacity:0},{opacity:1,offset:.25},{transform:'none',opacity:1}],
-    {duration:mobile()?650:1000,delay:i*70,easing:'cubic-bezier(.2,1.35,.4,1)',fill:'backwards'}))}
+    {duration:mobile()?500:750,delay:i*50,easing:'cubic-bezier(.2,1.35,.4,1)',fill:'backwards'}))}
 
 /* Windows work like browser windows with tabs. A folder opens as a tab in the front window.
    Drag a tab out of the strip and it becomes its own window. Click the desktop and windows tuck away. */
@@ -114,18 +114,20 @@ function dragTab(t,e){
   e.preventDefault();const sx=e.clientX,sy=e.clientY;let on=false,ghost=null;t.setPointerCapture(e.pointerId);
   const mv=ev=>{
     if(!on&&Math.hypot(ev.clientX-sx,ev.clientY-sy)<5)return;
-    if(!on){on=true;t._dragged=true;t.classList.add('dragging')}
+    if(!on){on=true;t._dragged=true;t.classList.add('dragging');document.body.classList.add('nosel');getSelection()?.removeAllRanges()}
     const r=strip.getBoundingClientRect(),inside=ev.clientY>r.top-28&&ev.clientY<r.bottom+28&&ev.clientX>r.left-48&&ev.clientX<r.right+48;
     if(inside){
       if(ghost){ghost.remove();ghost=null;t.classList.remove('torn')}
       const sib=[...strip.children].find(o=>{if(o===t)return false;const b=o.getBoundingClientRect();return ev.clientX>b.left&&ev.clientX<b.right});
       if(sib){const b=sib.getBoundingClientRect();strip.insertBefore(t,ev.clientX<b.left+b.width/2?sib:sib.nextSibling)}
     }else{
-      if(!ghost){ghost=mini(p);t.classList.add('torn')}
-      ghost.style.transform=`translate(${ev.clientX-24}px,${ev.clientY-14}px)`}};
+      if(!ghost){ghost=mini(p);t.classList.add('torn');snapPanel.show(ev.clientX)}
+      ghost.style.transform=`translate(${ev.clientX-24}px,${ev.clientY-14}px)`;snapPanel.hover(ev.clientX,ev.clientY)}
+    if(inside&&!ghost)snapPanel.hide()};
   const up=ev=>{t.removeEventListener('pointermove',mv);t.removeEventListener('pointerup',up);t.removeEventListener('pointercancel',up);
-    t.classList.remove('dragging','torn');setTimeout(()=>t._dragged=false);
-    if(ghost){const g=ghost.getBoundingClientRect();ghost.remove();if(ev.type==='pointerup')tearOff(p,ev.clientX,ev.clientY,g)}};
+    t.classList.remove('dragging','torn');document.body.classList.remove('nosel');setTimeout(()=>t._dragged=false);
+    const lay=snapPanel.pick(ev.clientX,ev.clientY);snapPanel.hide();
+    if(ghost){const g=ghost.getBoundingClientRect();ghost.remove();if(ev.type==='pointerup')tearOff(p,ev.clientX,ev.clientY,g,lay)}};
   t.addEventListener('pointermove',mv);t.addEventListener('pointerup',up);t.addEventListener('pointercancel',up)}
 
 // a very small live copy of the window that follows the pointer
@@ -133,14 +135,15 @@ function mini(p){
   const g=document.createElement('div');g.className='ghost';g.setAttribute('aria-hidden','true');
   g.innerHTML='<div class="gbar"><i></i><span></span></div><div class="gbody"></div>';g.querySelector('span').textContent=p._short;
   const art=p.querySelector('.art').cloneNode(true);art.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));g.querySelector('.gbody').append(art);
-  document.body.append(g);if(!calm)g.animate([{scale:.3,opacity:0},{scale:1,opacity:1}],{duration:280,easing:'cubic-bezier(.2,1.4,.4,1)'});return g}
+  document.body.append(g);if(!calm)g.animate([{scale:.3,opacity:0},{scale:1,opacity:1}],{duration:200,easing:'cubic-bezier(.2,1.4,.4,1)'});return g}
 
-function tearOff(p,x,y,g){
+function tearOff(p,x,y,g,lay){
   const old=p._win,tabs=[...old.querySelectorAll('.tab')],i=tabs.indexOf(p._tab),b={w:old.offsetWidth,h:old.offsetHeight};
   p._tab.remove();p.remove();activate((tabs[i+1]||tabs[i-1])._pane);
   const w=newWin(b,x-48,y-20);attach(w,p);focusWin(w);
+  if(lay){snap(w,lay,old);p.querySelector('.read').focus({preventScroll:true});renderTray();return}
   if(!calm){const r=w.getBoundingClientRect();
-    w.animate([{transform:`translate(${g.left+g.width/2-r.width/2}px,${g.top+g.height/2-r.height/2}px) scale(${g.width/r.width},${g.height/r.height})`,opacity:.7},{transform:w.style.transform,opacity:1}],{duration:340,easing:'cubic-bezier(.2,1.2,.4,1)'})}
+    w.animate([{transform:`translate(${g.left+g.width/2-r.width/2}px,${g.top+g.height/2-r.height/2}px) scale(${g.width/r.width},${g.height/r.height})`,opacity:.7},{transform:w.style.transform,opacity:1}],{duration:260,easing:'cubic-bezier(.2,1.2,.4,1)'})}
   p.querySelector('.read').focus({preventScroll:true});renderTray()}
 
 async function fill(p,key,url){
@@ -179,7 +182,7 @@ async function openWin(a){
   let w=topWin();const fresh=!w;
   if(fresh){const b=size();w=newWin(b,(innerWidth-b.w)/2,72)}
   attach(w,p);focusWin(w);
-  if(fresh)grow(w,a,false);else if(!calm)p._tab.animate([{transform:'translateY(6px) scale(.85)',opacity:0},{transform:'none',opacity:1}],{duration:240,easing:'cubic-bezier(.2,1.3,.4,1)'});
+  if(fresh)grow(w,a,false);else if(!calm)p._tab.animate([{transform:'translateY(6px) scale(.85)',opacity:0},{transform:'none',opacity:1}],{duration:180,easing:'cubic-bezier(.2,1.3,.4,1)'});
   renderTray();
   try{label(p,name,await fill(p,key,a.getAttribute('href')))}catch{p.querySelector('.art').innerHTML='<p>This did not load. <a href="'+p._page+'">Open it as a page</a>.</p>'}
   if(p._win._active===p)activate(p);
@@ -192,12 +195,13 @@ function wire(w){
   w.querySelector('.close-btn').onclick=()=>closeWin(w);
   w.querySelector('.max-btn').onclick=()=>setMax(w,!w.classList.contains('max'));
   w.querySelector('.min-btn').onclick=()=>minimize(w);
-  w.querySelector('.toc-btn').onclick=()=>w.classList.toggle('contents');moreMenu(w);
+  w.querySelector('.toc-btn').onclick=()=>w.classList.toggle('contents');moreMenu(w);greenMenu(w);
   const bar=w.querySelector('.bar');
   bar.addEventListener('pointerdown',e=>{if(!e.target.closest('button,a,.lights,.tab'))dragWin(w,e,bar)});
   bar.addEventListener('dblclick',e=>{if(!e.target.closest('button,a,.lights,.tab'))setMax(w,!w.classList.contains('max'))});
+  w.querySelectorAll('.grip').forEach(g=>g.addEventListener('dblclick',()=>setMax(w,true)));
   w.querySelectorAll('.grip').forEach(g=>g.addEventListener('pointerdown',e=>{
-    if(w.classList.contains('max')||mobile())return;e.preventDefault();e.stopPropagation();g.setPointerCapture(e.pointerId);g.classList.add('active');w.classList.add('resizing');
+    if(e.detail>1)return;if(w.classList.contains('max')||mobile())return;e.preventDefault();e.stopPropagation();g.setPointerCapture(e.pointerId);g.classList.add('active');w.classList.add('resizing');
     const r=w.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,left=g.dataset.edge==='left';
     const move=ev=>{const dx=ev.clientX-sx,dy=ev.clientY-sy;
       let nw=left?r.width-dx:r.width+dx;nw=Math.max(420,Math.min(nw,left?r.right:innerWidth-r.left));
@@ -210,7 +214,7 @@ function wire(w){
 document.querySelectorAll('.folder[data-open]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openWin(a)}));
 addEventListener('keydown',e=>{if(e.key!=='Escape'||document.querySelector('dialog[open],.style-panel.on'))return;const top=topWin();if(top)closeWin(top)});
 // clicking empty desktop tucks open windows away
-document.addEventListener('pointerdown',e=>{if(mobile()||e.button!==0||e.target.closest('a,button,input,select,textarea,label,dialog,.win,.style-panel,.ghost,[role=dialog]'))return;wins().forEach(w=>minimize(w,true))});
+document.addEventListener('pointerdown',e=>{if(mobile()||e.button!==0||e.target.closest('a,button,input,select,textarea,label,dialog,.win,.coach,.style-panel,.ghost,[role=dialog]'))return;wins().forEach(w=>minimize(w,true))});
 
 /* A folder whose window is tucked away looks occupied: outlined, tinted, darker paper inside */
 function renderTray(){document.querySelectorAll('.folder[data-open]').forEach(f=>{const p=panes.get(keyOf(f));f.classList.toggle('was-open',!!p&&!!p._win._min)})}
@@ -239,13 +243,13 @@ function minimize(w,away){
   const done=()=>{if(!w._min)return;w.classList.add('minimized');if(!away)item?.focus({preventScroll:true})};
   if(calm||!item)return done();
   const r=w.getBoundingClientRect(),t=item.getBoundingClientRect();
-  w.animate([{transform:w.style.transform,opacity:1},{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top+t.height/2-r.height/2}px) scale(.06)`,opacity:0}],{duration:280,easing:'cubic-bezier(.4,0,.6,1)'}).onfinish=done;
+  w.animate([{transform:w.style.transform,opacity:1},{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top+t.height/2-r.height/2}px) scale(.06)`,opacity:0}],{duration:220,easing:'cubic-bezier(.4,0,.6,1)'}).onfinish=done;
 }
 function restore(w){
   const t=w._active._opener?.getBoundingClientRect();
   w._min=false;w.classList.remove('minimized');focusWin(w);
   if(!calm&&t){const r=w.getBoundingClientRect();
-    w.animate([{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top+t.height/2-r.height/2}px) scale(.06)`,opacity:0},{transform:w.style.transform,opacity:1}],{duration:320,easing:'cubic-bezier(.2,1.2,.4,1)'})}
+    w.animate([{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top+t.height/2-r.height/2}px) scale(.06)`,opacity:0},{transform:w.style.transform,opacity:1}],{duration:240,easing:'cubic-bezier(.2,1.2,.4,1)'})}
   renderTray();w._active.querySelector('.read').focus({preventScroll:true});
 }
 
@@ -255,14 +259,14 @@ function grow(w,from,back){
   const f=from.getBoundingClientRect(),r=w.getBoundingClientRect();
   const start=`translate(${f.left+f.width/2-r.width/2}px,${f.top+f.height/2-r.height/2}px) scale(.12)`, end=w.style.transform||'none';
   const a=w.animate(back?[{transform:end,opacity:1},{transform:start,opacity:0}]:[{transform:start,opacity:0},{transform:end,opacity:1}],
-    {duration:back?280:480,easing:back?'cubic-bezier(.5,0,.8,.3)':'cubic-bezier(.18,1.3,.35,1)'});
+    {duration:back?220:360,easing:back?'cubic-bezier(.5,0,.8,.3)':'cubic-bezier(.18,1.3,.35,1)'});
   return a.finished.catch(()=>{});
 }
 
 /* Folder preview text types itself in on hover or focus */
 document.querySelectorAll('.folder .peek > span').forEach(t=>{
   const full=t.textContent, f=t.closest('.folder');let timer;
-  const type=()=>{if(calm)return;clearInterval(timer);let i=0;t.textContent='';timer=setInterval(()=>{t.textContent=full.slice(0,i+=2);if(i>=full.length){t.textContent=full;clearInterval(timer)}},22)};
+  const type=()=>{if(calm)return;clearInterval(timer);let i=0;t.textContent='';timer=setInterval(()=>{t.textContent=full.slice(0,i+=5);if(i>=full.length){t.textContent=full;clearInterval(timer)}},12)};
   f.addEventListener('pointerenter',type);f.addEventListener('focus',type);
   f.addEventListener('pointerleave',()=>{clearInterval(timer);t.textContent=full});
 });
@@ -275,3 +279,49 @@ if(!calm){const desk=$('.desk');let q=0;
 /* Folder preview images load only when a folder is first hovered or focused */
 document.querySelectorAll('.folder').forEach(f=>{const img=f.querySelector('.peek img[data-src]');if(!img)return;
   const load=()=>{if(!img.src)img.src=img.dataset.src};f.addEventListener('pointerenter',load,{once:true});f.addEventListener('focus',load,{once:true})});
+
+
+/* Snap layouts, like Chrome and macOS: drop a dragged tab on a target, or hover the green button */
+const LAYS=[['left','Tile left'],['right','Tile right'],['top','Top half'],['bottom','Bottom half'],['full','Full screen']];
+const ICON={left:'<rect x="1" y="1" width="9" height="14" rx="1.5" class="on"/><rect x="11" y="1" width="9" height="14" rx="1.5"/>',right:'<rect x="1" y="1" width="9" height="14" rx="1.5"/><rect x="11" y="1" width="9" height="14" rx="1.5" class="on"/>',
+  top:'<rect x="1" y="1" width="19" height="6.5" rx="1.5" class="on"/><rect x="1" y="8.5" width="19" height="6.5" rx="1.5"/>',bottom:'<rect x="1" y="1" width="19" height="6.5" rx="1.5"/><rect x="1" y="8.5" width="19" height="6.5" rx="1.5" class="on"/>',full:'<rect x="1" y="1" width="19" height="14" rx="1.5" class="on"/>'};
+const snapBtns=()=>LAYS.map(([k,n])=>`<button type="button" data-l="${k}" aria-label="${n}" title="${n}"><svg viewBox="0 0 21 16" aria-hidden="true">${ICON[k]}</svg><span>${n}</span></button>`).join('');
+function snap(w,l,other){
+  if(l==='full'){setMax(w,true);return}
+  if(w.classList.contains('max'))setMax(w,false);
+  const m=8,top=8,W=innerWidth-m*2,H=innerHeight-top-m,half={left:[m,top,W/2-4,H],right:[m+W/2+4,top,W/2-4,H],top:[m,top,W,H/2-4],bottom:[m,top+H/2+4,W,H/2-4]};
+  const go=(x,k)=>{const [l2,t2,w2,h2]=half[k];x.style.width=w2+'px';x.style.height=h2+'px';x._x=l2;x._y=t2;place(x)};
+  go(w,l);
+  const mate=other&&shown(other)?other:wins().filter(x=>x!==w).length===1?wins().find(x=>x!==w):null;
+  if(mate&&!mate.classList.contains('max'))go(mate,{left:'right',right:'left',top:'bottom',bottom:'top'}[l]);
+}
+const snapPanel=(()=>{const el=document.createElement('div');el.className='snap';el.setAttribute('aria-hidden','true');el.innerHTML='<p>Drop to place</p>'+snapBtns();document.body.append(el);
+  return{show(x){el.classList.toggle('left',x>innerWidth/2);el.classList.add('on')},hide(){el.classList.remove('on');el.querySelectorAll('.hot').forEach(b=>b.classList.remove('hot'))},
+    hover(x,y){el.querySelectorAll('button').forEach(b=>{const r=b.getBoundingClientRect();b.classList.toggle('hot',x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)})},
+    pick(x,y){if(!el.classList.contains('on'))return null;const b=[...el.querySelectorAll('button')].find(b=>{const r=b.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom});return b?.dataset.l||null}}})();
+// green button: hover (half a second) or keyboard focus shows the same layouts
+function greenMenu(w){
+  const g=w.querySelector('.max-btn'),box=document.createElement('div');box.className='snap-menu';box.setAttribute('role','group');box.setAttribute('aria-label','Window layout');box.innerHTML=snapBtns();box.hidden=true;w.querySelector('.lights').append(box);
+  let t;const show=()=>{if(mobile())return;box.hidden=false},hide=()=>{clearTimeout(t);box.hidden=true};
+  g.addEventListener('pointerenter',()=>{t=setTimeout(show,500)});g.addEventListener('pointerleave',e=>{clearTimeout(t);if(!box.contains(e.relatedTarget))hide()});
+  box.addEventListener('pointerleave',e=>{if(e.relatedTarget!==g)hide()});
+  g.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();show();box.querySelector('button').focus()}});
+  box.addEventListener('keydown',e=>{const b=[...box.children],i=b.indexOf(document.activeElement);if(e.key==='Escape'){e.stopPropagation();hide();g.focus()}
+    if(['ArrowDown','ArrowRight','ArrowUp','ArrowLeft'].includes(e.key)){e.preventDefault();b[(i+(/Down|Right/.test(e.key)?1:-1)+b.length)%b.length].focus()}});
+  box.addEventListener('focusout',e=>{if(!w.querySelector('.lights').contains(e.relatedTarget))hide()});
+  box.querySelectorAll('button').forEach(b=>b.onclick=()=>{hide();snap(w,b.dataset.l)});
+}
+
+/* First visit: one folder sits out of place and a two-step tip teaches dragging. Mouse users only; skippable; remembered */
+(()=>{let seen;try{seen=localStorage.getItem('tip-drag')}catch{seen='1'}
+  if(seen||mobile()||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
+  const done=()=>{try{localStorage.setItem('tip-drag','1')}catch{}tip.remove();f.classList.remove('stray')};
+  const fs=[...document.querySelectorAll('.folders .folder')],f=fs[fs.length-1];if(!f)return;
+  const tip=document.createElement('div');tip.className='coach';tip.setAttribute('role','status');
+  const step=n=>{tip.innerHTML=`<p><b>${n} of 2</b> ${n===1?'Folders move. Drag this one anywhere.':'Nice. Now click a folder to open it.'}</p><button type="button">Skip</button>`;tip.querySelector('button').onclick=done;put()};
+  const put=()=>{const r=f.getBoundingClientRect();tip.style.left=Math.max(8,Math.min(innerWidth-tip.offsetWidth-8,r.left+r.width/2-tip.offsetWidth/2))+'px';tip.style.top=Math.max(8,r.top-tip.offsetHeight-14)+'px'};
+  setTimeout(()=>{f.classList.add('stray');f.style.transform='translate(34px,-46px) rotate(-9deg)';document.body.append(tip);step(1);setTimeout(put,calm?0:560);
+    document.addEventListener('folderdragged',()=>{step(2);setTimeout(put,50)},{once:true});
+    document.querySelectorAll('.folder').forEach(x=>x.addEventListener('click',()=>{if(tip.isConnected&&tip.textContent.startsWith('2'))done()}));
+    addEventListener('resize',()=>tip.isConnected&&put())},calm?0:1100);
+})();

@@ -14,7 +14,6 @@ const facts = [['Company', meta.company], ['Role', meta.role], ['Timeline', meta
 <Page title={`${meta.title}, ${meta.company}`} description={meta.summary} noindex={!!payload} bodyClass={payload ? '' : 'open'}>
   <div class="lede">
     <h1>{meta.title}</h1>
-    <button class="btn present-btn" type="button" id="present">Present</button>
     <dl class="facts">
       {facts.map(([k, v]) => <div><dt>{k}</dt><dd>{v}</dd></div>)}
     </dl>
@@ -45,6 +44,5 @@ const facts = [['Company', meta.company], ['Role', meta.role], ['Timeline', meta
   <Fragment slot="after">
     {payload && <script is:inline type="application/json" id="payload" set:html={JSON.stringify(payload)} />}
     <script is:inline src="/js/study.js"></script>
-    <script is:inline src="/js/present.js"></script>
   </Fragment>
 </Page>
