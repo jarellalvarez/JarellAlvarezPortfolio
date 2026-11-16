@@ -1,0 +1,17 @@
+/* Hand-drawn marks: colored by the theme through a mask, drawn in with a left-to-right reveal */
+.dd{display:inline-block;flex:none;background:currentColor;-webkit-mask:var(--d) center/contain no-repeat;mask:var(--d) center/contain no-repeat;pointer-events:none;
+  clip-path:inset(0 100% 0 0);transition:clip-path .7s cubic-bezier(.6,0,.3,1)}
+.dd.in{clip-path:inset(0 0 0 0)}
+@media (prefers-reduced-motion:reduce){.dd{transition:none;clip-path:none}}
+/* case studies */
+.story h2{position:relative}
+.dd.side{position:absolute;right:calc(100% + 1rem);top:.1em;width:2.4rem;height:2.4rem;color:var(--ink-2);opacity:.7}
+.dd.under{display:block;width:9rem;height:1.4rem;margin:-1.5rem 0 1.5rem;color:var(--pop)}
+@media (max-width:1180px){.dd.side{display:none}}
+/* About */
+.dd.tag{width:1.5em;height:1.5em;margin-left:.45em;vertical-align:-.3em;color:var(--ink-2);opacity:.75}
+.dd.float{display:block;width:4rem;height:3.6rem;margin:2rem 0 -1.25rem auto;color:var(--ink-2);opacity:.5}
+/* Homepage background doodles */
+.doodle-bg{position:fixed;inset:0;pointer-events:none;z-index:0;color:var(--ink)}
+.doodle-bg .dd{position:absolute;opacity:.16}
+@media (max-width:900px){.doodle-bg{display:none}}
