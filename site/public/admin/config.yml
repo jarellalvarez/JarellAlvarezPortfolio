@@ -72,6 +72,21 @@ collections:
               - { name: role, label: Role }
               - { name: org, label: Company }
           - { name: body, label: About text, widget: markdown, hint: 'First paragraph is the big intro. Each "Heading 2" starts a new blurb' }
+      - name: ask
+        label: Ask Jarell answers
+        file: content/ask.json
+        fields:
+          - name: items
+            label: Answers
+            label_singular: Answer
+            widget: list
+            summary: '{{fields.q}}'
+            fields:
+              - { name: group, label: Group, widget: select, options: [For recruiters, Case studies, Personal] }
+              - { name: q, label: Question }
+              - { name: a, label: Answer, widget: text }
+              - { name: tags, label: Search words (other ways people might ask), required: false }
+              - { name: link, label: Link (page, PDF or mailto), required: false }
       - name: testimonials
         label: Testimonials
         file: content/testimonials.json

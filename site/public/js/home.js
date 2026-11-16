@@ -267,7 +267,7 @@ function grow(w,from,back){
 /* Folder preview text types itself in on hover or focus */
 document.querySelectorAll('.folder .peek > span').forEach(t=>{
   const full=t.textContent, f=t.closest('.folder');let timer;
-  const type=()=>{if(calm)return;clearInterval(timer);let i=0;t.textContent='';timer=setInterval(()=>{t.textContent=full.slice(0,i+=5);if(i>=full.length){t.textContent=full;clearInterval(timer)}},12)};
+  const type=()=>{if(calm)return;clearInterval(timer);let i=0;t.textContent='';timer=setInterval(()=>{t.textContent=full.slice(0,i+=5);if(i>=full.length){t.textContent=full;clearInterval(timer)}},13)};
   f.addEventListener('pointerenter',type);f.addEventListener('focus',type);
   f.addEventListener('pointerleave',()=>{clearInterval(timer);t.textContent=full});
 });
@@ -314,9 +314,11 @@ function greenMenu(w){
 }
 
 /* First visit: one folder sits out of place and a two-step tip teaches dragging. Mouse users only; skippable; remembered */
-(()=>{let seen;try{seen=localStorage.getItem('tip-drag')}catch{seen='1'}
+(()=>{let seen;try{seen=localStorage.getItem('tip-drag-2')}catch{seen='1'}
+  // a refresh shows it again (browsers can't tell a normal refresh from a hard one)
+  if(performance.getEntriesByType('navigation')[0]?.type==='reload')seen=null;
   if(seen||mobile()||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
-  const done=()=>{try{localStorage.setItem('tip-drag','1')}catch{}tip.remove();f.classList.remove('stray')};
+  const done=()=>{try{localStorage.setItem('tip-drag-2','1')}catch{}tip.remove();f.classList.remove('stray')};
   const f=[...document.querySelectorAll('.folders .folder')].find(x=>/MAVI/.test(x.textContent));if(!f)return;
   const tip=document.createElement('div');tip.className='coach';tip.setAttribute('role','status');
   const step=n=>{tip.innerHTML=`<p><b>${n} of 2</b> ${n===1?'Folders move. Try dragging MAVI Client Portal.':'Nice. Now click it to open the case study.'}</p><button type="button">Skip</button>`;tip.querySelector('button').onclick=done;put()};

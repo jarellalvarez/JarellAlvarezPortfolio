@@ -327,3 +327,5 @@ body.nosel,body.nosel *{user-select:none;-webkit-user-select:none}
 /* Folder preview text: exactly two lines, padding outside the clamp so a third line never peeks through */
 .folder .peek>span:not(:empty){padding:0;margin:.45rem .3rem .6rem;line-height:1.35;max-height:2.7em}
 .folder .peek>span:only-child{margin:.7rem .5rem .8rem}
+/* Folder preview text: three lines */
+.folder .peek>span:not(:empty){-webkit-line-clamp:3;max-height:4.05em}

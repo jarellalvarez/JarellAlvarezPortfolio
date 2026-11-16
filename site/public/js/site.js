@@ -42,12 +42,14 @@ document.querySelectorAll('.mail').forEach(b => {
   if (!main || !document.querySelector('.lede, .story.about')) return;
   const build = () => {
     main.querySelector('.page-toc')?.remove();
-    const heads = [...main.querySelectorAll('.story h2, .story h3, main>h2.h-sec')].filter(h => h.offsetParent || h.closest('.clamp'));
+    const about = !!document.querySelector('.story.about');
+    // About lists only its main sections; case studies list every heading
+    const heads = about ? [...main.querySelectorAll('h2.h-sec, .toc-mark')] : [...main.querySelectorAll('.story h2, .story h3')].filter(h => h.offsetParent || h.closest('.clamp'));
     if (heads.length < 2) return;
     heads.forEach((h, i) => { if (!h.id) h.id = 's-' + i; });
     const nav = document.createElement('nav'); nav.className = 'page-toc'; nav.setAttribute('aria-label', 'Contents');
     nav.innerHTML = '<p>Contents</p><ol>' + heads.map(h => `<li${h.tagName === 'H3' ? ' class="sub"' : ''}><a href="#${h.id}"></a></li>`).join('') + '</ol>';
-    nav.querySelectorAll('a').forEach((a, i) => { a.textContent = heads[i].textContent.trim(); a.onclick = () => {
+    nav.querySelectorAll('a').forEach((a, i) => { a.textContent = heads[i].dataset.toc || heads[i].textContent.trim(); a.onclick = () => {
       const c = heads[i].closest('.clamp'); if (c && !c.classList.contains('open')) c.nextElementSibling?.click(); }; });
     main.prepend(nav); document.body.classList.add('has-toc');
     const links = [...nav.querySelectorAll('a')];

@@ -77,3 +77,5 @@ Typed cursor tooltip and cursor modes, idle grid response, multiple layered wind
 | Nov 15 | Backlog: sharper case-study images. Jarell reviews each study later; then re-export soft images at 2x, raise WebP quality for screenshots, check on a 2x screen |
 | Nov 16 | "Ask Jarell": free smart search + scripted answers, built so AI can be added later. Audience: recruiters, case-study walkthroughs, personality |
 | Nov 16 | Hand-drawn layer on homepage, case studies and About, from Jarell's marker drawings |
+| Nov 16 | Ask Jarell built: search over `content/ask.json` (24 answers, editable in /admin). Real AI kept as the backup plan: plugs into the "no answer" path later using the same answers |
+| Nov 16 | Drag tip: shown once per browser, again only after a page refresh |
