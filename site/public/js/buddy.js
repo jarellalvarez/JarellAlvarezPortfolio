@@ -2,7 +2,6 @@
    Idle: blinks, eyes follow the pointer, small wiggle now and then. Hover: brows lift. Click: opens Ask Jarell as a window. */
 (() => {
   const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const esc = t => String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
   const wrap = document.createElement('div'); wrap.className = 'buddy';
   wrap.innerHTML = `
   <p class="bsay" aria-hidden="true">Need a hand?</p>
@@ -33,51 +32,5 @@
   btn.addEventListener('pointerenter', () => btn.classList.add('curious')); btn.addEventListener('pointerleave', () => btn.classList.remove('curious'));
   btn.addEventListener('click', () => { say.classList.remove('on'); act('hop'); window.openWin(btn); });
 
-  /* The chat itself. home.js calls this to fill the Ask Jarell tab, so it moves, resizes and tabs like any window. */
-  const past = () => { try { return JSON.parse(sessionStorage.getItem('ask-hist') || '[]'); } catch { return []; } };
-  const remember = q => { try { sessionStorage.setItem('ask-hist', JSON.stringify([q, ...past().filter(x => x !== q)].slice(0, 8))); } catch {} };
-  const mail = q => `<a href="mailto:jarellalvarez@gmail.com?subject=${encodeURIComponent('Question from your portfolio')}&body=${encodeURIComponent(q)}">Email Jarell this question</a>`;
-  window.buddyChat = async root => {
-    root.classList.add('bchatui');
-    root.innerHTML = `<ol class="blog" aria-live="polite" tabindex="0" aria-label="Conversation"></ol>
-      <div class="bmenu" role="menu" aria-label="Questions" hidden></div>
-      <form class="bform"><input type="text" maxlength="300" placeholder="Type a question" aria-label="Type a question" autocomplete="off" />
-        <button type="button" class="bmore" aria-label="Suggested and previous questions" title="Suggested and previous questions" aria-haspopup="true" aria-expanded="false">…</button>
-        <button type="submit" aria-label="Send">↑</button></form>`;
-    const log = root.querySelector('.blog'), form = root.querySelector('form'), input = form.querySelector('input'), more = root.querySelector('.bmore'), menu = root.querySelector('.bmenu');
-    const add = (who, html) => { const li = document.createElement('li'); li.className = who; li.innerHTML = html; log.append(li); log.scrollTop = log.scrollHeight; return li; };
-    let data = [];
-    const answer = async q => {
-      log.querySelector('.starters')?.remove(); closeMenu(); remember(q); add('me', esc(q));
-      const hit = window.Ask?.find(q)[0];
-      if (hit) add('bot', `<p>${esc(hit.a)}</p>${hit.link ? `<a href="${esc(hit.link)}"${/^https?:/.test(hit.link) ? ' target="_blank" rel="noopener"' : ''}>${hit.link.startsWith('mailto') ? 'Email Jarell' : 'See more'}</a>` : ''}`);
-      else {
-        const wait = add('bot', '<p class="dots" aria-label="Thinking">…</p>'); let ai = null;
-        try { ai = await window.askFallback?.(q); } catch {}
-        wait.innerHTML = ai ? `<p>${esc(ai)}</p><small>AI answer, based on Jarell's site. It can be wrong.</small>` : `<p>I don't have a written answer for that yet.</p>${mail(q)}`;
-        log.scrollTop = log.scrollHeight;
-      }
-      act('hop');
-    };
-    const closeMenu = () => { menu.hidden = true; more.setAttribute('aria-expanded', 'false'); };
-    const item = q => `<button type="button" role="menuitem">${esc(q)}</button>`;
-    more.onclick = () => {
-      if (!menu.hidden) return closeMenu();
-      const prev = past(), sug = ['For recruiters', 'Case studies', 'Personal'].flatMap(g => data.filter(x => x.group === g).slice(0, 3)).map(x => x.q).filter(q => !prev.includes(q));
-      menu.innerHTML = (prev.length ? `<p>Previously asked</p>${prev.map(item).join('')}` : '') + `<p>Suggested</p>${sug.map(item).join('')}`;
-      menu.hidden = false; more.setAttribute('aria-expanded', 'true'); menu.querySelector('button')?.focus();
-    };
-    menu.addEventListener('click', e => { const b = e.target.closest('button'); if (b) { answer(b.textContent); input.focus(); } });
-    menu.addEventListener('keydown', e => { const it = [...menu.querySelectorAll('button')], i = it.indexOf(document.activeElement);
-      if (e.key === 'Escape') { e.stopPropagation(); closeMenu(); more.focus(); }
-      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); it[(i + (e.key === 'ArrowDown' ? 1 : -1) + it.length) % it.length].focus(); } });
-    root.addEventListener('pointerdown', e => { if (!menu.hidden && !e.target.closest('.bmenu,.bmore')) closeMenu(); });
-    form.onsubmit = e => { e.preventDefault(); const q = input.value.trim(); if (q) { input.value = ''; answer(q); } };
-    add('bot', '<p>Hi! I can answer questions about Jarell\'s work, experience and life outside work. Pick one or type your own.</p>');
-    try { data = await window.Ask.load();
-      const pick = ['For recruiters', 'Case studies', 'Personal'].flatMap(g => data.filter(x => x.group === g).slice(0, 2));
-      const st = add('starters', pick.map(x => `<button type="button">${esc(x.q)}</button>`).join(''));
-      st.addEventListener('click', e => { const b = e.target.closest('button'); if (b) { answer(b.textContent); input.focus(); } });
-    } catch { add('bot', '<p>Answers did not load. <a href="mailto:jarellalvarez@gmail.com">Email Jarell</a>.</p>'); }
-  };
+  window.buddyHop = () => act('hop');
 })();
