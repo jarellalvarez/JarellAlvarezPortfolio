@@ -84,3 +84,4 @@ Typed cursor tooltip and cursor modes, idle grid response, multiple layered wind
 | Nov 17 | Real AI confirmed working on the live site |
 | Nov 17 | Queued for the next shipping: after a visitor types a question, show only 1 suggested pill plus the "..." pill (3 pills stay when they pick a pill). Also make the AI answer in first person ("ask me") |
 | Nov 17 | Queued for the next shipping: the About window gets a small Kind words preview at the bottom: one testimonial, with a "view more" that opens the Kind words window as a tab |
+| Nov 17 | Queued for the next shipping: clicking the helper again minimizes its chat (home window and top-bar panel); hover cue on the desktop when a window is open that clicking away minimizes it; compact "Back to Home" pill on the About page; shorter About title and an At a glance summary that does not repeat it |
