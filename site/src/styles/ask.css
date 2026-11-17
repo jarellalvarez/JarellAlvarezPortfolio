@@ -20,3 +20,13 @@
 .ask-btn:hover{background:color-mix(in srgb,var(--ink) 6%,transparent)}
 @media (max-width:640px){.ask{margin:0;width:100vw;max-width:none;height:100svh;max-height:none;border-radius:0;border:0} .ask-btn span{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)} .ask-btn{min-width:44px;justify-content:center;padding:0}}
 .dock [data-ask] .tip{left:auto;right:0;transform:none}
+/* tiny helper in the top bar: opens Ask Jarell */
+.ask-mini{flex:none;width:44px;height:44px;padding:0;border:0;background:none;border-radius:12px;cursor:pointer;display:grid;place-items:center;color:var(--ink)}
+.ask-mini svg{width:36px;height:40px;overflow:visible;fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.ask-mini .pad{fill:color-mix(in srgb,var(--pop) 18%,var(--surface))}
+.ask-mini .eyes ellipse{fill:var(--surface);stroke-width:4}
+.ask-mini .pupil{fill:currentColor;stroke:none}
+.ask-mini .eyes{transform-box:fill-box;transform-origin:center;animation:miniblink 5s infinite}
+.ask-mini:hover svg{transform:rotate(-8deg) scale(1.12)}
+@keyframes miniblink{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+@media (prefers-reduced-motion:reduce){.ask-mini .eyes{animation:none}.ask-mini svg{transition:none}}

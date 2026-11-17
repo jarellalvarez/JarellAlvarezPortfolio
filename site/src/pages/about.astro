@@ -26,7 +26,7 @@ const quotes = testimonials().filter(t => t.place === 'about');
     {meta.summary && <><h2 class="h-sec">At a glance</h2><p class="exec">{meta.summary}</p></>}
     {timeline.length > 0 && <>
     <h2 class="h-sec">Work history</h2>
-    <ol class="timeline clamp">{timeline.map(t => <li><span class="yr">{t.years}</span><strong>{t.role}</strong><span>{t.org}</span>{t.note && <span class="note">{t.note}</span>}</li>)}</ol>
+    <ol class="timeline clamp">{timeline.map(t => <li><span class="yr">{t.years}</span><strong>{t.role}</strong><span>{t.org}</span>{t.note && <span class="tl-note">{t.note}</span>}</li>)}</ol>
     <button class="rm" aria-expanded="false">Read more</button>
   </>}
     <Fragment set:html={shown} />

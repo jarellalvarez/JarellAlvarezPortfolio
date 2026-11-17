@@ -122,7 +122,6 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 .next{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--line)}
 .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;border-radius:999px;border:1.5px solid var(--ink);font-weight:600;font-size:.9375rem;text-decoration:none}
 .btn.solid{background:var(--ink);color:var(--bg)}
-.note{position:fixed;left:1rem;bottom:1rem;font-size:.6875rem;color:var(--ink-2);z-index:1}
 
 .toc-btn{display:none}
 @media (max-width:720px){
@@ -351,11 +350,6 @@ main.hero .role{color:var(--pop)}
 @keyframes bhop{40%{translate:0 -10px;scale:1.05 .95}}
 .bsay{position:relative;margin:0;padding:.45rem .75rem;border-radius:12px;background:var(--surface);border:2px solid var(--ink);font:500 .875rem/1.2 var(--sans);opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .25s}
 .bsay.on{opacity:1;transform:none}
-.bchat{width:min(22rem,calc(100vw - 2.5rem));max-height:min(30rem,calc(100svh - 9rem));display:grid;grid-template-rows:auto 1fr auto auto;border-radius:16px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
-.bchat[hidden]{display:none}
-.bchat header{display:flex;align-items:center;justify-content:space-between;padding:.5rem .5rem .5rem 1rem;border-bottom:1px solid var(--line)}
-.bx{width:36px;height:36px;border:0;border-radius:50%;background:none;color:var(--ink);font-size:1.3rem;cursor:pointer}
-.bx:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)}
 .blog{list-style:none;margin:0;padding:.75rem;overflow:auto;display:grid;gap:.5rem;align-content:start;font-size:.9375rem;line-height:1.45}
 .blog li{max-width:88%;padding:.55rem .75rem;border-radius:14px}
 .blog li p{margin:0} .blog li a{display:inline-block;margin-top:.35rem;font-weight:600}
@@ -375,3 +369,33 @@ main.hero .role{color:var(--pop)}
 .bbtn image.drawn{filter:var(--drawn-filter,none)}
 [data-theme=dark] .bbtn image.drawn{--drawn-filter:invert(1)}
 .bbtn .eyes ellipse{fill:var(--surface);stroke-width:2.4}
+/* Ask Jarell as a window tab */
+.body.chat .read{overflow:hidden;display:grid}
+.win article.bchatui,.win.max article.bchatui{position:relative;max-width:none;width:100%;height:100%;min-height:0;margin:0;padding:0;display:grid;grid-template-rows:1fr auto}
+.win.chatting .open-page{display:none}
+.blog{font-size:1rem;padding:1rem}
+.blog .starters{max-width:100%;padding:0;display:flex;flex-wrap:wrap;gap:.4rem}
+.blog .starters button,.bmenu button{min-height:36px;padding:.35rem .75rem;border-radius:999px;border:1px solid var(--line);background:none;color:var(--ink);font:500 .875rem/1.25 var(--sans);cursor:pointer;text-align:left}
+.blog .starters button:hover,.bmenu button:hover,.bmenu button:focus-visible{border-color:var(--ink);background:color-mix(in srgb,var(--ink) 5%,transparent)}
+.blog small{display:block;margin-top:.4rem;font-size:.75rem;color:var(--ink-2)}
+.blog .dots{letter-spacing:.2em;animation:bdots 1s infinite}
+@keyframes bdots{50%{opacity:.3}}
+.bform .bmore{background:none;color:var(--ink);border:1px solid var(--line);font-weight:700;letter-spacing:.05em}
+.bform .bmore:hover,.bform .bmore[aria-expanded=true]{border-color:var(--ink)}
+.bmenu{position:absolute;left:.5rem;right:.5rem;bottom:3.6rem;max-height:60%;overflow:auto;padding:.5rem;border-radius:14px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);display:grid;gap:.3rem;z-index:3}
+.bmenu[hidden]{display:none}
+.bmenu p{margin:.35rem .4rem .1rem;font-size:.75rem;font-weight:600;color:var(--ink-2)}
+.bmenu button{border-radius:10px;border-color:transparent}
+@media (prefers-reduced-motion:reduce){.blog .dots{animation:none}}
+/* About window: work history (the page styles are not loaded on the homepage) */
+.win .h-sec{font-size:var(--t-1);font-weight:600;margin:2rem 0 .5rem}
+.win .exec{color:var(--ink-2)}
+.win .timeline{list-style:none;padding:0 0 0 8px;margin:.5rem 0 0;display:grid}
+.win .timeline.clamp{max-height:13rem}
+.win .timeline li{position:relative;display:grid;grid-template-columns:7.5rem 1fr;column-gap:.75rem;padding:.5rem 0 .5rem 1.1rem;border-left:2px solid var(--line)}
+.win .timeline li::before{content:"";position:absolute;left:-7px;top:.9rem;width:10px;height:10px;border-radius:50%;background:var(--surface);border:2px solid var(--ink)}
+.win .timeline li:first-child::before{background:var(--pop);border-color:var(--pop)}
+.win .timeline .yr{grid-row:span 3;color:var(--ink-2);font-size:.8125rem}
+.win .timeline li>span:not(.yr){color:var(--ink-2);font-size:.9375rem}
+.win .about .dd{display:none}
+.win .clamp.open{max-height:none!important} .win .about-more.clamp{max-height:9rem}

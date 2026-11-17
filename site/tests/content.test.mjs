@@ -61,3 +61,22 @@ test('images below the lock are not published as files (run after build)', { ski
   const published = readdirSync(new URL('../dist/work/mavi/', import.meta.url));
   for (const f of ['candidates-comparison.webp', 'mvp-flow.webp', 'navigation-comparison.webp']) assert.ok(!published.includes(f), f);
 });
+
+// The Ask Jarell answers are public (served as /ask.json and given to the AI fallback).
+// Nothing that only appears below a lock marker may show up in them.
+test('Ask Jarell answers contain no locked case-study details', async () => {
+  const { readFileSync, readdirSync, existsSync } = await import('node:fs');
+  const root = new URL('../../content/', import.meta.url);
+  const ask = readFileSync(new URL('ask.json', root), 'utf8').toLowerCase();
+  const kb = existsSync(new URL('../netlify/kb.mjs', import.meta.url)) ? readFileSync(new URL('../netlify/kb.mjs', import.meta.url), 'utf8').toLowerCase() : '';
+  for (const d of readdirSync(new URL('work/', root))) {
+    const f = new URL(`work/${d}/index.md`, root); if (!existsSync(f)) continue;
+    const [pub, locked = ''] = readFileSync(f, 'utf8').split('<!-- lock -->');
+    // bolded phrases and decision headings in the locked part are its key reveals
+    const marks = [...locked.matchAll(/\*\*([^*]{12,60})\*\*|^## Decision \d+: (.{8,60})$/gm)].map(m => (m[1] || m[2]).toLowerCase().replace(/[.:]$/, ''));
+    for (const m of marks) { if (pub.toLowerCase().includes(m)) continue;
+      assert.ok(!ask.includes(m), `ask.json repeats locked text from ${d}: "${m}"`);
+      assert.ok(!kb.includes(m), `AI content repeats locked text from ${d}: "${m}"`); }
+    for (const term of ['match score']) if (locked.toLowerCase().includes(term) && !pub.toLowerCase().includes(term)) { assert.ok(!ask.includes(term), `ask.json mentions "${term}"`); assert.ok(!kb.includes(term), `AI content mentions "${term}"`); }
+  }
+});

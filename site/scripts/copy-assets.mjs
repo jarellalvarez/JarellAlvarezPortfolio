@@ -57,3 +57,20 @@ cpSync(new URL('../node_modules/decap-cms/dist/decap-cms.js', import.meta.url), 
 const css = f => readFileSync(new URL(`../src/styles/${f}`, import.meta.url), 'utf8');
 writeFileSync(new URL('admin/preview.css', pub), css('tokens.css') + css('site.css') +
   'body{background:var(--bg)} main{padding:2rem 1.5rem} .lockline{margin:2.5rem 0;padding:.6rem 1rem;border:1.5px dashed var(--ink);border-radius:10px;font-weight:600;font-size:.9375rem;max-width:none} .story{display:block!important}');
+
+// 4. Approved public content for the Ask Jarell AI fallback (netlify/functions/ask.mjs). Public parts only:
+//    everything below a lock marker and every [JARELL] note is left out.
+{
+  const strip = t => t.replace(/^\[JARELL\].*$/gm, '').replace(/!\[[^\]]*\]\([^)]*\)/g, '').replace(/\{\{\w+\}\}/g, '').replace(/:::\w*/g, '').replace(/\n{3,}/g, '\n\n').trim();
+  const out = [];
+  const ask = JSON.parse(readFileSync(new URL('content/ask.json', root), 'utf8')).items;
+  out.push('# Written answers\n' + ask.map(i => `Q: ${i.q}\nA: ${i.a}`).join('\n\n'));
+  const about = matter(readFileSync(new URL('content/about.md', root), 'utf8'));
+  out.push('# About\n' + (about.data.summary || '') + '\n\nWork history:\n' + (about.data.timeline || []).map(t => `- ${t.years}: ${t.role}, ${t.org}. ${t.note || ''}`).join('\n') + '\n\n' + strip(about.content));
+  const workDir = new URL('content/work/', root);
+  for (const d of readdirSync(workDir)) { const f = new URL(`${d}/index.md`, workDir); if (!existsSync(f)) continue;
+    const m = matter(readFileSync(f, 'utf8')); if (m.data.draft) continue;
+    out.push(`# Case study: ${m.data.title} (${m.data.company}, ${m.data.role}, ${m.data.timeline})\n` + (m.data.summary || '') + '\n\n' + strip(m.content.split(LOCK)[0])); }
+  mkdirSync(new URL('../netlify/', import.meta.url), { recursive: true });
+  writeFileSync(new URL('../netlify/kb.mjs', import.meta.url), 'export default ' + JSON.stringify(out.join('\n\n')) + ';\n');
+}

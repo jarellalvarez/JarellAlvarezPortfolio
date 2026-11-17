@@ -39,6 +39,11 @@
     list.addEventListener('click', e => { const b = e.target.closest('.ask-sug'); if (b) { input.value = data[b.dataset.i].q; render(); list.querySelector('a')?.focus(); } });
     input.addEventListener('keydown', e => {
       if (e.key === 'Escape') { e.preventDefault(); dlg.close(); return; }
+      // Enter with no written answer: try the AI fallback once for this question
+      if (e.key === 'Enter' && !list.querySelector('.ask-hit, .ask-sug') && input.value.trim()) { e.preventDefault(); const q = input.value.trim(), note = list.querySelector('.ask-note p'); if (note) note.textContent = 'Looking…';
+        window.askFallback(q).catch(() => null).then(ai => { if (input.value.trim() !== q) return;
+          if (ai) { list.innerHTML = `<li class="ask-note"><p style="color:var(--ink)">${esc(ai)}</p><small>AI answer, based on Jarell's site. It can be wrong.</small></li>`; dlg.querySelector('.ask-live').textContent = 'AI answer shown'; }
+          else if (note) note.textContent = "I don't have a written answer for that yet."; }); return; }
       const hits = [...list.querySelectorAll('.ask-hit, .ask-sug')]; if (!hits.length) return;
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); idx = (idx + (e.key === 'ArrowDown' ? 1 : -1) + hits.length) % hits.length;
         hits.forEach((h, i) => h.classList.toggle('on', i === idx)); hits[idx].scrollIntoView({ block: 'nearest' }); if (hits[idx].id) input.setAttribute('aria-activedescendant', hits[idx].id); }
@@ -51,6 +56,17 @@
     if (!dlg.open) dlg.showModal(); input.value = ''; render(); input.focus();
     if (!data) try { data = (await (await fetch('/ask.json')).json()).items; render(); } catch { list.innerHTML = '<li class="ask-note">Search did not load. <a href="mailto:jarellalvarez@gmail.com">Email Jarell</a>.</li>'; }
   }
+  // Real AI, only when no written answer matches. Needs the Netlify function and its key; without them this returns null
+  // and the email path shows. At most 5 AI answers per visit.
+  window.askFallback = async q => {
+    let n = 0; try { n = +sessionStorage.getItem('ask-ai') || 0; } catch {}
+    if (n >= 5) return null;
+    const r = await fetch('/.netlify/functions/ask', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ q: q.slice(0, 300) }) });
+    if (!r.ok) return null;
+    const j = await r.json().catch(() => null); if (!j || typeof j.answer !== 'string' || !j.answer) return null;
+    try { sessionStorage.setItem('ask-ai', n + 1); } catch {}
+    return j.answer;
+  };
   // shared with the homepage helper's chat
   window.Ask = { load: async () => data || (data = (await (await fetch('/ask.json')).json()).items), find: q => (data || []).map(d => [d, score(d, q)]).filter(([, s]) => s >= 1).sort((a, b) => b[1] - a[1]).map(([d]) => d) };
   document.addEventListener('click', e => { const t = e.target.closest('[data-ask]'); if (t) { e.preventDefault(); open(); } });

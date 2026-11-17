@@ -68,3 +68,16 @@ w3.org is blocked from this session, so the check follows WCAG 2.2 from memory a
 | Lighthouse mobile | Home 97/100/100/100, Copperleaf 91/100/100/66, About 97/100/100/100 (perf/a11y/best/SEO). Copperleaf SEO is low on purpose: locked studies are `noindex` |
 | Image weight | Folder previews load on first hover; JPG previews and headshot converted to WebP (LCP 6.4s to 2.4s on home) |
 | Waiting on Jarell | Prevue HR study, Q-2 dock icon, live `/admin` save test, domain for `og:image` (set to jarellalvarez.com), Round 2 ideas (music, concierge) |
+
+## Audit, round 21 (2026-11-17)
+
+Scope: everything since the last review (tabs, snap layouts, Ask Jarell, helper, drawings, About changes, AI function).
+
+| Finding | Outcome |
+| --- | --- |
+| A written Ask answer (MAVI key decisions) named two details that only appear in the locked section (the match score, the merge with the PM's version). `ask.json` is public | Fixed: answer rewritten from the public overview. New test fails the build if Ask answers or the AI content repeat locked reveals |
+| About window showed garbled text at the bottom: work-history summaries picked up an old leftover `.note` style | Fixed: class renamed, dead style removed, window gets proper work-history styles |
+| Search panel would call the AI after every pause while typing | Fixed: AI is tried only on Enter, max 5 per visit |
+| Drawings' pop-in could replay after other animations | Fixed |
+| AI function | POST only, same-site origin required, question capped at 300 characters, 300 output tokens, answers from public content only, key only in Netlify env, fails closed to the email path. No server-side rate limit: the API key's monthly spend limit is the backstop |
+| Tests | 34 pass. WCAG checks at 8 sizes and axe (light and dark): clean. Unlock works. Lighthouse mobile recorded below |

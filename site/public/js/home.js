@@ -47,8 +47,8 @@ if(!calm){const fs=[...document.querySelectorAll('.folder')];
    Drag a tab out of the strip and it becomes its own window. Click the desktop and windows tuck away. */
 const tpl=$('#win-tpl'), ptpl=$('#pane-tpl'), panes=new Map(); let zTop=20, uid=0;
 const esc=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const keyOf=a=>{const k=a.dataset.open;return k==='kind'||k==='about'?k:a.getAttribute('href')};
-const nameOf=a=>a.querySelector('span').textContent.trim();
+const keyOf=a=>{const k=a.dataset.open;return k==='kind'||k==='about'||k==='ask'?k:a.getAttribute('href')};
+const nameOf=a=>a.dataset.name||a.querySelector('span').textContent.trim();
 const shown=w=>w.isConnected&&!w._min&&!w._closing;
 const wins=()=>[...document.querySelectorAll('.win')].filter(shown);
 const topWin=()=>wins().sort((a,b)=>b.style.zIndex-a.style.zIndex)[0];
@@ -73,7 +73,7 @@ function activate(p){const w=p._win;w._active=p;
   const tabs=[...w.querySelectorAll('.tab')];
   tabs.forEach(t=>{const on=t===p._tab;t.classList.toggle('on',on);t.setAttribute('aria-selected',on);t.tabIndex=on?0:-1});
   w.classList.toggle('solo',tabs.length<2);w.classList.toggle('plain',!!p._plain);w.classList.remove('contents');
-  w.setAttribute('aria-label',p._full||p._short);w.querySelector('.open-page').href=p._page;
+  w.setAttribute('aria-label',p._full||p._short);w.classList.toggle('chatting',p._key==='ask');w.querySelector('.open-page').href=p._page;
   p._tab.scrollIntoView({block:'nearest',inline:'nearest'})}
 function closePane(p){const w=p._win,tabs=[...w.querySelectorAll('.tab')];
   if(tabs.length===1)return closeWin(w);
@@ -148,6 +148,7 @@ function tearOff(p,x,y,g,lay){
 
 async function fill(p,key,url){
   const art=p.querySelector('.art'), tocList=p.querySelector('.toc ol');
+  if(key==='ask'){p._plain=true;p.classList.add('chat');await window.buddyChat(art);return 'Ask Jarell'}
   if(key==='kind'){
     const list=await (await fetch('/testimonials.json')).json();
     art.innerHTML='<h2 class="title">Kind words</h2><p class="sub">23 recommendations from managers, product managers, engineers, designers, client teams and people I\'ve mentored, across Convertus, Copperleaf, MAVI and Vancouver Design Community. What comes up most: grounding work in research and design principles, making complex things clear, mentoring and running groups well, and being positive and easy to work with.</p><p class="sub" style="font-size:.875rem">Taken from LinkedIn, unedited.</p>'+list.map(x=>`<figure class="kw"><blockquote class="${x.quote.length>320?'clamp':''}"><p>${esc(x.quote)}</p></blockquote>${x.quote.length>320?'<button class="rm" aria-expanded="false">Read more</button>':''}<figcaption><strong>${esc(x.name)}</strong>${esc(x.title)}</figcaption></figure>`).join('');
@@ -177,18 +178,20 @@ async function fill(p,key,url){
 async function openWin(a){
   const key=keyOf(a),name=nameOf(a);
   if(panes.has(key)){const p=panes.get(key),w=p._win;activate(p);if(w._min)restore(w);else{focusWin(w);p.querySelector('.read').focus({preventScroll:true})}renderTray();return}
-  const p=ptpl.content.firstElementChild.cloneNode(true);p.id='pane-'+(++uid);p._key=key;p._opener=a;p._page=key==='kind'?'/kind-words/':a.getAttribute('href');panes.set(key,p);
+  const p=ptpl.content.firstElementChild.cloneNode(true);p.id='pane-'+(++uid);p._key=key;p._opener=a;p._page=key==='kind'?'/kind-words/':key==='ask'?'#':a.getAttribute('href');panes.set(key,p);
   makeTab(p);label(p,name,name);
   let w=topWin();const fresh=!w;
-  if(fresh){const b=size();w=newWin(b,(innerWidth-b.w)/2,72)}
+  // Ask Jarell opens as a smaller chat window near the helper; everything else opens centered
+  if(fresh){if(key==='ask'){const b={w:440,h:Math.min(580,innerHeight-130)};w=newWin(b,24,innerHeight-b.h-112)}else{const b=size();w=newWin(b,(innerWidth-b.w)/2,72)}}
   attach(w,p);focusWin(w);
   if(fresh)grow(w,a,false);else if(!calm)p._tab.animate([{transform:'translateY(6px) scale(.85)',opacity:0},{transform:'none',opacity:1}],{duration:180,easing:'cubic-bezier(.2,1.3,.4,1)'});
   renderTray();
   try{label(p,name,await fill(p,key,a.getAttribute('href')))}catch{p.querySelector('.art').innerHTML='<p>This did not load. <a href="'+p._page+'">Open it as a page</a>.</p>'}
   if(p._win._active===p)activate(p);
   p.querySelectorAll('.rm').forEach(b=>b.onclick=()=>{const o=b.previousElementSibling.classList.toggle('open');b.textContent=o?'Show less':'Read more';b.setAttribute('aria-expanded',o)});
-  if(p._win._active===p)p.querySelector('.read').focus({preventScroll:true});
+  if(p._win._active===p)(p.querySelector('.bform input')||p.querySelector('.read')).focus({preventScroll:true});
 }
+window.openWin=openWin;
 
 function wire(w){
   w.addEventListener('pointerdown',()=>focusWin(w),true);
@@ -296,7 +299,7 @@ function snap(w,l,other){
   const mate=other&&shown(other)?other:wins().filter(x=>x!==w).length===1?wins().find(x=>x!==w):null;
   if(mate&&!mate.classList.contains('max'))go(mate,{left:'right',right:'left',top:'bottom',bottom:'top'}[l]);
 }
-const snapPanel=(()=>{const el=document.createElement('div');el.className='snap';el.setAttribute('aria-hidden','true');el.innerHTML='<p>Drop to place</p>'+snapBtns();document.body.append(el);
+const snapPanel=(()=>{const el=document.createElement('div');el.className='snap';el.setAttribute('aria-hidden','true');el.inert=true;el.innerHTML='<p>Drop to place</p>'+snapBtns();document.body.append(el);
   return{show(x){el.classList.toggle('left',x>innerWidth/2);el.classList.add('on')},hide(){el.classList.remove('on');el.querySelectorAll('.hot').forEach(b=>b.classList.remove('hot'))},
     hover(x,y){el.querySelectorAll('button').forEach(b=>{const r=b.getBoundingClientRect();b.classList.toggle('hot',x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom)})},
     pick(x,y){if(!el.classList.contains('on'))return null;const b=[...el.querySelectorAll('button')].find(b=>{const r=b.getBoundingClientRect();return x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom});return b?.dataset.l||null}}})();
