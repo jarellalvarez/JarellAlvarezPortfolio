@@ -229,7 +229,7 @@ document.addEventListener('pointerdown',e=>{if(mobile()||e.button!==0||e.target.
 // a small label follows the mouse over that empty desktop while a window is up
 const cue=document.createElement('div');cue.className='away-cue';cue.setAttribute('aria-hidden','true');cue.textContent='Click to minimize';document.body.append(cue);
 let cq=0;addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||cq)return;cq=requestAnimationFrame(()=>{cq=0;
-  const on=!mobile()&&!!wins().length&&!e.target.closest(AWAY);cue.classList.toggle('on',on);if(on)cue.style.transform=`translate(${e.clientX+14}px,${e.clientY+18}px)`})});
+  const on=!mobile()&&!!wins().length&&!e.target.closest(AWAY);cue.classList.toggle('on',on);if(on)cue.style.transform=`translate(${Math.min(e.clientX+14,innerWidth-cue.offsetWidth-8)}px,${Math.min(e.clientY+18,innerHeight-cue.offsetHeight-8)}px)`})});
 document.addEventListener('pointerleave',()=>cue.classList.remove('on'));
 // phones: windows float over a dimmed backdrop; tapping it tucks them back into their folders
 const scrim=document.createElement('div');scrim.className='scrim';scrim.setAttribute('aria-hidden','true');document.body.append(scrim);

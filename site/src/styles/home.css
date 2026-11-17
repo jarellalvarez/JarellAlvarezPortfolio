@@ -35,7 +35,6 @@ nav.top .logo{background:var(--ink);-webkit-mask:url(/img/headerLogo.svg) center
 nav.top ul{display:flex;gap:1.5rem;list-style:none;padding:0;margin-left:auto}
 nav.top a{text-decoration:none;font-weight:500}
 nav.top a:hover{text-decoration:underline;text-underline-offset:4px}
-.fine{font-size:.75rem;color:var(--ink-2);margin-top:.15rem}
 
 main.hero{position:relative;display:grid;place-content:center;justify-items:center;text-align:center;padding:0 1rem 2rem;gap:.75rem}
 h1{font-family:var(--display);font-size:clamp(3.25rem,13.2vw,13.5rem);font-weight:var(--dw);line-height:.9;letter-spacing:var(--dt);font-optical-sizing:auto}
@@ -376,7 +375,7 @@ main.hero .role{color:var(--pop)}
 .win .clamp.open{max-height:none!important} .win .about-more.clamp{max-height:9rem}
 /* About window: one kind word and a way into the rest */
 .win .about+.h-sec{margin-top:3rem}
-.win .kw-more{margin-top:1rem;background:none;color:var(--ink)}
+.win .kw-more{background:none;color:var(--ink)}
 /* Pill that follows the mouse over empty desktop while a window is up: a click there minimizes */
 .away-cue{position:fixed;left:0;top:0;z-index:450;padding:.25rem .6rem;border-radius:999px;background:var(--ink);color:var(--bg);font:500 .75rem/1.2 var(--sans);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s}
 .away-cue.on{opacity:1}
