@@ -81,3 +81,5 @@ Typed cursor tooltip and cursor modes, idle grid response, multiple layered wind
 | Nov 16 | Drag tip: shown once per browser, again only after a page refresh |
 | Nov 16 | Push to `master` (and so deploy on Netlify) only when Jarell says "ship it" or "push it to master". All other work goes to the working branch, to save Netlify credits |
 | Nov 17 | Shipped to master at Jarell's request ("ship it"): Ask Jarell window, suggestion pills under each chat, top-bar helper opens a chat panel, AI fallback function (needs ANTHROPIC_API_KEY in Netlify, added) |
+| Nov 17 | Real AI confirmed working on the live site |
+| Nov 17 | Queued for the next shipping: after a visitor types a question, show only 1 suggested pill plus the "..." pill (3 pills stay when they pick a pill). Also make the AI answer in first person ("ask me") |
