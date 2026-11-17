@@ -1,5 +1,5 @@
 /* Homepage helper: Jarell's own sticky-note drawing, brought to life that answers questions from Jarell's written answers.
-   Idle: blinks, eyes follow the pointer, small wiggle now and then. Hover: brows lift. Click: opens Ask Jarell as a window. */
+   Idle: blinks, eyes follow the pointer, small wiggle now and then. Hover: brows lift. Click: opens Ask Jarell as a window, or tucks it away when it is already up front. */
 (() => {
   const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
   const wrap = document.createElement('div'); wrap.className = 'buddy';
@@ -30,7 +30,7 @@
   // say hi once, a few seconds in
   setTimeout(() => { if (!open()) { say.classList.add('on'); act('hop'); setTimeout(() => say.classList.remove('on'), 5000); } }, calm ? 0 : 4000);
   btn.addEventListener('pointerenter', () => btn.classList.add('curious')); btn.addEventListener('pointerleave', () => btn.classList.remove('curious'));
-  btn.addEventListener('click', () => { say.classList.remove('on'); act('hop'); window.openWin(btn); });
+  btn.addEventListener('click', () => { say.classList.remove('on'); act('hop'); window.toggleWin(btn); });
 
   window.buddyHop = () => act('hop');
 })();

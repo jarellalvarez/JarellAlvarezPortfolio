@@ -2,8 +2,8 @@
 title: Making Framework Designer easier to learn
 slug: copperleaf
 company: Copperleaf
-role: Product Designer II, promoted to III
-timeline: 6-month design cycle (at Copperleaf Oct 2021 to Jul 2024)
+role: Senior Product Designer
+timeline: 6-month design cycle (at Copperleaf Mar 2021 to Jul 2024)
 team: Product Manager, Dev Team Lead, Director of UX Research, Design Team
 tools: Figma, Dovetail, Whimsical, Jira, Mural, Pendo
 protected: true

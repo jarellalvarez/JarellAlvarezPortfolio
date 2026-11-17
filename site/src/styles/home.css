@@ -374,3 +374,28 @@ main.hero .role{color:var(--pop)}
 .win .timeline li>span:not(.yr){color:var(--ink-2);font-size:.9375rem}
 .win .about .dd{display:none}
 .win .clamp.open{max-height:none!important} .win .about-more.clamp{max-height:9rem}
+/* About window: one kind word and a way into the rest */
+.win .about+.h-sec{margin-top:3rem}
+.win .kw-more{margin-top:1rem;background:none;color:var(--ink)}
+/* Pill that follows the mouse over empty desktop while a window is up: a click there minimizes */
+.away-cue{position:fixed;left:0;top:0;z-index:450;padding:.25rem .6rem;border-radius:999px;background:var(--ink);color:var(--bg);font:500 .75rem/1.2 var(--sans);white-space:nowrap;pointer-events:none;opacity:0;transition:opacity .15s}
+.away-cue.on{opacity:1}
+@media (max-width:720px){.away-cue{display:none}}
+@media (prefers-reduced-motion:reduce){.away-cue{transition:none}}
+/* Phones: windows float inset over a dimmed backdrop instead of filling the screen */
+.scrim{display:none}
+@media (max-width:720px){
+  .scrim.on{display:block;position:fixed;inset:0;z-index:110;background:color-mix(in srgb,#000 40%,transparent)}
+  .win,.win.max{left:10px!important;right:10px!important;top:10svh!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;width:auto!important;height:auto!important;border-radius:var(--r-win)}
+  .win .bar{padding-top:.3rem}
+  .win.contents .toc{display:block;position:absolute;inset:57px 0 0;background:var(--surface);z-index:4;border:0}
+}
+/* Phones: three folders a row, labels that only wrap between words, helper beside the dock */
+@media (max-width:720px){
+  .folders{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem .25rem;max-width:22rem}
+  .folder{font-size:.8125rem!important;overflow-wrap:normal;word-break:normal;hyphens:none;padding:.4rem 0}
+  .folder svg{width:56px;height:46px}
+  .buddy{left:auto;right:max(.5rem,env(safe-area-inset-right));bottom:calc(.75rem + env(safe-area-inset-bottom));align-items:flex-end}
+  .bbtn{width:48px;height:54px}
+  .dock{gap:.15rem;padding:.3rem}
+}

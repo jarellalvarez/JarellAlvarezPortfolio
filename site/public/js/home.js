@@ -63,7 +63,7 @@ function size(){const row=document.querySelector('.folders').getBoundingClientRe
 
 function newWin(b,x,y){
   const w=tpl.content.firstElementChild.cloneNode(true);document.body.append(w);w.classList.add('open');
-  if(mobile())w.classList.add('max');else{w.style.width=b.w+'px';w.style.height=b.h+'px'}
+  if(!mobile()){w.style.width=b.w+'px';w.style.height=b.h+'px'}
   w._x=clamp(x,8,innerWidth-w.offsetWidth-8);w._y=clamp(y,8,innerHeight-w.offsetHeight-8);place(w);wire(w);focusWin(w);return w}
 
 function label(p,short,full){p._short=short;p._full=full;p._tab.querySelector('.tl').textContent=short;p._tab.title=full;p._tab.querySelector('.tx').setAttribute('aria-label','Close '+short)}
@@ -157,7 +157,11 @@ async function fill(p,key,url){
   const doc=new DOMParser().parseFromString(await (await fetch(url)).text(),'text/html');
   if(key==='about'){
     const photo=doc.querySelector('.hero-photo');
-    art.innerHTML=(photo?photo.outerHTML:'')+'<div class="story about">'+doc.querySelector('.story.about').innerHTML+'</div><div class="next"><a class="btn solid" href="/about/">Open as a page</a></div>';
+    // one testimonial from the About page, then a way into the rest
+    const said=doc.querySelector('.saids figure.said'),q=said?.querySelector('blockquote')?.textContent.trim()||'',who=said?.querySelector('figcaption strong')?.textContent.trim()||'',role=said?(said.querySelector('figcaption')?.textContent.trim()||'').slice(who.length).trim():'';
+    const kind=q?`<h2 class="h-sec">Kind words</h2><figure class="kw"><blockquote class="${q.length>240?'clamp':''}"><p>${esc(q)}</p></blockquote>${q.length>240?'<button class="rm" aria-expanded="false">Read more</button>':''}<figcaption><strong>${esc(who)}</strong>${esc(role)}</figcaption></figure><button type="button" class="btn kw-more">View more kind words</button>`:'';
+    art.innerHTML=(photo?photo.outerHTML:'')+'<div class="story about">'+doc.querySelector('.story.about').innerHTML+'</div>'+kind+'<div class="next"><a class="btn solid" href="/about/">Open as a page</a></div>';
+    const kf=document.querySelector('.folder[data-open="kind"]'),more=art.querySelector('.kw-more');if(more&&kf)more.onclick=()=>openWin(kf);
     p._plain=true; return 'About Jarell';
   }
   const title=doc.querySelector('.lede h1').textContent;
@@ -192,6 +196,8 @@ async function openWin(a){
   if(p._win._active===p)(p.querySelector('.bform input')||p.querySelector('.read')).focus({preventScroll:true});
 }
 window.openWin=openWin;
+// the helper toggles its chat: up front, it tucks away like the yellow button; otherwise it comes up
+window.toggleWin=a=>{const p=panes.get(keyOf(a));if(p&&shown(p._win)&&p._win._active===p)minimize(p._win);else openWin(a)};
 
 function wire(w){
   w.addEventListener('pointerdown',()=>focusWin(w),true);
@@ -218,10 +224,19 @@ function wire(w){
 document.querySelectorAll('.folder[data-open]').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();openWin(a)}));
 addEventListener('keydown',e=>{if(e.key!=='Escape'||document.querySelector('dialog[open],.style-panel.on'))return;const top=topWin();if(top)closeWin(top)});
 // clicking empty desktop tucks open windows away
-document.addEventListener('pointerdown',e=>{if(mobile()||e.button!==0||e.target.closest('a,button,input,select,textarea,label,dialog,.win,.coach,.buddy,.style-panel,.ghost,[role=dialog]'))return;wins().forEach(w=>minimize(w,true))});
+const AWAY='a,button,input,select,textarea,label,dialog,nav,.win,.coach,.buddy,.style-panel,.ghost,[role=dialog]';
+document.addEventListener('pointerdown',e=>{if(mobile()||e.button!==0||e.target.closest(AWAY))return;wins().forEach(w=>minimize(w,true));cue.classList.remove('on')});
+// a small label follows the mouse over that empty desktop while a window is up
+const cue=document.createElement('div');cue.className='away-cue';cue.setAttribute('aria-hidden','true');cue.textContent='Click to minimize';document.body.append(cue);
+let cq=0;addEventListener('pointermove',e=>{if(e.pointerType!=='mouse'||cq)return;cq=requestAnimationFrame(()=>{cq=0;
+  const on=!mobile()&&!!wins().length&&!e.target.closest(AWAY);cue.classList.toggle('on',on);if(on)cue.style.transform=`translate(${e.clientX+14}px,${e.clientY+18}px)`})});
+document.addEventListener('pointerleave',()=>cue.classList.remove('on'));
+// phones: windows float over a dimmed backdrop; tapping it tucks them back into their folders
+const scrim=document.createElement('div');scrim.className='scrim';scrim.setAttribute('aria-hidden','true');document.body.append(scrim);
+scrim.addEventListener('click',()=>wins().forEach(w=>minimize(w)));
 
 /* A folder whose window is tucked away looks occupied: outlined, tinted, darker paper inside */
-function renderTray(){document.querySelectorAll('.folder[data-open]').forEach(f=>{const p=panes.get(keyOf(f));f.classList.toggle('was-open',!!p&&!!p._win._min)})}
+function renderTray(){document.querySelectorAll('.folder[data-open]').forEach(f=>{const p=panes.get(keyOf(f));f.classList.toggle('was-open',!!p&&!!p._win._min)});scrim.classList.toggle('on',!!wins().length)}
 
 /* Too many tabs to fit: a "…" button lists them all; picking one brings it into view */
 function overflow(w){const strip=w.querySelector('.tabs'),btn=w.querySelector('.more-btn');btn.hidden=strip.scrollWidth<=strip.clientWidth+1}
