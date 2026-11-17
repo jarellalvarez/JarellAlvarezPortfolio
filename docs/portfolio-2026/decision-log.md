@@ -83,3 +83,4 @@ Typed cursor tooltip and cursor modes, idle grid response, multiple layered wind
 | Nov 17 | Shipped to master at Jarell's request ("ship it"): Ask Jarell window, suggestion pills under each chat, top-bar helper opens a chat panel, AI fallback function (needs ANTHROPIC_API_KEY in Netlify, added) |
 | Nov 17 | Real AI confirmed working on the live site |
 | Nov 17 | Queued for the next shipping: after a visitor types a question, show only 1 suggested pill plus the "..." pill (3 pills stay when they pick a pill). Also make the AI answer in first person ("ask me") |
+| Nov 17 | Queued for the next shipping: the About window gets a small Kind words preview at the bottom: one testimonial, with a "view more" that opens the Kind words window as a tab |
