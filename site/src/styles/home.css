@@ -398,3 +398,13 @@ main.hero .role{color:var(--pop)}
   .bbtn{width:48px;height:54px}
   .dock{gap:.15rem;padding:.3rem}
 }
+/* Phones: smaller hero so the folders sit higher; the tagline is the quietest line */
+@media (max-width:720px){
+  main.hero{gap:.4rem;padding-bottom:1rem}
+  main.hero h1{font-size:clamp(2.6rem,13vw,3.4rem)!important}
+  main.hero .role{font-size:.9375rem;margin-top:.35rem}
+  main.hero .tag{font-size:.75rem}
+  .folders{margin-top:1rem!important}
+  /* windows start just under the top bar, with less empty space above */
+  .win,.win.max{top:calc(48px + env(safe-area-inset-top))!important}
+}
