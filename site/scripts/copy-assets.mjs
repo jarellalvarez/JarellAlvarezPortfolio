@@ -1,5 +1,6 @@
 // Runs before every build and dev start.
-// 1. Compresses every case-study image to WebP (max 1600px wide) into .cache/img/
+// 1. Compresses every case-study image to WebP into .cache/img/: max 1600px wide at quality 90,
+//    or at its own size and quality 95 when it is under 1000px wide (small images are never resized)
 // 2. Copies only the images used in the PUBLIC part of each study into public/work/.
 //    Images used only below the lock are left out; the build embeds them inside the encrypted section.
 // 3. Copies the 2020 archive, the editor files and the editor preview styles.
@@ -9,6 +10,9 @@ import matter from 'gray-matter';
 
 const root = new URL('../../', import.meta.url), pub = new URL('../public/', import.meta.url);
 const cache = new URL('../.cache/img/', import.meta.url);
+// the cache is rebuilt whenever these settings change, so a quality change always takes effect
+const SETTINGS = JSON.stringify({ max: 1600, small: 1000, q: 90, qSmall: 95 }), stamp = new URL('settings.json', cache);
+if (!existsSync(stamp) || readFileSync(stamp, 'utf8') !== SETTINGS) { rmSync(cache, { recursive: true, force: true }); mkdirSync(cache, { recursive: true }); writeFileSync(stamp, SETTINGS); }
 const LOCK = '<!-- lock -->';
 const refs = md => [...md.matchAll(/\(img\/([^)\s]+)\)/g)].map(m => m[1]);
 export const webp = f => f.replace(/\.(png|jpe?g)$/i, '.webp');
@@ -30,7 +34,8 @@ for (const [coll, out] of [['work', 'work'], ['earlier', 'earlier-img']]) {
       before += readFileSync(input).length;
       let file = target, name = webp(f);
       if (!existsSync(target) || statSync(target).mtimeMs < statSync(input).mtimeMs) {
-        try { await sharp(readFileSync(input)).resize({ width: 1600, withoutEnlargement: true }).webp({ quality: 80 }).toFile(target.pathname); }
+        try { const img = sharp(readFileSync(input)), small = (await img.metadata()).width < 1000;
+          await (small ? img : img.resize({ width: 1600, withoutEnlargement: true })).webp({ quality: small ? 95 : 90 }).toFile(target.pathname); }
         catch (err) { console.warn(`[portfolio] could not convert ${coll}/${dir}/${f}, using the original:`, err.message); rmSync(target, { force: true }); cpSync(input, new URL(f, cdir)); file = new URL(f, cdir); name = f; }
       }
       after += readFileSync(file).length; n++;

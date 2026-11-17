@@ -16,15 +16,15 @@
     const add = (who, html) => { const li = document.createElement('li'); li.className = who; li.innerHTML = html; log.append(li); log.scrollTop = log.scrollHeight; return li; };
     let data = [], lastGroup = null;
     const asked = () => new Set(past());
-    // three suggestions you have not asked yet, leaning toward the topic just discussed, plus a "…" pill for the full list
-    const renderPills = () => {
+    // suggestions you have not asked yet (three, or one after a typed question), leaning toward the topic just discussed, plus a "…" pill for the full list
+    const renderPills = (n = 3) => {
       const seen = asked(), pool = data.filter(x => !seen.has(x.q));
       const same = pool.filter(x => x.group === lastGroup), rest = pool.filter(x => x.group !== lastGroup);
-      const pick = [...same.slice(0, 2), ...rest.slice(0, 3)].slice(0, 3);
+      const pick = [...same.slice(0, 2), ...rest.slice(0, 3)].slice(0, n);
       pills.innerHTML = pick.map(x => `<button type="button" class="bpill">${esc(x.q)}</button>`).join('') + `<button type="button" class="bpill bmore" aria-label="More questions" title="More questions" aria-haspopup="true" aria-expanded="false">…</button>`;
     };
     const closeMenu = () => { menu.hidden = true; pills.querySelector('.bmore')?.setAttribute('aria-expanded', 'false'); };
-    const answer = async q => {
+    const answer = async (q, typed) => {
       closeMenu(); remember(q); add('me', esc(q));
       const hit = window.Ask?.find(q)[0];
       if (hit) { lastGroup = hit.group; add('bot', `<p>${esc(hit.a)}</p>${hit.link ? `<a href="${esc(hit.link)}"${/^https?:/.test(hit.link) ? ' target="_blank" rel="noopener"' : ''}>${hit.link.startsWith('mailto') ? 'Email Jarell' : 'See more'}</a>` : ''}`); }
@@ -34,7 +34,7 @@
         wait.innerHTML = ai ? `<p>${esc(ai)}</p><small>AI answer, based on Jarell's site. It can be wrong.</small>` : `<p>I don't have a written answer for that yet.</p>${mail(q)}`;
         log.scrollTop = log.scrollHeight;
       }
-      renderPills(); window.buddyHop?.();
+      renderPills(typed ? 1 : 3); window.buddyHop?.();
     };
     const openMenu = () => {
       const prev = past(), seen = new Set(prev), sug = ['For recruiters', 'Case studies', 'Personal'].flatMap(g => data.filter(x => x.group === g && !seen.has(x.q)).slice(0, 4)).map(x => x.q);
@@ -48,7 +48,7 @@
       if (e.key === 'Escape') { e.stopPropagation(); closeMenu(); pills.querySelector('.bmore')?.focus(); }
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); it[(i + (e.key === 'ArrowDown' ? 1 : -1) + it.length) % it.length].focus(); } });
     root.addEventListener('pointerdown', e => { if (!menu.hidden && !e.target.closest('.bmenu,.bmore')) closeMenu(); });
-    form.onsubmit = e => { e.preventDefault(); const q = input.value.trim(); if (q) { input.value = ''; answer(q); } };
+    form.onsubmit = e => { e.preventDefault(); const q = input.value.trim(); if (q) { input.value = ''; answer(q, true); } };
     add('bot', '<p>Hi! I can answer questions about Jarell\'s work, experience and life outside work. Pick a question below or type your own.</p>');
     try { data = await window.Ask.load(); renderPills(); }
     catch { add('bot', '<p>Answers did not load. <a href="mailto:jarellalvarez@gmail.com">Email Jarell</a>.</p>'); }

@@ -18,8 +18,8 @@ h1{font-family:var(--display);font-weight:var(--dw);letter-spacing:-.03em;font-s
 .gate form{display:flex;gap:.5rem;flex-wrap:wrap}
 .gate input{flex:1;min-width:10rem;min-height:44px;padding:0 .9rem;border:1.5px solid var(--ink);border-radius:999px;background:var(--bg)}
 .gate .err{color:var(--danger);font-size:.875rem;margin:.75rem 0 0;min-height:1.3em}
-.gate .ask{margin:1rem 0 0;font-size:.875rem}
-.gate .ask button:not(.mail){background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
+.gate .gate-ask{margin:1rem 0 0;font-size:.875rem}
+.gate .gate-ask button:not(.mail){background:none;border:0;padding:0;text-decoration:underline;cursor:pointer}
 #story{display:none}
 .story h2{font-family:var(--display);font-weight:var(--hw);letter-spacing:-.02em;font-size:clamp(var(--t-3),4vw,var(--t-5));line-height:1.1;letter-spacing:-.015em;margin:4rem 0 1rem;text-wrap:balance}
 .story p,.story li{max-width:65ch;text-wrap:pretty} .story p{margin-bottom:1rem}
@@ -190,3 +190,10 @@ main>.rm{justify-self:start}
 .page-toc a[aria-current]{border-left-color:var(--pop)}
 .timeline li:first-child::before{border-color:var(--pop);background:var(--pop)}
 .exec::first-line{color:inherit}
+/* Back pill fits its label on every page, including the two-column contents layout */
+main>.back{justify-self:start;width:fit-content}
+/* story images keep their natural width: small images are never stretched */
+.story img{width:auto}
+/* Locked page: "No password?" and the email button wrap instead of overflowing; full-width button on phones */
+.gate .gate-ask{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem .75rem}
+@media (max-width:640px){.gate .gate-ask .mail{flex:1 1 100%;justify-content:center}}

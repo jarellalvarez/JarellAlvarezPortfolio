@@ -2,10 +2,9 @@
 title: About
 photo: /img/jarell-alvarez.webp
 summary: >-
-  Senior product designer with 9+ years shaping complex SaaS, AI-assisted and enterprise products.
-  I lead product design at MAVI, spent three years at Copperleaf designing enterprise analytics,
-  and earlier helped build B2B platforms at Convertus and UI Avenue. My strength is the messy middle:
-  research, systems thinking and accessibility, worked out closely with product and engineering so it ships.
+  9+ years across SaaS, AI-assisted and enterprise products. Now leading design at MAVI, after three years at
+  Copperleaf on enterprise analytics. My strength is the messy middle: research, systems thinking and accessibility,
+  worked out closely with product and engineering so it ships. I also teach at BCIT and run Vancouver Design Community.
 timeline:
   - { years: "2026 to now", role: "Lead Product Designer", org: "MAVI", note: "Own end-to-end design for AI-assisted hiring, vetting and scheduling workflows." }
   - { years: "2024 to now", role: "Design Instructor, D3 Program", org: "BCIT", note: "Teach UX/UI, usability testing, accessibility and systems thinking." }
@@ -18,7 +17,7 @@ timeline:
   - { years: "2017 to 2019", role: "Senior Product UI/UX Designer", org: "Convertus", note: "B2B automotive platforms, dealership workflows and reusable UI components." }
 ---
 
-👋🏼 I'm a senior product designer in Vancouver with 9+ years of making complicated software easier to use. Right now I lead product design at MAVI, teach UX/UI at BCIT, and run a design community that got a little out of hand.
+👋🏼 I'm Jarell, a senior product designer who makes complicated software easier to use.
 
 Chat with me about:
 
