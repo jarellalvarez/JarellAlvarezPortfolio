@@ -408,3 +408,7 @@ main.hero .role{color:var(--pop)}
   /* windows start just under the top bar, with less empty space above */
   .win,.win.max{top:calc(48px + env(safe-area-inset-top))!important}
 }
+/* Nov 17: Ask Jarell window has no resize corner; tip and helper sit behind every window */
+.win.chatting .grip{display:none}
+.coach{z-index:15}
+.buddy{z-index:15}
