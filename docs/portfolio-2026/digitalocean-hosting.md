@@ -1,5 +1,7 @@
 # Hosting on DigitalOcean (plan, not done yet)
 
+> Nov 18 review notes: back up the old site folder first (step 0), build with the real study password (a production build now stops without it), use the nginx files in `deploy/nginx/` (they carry Netlify's security headers, caching and gzip), lower the DNS TTL before the flip, and expect a few minutes without HTTPS at the flip. `/admin` stops working off Netlify.
+
 Goal: move the portfolio off Vercel/Netlify to the existing droplet, upload with FileZilla, and get working HTTPS.
 
 ## At a glance
@@ -24,6 +26,7 @@ The steps below check each one before asking for a certificate.
 
 ## Steps (one at a time, check each before the next)
 
+0. **Back up the old site.** The old portfolio lives on the droplet. Download its whole web folder with FileZilla and keep it, before changing anything.
 1. **DNS:** an `A` record for `jarellalvarez.com` and `www` pointing to the droplet IP. Check: `dig +short jarellalvarez.com` shows the droplet IP.
 2. **Firewall:** `sudo ufw allow 'Nginx Full'` and allow 80 and 443 in any DigitalOcean cloud firewall.
 3. **Nginx site:** root `/var/www/jarellalvarez.com`, `server_name jarellalvarez.com www.jarellalvarez.com;`, and `try_files $uri $uri/ $uri.html =404;`. Check: `sudo nginx -t`.
