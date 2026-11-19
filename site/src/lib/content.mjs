@@ -47,7 +47,7 @@ export function render(md, { dir, meta, coll = 'work' }, locked = false) {
     .replace(/<!--(?! lock -->)[\s\S]*?-->/g, '')
     .replace(/^\[JARELL\].*$/gm, '')
     .replaceAll('{{presentation}}', meta.presentation || '#')
-    .replace(/^:::pair\s*$/gm, '<div class="duo">\n').replace(/^:::\s*$/gm, '\n</div>');
+    .replace(/^:::pair[ \t]*$/gm, '<div class="duo">\n').replace(/^:::[ \t]*$/gm, '\n</div>\n');
   return marked.parse(src)
     .replace(/<p>\{\{stats\}\}<\/p>/g, stats ? `<div class="stats">${stats}</div>` : '')
     .replace(/src="img\/([^"]+)"/g, (_, f) => {

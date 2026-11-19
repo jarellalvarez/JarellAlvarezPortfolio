@@ -354,8 +354,6 @@ main.hero .role{color:var(--pop)}
 .bsay{color:var(--ink);visibility:hidden} .bsay.on{visibility:visible}
 /* helper body is Jarell's traced sticky note; a soft fill behind it, eyes on top */
 .bbtn .note{stroke:none;fill:color-mix(in srgb,var(--pop) 16%,var(--surface))}
-.bbtn image.drawn{filter:var(--drawn-filter,none)}
-[data-theme=dark] .bbtn image.drawn{--drawn-filter:invert(1)}
 .bbtn .eyes ellipse{fill:var(--surface);stroke-width:2.4}
 /* Ask Jarell as a window tab */
 .body.chat .read{overflow:hidden;display:grid}
@@ -412,3 +410,6 @@ main.hero .role{color:var(--pop)}
 .win.chatting .grip{display:none}
 .coach{z-index:15}
 .buddy{z-index:15}
+
+/* helper note: the Illustrator outline in ink, with the paper tint behind the face */
+.bbtn .drawn{fill:var(--ink);stroke:none}

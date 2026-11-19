@@ -80,3 +80,20 @@ test('Ask Jarell answers contain no locked case-study details', async () => {
     for (const term of ['match score']) if (locked.toLowerCase().includes(term) && !pub.toLowerCase().includes(term)) { assert.ok(!ask.includes(term), `ask.json mentions "${term}"`); assert.ok(!kb.includes(term), `AI content mentions "${term}"`); }
   }
 });
+
+// Illustrations: every drawing the site asks for must exist, be inline-safe, and carry a viewBox.
+test('every illustration the site uses exists and is a clean inline SVG', () => {
+  const js = readFileSync(new URL('../public/js/illustrations.js', import.meta.url), 'utf8');
+  const names = new Set([...js.matchAll(/'([a-z][a-z0-9-]+)'\]/g)].map(m => m[1]).concat([...js.matchAll(/'squiggly-underline'/g)].map(() => 'squiggly-underline')));
+  const home = readFileSync(new URL('../src/pages/index.astro', import.meta.url), 'utf8');
+  for (const m of home.matchAll(/data-art="([a-z-]+)"/g)) names.add(m[1]);
+  const traced = new Set(['bubble', 'chart', 'shapes']);
+  assert.ok(names.size >= 20, 'found the drawing names');
+  for (const n of names) {
+    const file = new URL(`../public/${traced.has(n) ? 'doodles' : 'illustrations'}/${n}.svg`, import.meta.url);
+    assert.ok(existsSync(file), `${n}.svg is missing`);
+    const svg = readFileSync(file, 'utf8');
+    assert.match(svg, /viewBox="[\d. -]+"/, `${n} has no viewBox`);
+    assert.ok(!/id="Layer_1"/.test(svg) && !/<script/i.test(svg) && !/on\w+=/i.test(svg), `${n} is not clean`);
+  }
+});

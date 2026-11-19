@@ -3,7 +3,7 @@ import '../styles/tokens.css';
 import '../styles/themes.css';
 import '../styles/style-panel.css';
 import '../styles/ask.css';
-import '../styles/doodles.css';
+import '../styles/illustrations.css';
 const { title, description, noindex = false } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -33,5 +33,5 @@ const url = new URL(Astro.url.pathname, Astro.site);
   <script is:inline src="/js/ask.js"></script>
   <script is:inline src="/js/chat.js"></script>
   <script is:inline src="/js/chatpanel.js"></script>
-  <script is:inline src="/js/doodles.js"></script>
+  <script is:inline src="/js/illustrations.js"></script>
 </html>

@@ -8,8 +8,7 @@
   <button type="button" class="bbtn" aria-label="Ask Jarell a question" data-open="ask" data-name="Ask Jarell">
     <svg viewBox="0 0 90 100" aria-hidden="true">
       <rect class="note" x="10" y="12" width="70" height="72" rx="4"/>
-      <image class="drawn" href="/doodles/note.svg" x="2" y="4" width="86" height="88" preserveAspectRatio="none"/>
-      <rect class="note cover" x="22" y="17" width="48" height="62" rx="2"/>
+      <path class="drawn" d="M13 16h64v66H13z" transform="translate(0 0)"/>
       <g class="brows"><path d="M24 30c5-4 11-4 15-1"/><path d="M50 29c5-3 11-2 15 2"/></g>
       <g class="eyes"><ellipse cx="32" cy="44" rx="8" ry="9"/><ellipse cx="58" cy="44" rx="8" ry="9"/>
         <circle class="pupil" cx="32" cy="45" r="3.6"/><circle class="pupil" cx="58" cy="45" r="3.6"/></g>
@@ -18,6 +17,12 @@
   </button>`;
   document.body.append(wrap);
   const btn = wrap.querySelector('.bbtn'), say = wrap.querySelector('.bsay');
+  // the note itself is the outline from Stick Note.svg (its scribble lines are left out: the face goes there)
+  fetch('/illustrations/stick-note.svg').then(r => r.ok ? r.text() : Promise.reject()).then(t => {
+    const d = new DOMParser().parseFromString(t, 'image/svg+xml').querySelector('path')?.getAttribute('d'), vb = (t.match(/viewBox="([^"]+)"/) || [])[1];
+    if (!d || !vb) return; const [x, y, w, h] = vb.split(' ').map(Number), k = Math.min(72 / w, 74 / h), p = wrap.querySelector('path.drawn');
+    p.setAttribute('d', d); p.setAttribute('transform', `translate(${(90 - w * k) / 2} ${(100 - h * k) / 2 - 1}) scale(${k}) translate(${-x} ${-y})`);
+  }).catch(() => {});
   const open = () => !!document.querySelector('.bchatui');
   const pupils = [...wrap.querySelectorAll('.pupil')], base = pupils.map(p => [+p.getAttribute('cx'), +p.getAttribute('cy')]);
   const act = c => { if (calm) return; btn.classList.remove('wiggle', 'tap', 'hop'); void btn.offsetWidth; btn.classList.add(c); };
