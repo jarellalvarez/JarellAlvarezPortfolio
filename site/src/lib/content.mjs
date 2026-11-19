@@ -39,6 +39,17 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
 // Markdown plus three small additions: {{stats}}, {{presentation}} and :::pair ... ::: for two images side by side.
 const cache = new URL('../../.cache/img/', import.meta.url);
 const webp = f => f.replace(/\.(png|jpe?g)$/i, '.webp');
+const manifest = (() => { try { return JSON.parse(readFileSync(new URL('manifest.json', cache), 'utf8')); } catch { return {}; } })();
+// public images: <picture> with AVIF and WebP at several widths (the browser picks one); data-full is the biggest copy for the lightbox.
+// locked images: one WebP embedded inside the encrypted page. Width and height are set so the page never jumps.
+function image(attrs, f, coll, dir, locked) {
+  const m = manifest[`${coll}/${dir}/${f}`], base = webp(f), url = `/${coll === 'work' ? 'work' : 'earlier-img'}/${dir}/`;
+  if (!m) { const orig = new URL(`${coll}/${dir}/${f}`, cache); return locked && existsSync(orig) ? `<img ${attrs.trim()} src="data:image/${f.split('.').pop().replace('jpg', 'jpeg')};base64,${readFileSync(orig).toString('base64')}" loading="lazy" decoding="async">` : `<img ${attrs.trim()} src="${url}${f}" loading="lazy" decoding="async">`; }
+  if (locked) { const useLocked = m.locked, file = new URL(`${coll}/${dir}/${useLocked ? base.replace(/\.webp$/, '-locked.webp') : base}`, cache), w = useLocked ? 2000 : m.w;
+    return `<img ${attrs.trim()} src="data:image/webp;base64,${readFileSync(file).toString('base64')}" width="${w}" height="${Math.round(m.h * w / m.w)}" loading="lazy" decoding="async">`; }
+  const stem = base.replace(/\.webp$/, ''), set = ext => [...m.steps.map(w => `${url}${stem}-${w}.${ext} ${w}w`), `${url}${stem}.${ext} ${m.w}w`].join(', '), sizes = '(max-width: 760px) 100vw, 720px';
+  return `<picture><source type="image/avif" srcset="${set('avif')}" sizes="${sizes}"><source type="image/webp" srcset="${set('webp')}" sizes="${sizes}"><img ${attrs.trim()} src="${url}${base}" data-full="${url}${base}" width="${m.w}" height="${m.h}" loading="lazy" decoding="async"></picture>`;
+}
 
 // locked = true embeds images inside the HTML so they travel encrypted with the text
 export function render(md, { dir, meta, coll = 'work' }, locked = false) {
@@ -50,13 +61,9 @@ export function render(md, { dir, meta, coll = 'work' }, locked = false) {
     .replace(/^:::pair[ \t]*$/gm, '<div class="duo">\n').replace(/^:::[ \t]*$/gm, '\n</div>\n');
   return marked.parse(src)
     .replace(/<p>\{\{stats\}\}<\/p>/g, stats ? `<div class="stats">${stats}</div>` : '')
-    .replace(/src="img\/([^"]+)"/g, (_, f) => {
-      const file = new URL(`${coll}/${dir}/${webp(f)}`, cache);
-      const orig = new URL(`${coll}/${dir}/${f}`, cache), use = existsSync(file) ? file : orig;
-      if (locked && existsSync(use)) return `src="data:image/${use === file ? 'webp' : f.split('.').pop().replace('jpg', 'jpeg')};base64,${readFileSync(use).toString('base64')}"`;
-      return `src="/${coll === 'work' ? 'work' : 'earlier-img'}/${dir}/${existsSync(file) ? webp(f) : f}"`;
-    })
-    .replace(/<p><img ([^>]*?)alt="([^"]*)"([^>]*)><\/p>/g, '<figure><img $1alt="$2"$3 loading="lazy"><figcaption>$2</figcaption></figure>');
+    // figure + caption first (the caption is the image's own alt text), then each image becomes a responsive <picture>
+    .replace(/<p><img ([^>]*?)alt="([^"]*)"([^>]*)><\/p>/g, '<figure><img $1alt="$2"$3><figcaption>$2</figcaption></figure>')
+    .replace(/<img ([^>]*?)src="img\/([^"]+)"([^>]*)>/g, (_, a, f, c) => image(a + c, f, coll, dir, locked));
 }
 
 export function study(slug, password, coll = 'work') {

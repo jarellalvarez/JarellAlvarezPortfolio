@@ -109,3 +109,12 @@ test('self portrait is inlined clean and no hanging side drawings remain', async
   assert.ok(!svg.includes('<metadata') && !svg.includes('xpacket'));
   assert.ok(!readFileSync(new URL('../src/styles/illustrations.css', import.meta.url), 'utf8').includes('.dd.side'));
 });
+
+test('every case-study image has a description (it is the caption and the lightbox text)', () => {
+  const dirs = [['work', 'content/work'], ['earlier', 'content/earlier']];
+  for (const [, d] of dirs) {
+    const base = new URL(`../../${d}/`, import.meta.url); if (!existsSync(base)) continue;
+    for (const s of readdirSync(base)) { const f = new URL(`${s}/index.md`, base); if (!existsSync(f)) continue;
+      for (const m of readFileSync(f, 'utf8').matchAll(/!\[([^\]]*)\]\(img\/[^)]+\)/g)) assert.ok(m[1].trim().length > 3, `${d}/${s} has an image with no description`); }
+  }
+});

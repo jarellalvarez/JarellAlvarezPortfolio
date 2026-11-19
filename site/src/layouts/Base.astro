@@ -4,6 +4,7 @@ import '../styles/themes.css';
 import '../styles/style-panel.css';
 import '../styles/ask.css';
 import '../styles/illustrations.css';
+import '../styles/lightbox.css';
 const { title, description, noindex = false } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -34,4 +35,5 @@ const url = new URL(Astro.url.pathname, Astro.site);
   <script is:inline src="/js/chat.js"></script>
   <script is:inline src="/js/chatpanel.js"></script>
   <script is:inline src="/js/illustrations.js"></script>
+  <script is:inline src="/js/lightbox.js"></script>
 </html>

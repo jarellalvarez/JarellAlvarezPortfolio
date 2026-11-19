@@ -1,6 +1,6 @@
 // Runs before every build and dev start.
-// 1. Compresses every case-study image to WebP into .cache/img/: max 1600px wide at quality 90,
-//    or at its own size and quality 95 when it is under 1000px wide (small images are never resized)
+// 1. Makes AVIF + WebP copies of every case-study image into .cache/img/ (full size up to 2400px, plus 800 and 1400px for srcset;
+//    sources under 1000px wide are never enlarged and use higher quality)
 // 2. Copies only the images used in the PUBLIC part of each study into public/work/.
 //    Images used only below the lock are left out; the build embeds them inside the encrypted section.
 // 3. Copies the 2020 archive, the editor files and the editor preview styles.
@@ -11,12 +11,17 @@ import matter from 'gray-matter';
 const root = new URL('../../', import.meta.url), pub = new URL('../public/', import.meta.url);
 const cache = new URL('../.cache/img/', import.meta.url);
 // the cache is rebuilt whenever these settings change, so a quality change always takes effect
-const SETTINGS = JSON.stringify({ max: 1600, small: 1000, q: 90, qSmall: 95 }), stamp = new URL('settings.json', cache);
+const SETTINGS = JSON.stringify({ v: 2, full: 2400, locked: 2000, steps: [800, 1400], q: 88, qSmall: 95, avif: [60, 70] }), stamp = new URL('settings.json', cache);
 if (!existsSync(stamp) || readFileSync(stamp, 'utf8') !== SETTINGS) { rmSync(cache, { recursive: true, force: true }); mkdirSync(cache, { recursive: true }); writeFileSync(stamp, SETTINGS); }
 const LOCK = '<!-- lock -->';
 const refs = md => [...md.matchAll(/\(img\/([^)\s]+)\)/g)].map(m => m[1]);
 export const webp = f => f.replace(/\.(png|jpe?g)$/i, '.webp');
 
+// Sizes: the full file keeps the source's own detail up to 2400px wide (never enlarged), AVIF and WebP copies at 800 and 1400px
+// feed srcset so phones and retina screens each download the right size. Locked images are embedded in the encrypted page,
+// so they get one smaller copy (2000px max) to keep that page light.
+const FULL = 2400, LOCKED = 2000, STEPS = [800, 1400], manifest = {};
+const fresh = (t, i) => existsSync(t) && statSync(t).mtimeMs >= statSync(i).mtimeMs;
 let n = 0, before = 0, after = 0;
 for (const [coll, out] of [['work', 'work'], ['earlier', 'earlier-img']]) {
   const collDir = new URL(`content/${coll}/`, root);
@@ -30,19 +35,28 @@ for (const [coll, out] of [['work', 'work'], ['earlier', 'earlier-img']]) {
     const publicRefs = new Set(refs(content.split(LOCK)[0]));
     for (const f of readdirSync(src)) {
       if (!/\.(png|jpe?g)$/i.test(f)) continue;
-      const target = new URL(webp(f), cdir), input = new URL(f, src);
-      before += readFileSync(input).length;
-      let file = target, name = webp(f);
-      if (!existsSync(target) || statSync(target).mtimeMs < statSync(input).mtimeMs) {
-        try { const img = sharp(readFileSync(input)), small = (await img.metadata()).width < 1000;
-          await (small ? img : img.resize({ width: 1600, withoutEnlargement: true })).webp({ quality: small ? 95 : 90 }).toFile(target.pathname); }
-        catch (err) { console.warn(`[portfolio] could not convert ${coll}/${dir}/${f}, using the original:`, err.message); rmSync(target, { force: true }); cpSync(input, new URL(f, cdir)); file = new URL(f, cdir); name = f; }
-      }
-      after += readFileSync(file).length; n++;
-      if (publicRefs.has(f)) cpSync(file, new URL(`${out}/${dir}/${name}`, pub));
+      const input = new URL(f, src), base = webp(f), stem = base.replace(/\.webp$/, ''), made = [];
+      before += statSync(input).size;
+      try {
+        const meta = await sharp(readFileSync(input)).metadata(), small = meta.width < 1000, q = small ? 95 : 88, fullW = Math.min(meta.width, FULL);
+        const jobs = [[base, fullW, 'webp'], [`${stem}.avif`, fullW, 'avif']];
+        const steps = STEPS.filter(w => w < fullW * 0.9);
+        for (const w of steps) jobs.push([`${stem}-${w}.webp`, w, 'webp'], [`${stem}-${w}.avif`, w, 'avif']);
+        const locked = fullW > LOCKED; if (locked) jobs.push([`${stem}-locked.webp`, LOCKED, 'webp']);
+        for (const [name, w, fmt] of jobs) {
+          const t = new URL(name, cdir); made.push(name);
+          if (!fresh(t, input)) { const img = sharp(readFileSync(input)).resize({ width: w, withoutEnlargement: true });
+            await (fmt === 'avif' ? img.avif({ quality: small ? 70 : 60, effort: 4 }) : img.webp({ quality: q })).toFile(t.pathname); }
+          after += statSync(t).size;
+        }
+        manifest[`${coll}/${dir}/${f}`] = { w: fullW, h: Math.round(meta.height * fullW / meta.width), steps, locked };
+        if (publicRefs.has(f)) for (const name of made.filter(x => !x.endsWith('-locked.webp'))) cpSync(new URL(name, cdir), new URL(`${out}/${dir}/${name}`, pub));
+      } catch (err) { console.warn(`[portfolio] could not convert ${coll}/${dir}/${f}, using the original:`, err.message); cpSync(input, new URL(f, cdir)); if (publicRefs.has(f)) cpSync(input, new URL(`${out}/${dir}/${f}`, pub)); after += statSync(input).size; }
+      n++;
     }
   }
 }
+writeFileSync(new URL('manifest.json', cache), JSON.stringify(manifest));
 console.log(`[portfolio] ${n} images: ${(before / 1e6).toFixed(1)} MB -> ${(after / 1e6).toFixed(1)} MB`);
 
 rmSync(new URL('2020', pub), { recursive: true, force: true });
