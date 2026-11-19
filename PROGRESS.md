@@ -10,12 +10,14 @@ Branch: `claude/confident-wozniak-8n4wv1`. Nothing goes to `master`, no deploy, 
 - Task 4 lightbox: custom `public/js/lightbox.js` + `lightbox.css` (no library). Tested at 1440 and 390: keyboard open (Enter), caption = figcaption or alt, X / Esc / backdrop close, focus returns, focus trap, + / - / 0, double click and double tap, pan, Fit button.
 - Task 5 design system: new shared tokens (spacing, radii, motion durations and curves, layers, window-control colors) in `tokens.css`; repeated hard-coded easings, pill/small radii, dot colors and layers now use them (screenshots pixel-identical, 38 tests pass). Docs in `docs/design-system.md`.
 - Task 6 Figma: page "Portfolio 2026 Design System" in file `5TjQUqil2gUNCFHOoAzBnt` (the Portfolio Hi-Fi file). Variables: Color / Ivory light, Color / Ivory dark, Spacing and shape, Type scale (13 colors, spacing 4 to 80, radii, 8 type sizes). Components: Button (Solid/Outline x Default/Hover), Tab (Active/Inactive), Folder (Rest/Hover/Open), Window title bar, Dock, Tooltip, Lightbox controls. Frames: Homepage, Floating window, Expanded case study, Lightbox (wireframe level, built from the component instances).
+- Task 8 launch readiness: added 404 page, `robots.txt`, `sitemap.xml`, 32px and Apple touch icons + theme color, `scripts/check-links.mjs` (0 broken), nginx template now has `error_page 404` and caches AVIF. `docs/launch-checklist.md` written. Not deployed.
+- Task 9: `docs/migration-digitalocean.md` written (Netlify dependencies, droplet recommendation with trade-offs, 15 numbered steps with checks, rollback). No accounts, DNS or spending touched.
 
 ## In progress
 - (nothing)
 
 ## Next
-- 7 Opus review, 8 launch checklist, 9 DigitalOcean migration doc
+- 7 Opus review (running)
 
 ## Needs Jarell
 - Higher-res exports (too small to look sharp on a 2x screen; sizes are the minimum width in px): Copperleaf: value-model 775 (needs 1600), design-process 805 (1600), dual-track-agile 806 (1600), framework-designer 806 (1600), layout-explorations 887 (1600), research-1 and research-2 900 (1800), wireframing 900 (1800), pendo-resource-center 940 (1800), design-team-feedback 1004 (1800), resource-guide 1095 (1800). UI Avenue screens are 1536 (fine at the 720px column, a little soft in the lightbox; originals welcome). Headshot source is 800px: a 1500px export would sharpen About.

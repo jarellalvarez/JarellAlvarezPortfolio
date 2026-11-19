@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /2020/
+Sitemap: https://jarellalvarez.com/sitemap.xml
