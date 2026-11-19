@@ -4,9 +4,11 @@
 */
 (() => {
   const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
+  // width/height of each drawing, so a heading reserves its final size before the file arrives (a test keeps this in step with the files)
+  const AR = {"airplane": 1.167, "anything-fashion-related": 0.907, "arrow": 2.424, "board-game-nerd": 1.232, "book": 1.365, "bubble": 1.347, "camera": 1.046, "chart": 1.609, "chat-bubble": 1.392, "checkmark": 1.06, "circle": 2.219, "classifying-music": 1.36, "coffee": 0.898, "cooking-nerd": 0.777, "cursor": 1.21, "folder": 1.244, "globe": 1.091, "hiking": 0.883, "lifting-weights-repeatedly": 1.971, "lightbulb": 0.737, "self-portrait": 0.873, "shape-logo-1": 1.126, "shape-logo-2": 1.088, "shape-logo-3": 1.775, "shapes": 2.16, "squiggly-arrow": 2.381, "squiggly-underline": 6.895, "star": 1.218, "stick-note": 1.049, "sticky-notes": 3.051, "vancouver-mountains": 2.273, "volleyball": 1.029, "wireframe": 1.333};
   const cache = {};
   const load = n => cache[n] ||= fetch(`/illustrations/${n}.svg`).then(r => r.ok ? r.text() : Promise.reject()).catch(() => null);
-  const mk = (name, cls) => { const s = document.createElement('span'); s.className = 'dd ' + (cls || ''); s.dataset.art = name; s.setAttribute('aria-hidden', 'true'); return s; };
+  const mk = (name, cls) => { const s = document.createElement('span'); s.className = 'dd ' + (cls || ''); s.dataset.art = name; s.setAttribute('aria-hidden', 'true'); if (AR[name]) { s.style.setProperty('--ar', AR[name]); s.style.setProperty('--k', Math.sqrt(AR[name]).toFixed(3)); } return s; };
   const pick = (t, map) => { for (const [re, n] of map) if (re.test(t)) return n; return null; };
 
   // put the SVG inside its box; every path gets pN so motion can target parts
@@ -71,7 +73,7 @@
   if (bg.length) {
     bg.forEach(d => mount(d));
     if (!calm) {
-      (function idle() { setTimeout(() => { const d = bg[Math.floor(Math.random() * bg.length)]; if (!busy(d)) play(d, 'play'); idle(); }, 4200 + Math.random() * 3800); })();
+      (function idle() { setTimeout(() => { const d = bg[Math.floor(Math.random() * bg.length)]; if (!document.hidden && innerWidth > 900 && !busy(d)) play(d, 'play'); idle(); }, 4200 + Math.random() * 3800); })();
       let q = 0; addEventListener('pointermove', e => { if (e.pointerType !== 'mouse' || q) return; q = requestAnimationFrame(() => { q = 0; bg.forEach(d => { const r = d.getBoundingClientRect(),
         near = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)) < Math.max(r.width, 70);
         if (near && !d.classList.contains('near') && !busy(d)) play(d, 'play'); d.classList.toggle('near', near); }); }); });

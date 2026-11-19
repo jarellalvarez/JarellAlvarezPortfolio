@@ -43,7 +43,7 @@ const manifest = (() => { try { return JSON.parse(readFileSync(new URL('manifest
 // public images: <picture> with AVIF and WebP at several widths (the browser picks one); data-full is the biggest copy for the lightbox.
 // locked images: one WebP embedded inside the encrypted page. Width and height are set so the page never jumps.
 function image(attrs, f, coll, dir, locked) {
-  const m = manifest[`${coll}/${dir}/${f}`], base = webp(f), url = `/${coll === 'work' ? 'work' : 'earlier-img'}/${dir}/`;
+  f = decodeURIComponent(f); const m = manifest[`${coll}/${dir}/${f}`], base = webp(f), url = `/${coll === 'work' ? 'work' : 'earlier-img'}/${dir}/`;
   if (!m) { const orig = new URL(`${coll}/${dir}/${f}`, cache); return locked && existsSync(orig) ? `<img ${attrs.trim()} src="data:image/${f.split('.').pop().replace('jpg', 'jpeg')};base64,${readFileSync(orig).toString('base64')}" loading="lazy" decoding="async">` : `<img ${attrs.trim()} src="${url}${f}" loading="lazy" decoding="async">`; }
   if (locked) { const useLocked = m.locked, file = new URL(`${coll}/${dir}/${useLocked ? base.replace(/\.webp$/, '-locked.webp') : base}`, cache), w = useLocked ? 2000 : m.w;
     return `<img ${attrs.trim()} src="data:image/webp;base64,${readFileSync(file).toString('base64')}" width="${w}" height="${Math.round(m.h * w / m.w)}" loading="lazy" decoding="async">`; }

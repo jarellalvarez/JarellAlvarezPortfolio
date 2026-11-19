@@ -118,3 +118,8 @@ test('every case-study image has a description (it is the caption and the lightb
       for (const m of readFileSync(f, 'utf8').matchAll(/!\[([^\]]*)\]\(img\/[^)]+\)/g)) assert.ok(m[1].trim().length > 3, `${d}/${s} has an image with no description`); }
   }
 });
+
+test('the drawing sizes baked into illustrations.js match the SVG files', () => {
+  const js = readFileSync(new URL('../public/js/illustrations.js', import.meta.url), 'utf8'), AR = JSON.parse(js.match(/const AR = (\{[^}]*\})/)[1]);
+  for (const [n, r] of Object.entries(AR)) { const [w, h] = readFileSync(new URL(`../public/illustrations/${n}.svg`, import.meta.url), 'utf8').match(/viewBox="([\d. -]+)"/)[1].split(' ').slice(2).map(Number); assert.ok(Math.abs(w / h - r) < 0.002, `${n} ratio is out of date`); }
+});

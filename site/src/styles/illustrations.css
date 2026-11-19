@@ -61,7 +61,7 @@
 .art-star.in{animation:spinpop .9s var(--spring) .35s backwards}
 .art-star.play{animation:spinpop .9s var(--spring)}
 @keyframes spinpop{0%{scale:1;rotate:0}35%{scale:1.45;rotate:-80deg}100%{scale:1;rotate:-360deg}}
-/* curly arrow: draws itself along its length, then the head pops on */
+/* curly arrow: draws itself, then the whole arrow springs back and settles (boing) */
 .art-squiggly-arrow.in{transform-origin:6% 50%;animation:boing 1.1s linear 1s backwards}
 .art-squiggly-arrow.play{transform-origin:6% 50%;animation:boing 1.1s linear}
 @keyframes boing{0%{scale:1}14%{scale:.8 1.14;animation-timing-function:ease-out}32%{scale:1.2 .9}50%{scale:.94 1.04}66%{scale:1.07 .98}82%{scale:.98 1.01}100%{scale:1}}

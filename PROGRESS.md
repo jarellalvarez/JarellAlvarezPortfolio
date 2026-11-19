@@ -12,12 +12,17 @@ Branch: `claude/confident-wozniak-8n4wv1`. Nothing goes to `master`, no deploy, 
 - Task 6 Figma: page "Portfolio 2026 Design System" in file `5TjQUqil2gUNCFHOoAzBnt` (the Portfolio Hi-Fi file). Variables: Color / Ivory light, Color / Ivory dark, Spacing and shape, Type scale (13 colors, spacing 4 to 80, radii, 8 type sizes). Components: Button (Solid/Outline x Default/Hover), Tab (Active/Inactive), Folder (Rest/Hover/Open), Window title bar, Dock, Tooltip, Lightbox controls. Frames: Homepage, Floating window, Expanded case study, Lightbox (wireframe level, built from the component instances).
 - Task 8 launch readiness: added 404 page, `robots.txt`, `sitemap.xml`, 32px and Apple touch icons + theme color, `scripts/check-links.mjs` (0 broken), nginx template now has `error_page 404` and caches AVIF. `docs/launch-checklist.md` written. Not deployed.
 - Task 9: `docs/migration-digitalocean.md` written (Netlify dependencies, droplet recommendation with trade-offs, 15 numbered steps with checks, rollback). No accounts, DNS or spending touched.
+- Task 7 Opus 5.5 review (independent subagent, read-only): 1 high, 1 medium, 7 low findings, all confirmed by reading the code and fixed:
+  - High: clicking or double-clicking the picture inside the lightbox closed it (pointer capture redirected the click to the backdrop), which broke double-click/double-tap zoom. Fixed: only a press that started on the dark area closes it.
+  - Medium: with the lightbox open, `/` or Ctrl/Cmd+K opened Ask behind it and broke the focus trap. Fixed: the open lightbox swallows all keys.
+  - Low, fixed: close/reopen race (timer now cleared), dead load listener removed, MutationObserver batched per frame, headings now reserve their final drawing size before the file loads (aspect ratios baked into the script, with a test that keeps them in step with the SVG files), idle drawing timer skips phones and hidden tabs, image lookup handles filenames with spaces, stale arrow comment.
+  - Not found: any leak of locked text or locked images, secrets, em dashes, reduced-motion or focus failures, sideways scroll. No disagreements.
+  - After the fixes: 39 tests pass; lightbox rechecked at 1440 and 390 (double click zooms and resets, backdrop closes, focus returns).
 
 ## In progress
 - (nothing)
 
 ## Next
-- 7 Opus review (running)
 
 ## Needs Jarell
 - Higher-res exports (too small to look sharp on a 2x screen; sizes are the minimum width in px): Copperleaf: value-model 775 (needs 1600), design-process 805 (1600), dual-track-agile 806 (1600), framework-designer 806 (1600), layout-explorations 887 (1600), research-1 and research-2 900 (1800), wireframing 900 (1800), pendo-resource-center 940 (1800), design-team-feedback 1004 (1800), resource-guide 1095 (1800). UI Avenue screens are 1536 (fine at the 720px column, a little soft in the lightbox; originals welcome). Headshot source is 800px: a 1500px export would sharpen About.
