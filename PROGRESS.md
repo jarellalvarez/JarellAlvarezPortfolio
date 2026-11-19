@@ -26,3 +26,13 @@ Branch: `claude/confident-wozniak-8n4wv1`. Nothing goes to `master`, no deploy, 
 
 ## Open questions
 - `docs/portfolio-qa-round-1.md` does not exist in the repo; round 1 is in `docs/portfolio-2026/decision-log.md`.
+
+## Final Lighthouse (mobile emulation, local Python server with no compression or caching, so real hosting scores higher)
+| Page | Perf | A11y | Best practices | SEO | CLS | LCP |
+| --- | --- | --- | --- | --- | --- | --- |
+| / | 88 | 100 | 100 | 100 | 0 | 3.6 s |
+| /about/ | 84 | 100 | 100 | 100 | 0 | 4.2 s |
+| /work/ui-avenue/ | 90 | 100 | 100 | 100 | 0.052 | 3.6 s |
+| /work/mavi/ | 64 | 100 | 100 | 69 | 0.048 | 6.7 s |
+
+Notes: SEO 69 on MAVI is the intentional `noindex` on locked pages. MAVI performance is low because the locked images are embedded (base64) in the encrypted page and the test server does not gzip; the home page scored about 96 earlier on a compressing server, so re-measure on Netlify or Nginx. Small CLS on case studies comes from images in the encrypted part before they have a size (width/height are set for public images only through `<picture>`; locked images also carry width/height, so this is worth a look after launch).
