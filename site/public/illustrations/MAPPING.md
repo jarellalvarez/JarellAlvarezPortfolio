@@ -33,3 +33,6 @@ Original Illustrator exports are untouched in site/illustrations-source/. The fi
 | Vancouver Mountains.svg | vancouver-mountains.svg | 0 0 191.54 169.54 | 38 61 125 55 | 3 |
 | Volleyball.svg | volleyball.svg | 0 0 191.54 169.54 | 55 56 71 69 | 1 |
 | Wireframe.svg | wireframe.svg | 0 0 191.54 169.54 | 59 60 80 60 | 3 |
+| Self_Portrait.svg | self-portrait.svg | 0 0 191.54 169.54 | 34 13 124 142 | 24 |
+
+Self portrait: the Adobe metadata block was also removed.

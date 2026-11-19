@@ -16,7 +16,7 @@
     el.innerHTML = text; const svg = el.firstElementChild; if (!svg || svg.tagName.toLowerCase() !== 'svg') { el.innerHTML = ''; return; }
     svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false'); svg.removeAttribute('width'); svg.removeAttribute('height');
     svg.classList.add('art', 'art-' + name); svg.querySelectorAll('path').forEach((p, i) => p.classList.add('p' + i));
-    const vb = svg.viewBox.baseVal; if (vb && vb.height) el.style.setProperty('--ar', (vb.width / vb.height).toFixed(3));
+    const vb = svg.viewBox.baseVal; if (vb && vb.height) { const ar = vb.width / vb.height; el.style.setProperty('--ar', ar.toFixed(3)); el.style.setProperty('--k', Math.sqrt(ar).toFixed(3)); }
     if (!calm) svg.classList.add('pre');
     watch(el);
   }
@@ -36,12 +36,12 @@
     io.observe(el);
   }
 
-  // case studies: one drawing per section heading, in the left margin
+  // case studies: one drawing in front of each section heading (inline, so it never reaches into the sidebar)
   if (document.querySelector('.lede')) {
     const map = [[/overview|at a glance/i, 'stick-note'], [/problem/i, 'bubble'], [/hard/i, 'wireframe'], [/finding|research|users|competition|scope/i, 'chat-bubble'],
       [/decision|idea|wireframing|process/i, 'lightbulb'], [/result|stands|final|outcome/i, 'chart'], [/learn|next/i, 'star'], [/presentation|design system|style/i, 'shapes']];
     const place = () => document.querySelectorAll('.story h2').forEach(h => { if (h.querySelector('.dd')) return; const n = pick(h.textContent, map); if (!n) return;
-      const d = mk(n, 'side'); h.prepend(d); mount(d); h.addEventListener('pointerenter', () => { if (!busy(d)) play(d, 'play'); }); });
+      const d = mk(n, 'lead'); h.prepend(d); mount(d); h.addEventListener('pointerenter', () => { if (!busy(d)) play(d, 'play'); }); });
     place(); const st = document.getElementById('story'); if (st) new MutationObserver(place).observe(st, { childList: true });
     document.querySelectorAll('.stats').forEach(s => { const u = mk('squiggly-underline', 'under'); s.after(u); mount(u); s.addEventListener('pointerenter', () => { if (!busy(u)) play(u, 'play'); }); });
   }
@@ -51,14 +51,15 @@
     [/teaching/i, 'lightbulb'], [/\bai\b/i, 'cursor'], [/model/i, 'star']];
   function about(root) {
     root.querySelectorAll('.story.about h2').forEach(h => { if (h.querySelector('.dd')) return; const n = pick(h.textContent, aboutMap); if (!n) return;
-      const d = mk(n, 'tag'); h.prepend(d); mount(d); h.addEventListener('pointerenter', () => { if (!busy(d)) play(d, 'play'); }); });
+      const d = mk(n, 'lead'); h.prepend(d); mount(d); h.addEventListener('pointerenter', () => { if (!busy(d)) play(d, 'play'); }); });
   }
+  document.querySelectorAll('.dd.portrait').forEach(d => mount(d));
   if (document.querySelector('.story.about')) {
     about(document);
     const tl = document.querySelector('.timeline'); if (tl) { const d = mk('vancouver-mountains', 'float'); tl.before(d); mount(d); }
   }
-  // homepage background: each drawing arrives in turn, then moves now and then and when the pointer comes near
-  const bg = [...document.querySelectorAll('.doodle-bg .dd[data-art]')];
+  // homepage drawings around the title: each drawing arrives in turn, then moves now and then and when the pointer comes near
+  const bg = [...document.querySelectorAll('.hero-art .dd[data-art]')];
   if (bg.length) {
     bg.forEach(d => mount(d));
     if (!calm) {

@@ -9,16 +9,21 @@
 .art.pre{opacity:0}
 
 /* ---------- layout ---------- */
-.story h2{position:relative}
-.dd.side{position:absolute;right:calc(100% + 1rem);top:.05em;width:3.1rem;max-height:3.4rem;color:var(--ink-2);opacity:.9}
+/* One size scale. --k = sqrt(width/height) is set per drawing, so a tall pine and a wide dumbbell get the same visual weight.
+   lead = heading drawing (case studies and About), float = supporting drawing, under = stats underline, portrait = self portrait. */
+:root{--slot:4.6rem;--ill:3.6rem;--ill-max-h:4.4rem;--ill-gap:.8rem}
+@media (max-width:720px){:root{--slot:3.6rem;--ill:2.9rem;--ill-max-h:3.4rem;--ill-gap:.65rem}}
+.dd.lead{display:inline-block;vertical-align:middle;margin-block:-.4rem;--w:min(calc(var(--ill)*var(--k,1)),calc(var(--ill-max-h)*var(--ar,1)));width:var(--w);margin-right:calc(var(--ill-gap) + max(0rem,var(--slot) - var(--w)));color:var(--ink-2);opacity:.95}
 .dd.under{display:block;width:9rem;margin:-1.5rem 0 1.5rem;color:var(--pop)}
-@media (max-width:1180px){.dd.side{display:none}}
-.dd.tag{height:1.85em;max-width:4.4em;margin-right:.55em;vertical-align:-.45em;color:var(--ink-2);opacity:.95}
-.dd.float{display:block;height:3.6rem;margin:2rem 0 -1.25rem auto;color:var(--ink-2);opacity:.7}
-.doodle-bg{position:fixed;inset:0;pointer-events:none;z-index:0;color:var(--ink)}
-.doodle-bg .dd{position:absolute;opacity:.24;transition:opacity .3s}
-.doodle-bg .dd.near{opacity:.5}
-@media (max-width:900px){.doodle-bg{display:none}}
+.dd.float{display:block;width:calc(4.8rem*var(--ar,1));max-width:12rem;margin:2rem 0 -1.25rem auto;color:var(--ink-2);opacity:.75}
+.about-top{display:flex;align-items:flex-end;gap:1.5rem 2.5rem;flex-wrap:wrap}
+.dd.portrait{display:block;height:15rem;width:calc(15rem*var(--ar,.87));max-width:100%;color:var(--ink)}
+@media (max-width:720px){.dd.portrait{height:11rem;width:calc(11rem*var(--ar,.87))}}
+.hero-copy{position:relative;display:grid;justify-items:center;gap:.75rem}
+.hero-art{position:absolute;inset:0;pointer-events:none;color:var(--ink)}
+.hero-art .dd{position:absolute;opacity:.34;transition:opacity .3s}
+.hero-art .dd.near{opacity:.6}
+@media (max-width:900px){.hero-art{display:none}}
 
 /* ---------- shared keyframes ---------- */
 @keyframes sketch{from{clip-path:inset(-15% 100% -15% -15%)}to{clip-path:inset(-15% -15% -15% -15%)}}
@@ -49,8 +54,9 @@
 .art-star.play{animation:spinpop .9s var(--spring)}
 @keyframes spinpop{0%{scale:1;rotate:0}35%{scale:1.45;rotate:-80deg}100%{scale:1;rotate:-360deg}}
 /* curly arrow: draws itself along its length, then the head pops on */
-.art-squiggly-arrow.in{animation:sketch 1s var(--ease-sketch) backwards}
-.art-squiggly-arrow.play{animation:sketch .9s var(--ease-sketch)}
+.art-squiggly-arrow.in{transform-origin:6% 50%;animation:sketch 1s var(--ease-sketch) backwards,boing 1.1s linear 1s backwards}
+.art-squiggly-arrow.play{transform-origin:6% 50%;animation:boing 1.1s linear}
+@keyframes boing{0%{scale:1}14%{scale:.8 1.14;animation-timing-function:ease-out}32%{scale:1.2 .9}50%{scale:.94 1.04}66%{scale:1.07 .98}82%{scale:.98 1.01}100%{scale:1}}
 .art-squiggly-arrow:is(.in,.play) .p1{animation:popin .45s var(--spring) .8s backwards}
 .art-squiggly-arrow.play .p1{animation-delay:.7s}
 /* cursor: arrives, clicks once */
@@ -83,11 +89,10 @@
 .art-wireframe:is(.in,.play) .p1{animation:swipe .5s var(--ease-sketch) .6s backwards}
 .art-wireframe.play{animation:none}
 .art-wireframe.play .p1{animation-delay:0s}
-/* lightbulb: sketches in, then a warm glow: the idea */
-.art-lightbulb.in{animation:sketch .7s var(--ease-sketch) backwards,idea 1.2s ease-out .7s backwards}
-.art-lightbulb.play{animation:idea 1.2s ease-out}
-@keyframes idea{0%{filter:drop-shadow(0 0 0 transparent);scale:1}35%{filter:drop-shadow(0 0 5px var(--pop)) drop-shadow(0 0 12px color-mix(in srgb,var(--pop) 70%,transparent));scale:1.1}100%{filter:drop-shadow(0 0 0 transparent);scale:1}}
-.art-star.side,.dd.side .art-star{transform-origin:50% 50%}
+/* lightbulb: sketches in, then a soft warm glow switches on and fades. No scaling, one halo. */
+.art-lightbulb.in{animation:sketch .7s var(--ease-sketch) backwards,glowon 1.6s ease-in-out .7s backwards}
+.art-lightbulb.play{animation:glowon 1.6s ease-in-out}
+@keyframes glowon{0%,100%{filter:drop-shadow(0 0 0 transparent)}40%,60%{filter:drop-shadow(0 0 7px color-mix(in srgb,var(--pop) 65%,transparent))}}
 
 /* ---------- About ---------- */
 /* dumbbell: two reps */
@@ -175,5 +180,5 @@
 @media (prefers-reduced-motion:reduce){
   .art,.art *{animation:none!important}
   .art.pre{opacity:1}
-  .doodle-bg .dd{transition:none}
+  .hero-art .dd{transition:none}
 }

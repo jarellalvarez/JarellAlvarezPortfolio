@@ -32,19 +32,21 @@ const extras = [
   description="Senior product designer and design lead in Vancouver. B2B SaaS, enterprise software and complex workflows made easier to use."
 >
   <body>
-<div class="doodle-bg" aria-hidden="true">
-  <span class="dd" data-art="coffee" style="left:3%;top:13%;width:74px;rotate:-6deg"></span>
-  <span class="dd" data-art="airplane" style="right:3%;top:13%;width:96px;rotate:6deg"></span>
-  <span class="dd" data-art="star" style="left:3.5%;top:50%;width:34px"></span>
-  <span class="dd" data-art="squiggly-arrow" style="right:2.5%;top:46%;width:96px;rotate:-8deg"></span>
-  <span class="dd" data-art="cursor" style="left:16%;bottom:12%;width:30px;rotate:-10deg"></span>
-</div>
 <div class="desk">
   <HomeNav />
   <main class="hero">
-    <h1>Jarell Alvarez</h1>
-    <p class="role">Senior Product Designer and Design Lead, Vancouver</p>
-    <p class="tag">Good design starts with better questions.</p>
+    <div class="hero-copy">
+      <div class="hero-art" aria-hidden="true">
+        <span class="dd" data-art="coffee" style="left:-3.6rem;top:-3.4rem;width:64px;rotate:-6deg"></span>
+        <span class="dd" data-art="airplane" style="right:-3.8rem;top:-3.6rem;width:84px;rotate:6deg"></span>
+        <span class="dd" data-art="squiggly-arrow" style="left:-6.2rem;bottom:-.9rem;width:84px;rotate:-8deg"></span>
+        <span class="dd" data-art="star" style="right:-2.4rem;bottom:.2rem;width:30px"></span>
+        <span class="dd" data-art="cursor" style="left:6%;bottom:-2.4rem;width:26px;rotate:-10deg"></span>
+      </div>
+      <h1>Jarell Alvarez</h1>
+      <p class="role">Senior Product Designer and Design Lead, Vancouver</p>
+      <p class="tag">Good design starts with better questions.</p>
+    </div>
 
     <ul class="folders" id="work" aria-label="Work and more">
       {work.map(f => <Folder {...f} />)}

@@ -103,3 +103,10 @@ test('About headings and intro carry no emoji', () => {
   const md = readFileSync(new URL('../../content/about.md', import.meta.url), 'utf8');
   assert.ok(!/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}]/u.test(md), 'about.md still has an emoji');
 });
+
+test('self portrait is inlined clean and no hanging side drawings remain', async () => {
+  const { readFileSync } = await import('node:fs');
+  const svg = readFileSync(new URL('../public/illustrations/self-portrait.svg', import.meta.url), 'utf8');
+  assert.ok(!svg.includes('<metadata') && !svg.includes('xpacket'));
+  assert.ok(!readFileSync(new URL('../src/styles/illustrations.css', import.meta.url), 'utf8').includes('.dd.side'));
+});
