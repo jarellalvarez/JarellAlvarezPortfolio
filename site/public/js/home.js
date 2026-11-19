@@ -161,6 +161,7 @@ async function fill(p,key,url){
     const said=doc.querySelector('.saids figure.said'),q=said?.querySelector('blockquote')?.textContent.trim()||'',who=said?.querySelector('figcaption strong')?.textContent.trim()||'',role=said?(said.querySelector('figcaption')?.textContent.trim()||'').slice(who.length).trim():'';
     const kind=q?`<h2 class="h-sec">Kind words</h2><figure class="kw"><blockquote class="${q.length>240?'clamp':''}"><p>${esc(q)}</p></blockquote>${q.length>240?'<button class="rm" aria-expanded="false">Read more</button>':''}<figcaption><strong>${esc(who)}</strong>${esc(role)}</figcaption></figure><button type="button" class="btn kw-more">View more kind words</button>`:'';
     art.innerHTML=(photo?photo.outerHTML:'')+'<div class="story about">'+doc.querySelector('.story.about').innerHTML+'</div>'+kind+'<div class="next"><a class="btn solid" href="/about/">Open as a page</a></div>';
+    window.Illustrations?.about(art);
     const kf=document.querySelector('.folder[data-open="kind"]'),more=art.querySelector('.kw-more');if(more&&kf)more.onclick=()=>openWin(kf);
     p._plain=true; return 'About Jarell';
   }

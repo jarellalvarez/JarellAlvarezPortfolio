@@ -369,7 +369,6 @@ main.hero .role{color:var(--pop)}
 .win .timeline li:first-child::before{background:var(--pop);border-color:var(--pop)}
 .win .timeline .yr{grid-row:span 3;color:var(--ink-2);font-size:.8125rem}
 .win .timeline li>span:not(.yr){color:var(--ink-2);font-size:.9375rem}
-.win .about .dd{display:none}
 .win .clamp.open{max-height:none!important} .win .about-more.clamp{max-height:9rem}
 /* About window: one kind word and a way into the rest */
 .win .about+.h-sec{margin-top:3rem}

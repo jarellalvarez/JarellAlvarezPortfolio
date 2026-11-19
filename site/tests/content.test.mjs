@@ -97,3 +97,9 @@ test('every illustration the site uses exists and is a clean inline SVG', () => 
     assert.ok(!/id="Layer_1"/.test(svg) && !/<script/i.test(svg) && !/on\w+=/i.test(svg), `${n} is not clean`);
   }
 });
+
+// The About page uses Jarell's drawings, not emoji.
+test('About headings and intro carry no emoji', () => {
+  const md = readFileSync(new URL('../../content/about.md', import.meta.url), 'utf8');
+  assert.ok(!/[\u{1F000}-\u{1FFFF}\u{2600}-\u{27BF}\u{2B00}-\u{2BFF}\u{FE0F}]/u.test(md), 'about.md still has an emoji');
+});

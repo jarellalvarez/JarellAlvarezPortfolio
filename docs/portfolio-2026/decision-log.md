@@ -93,3 +93,4 @@ Typed cursor tooltip and cursor modes, idle grid response, multiple layered wind
 | Nov 19 | Illustrator SVGs (29) replace the traced drawings; each drawing has its own motion (sketch in, one subject action, rest). Reviewed read-only first. svg-animation skill installed from claude-dev-suite (guidance text only, no scripts), read in full before use. Branch only, not deployed |
 | Nov 19 | Glove.svg is actually a globe: used for Worldly Travels. Unmatched, old traces kept: Problem speech bubble, Results chart, presentation shapes |
 | Nov 19 | Fixed an old bug: a heading right after an image pair ("The problem" on Copperleaf) printed as plain "## The problem" text |
+| Nov 19 | About page: emojis removed from headings and the intro; each heading now starts with its Illustrator drawing (also in the homepage About window) |

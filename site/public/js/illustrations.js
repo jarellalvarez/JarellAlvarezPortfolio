@@ -45,13 +45,16 @@
     place(); const st = document.getElementById('story'); if (st) new MutationObserver(place).observe(st, { childList: true });
     document.querySelectorAll('.stats').forEach(s => { const u = mk('squiggly-underline', 'under'); s.after(u); mount(u); s.addEventListener('pointerenter', () => { if (!busy(u)) play(u, 'play'); }); });
   }
-  // About: a drawing beside each blurb that has one
+  // About: a drawing in front of each blurb heading (it replaces the old emoji). Also used by the About window on the homepage.
+  const aboutMap = [[/lifting|weights/i, 'lifting-weights-repeatedly'], [/fashion/i, 'anything-fashion-related'], [/music/i, 'classifying-music'], [/cook/i, 'cooking-nerd'], [/board game/i, 'board-game-nerd'],
+    [/volleyball/i, 'volleyball'], [/hiking/i, 'hiking'], [/book club/i, 'book'], [/moment|photo/i, 'camera'], [/travel/i, 'glove'], [/community/i, 'chat-bubble'],
+    [/teaching/i, 'lightbulb'], [/\bai\b/i, 'cursor'], [/model/i, 'star']];
+  function about(root) {
+    root.querySelectorAll('.story.about h2').forEach(h => { if (h.querySelector('.dd')) return; const n = pick(h.textContent, aboutMap); if (!n) return;
+      const d = mk(n, 'tag'); h.prepend(d); mount(d); h.addEventListener('pointerenter', () => { if (!busy(d)) play(d, 'play'); }); });
+  }
   if (document.querySelector('.story.about')) {
-    const map = [[/lifting|weights/i, 'lifting-weights-repeatedly'], [/fashion/i, 'anything-fashion-related'], [/music/i, 'classifying-music'], [/cook/i, 'cooking-nerd'], [/board game/i, 'board-game-nerd'],
-      [/volleyball/i, 'volleyball'], [/hiking/i, 'hiking'], [/book club/i, 'book'], [/moment|photo/i, 'camera'], [/travel/i, 'glove'], [/community/i, 'chat-bubble'],
-      [/teaching/i, 'lightbulb'], [/\bai\b/i, 'cursor'], [/model/i, 'star']];
-    document.querySelectorAll('.story.about h2').forEach(h => { const n = pick(h.textContent, map); if (!n) return;
-      const d = mk(n, 'tag'); h.append(d); mount(d); h.addEventListener('pointerenter', () => { if (!busy(d)) play(d, 'play'); }); });
+    about(document);
     const tl = document.querySelector('.timeline'); if (tl) { const d = mk('vancouver-mountains', 'float'); tl.before(d); mount(d); }
   }
   // homepage background: each drawing arrives in turn, then moves now and then and when the pointer comes near
@@ -65,5 +68,5 @@
         if (near && !d.classList.contains('near') && !busy(d)) play(d, 'play'); d.classList.toggle('near', near); }); }); });
     }
   }
-  window.Illustrations = { mount, play };
+  window.Illustrations = { mount, play, about };
 })();

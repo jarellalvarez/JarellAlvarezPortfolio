@@ -13,7 +13,7 @@
 .dd.side{position:absolute;right:calc(100% + 1rem);top:.05em;width:3.1rem;max-height:3.4rem;color:var(--ink-2);opacity:.9}
 .dd.under{display:block;width:9rem;margin:-1.5rem 0 1.5rem;color:var(--pop)}
 @media (max-width:1180px){.dd.side{display:none}}
-.dd.tag{height:1.85em;max-width:4.4em;margin-left:.5em;vertical-align:-.4em;color:var(--ink-2);opacity:.9}
+.dd.tag{height:1.85em;max-width:4.4em;margin-right:.55em;vertical-align:-.45em;color:var(--ink-2);opacity:.95}
 .dd.float{display:block;height:3.6rem;margin:2rem 0 -1.25rem auto;color:var(--ink-2);opacity:.7}
 .doodle-bg{position:fixed;inset:0;pointer-events:none;z-index:0;color:var(--ink)}
 .doodle-bg .dd{position:absolute;opacity:.24;transition:opacity .3s}
