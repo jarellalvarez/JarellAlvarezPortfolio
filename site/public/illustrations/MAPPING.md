@@ -18,8 +18,8 @@ Original Illustrator exports are untouched in site/illustrations-source/. The fi
 | Cooking Nerd.svg | cooking-nerd.svg | 0 0 191.54 169.54 | 76 36 48 100 | 5 |
 | Cursor.svg | cursor.svg | 0 0 191.54 169.54 | 60 52 75 62 | 1 |
 | Folder.svg | folder.svg | 0 0 191.54 169.54 | 32 43 112 90 | 2 |
-| Glove.svg | glove.svg | 0 0 191.54 169.54 | 61 55 72 66 | 2 |
-| Hiking.svg | hiking.svg | 0 0 191.54 169.54 | 68 44 53 79 | 1 |
+| Glove.svg (it is the globe) | globe.svg | 0 0 191.54 169.54 | 61 55 72 66 | 2 |
+| Hiking.svg | hiking.svg | 0 0 191.54 169.54 | 47.14 19.61 105.3 119.23 | 1 |
 | Lifting Weights Repeatedly.svg | lifting-weights-repeatedly.svg | 0 0 191.54 169.54 | 11 55 134 68 | 2 |
 | Lightbulb.svg | lightbulb.svg | 0 0 191.54 169.54 | 69 53 56 76 | 2 |
 | Shape Logo 1.svg | shape-logo-1.svg | 0 0 191.54 169.54 | 83 48 98 87 | 2 |
@@ -36,3 +36,5 @@ Original Illustrator exports are untouched in site/illustrations-source/. The fi
 | Self_Portrait.svg | self-portrait.svg | 0 0 191.54 169.54 | 34 13 124 142 | 24 |
 
 Self portrait: the Adobe metadata block was also removed.
+
+Later additions (same three safe changes): Chart.svg to chart.svg, Logo_Shapes.svg to shapes.svg, Speech_Bubble.svg to bubble.svg. Hiking.svg was replaced by the newer version.

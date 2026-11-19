@@ -1,12 +1,11 @@
 /* Jarell's own Illustrator drawings, shown inline so each part can move on its own.
    Decorative only (hidden from screen readers). Each drawing sketches itself in once when it scrolls into view,
    does one small thing that suits what it is, then rests. Hover and idle replays are short. Reduced motion: still, fully visible.
-   Traced drawings with no Illustrator original yet (bubble, chart, shapes) still come from /doodles/. */
+*/
 (() => {
   const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const TRACED = { bubble: 1, chart: 1, shapes: 1 };
   const cache = {};
-  const load = n => cache[n] ||= fetch(TRACED[n] ? `/doodles/${n}.svg` : `/illustrations/${n}.svg`).then(r => r.ok ? r.text() : Promise.reject()).catch(() => null);
+  const load = n => cache[n] ||= fetch(`/illustrations/${n}.svg`).then(r => r.ok ? r.text() : Promise.reject()).catch(() => null);
   const mk = (name, cls) => { const s = document.createElement('span'); s.className = 'dd ' + (cls || ''); s.dataset.art = name; s.setAttribute('aria-hidden', 'true'); return s; };
   const pick = (t, map) => { for (const [re, n] of map) if (re.test(t)) return n; return null; };
 
@@ -17,7 +16,16 @@
     svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false'); svg.removeAttribute('width'); svg.removeAttribute('height');
     svg.classList.add('art', 'art-' + name); svg.querySelectorAll('path').forEach((p, i) => p.classList.add('p' + i));
     const vb = svg.viewBox.baseVal; if (vb && vb.height) { const ar = vb.width / vb.height; el.style.setProperty('--ar', ar.toFixed(3)); el.style.setProperty('--k', Math.sqrt(ar).toFixed(3)); }
-    if (!calm) svg.classList.add('pre');
+    // every path stays as the fill; each also gets a pen-stroke twin so the line can be drawn before the fill settles in
+    const NS = 'http://www.w3.org/2000/svg', paths = [...svg.querySelectorAll('path')];
+    const fills = document.createElementNS(NS, 'g'); fills.setAttribute('class', 'fills'); while (svg.firstChild) fills.appendChild(svg.firstChild); svg.appendChild(fills);
+    if (!calm) {
+      const pens = document.createElementNS(NS, 'g'); pens.setAttribute('class', 'pens'); let j = 0;
+      paths.forEach(p => { if (p.getAttribute('fill') === '#fff') return; const c = p.cloneNode(false); c.setAttribute('class', 'pen'); c.setAttribute('pathLength', '1'); c.style.setProperty('--j', j++); pens.appendChild(c); });
+      svg.appendChild(pens); svg.style.setProperty('--sw', (vb.width * 0.009).toFixed(2));
+      svg.style.setProperty('--st', (j > 1 ? 0.6 / (j - 1) : 0).toFixed(3) + 's'); svg.style.setProperty('--fd', (j > 1 ? 1.1 : 0.7) + 's');
+      svg.classList.add('pre');
+    }
     watch(el);
   }
   // kind: 'in' = sketch in plus the drawing's action; 'play' = the action again
@@ -47,7 +55,7 @@
   }
   // About: a drawing in front of each blurb heading (it replaces the old emoji). Also used by the About window on the homepage.
   const aboutMap = [[/lifting|weights/i, 'lifting-weights-repeatedly'], [/fashion/i, 'anything-fashion-related'], [/music/i, 'classifying-music'], [/cook/i, 'cooking-nerd'], [/board game/i, 'board-game-nerd'],
-    [/volleyball/i, 'volleyball'], [/hiking/i, 'hiking'], [/book club/i, 'book'], [/moment|photo/i, 'camera'], [/travel/i, 'glove'], [/community/i, 'chat-bubble'],
+    [/volleyball/i, 'volleyball'], [/hiking/i, 'hiking'], [/book club/i, 'book'], [/moment|photo/i, 'camera'], [/travel/i, 'globe'], [/community/i, 'chat-bubble'],
     [/teaching/i, 'lightbulb'], [/\bai\b/i, 'cursor'], [/model/i, 'star']];
   function about(root) {
     root.querySelectorAll('.story.about h2').forEach(h => { if (h.querySelector('.dd')) return; const n = pick(h.textContent, aboutMap); if (!n) return;

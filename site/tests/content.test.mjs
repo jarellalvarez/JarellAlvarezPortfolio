@@ -87,10 +87,9 @@ test('every illustration the site uses exists and is a clean inline SVG', () => 
   const names = new Set([...js.matchAll(/'([a-z][a-z0-9-]+)'\]/g)].map(m => m[1]).concat([...js.matchAll(/'squiggly-underline'/g)].map(() => 'squiggly-underline')));
   const home = readFileSync(new URL('../src/pages/index.astro', import.meta.url), 'utf8');
   for (const m of home.matchAll(/data-art="([a-z-]+)"/g)) names.add(m[1]);
-  const traced = new Set(['bubble', 'chart', 'shapes']);
   assert.ok(names.size >= 20, 'found the drawing names');
   for (const n of names) {
-    const file = new URL(`../public/${traced.has(n) ? 'doodles' : 'illustrations'}/${n}.svg`, import.meta.url);
+    const file = new URL(`../public/illustrations/${n}.svg`, import.meta.url);
     assert.ok(existsSync(file), `${n}.svg is missing`);
     const svg = readFileSync(file, 'utf8');
     assert.match(svg, /viewBox="[\d. -]+"/, `${n} has no viewBox`);
