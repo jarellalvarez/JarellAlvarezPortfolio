@@ -37,4 +37,6 @@ Original Illustrator exports are untouched in site/illustrations-source/. The fi
 
 Self portrait: the Adobe metadata block was also removed.
 
+Cooking Nerd was replaced with the newer Cooking_Nerd.svg (tight viewBox, then optimised with SVGO at 2-decimal precision, paths kept separate, no redraw).
+
 Later additions (same three safe changes): Chart.svg to chart.svg, Logo_Shapes.svg to shapes.svg, Speech_Bubble.svg to bubble.svg. Hiking.svg was replaced by the newer version.
