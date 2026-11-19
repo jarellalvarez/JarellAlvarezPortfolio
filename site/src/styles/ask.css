@@ -9,7 +9,7 @@
 .ask-x{flex:none;min-height:32px;padding:0 .6rem;border:1px solid var(--line);border-radius:8px;background:none;color:var(--ink-2);font:500 .75rem/1 var(--sans);cursor:pointer}
 .ask ul{list-style:none;margin:0;padding:.5rem;overflow:auto}
 .ask-group{padding:.75rem .6rem .35rem;font-size:.75rem;font-weight:600;color:var(--ink-2)}
-.ask-sug,.ask-hit{display:block;width:100%;text-align:left;padding:.6rem .7rem;border:0;border-radius:10px;background:none;color:var(--ink);font:500 .9375rem/1.4 var(--sans);text-decoration:none;cursor:pointer}
+.ask-sug,.ask-hit{display:block;width:100%;text-align:left;padding:.6rem .7rem;border:0;border-radius:var(--r-md);background:none;color:var(--ink);font:500 .9375rem/1.4 var(--sans);text-decoration:none;cursor:pointer}
 .ask-hit strong{display:block;font-weight:600;margin-bottom:.2rem}
 .ask-hit span{display:block;color:var(--ink-2);font-weight:400;font-size:.9375rem;line-height:1.5}
 .ask-sug:hover,.ask-hit:hover,.ask-sug.on,.ask-hit.on,.ask-sug:focus-visible,.ask-hit:focus-visible{background:color-mix(in srgb,var(--ink) 7%,transparent)}
@@ -22,7 +22,7 @@
 .dock [data-ask] .tip{left:auto;right:0;transform:none}
 /* tiny helper in the top bar: opens Ask Jarell */
 .ask-mini{flex:none;width:44px;height:44px;padding:0;border:0;background:none;border-radius:12px;cursor:pointer;display:grid;place-items:center;color:var(--ink)}
-.ask-mini svg{width:36px;height:40px;overflow:visible;fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s cubic-bezier(.3,1.6,.5,1)}
+.ask-mini svg{width:36px;height:40px;overflow:visible;fill:none;stroke:currentColor;stroke-width:5;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s var(--spring)}
 .ask-mini .pad{fill:color-mix(in srgb,var(--pop) 18%,var(--surface))}
 .ask-mini .eyes ellipse{fill:var(--surface);stroke-width:4}
 .ask-mini .pupil{fill:currentColor;stroke:none}
@@ -38,14 +38,14 @@
 .blog .bot{background:color-mix(in srgb,var(--ink) 6%,transparent);border-bottom-left-radius:4px}
 .blog .me{justify-self:end;background:var(--ink);color:var(--bg);border-bottom-right-radius:4px}
 .bchips{display:flex;flex-wrap:wrap;gap:.35rem;padding:0 .75rem .6rem}
-.bchips button{min-height:32px;padding:.3rem .65rem;border-radius:999px;border:1px solid var(--line);background:none;color:var(--ink);font:500 .8125rem/1.2 var(--sans);cursor:pointer;text-align:left}
+.bchips button{min-height:32px;padding:.3rem .65rem;border-radius:var(--r-pill);border:1px solid var(--line);background:none;color:var(--ink);font:500 .8125rem/1.2 var(--sans);cursor:pointer;text-align:left}
 .bchips button:hover{border-color:var(--ink)}
 .bform{display:flex;gap:.4rem;padding:.5rem;border-top:1px solid var(--line)}
-.bform input{flex:1;min-width:0;min-height:40px;padding:0 .75rem;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
+.bform input{flex:1;min-width:0;min-height:40px;padding:0 .75rem;border-radius:var(--r-pill);border:1px solid var(--line);background:var(--bg);color:var(--ink);font:inherit}
 .bform button{width:40px;height:40px;border:0;border-radius:50%;background:var(--ink);color:var(--bg);font-size:1.1rem;cursor:pointer}
 .blog{font-size:1rem;padding:1rem}
 .blog .starters{max-width:100%;padding:0;display:flex;flex-wrap:wrap;gap:.4rem}
-.blog .starters button,.bmenu button{min-height:36px;padding:.35rem .75rem;border-radius:999px;border:1px solid var(--line);background:none;color:var(--ink);font:500 .875rem/1.25 var(--sans);cursor:pointer;text-align:left}
+.blog .starters button,.bmenu button{min-height:36px;padding:.35rem .75rem;border-radius:var(--r-pill);border:1px solid var(--line);background:none;color:var(--ink);font:500 .875rem/1.25 var(--sans);cursor:pointer;text-align:left}
 .blog .starters button:hover,.bmenu button:hover,.bmenu button:focus-visible{border-color:var(--ink);background:color-mix(in srgb,var(--ink) 5%,transparent)}
 .blog small{display:block;margin-top:.4rem;font-size:.75rem;color:var(--ink-2)}
 .blog .dots{letter-spacing:.2em;animation:bdots 1s infinite}
@@ -55,17 +55,17 @@
 .bmenu{position:absolute;left:.5rem;right:.5rem;bottom:3.6rem;max-height:60%;overflow:auto;padding:.5rem;border-radius:14px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);display:grid;gap:.3rem;z-index:3}
 .bmenu[hidden]{display:none}
 .bmenu p{margin:.35rem .4rem .1rem;font-size:.75rem;font-weight:600;color:var(--ink-2)}
-.bmenu button{border-radius:10px;border-color:transparent}
+.bmenu button{border-radius:var(--r-md);border-color:transparent}
 @media (prefers-reduced-motion:reduce){.blog .dots{animation:none}}
 
 .bchatui{position:relative}
 .bpills{display:flex;flex-wrap:wrap;gap:.35rem;padding:.25rem .75rem .6rem}
-.bpill{min-height:34px;padding:.3rem .7rem;border-radius:999px;border:1px solid var(--line);background:none;color:var(--ink);font:500 .8125rem/1.25 var(--sans);cursor:pointer;text-align:left;max-width:100%}
+.bpill{min-height:34px;padding:.3rem .7rem;border-radius:var(--r-pill);border:1px solid var(--line);background:none;color:var(--ink);font:500 .8125rem/1.25 var(--sans);cursor:pointer;text-align:left;max-width:100%}
 .bpill:hover,.bpill:focus-visible,.bpill[aria-expanded=true]{border-color:var(--ink);background:color-mix(in srgb,var(--ink) 5%,transparent)}
 .bpill.bmore{min-width:44px;text-align:center;font-weight:700;letter-spacing:.05em}
 .bmenu{bottom:6.5rem}
 /* panel that drops down under the top-bar helper on every other page */
-.askpanel{position:fixed;z-index:300;width:min(26rem,calc(100vw - 1rem));height:min(34rem,calc(100svh - 7rem));display:grid;grid-template-rows:auto 1fr;border-radius:16px;background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.askpanel{position:fixed;z-index:var(--z-ask);width:min(26rem,calc(100vw - 1rem));height:min(34rem,calc(100svh - 7rem));display:grid;grid-template-rows:auto 1fr;border-radius:16px;background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
 .askpanel[hidden]{display:none}
 .askpanel header{display:flex;align-items:center;justify-content:space-between;padding:.4rem .4rem .4rem 1rem;border-bottom:1px solid var(--line);cursor:grab;touch-action:none;user-select:none}
 .askpanel header strong{font-size:.875rem}
