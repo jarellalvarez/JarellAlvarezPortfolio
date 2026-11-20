@@ -45,7 +45,7 @@ Jarell's Illustrator drawings, inlined so each part can move. Sizes come from on
 | Snap panel | hidden, visible, target hover | Tile left or right, stack, full screen. |
 | Dock (`Dock.astro`) | rest, hover (label tooltip), focus-visible, copied (contact) | Four items. |
 | Buttons (`.btn`, `.btn.solid`, `.rm`, `.mail`) | rest, hover, active (scale .97), focus-visible, disabled | 44px minimum target on touch. |
-| Lightbox (`lightbox.js`) | closed, loading (thumbnail first), open, zoomed, panning | Close: X, Esc, backdrop. Zoom: + / - / 0, wheel, pinch, double click or tap. Focus trapped, returns to the picture. |
+| Lightbox (`lightbox.js`) | closed, loading (thumbnail first), open, zoomed, panning | Close: X, Esc, backdrop. Zoom: one click or tap on the picture (click again to zoom out), + / - / 0, wheel, pinch. Focus trapped, returns to the picture. |
 | Tooltip (`.tip`) | hidden, shown on hover and focus | Never the only way to get information. |
 | Ask Jarell (`ask.js`, `chat.js`) | closed, spotlight, window pane, top-bar panel, answering, AI answer label, no match (email) | Pills: 3 normally, 1 after a typed question, "..." menu. |
 | Style panel | closed, open, randomize | Theme, font, size, mode. |

@@ -1,10 +1,10 @@
 /* Image lightbox. Any picture inside a case study, the About page or a homepage window opens full screen at its largest version.
-   Close: X button, Esc or a click on the dark area. Zoom: buttons, + / - / 0, wheel, pinch, double click or double tap. Pan by dragging.
+   Close: X button, Esc or a click on the dark area. Zoom: one click or tap on the picture (again to zoom out), buttons, + / - / 0, wheel, pinch. Pan by dragging.
    Focus is kept inside the viewer and goes back to the picture that opened it. */
 (() => {
   const SEL = '.story img, figure img, .duo img, .hero-photo, .win .read img';
   const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  let box, stage, img, cap, opener = null, s = 1, tx = 0, ty = 0, ct = 0, downBackdrop = false; const ptrs = new Map(); let lastTap = 0, pinch = 0;
+  let box, stage, img, cap, opener = null, s = 1, tx = 0, ty = 0, ct = 0, downBackdrop = false, downImg = false; const ptrs = new Map(); let pinch = 0;
   const MAX = 6;
 
   const captionFor = el => { const f = el.closest('figure'), t = (f && f.querySelector('figcaption')?.textContent) || el.getAttribute('alt') || ''; return t.trim(); };
@@ -25,9 +25,9 @@
     document.body.appendChild(box); stage = box.querySelector('.lb-stage'); img = box.querySelector('.lb-img'); cap = box.querySelector('.lb-cap');
     box.setAttribute('aria-describedby', 'lb-cap');
     box.addEventListener('click', e => { const a = e.target.closest('[data-a]')?.dataset.a; if (a === 'close') close(); else if (a === 'in') zoom(1.4); else if (a === 'out') zoom(1 / 1.4); else if (a === 'reset') reset();
-      else if (downBackdrop && !moved) close(); });
+      else if (downBackdrop && !moved) close();
+      else if (downImg && !moved) { s > 1.02 ? reset() : zoom(2.5, e.clientX, e.clientY); } }); // one click or tap on the picture: in, and the same again: out
     stage.addEventListener('wheel', e => { e.preventDefault(); zoom(Math.exp(-e.deltaY * (e.ctrlKey ? 0.01 : 0.0018)), e.clientX, e.clientY); }, { passive: false });
-    stage.addEventListener('dblclick', e => { s > 1.05 ? reset() : zoom(2.5, e.clientX, e.clientY); });
     stage.addEventListener('pointerdown', down); stage.addEventListener('pointermove', move); stage.addEventListener('pointerup', up); stage.addEventListener('pointercancel', up);
   }
 
@@ -42,13 +42,12 @@
   function reset() { s = 1; tx = ty = 0; apply(); }
 
   let moved = false, sx = 0, sy = 0, stx = 0, sty = 0;
-  function down(e) { downBackdrop = e.target === stage || e.target === box; stage.setPointerCapture?.(e.pointerId); ptrs.set(e.pointerId, [e.clientX, e.clientY]); moved = false;
-    if (ptrs.size === 1) { sx = e.clientX; sy = e.clientY; stx = tx; sty = ty;
-      if (e.pointerType === 'touch') { const t = Date.now(); if (t - lastTap < 300) { s > 1.05 ? reset() : zoom(2.5, e.clientX, e.clientY); lastTap = 0; } else lastTap = t; } }
+  function down(e) { downBackdrop = e.target === stage || e.target === box; downImg = e.target === img; stage.setPointerCapture?.(e.pointerId); ptrs.set(e.pointerId, [e.clientX, e.clientY]); moved = false;
+    if (ptrs.size === 1) { sx = e.clientX; sy = e.clientY; stx = tx; sty = ty;  }
     if (ptrs.size === 2) { const [a, b] = [...ptrs.values()]; pinch = Math.hypot(a[0] - b[0], a[1] - b[1]); } }
   function move(e) { if (!ptrs.has(e.pointerId)) return; ptrs.set(e.pointerId, [e.clientX, e.clientY]);
     if (ptrs.size === 2) { const [a, b] = [...ptrs.values()], d = Math.hypot(a[0] - b[0], a[1] - b[1]); if (pinch) zoom(d / pinch, (a[0] + b[0]) / 2, (a[1] + b[1]) / 2); pinch = d; moved = true; return; }
-    if (ptrs.size === 1 && s > 1) { if (Math.hypot(e.clientX - sx, e.clientY - sy) > 4) moved = true; tx = stx + e.clientX - sx; ty = sty + e.clientY - sy; clamp(); apply(); } }
+    if (ptrs.size === 1) { if (Math.hypot(e.clientX - sx, e.clientY - sy) > 4) moved = true; if (s > 1) { tx = stx + e.clientX - sx; ty = sty + e.clientY - sy; clamp(); apply(); } } }
   function up(e) { ptrs.delete(e.pointerId); pinch = 0; if (ptrs.size === 1) { const [p] = [...ptrs.values()]; sx = p[0]; sy = p[1]; stx = tx; sty = ty; } setTimeout(() => { moved = false; }, 0); }
 
   function open(el) {

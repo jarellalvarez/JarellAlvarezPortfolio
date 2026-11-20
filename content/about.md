@@ -23,7 +23,7 @@ Chat with me about:
 
 ## Community Builder
 
-I started Vancouver Design Community because I wanted more designers to talk to. It's now 4,200+ people. We run socials, talks, workshops and portfolio reviews, and it's open to anyone who's curious about design, whatever your title says. [Come say hi in our Slack.](https://join.slack.com/t/vandesigncommunity/shared_invite/zt-4af1yypit-~LvOH0pQSN2XCb5oP_tG9A)
+I started Vancouver Design Community because I wanted more designers to talk to. It's now 4,200+ people. We run socials, talks, workshops and portfolio reviews, and it's open to anyone who's curious about design, whatever your title says. [Come say hi in our Slack.](https://join.slack.com/t/vandesigncommunity/shared_invite/zt-4hlx2yigh-VaTpcLK5TtBkU4sJlaRsHg)
 
 ## Teaching
 

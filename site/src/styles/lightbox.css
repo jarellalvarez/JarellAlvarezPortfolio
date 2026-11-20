@@ -5,6 +5,8 @@
 .lb[hidden]{display:none}
 .lb.lb-on{opacity:1}
 .lb-stage{grid-area:1/1;min-height:0;display:grid;place-items:center;overflow:hidden;touch-action:none;padding:3.5rem 1rem 5.5rem;cursor:zoom-in}
+.lb-img{cursor:zoom-in}
+.lb-zoomed .lb-img{cursor:zoom-out}
 .lb-zoomed .lb-stage{cursor:grab}
 .lb-img{max-width:calc(100vw - 2rem);max-height:calc(100vh - 9.5rem);max-height:calc(100dvh - 9.5rem);width:auto;height:auto;object-fit:contain;user-select:none;-webkit-user-drag:none;transform-origin:50% 50%;will-change:transform;border-radius:4px;background:var(--surface)}
 .lb-loading .lb-img{opacity:.85}
