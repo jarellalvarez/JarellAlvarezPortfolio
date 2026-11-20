@@ -26,6 +26,9 @@ Branch: `claude/confident-wozniak-8n4wv1`. Nothing goes to `master`, no deploy, 
 ## In progress
 - (nothing)
 
+## Queued for the next QA batch (not built yet, on purpose)
+- MAVI Client Portal folder, the one lifted and tilted by the drag tip: add a soft oval shadow under the folder icon, like the reference image Jarell sent (a flat, blurred ellipse a little below the folder and above its label, about as wide as the icon, low opacity, uses the ink colour, off under reduced motion only if it animates). Check it in light and dark and on the other palettes. Do not build until Jarell asks.
+
 ## Next
 
 ## Needs Jarell
