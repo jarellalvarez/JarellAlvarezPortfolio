@@ -47,6 +47,13 @@ h1{font-family:var(--display);font-size:clamp(3.25rem,13.2vw,13.5rem);font-weigh
 .folder svg{width:84px;height:69px;overflow:visible;transition:transform .18s cubic-bezier(.2,.8,.2,1)}
 .folder .back{fill:var(--folder)} .folder .front{fill:var(--bg);stroke:var(--folder);stroke-width:2}
 .folder .glyph{fill:var(--folder)}
+/* object icons (About, Community, Photography, Kind words): same flat style as the folders */
+.folder .obj-back,.folder .obj-ink,.folder .obj-solid{fill:var(--folder)}
+.folder .obj-bg{fill:var(--bg);stroke:var(--folder);stroke-width:2;stroke-linejoin:round}
+.folder .obj-line{fill:none;stroke:var(--folder);stroke-width:2;stroke-linejoin:round}
+.folder .obj-knock{fill:var(--bg)}
+.folder.was-open:has(svg.obj)::before{content:"";position:absolute;top:.45rem;left:calc(50% + 1.45rem);width:10px;height:10px;border-radius:50%;background:var(--pop);box-shadow:0 0 0 2px var(--bg)} /* occupied: a small dot, icon stays full strength */
+.folder .tile{display:none}
 .folder .paper{fill:var(--surface);stroke:var(--folder);stroke-width:1.5;transform-box:fill-box;transform-origin:50% 100%;transition:transform .22s cubic-bezier(.2,.8,.2,1)}
 .folders li:nth-child(1) svg{rotate:-2.5deg} .folders li:nth-child(2) svg{rotate:1.5deg} .folders li:nth-child(3) svg{rotate:-1deg} .folders li:nth-child(4) svg{rotate:2.5deg}
 .folders li:nth-child(5) svg{rotate:-1.5deg} .folders li:nth-child(6) svg{rotate:1deg} .folders li:nth-child(7) svg{rotate:-2deg}
@@ -207,7 +214,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 @media (prefers-reduced-motion:no-preference){
   .folder:hover svg,.folder:focus-visible svg{animation:hop-f .5s cubic-bezier(.3,1.5,.5,1)}
   @keyframes hop-f{0%{transform:none}30%{transform:translateY(-10px) scale(1.08,.94) rotate(-3deg)}60%{transform:translateY(-3px) scale(.97,1.04)}100%{transform:translateY(-3px) scale(1.06)}}
-  /* intro rhythm: words first (0 to .25s), then the hand-drawn pieces (from .3s, one every .06s), then folders (from .65s), then dock, helper and shapes; all done by about 1.3s */
+  /* intro rhythm: words first (0 to .25s), then the hand-drawn pieces (from .3s, one every .06s), then folders (from .65s), then dock, helper and shapes; all done by about 1.5s */
   .hero h1{animation:rise .5s var(--ease-out) both} .hero .role{animation:rise .5s .08s var(--ease-out) both} .hero .tag{animation:rise .5s .16s var(--ease-out) both}
   /* dock, helper and shapes arrive together as one gentle fade, no overshoot */
   .dock{animation:dock-in .5s 1s var(--ease-out) both}
@@ -294,7 +301,7 @@ main.hero{grid-template-columns:minmax(0,100%)} main.hero>*{max-width:100%}
 .folder.was-open{background:none;box-shadow:none}
 .folder .clock{display:none;fill:none;stroke:var(--surface);stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round}
 .folder.was-open .clock{display:inline}
-.folder.was-open .glyph,.folder.was-open svg>:not(.back):not(.front):not(.paper):not(.clock){visibility:hidden}
+.folder.was-open .glyph,.folder.was-open svg:not(.obj)>:not(.back):not(.front):not(.paper):not(.clock){visibility:hidden}
 .folder.was-open svg{rotate:-8deg;transition:rotate .3s cubic-bezier(.2,1.3,.4,1)}
 .folder.was-open .paper{transform:translateY(-4px) rotate(-5deg)}
 .folders li .folder.was-open svg{rotate:-9deg} .folder.was-open .clock{stroke:var(--folder)}
@@ -319,8 +326,9 @@ main.hero{grid-template-columns:minmax(0,100%)} main.hero>*{max-width:100%}
 .snap-menu::before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px}
 /* First-visit tip for dragging folders */
 .folder.stray{transition:transform .5s var(--ease-out)}
-/* soft shadow on the ground under the lifted folder */
-.folder.stray::after{content:"";position:absolute;left:50%;bottom:-.35rem;width:68%;height:.55rem;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--ink) 30%,transparent),transparent);filter:blur(1.5px);pointer-events:none}
+/* soft shadow on the ground under the lifted folder (on the list item, so it stays on the ground) */
+.folders li:has(>.folder.stray){position:relative}
+.folders li:has(>.folder.stray)::after{content:"";position:absolute;left:50%;bottom:-.2rem;width:68%;height:.55rem;transform:translateX(-50%);border-radius:50%;background:radial-gradient(closest-side,color-mix(in srgb,var(--ink) 30%,transparent),transparent);filter:blur(1.5px);pointer-events:none}
 .coach{position:fixed;z-index:var(--z-coach);display:flex;align-items:center;gap:.6rem;max-width:min(19rem,calc(100vw - 1rem));padding:.4rem .45rem .4rem .7rem;border-radius:10px;background:var(--tip-bg);color:var(--bg);font-size:.8125rem;line-height:1.3;box-shadow:var(--shadow);animation:coach .3s cubic-bezier(.2,1.3,.4,1) both}
 .coach p{margin:0} .coach b{margin-right:.35rem;font-weight:700;opacity:.75}
 .coach button{flex:none;min-height:28px;min-width:44px;padding:0 .6rem;border-radius:8px;border:1px solid color-mix(in srgb,var(--bg) 40%,transparent);background:none;color:inherit;font:500 .8125rem/1 var(--sans);cursor:pointer}
@@ -429,3 +437,27 @@ main.hero .role{color:var(--pop)}
 
 /* helper note: the Illustrator outline in ink, with the paper tint behind the face */
 .bbtn .drawn{fill:var(--ink);stroke:none}
+
+/* Phones: app icons. Rounded tiles with a line glyph, case studies tinted, short pill labels underneath (no featured card, no badges). */
+@media (max-width:720px){
+  .folders{gap:.8rem .5rem!important;max-width:21rem!important;justify-content:center}
+  .folders li:not(.m-hide){display:flex;justify-content:center}
+  .folder{position:relative;gap:.35rem!important;width:100%!important;max-width:96px;padding:0!important;background:none!important}
+  .folder>svg{display:none!important}
+  .folder .tile{order:-1;display:grid;place-items:center;width:58px;height:58px;border-radius:14px;background:var(--shape);box-shadow:inset 0 0 0 1px var(--line);transition:transform .15s var(--ease-out)}
+  .folder .tile.work{background:color-mix(in srgb,var(--pop) 14%,var(--surface))}
+  .folder .tile svg{width:28px;height:28px;fill:none;stroke:var(--ink);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+  .folder .tile.work svg{stroke:var(--pop)}
+  .folder .tile svg{rotate:none!important;transform:none!important;animation:none!important}
+  .folder .lbl{font-size:.75rem!important;font-weight:600;line-height:1;padding:.3rem .55rem;border-radius:var(--r-pill);background:var(--chrome);box-shadow:inset 0 0 0 1px var(--line);overflow-wrap:anywhere;text-align:center;max-width:100%}
+  .folder .l-rest{display:none}
+  .folder:active .tile{transform:scale(.94)}
+  .folder.was-open::before{content:"";position:absolute;top:-3px;left:calc(50% + 19px);width:11px;height:11px;border-radius:50%;background:var(--pop);box-shadow:0 0 0 2px var(--bg);z-index:1}
+  .folder:hover svg,.folder:focus-visible svg{animation:none}
+}
+
+@media (max-width:720px) and (max-height:620px){
+  .folders{gap:.6rem .5rem!important;margin-top:.6rem!important}
+  .folder .tile{width:48px;height:48px;border-radius:12px} .folder .tile svg{width:24px;height:24px}
+}
+@media (max-width:359px){.folder .lbl{padding:.3rem .35rem}}

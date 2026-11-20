@@ -1,6 +1,6 @@
 const $=s=>document.querySelector(s), root=document.documentElement, mobile=()=>matchMedia('(max-width:720px)').matches;
 
-document.querySelectorAll('.folder svg').forEach(v=>{v.querySelector('.front').insertAdjacentHTML('beforebegin','<rect class="paper" x="10" y="6" width="36" height="24" rx="2"/>');v.insertAdjacentHTML('beforeend','<g class="clock"><circle cx="28" cy="28" r="7.5"/><path d="M28 24v4.5l3 2"/></g>')});
+document.querySelectorAll('.folder>svg:not(.obj)').forEach(v=>{v.querySelector('.front').insertAdjacentHTML('beforebegin','<rect class="paper" x="10" y="6" width="36" height="24" rx="2"/>');v.insertAdjacentHTML('beforeend','<g class="clock"><circle cx="28" cy="28" r="7.5"/><path d="M28 24v4.5l3 2"/></g>')});
 
 /* dock magnification: scale by pointer distance, transform only */
 const dock=$('.dock'), items=[...dock.querySelectorAll('a')], calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
@@ -345,7 +345,8 @@ function greenMenu(w){
   const step=n=>{tip.innerHTML=`<p><b>${n} of 2</b> ${n===1?'Folders move. Try dragging MAVI Client Portal.':'Nice. Now click it to open the case study.'}</p><button type="button">Skip</button>`;tip.querySelector('button').onclick=done;put()};
   const put=()=>{const r=f.getBoundingClientRect();tip.style.left=Math.max(8,Math.min(innerWidth-tip.offsetWidth-8,r.left+r.width/2-tip.offsetWidth/2))+'px';tip.classList.add('below');tip.style.top=Math.min(innerHeight-tip.offsetHeight-BM,r.bottom+12)+'px'};
   setTimeout(()=>{f.classList.add('stray');f.style.transform='translate(0,-14px) rotate(-6deg)';document.body.append(tip);step(1);setTimeout(put,calm?0:560);
-    document.addEventListener('folderdragged',()=>{step(2);setTimeout(put,50)},{once:true});
+    f.addEventListener('pointerdown',()=>f.classList.remove('stray'),{once:true});f.addEventListener('click',()=>f.classList.remove('stray'),{once:true}); // the ground shadow goes as soon as the folder is touched
+    document.addEventListener('folderdragged',()=>{f.classList.remove('stray');step(2);setTimeout(put,50)},{once:true});
     f.addEventListener('click',()=>{if(tip.isConnected&&tip.textContent.startsWith('2'))done()});
     addEventListener('resize',()=>{if(!tip.isConnected)return;if(mobile())done();else put()})},calm?0:900);
 })();
