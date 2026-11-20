@@ -395,19 +395,25 @@ main.hero .role{color:var(--pop)}
   .folders{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem .25rem;max-width:22rem}
   .folder{font-size:.8125rem!important;overflow-wrap:normal;word-break:normal;hyphens:none;padding:.4rem 0}
   .folder svg{width:56px;height:46px}
-  .buddy{left:auto;right:max(.5rem,env(safe-area-inset-right));bottom:calc(var(--badge-h) + .5rem + env(safe-area-inset-bottom));align-items:flex-end}
+  .buddy{left:auto;right:max(.5rem,env(safe-area-inset-right));bottom:calc(var(--badge-h) + .5rem + env(safe-area-inset-bottom) + 2px);align-items:flex-end}
   .bbtn{width:48px;height:54px}
   .dock{gap:.15rem;padding:.3rem}
 }
 /* Phones: smaller hero so the folders sit higher; the tagline is the quietest line */
 @media (max-width:720px){
-  main.hero{gap:.4rem;padding-bottom:1rem}
-  main.hero h1{font-size:clamp(2.3rem,11.5vw,3rem)!important}
-  main.hero .role{font-size:.8125rem;margin-top:.25rem}
-  main.hero .tag{font-size:.6875rem}
-  .folders{margin-top:.6rem!important;gap:.9rem .25rem!important}
-  .folder svg{width:46px;height:38px} .folder{font-size:.75rem!important;padding:.25rem 0;gap:.3rem}
-  .desk{padding-bottom:calc(var(--badge-h) + 4.5rem)}
+  /* Phone home: top bar, then the name and the six folders centred in the free space, then dock and helper on one line above the badge zone */
+  .m-hide{display:none}
+  .desk{display:grid;grid-template-rows:auto minmax(0,1fr) auto;min-height:100svh;padding-bottom:0}
+  main.hero{gap:.5rem;padding:.5rem 1rem 1rem;align-content:center}
+  main.hero h1{font-size:clamp(2.6rem,13.2vw,3.5rem)!important}
+  main.hero .role{font-size:.9375rem;margin-top:.35rem}
+  main.hero .tag{font-size:.8125rem}
+  .folders{margin-top:1.25rem!important;gap:1.5rem .25rem!important}
+  .folder svg{width:60px;height:50px} .folder{font-size:.8125rem!important;padding:.25rem 0;gap:.4rem}
+  .dock{position:relative;bottom:auto;margin-bottom:calc(var(--badge-h) + .5rem + env(safe-area-inset-bottom))}
+  /* roomy phones fill the height with larger pieces; short ones tighten so nothing scrolls */
+  @media (min-height:760px){main.hero h1{font-size:clamp(2.8rem,14.5vw,4rem)!important} main.hero .role{font-size:1rem} main.hero .tag{font-size:.9375rem} .folders{margin-top:2rem!important;gap:2rem .25rem!important} .folder svg{width:72px;height:60px} .folder{font-size:.875rem!important}}
+  @media (max-height:620px){main.hero{gap:.3rem;padding-top:.25rem} main.hero h1{font-size:clamp(2.3rem,11.5vw,2.9rem)!important} main.hero .role{font-size:.8125rem} main.hero .tag{font-size:.75rem} .folders{margin-top:.75rem!important;gap:.9rem .25rem!important} .folder svg{width:48px;height:40px} .folder{font-size:.75rem!important;gap:.25rem}}
   /* windows start just under the top bar, with less empty space above */
   .win,.win.max{top:calc(48px + env(safe-area-inset-top))!important}
 }
