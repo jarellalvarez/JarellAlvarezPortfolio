@@ -8,7 +8,7 @@ header.top{display:flex;align-items:center;gap:1rem;padding:1rem 1.5rem;font-siz
 header.top a{text-decoration:none} header.top .sp{margin-left:auto}
 .btn{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;border-radius:var(--r-pill);border:1.5px solid var(--ink);background:none;font-weight:600;font-size:.9375rem;text-decoration:none;cursor:pointer}
 .btn.solid{background:var(--ink);color:var(--bg)}
-main{max-width:62rem;margin:0 auto;padding:3rem 1.5rem 5rem}
+main{max-width:62rem;margin:0 auto;padding:3rem 1.5rem calc(5rem + var(--badge-h))}
 h1{font-family:var(--display);font-weight:var(--dw);letter-spacing:-.03em;font-size:clamp(var(--t-4),6vw,4.75rem);line-height:1.05;letter-spacing:-.02em;text-wrap:balance}
 .facts{display:flex;flex-wrap:wrap;gap:.75rem 2.5rem;margin:1.75rem 0;padding:1rem 0;border-block:1px solid var(--line);font-size:.875rem}
 .facts dt{color:var(--ink-2)} .facts dd{font-weight:600}

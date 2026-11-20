@@ -41,7 +41,7 @@ document.querySelectorAll('.folder').forEach(f=>{
 /* QA H-04: folders start scattered and snap into the row, once per load */
 if(!calm){const fs=[...document.querySelectorAll('.folder')];
   fs.forEach((f,i)=>f.animate([{transform:`translate(${(Math.random()-.5)*innerWidth*.9}px,${(Math.random()-.5)*innerHeight*.8}px) rotate(${(Math.random()-.5)*70}deg) scale(.6)`,opacity:0},{opacity:1,offset:.25},{transform:'none',opacity:1}],
-    {duration:mobile()?500:750,delay:i*50,easing:'cubic-bezier(.2,1.35,.4,1)',fill:'backwards'}))}
+    {duration:mobile()?450:600,delay:1050+i*55,easing:'cubic-bezier(.2,1.35,.4,1)',fill:'backwards'}))}
 
 /* Windows work like browser windows with tabs. A folder opens as a tab in the front window.
    Drag a tab out of the strip and it becomes its own window. Click the desktop and windows tuck away. */
@@ -53,6 +53,7 @@ const shown=w=>w.isConnected&&!w._min&&!w._closing;
 const wins=()=>[...document.querySelectorAll('.win')].filter(shown);
 const topWin=()=>wins().sort((a,b)=>b.style.zIndex-a.style.zIndex)[0];
 const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
+const BM=60; // px kept free at the bottom right for the "Powered by Netlify" badge (same as --badge-h in tokens.css)
 function focusWin(w){w.style.zIndex=++zTop;document.querySelectorAll('.win.focused').forEach(x=>x.classList.remove('focused'));w.classList.add('focused')}
 function place(w){w.style.transform=`translate(${w._x}px,${w._y}px)`}
 function setMax(w,on){const r=w._active.querySelector('.read'),ratio=r.scrollTop/Math.max(1,r.scrollHeight-r.clientHeight);w.classList.toggle('max',on);
@@ -64,7 +65,7 @@ function size(){const row=document.querySelector('.folders').getBoundingClientRe
 function newWin(b,x,y){
   const w=tpl.content.firstElementChild.cloneNode(true);document.body.append(w);w.classList.add('open');
   if(!mobile()){w.style.width=b.w+'px';w.style.height=b.h+'px'}
-  w._x=clamp(x,8,innerWidth-w.offsetWidth-8);w._y=clamp(y,8,innerHeight-w.offsetHeight-8);place(w);wire(w);focusWin(w);return w}
+  w._x=clamp(x,8,innerWidth-w.offsetWidth-8);w._y=clamp(y,8,innerHeight-w.offsetHeight-(mobile()?8:BM));place(w);wire(w);focusWin(w);return w}
 
 function label(p,short,full){p._short=short;p._full=full;p._tab.querySelector('.tl').textContent=short;p._tab.title=full;p._tab.querySelector('.tx').setAttribute('aria-label','Close '+short)}
 function attach(w,p,before){p._win=w;w.querySelector('.tabs').insertBefore(p._tab,before||null);w.append(p);activate(p)}
@@ -187,7 +188,7 @@ async function openWin(a){
   makeTab(p);label(p,name,name);
   let w=topWin();const fresh=!w;
   // Ask Jarell opens as a smaller chat window near the helper; everything else opens centered
-  if(fresh){if(key==='ask'){const b={w:440,h:Math.min(580,innerHeight-130)};w=newWin(b,24,innerHeight-b.h-112)}else{const b=size();w=newWin(b,(innerWidth-b.w)/2,72)}}
+  if(fresh){if(key==='ask'){const b={w:440,h:Math.min(580,innerHeight-130-BM+8)};w=newWin(b,24,innerHeight-b.h-112)}else{const b=size();w=newWin(b,(innerWidth-b.w)/2,72)}}
   attach(w,p);focusWin(w);
   if(fresh)grow(w,a,false);else if(!calm)p._tab.animate([{transform:'translateY(6px) scale(.85)',opacity:0},{transform:'none',opacity:1}],{duration:180,easing:'cubic-bezier(.2,1.3,.4,1)'});
   renderTray();
@@ -216,7 +217,7 @@ function wire(w){
     const r=w.getBoundingClientRect(),sx=e.clientX,sy=e.clientY,left=g.dataset.edge==='left';
     const move=ev=>{const dx=ev.clientX-sx,dy=ev.clientY-sy;
       let nw=left?r.width-dx:r.width+dx;nw=Math.max(420,Math.min(nw,left?r.right:innerWidth-r.left));
-      const nh=Math.max(320,Math.min(r.height+dy,innerHeight-r.top));
+      const nh=Math.max(320,Math.min(r.height+dy,innerHeight-BM-r.top));
       w.style.width=nw+'px';w.style.height=nh+'px';if(left){w._x=r.right-nw;place(w)}};
     const up=()=>{g.classList.remove('active');w.classList.remove('resizing');g.removeEventListener('pointermove',move);g.removeEventListener('pointerup',up)};
     g.addEventListener('pointermove',move);g.addEventListener('pointerup',up)}));
@@ -309,7 +310,7 @@ const snapBtns=()=>LAYS.map(([k,n])=>`<button type="button" data-l="${k}" aria-l
 function snap(w,l,other){
   if(l==='full'){setMax(w,true);return}
   if(w.classList.contains('max'))setMax(w,false);
-  const m=8,top=8,W=innerWidth-m*2,H=innerHeight-top-m,half={left:[m,top,W/2-4,H],right:[m+W/2+4,top,W/2-4,H],top:[m,top,W,H/2-4],bottom:[m,top+H/2+4,W,H/2-4]};
+  const m=8,top=8,W=innerWidth-m*2,H=innerHeight-top-BM,half={left:[m,top,W/2-4,H],right:[m+W/2+4,top,W/2-4,H],top:[m,top,W,H/2-4],bottom:[m,top+H/2+4,W,H/2-4]};
   const go=(x,k)=>{const [l2,t2,w2,h2]=half[k];x.style.width=w2+'px';x.style.height=h2+'px';x._x=l2;x._y=t2;place(x)};
   go(w,l);
   const mate=other&&shown(other)?other:wins().filter(x=>x!==w).length===1?wins().find(x=>x!==w):null;

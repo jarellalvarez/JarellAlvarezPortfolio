@@ -65,7 +65,7 @@
 .bpill.bmore{min-width:44px;text-align:center;font-weight:700;letter-spacing:.05em}
 .bmenu{bottom:6.5rem}
 /* panel that drops down under the top-bar helper on every other page */
-.askpanel{position:fixed;z-index:var(--z-ask);width:min(26rem,calc(100vw - 1rem));height:min(34rem,calc(100svh - 7rem));display:grid;grid-template-rows:auto 1fr;border-radius:16px;background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.askpanel{position:fixed;z-index:var(--z-ask);width:min(26rem,calc(100vw - 1rem));height:min(34rem,calc(100svh - 6rem - var(--badge-h)));display:grid;grid-template-rows:auto 1fr;border-radius:16px;background:var(--surface);color:var(--ink);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
 .askpanel[hidden]{display:none}
 .askpanel header{display:flex;align-items:center;justify-content:space-between;padding:.4rem .4rem .4rem 1rem;border-bottom:1px solid var(--line);cursor:grab;touch-action:none;user-select:none}
 .askpanel header strong{font-size:.875rem}

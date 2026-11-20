@@ -42,6 +42,7 @@
   let io = null;
   function watch(el) {
     if (!('IntersectionObserver' in window)) { play(el, 'in'); return; }
+    if (el.closest('.hero-art') && el.dataset.delay) { setTimeout(() => play(el, 'in'), +el.dataset.delay); return; }
     io ||= new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { io.unobserve(e.target); play(e.target, 'in'); } }), { rootMargin: '0px 0px -10% 0px' });
     io.observe(el);
   }
@@ -71,7 +72,7 @@
   // homepage drawings around the title: each drawing arrives in turn, then moves now and then and when the pointer comes near
   const bg = [...document.querySelectorAll('.hero-art .dd[data-art]')];
   if (bg.length) {
-    bg.forEach(d => mount(d));
+    bg.forEach((d, n) => { d.dataset.delay = 430 + n * 90; mount(d); });
     if (!calm) {
       (function idle() { setTimeout(() => { const d = bg[Math.floor(Math.random() * bg.length)]; if (!document.hidden && innerWidth > 900 && !busy(d)) play(d, 'play'); idle(); }, 4200 + Math.random() * 3800); })();
       let q = 0; addEventListener('pointermove', e => { if (e.pointerType !== 'mouse' || q) return; q = requestAnimationFrame(() => { q = 0; bg.forEach(d => { const r = d.getBoundingClientRect(),

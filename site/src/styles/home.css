@@ -13,7 +13,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 64px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/64px 100%;
   -webkit-mask:radial-gradient(ellipse 70% 60% at 50% 45%,#000 0,transparent 75%);mask:radial-gradient(ellipse 70% 60% at 50% 45%,#000 0,transparent 75%);opacity:.5}
 /* the three logo pieces, bottom right. They play every few seconds. */
-.toys{position:fixed;right:1.5rem;bottom:1.25rem;display:flex;align-items:flex-end;gap:5px;padding:.5rem;border-radius:12px;z-index:5;color:var(--toy)}
+.toys{position:fixed;right:1.5rem;bottom:calc(var(--badge-h) + .25rem);display:flex;align-items:flex-end;gap:5px;padding:.5rem;border-radius:12px;z-index:5;color:var(--toy)}
 .toys i{display:block;height:34px;background:currentColor;transform-origin:50% 100%;will-change:transform}
 .toys i:nth-child(1){width:17px;border-radius:0 0 0 17px}
 .toys i:nth-child(2){width:34px;clip-path:polygon(0 0,100% 100%,0 100%)}
@@ -76,7 +76,7 @@ h1{font-family:var(--display);font-size:clamp(3.25rem,13.2vw,13.5rem);font-weigh
 .win{position:fixed;left:0;top:0;width:min(1100px,90vw);height:min(760px,86vh);display:grid;grid-template-rows:auto 1fr;background:var(--surface);border-radius:var(--r-win);box-shadow:var(--shadow);overflow:hidden;z-index:20;
   transform:translate(var(--x),var(--y));opacity:0;visibility:hidden;transition:opacity .16s,visibility 0s .16s}
 .win.open{opacity:1;visibility:visible;transition:opacity .16s}
-.win.max{left:20px!important;top:20px!important;width:calc(100vw - 40px)!important;height:calc(100vh - 40px)!important;transform:none!important}
+.win.max{left:20px!important;top:20px!important;width:calc(100vw - 40px)!important;height:calc(100vh - 20px - var(--badge-h))!important;transform:none!important}
 .bar{display:flex;align-items:center;gap:.5rem;padding:.45rem .5rem .45rem 1rem;border-bottom:1px solid var(--line);cursor:grab;touch-action:none;user-select:none}
 .bar:active{cursor:grabbing}
 .bar strong{font-size:.8125rem;font-weight:600;margin-right:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -129,7 +129,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
   nav.top{gap:.5rem;padding:.6rem .8rem} nav.top ul{gap:.7rem;font-size:.8125rem} nav.top ul a{display:inline-flex;align-items:center;min-height:44px} nav.top .logo{width:30px;height:30px} nav.top>a{display:grid;place-items:center;min-width:44px;min-height:44px}
   .folders{display:grid;grid-template-columns:repeat(4,1fr);gap:.25rem;width:100%;max-width:26rem}
   .folder{width:auto} .peek{display:none}
-  .dock{position:sticky;bottom:.75rem}
+  .dock{position:sticky;bottom:calc(var(--badge-h) + .5rem)}
   .win,.win.max{left:0!important;top:0!important;width:100vw!important;height:100svh!important;border-radius:0;transform:none!important}
   .win.max .body{grid-template-columns:1fr} .win.max .toc{display:none}
   .win.max.contents .toc{display:block;position:absolute;inset:49px 0 0;background:var(--surface);z-index:4;border:0}
@@ -207,8 +207,12 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 @media (prefers-reduced-motion:no-preference){
   .folder:hover svg,.folder:focus-visible svg{animation:hop-f .5s cubic-bezier(.3,1.5,.5,1)}
   @keyframes hop-f{0%{transform:none}30%{transform:translateY(-10px) scale(1.08,.94) rotate(-3deg)}60%{transform:translateY(-3px) scale(.97,1.04)}100%{transform:translateY(-3px) scale(1.06)}}
-  .hero h1{animation:rise .6s var(--ease-out) both} .hero .role{animation:rise .6s .09s var(--ease-out) both} .hero .tag{animation:rise .6s .16s var(--ease-out) both}
-  .dock{animation:dock-in .7s .5s cubic-bezier(.2,1.3,.4,1) both}
+  /* intro rhythm: words first (0 to .3s), then the hand-drawn pieces (from .45s, one every .09s), then folders (from 1s), then dock, helper and shapes */
+  .hero h1{animation:rise .45s var(--ease-out) both} .hero .role{animation:rise .45s .08s var(--ease-out) both} .hero .tag{animation:rise .45s .16s var(--ease-out) both}
+  .dock{animation:dock-in .5s 1.45s cubic-bezier(.2,1.3,.4,1) both}
+  .buddy{animation:dock-in .5s 1.6s var(--spring) both}
+  .toys{animation:fade-in .5s 1.75s ease-out both}
+  @keyframes fade-in{from{opacity:0}}
   @keyframes rise{from{opacity:0;transform:translateY(24px)}}
   @keyframes dock-in{from{opacity:0;transform:translateY(40px)}}
 }
@@ -218,7 +222,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
   .win .bar{padding-top:max(.45rem,env(safe-area-inset-top));min-height:56px}
   .win .read{padding-bottom:env(safe-area-inset-bottom)}
   .win .light{width:44px;height:44px} .win .light::before{width:18px;height:18px} .win .light svg{opacity:1}
-  .dock{margin-bottom:calc(.75rem + env(safe-area-inset-bottom))}
+  .dock{margin-bottom:calc(.25rem + env(safe-area-inset-bottom))}
   .folder svg{width:68px;height:56px} .folder{padding:.6rem .1rem}
 }
 @media (max-width:720px){.win{z-index:120!important}}
@@ -300,7 +304,7 @@ main.hero{grid-template-columns:minmax(0,100%)} main.hero>*{max-width:100%}
 /* Folder hover text: two lines max */
 .peek>span:not(:empty){display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 /* Snap layouts: panel shown while a tab is dragged out, and the green button's menu */
-.snap{position:fixed;right:1.25rem;bottom:1.25rem;z-index:var(--z-snap);display:grid;grid-template-columns:repeat(5,auto);gap:.35rem;padding:.6rem;border-radius:16px;background:var(--chrome);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--line);box-shadow:var(--shadow);opacity:0;transform:translateY(12px) scale(.96);pointer-events:none;transition:opacity .15s,transform .2s cubic-bezier(.2,1.2,.4,1)}
+.snap{position:fixed;right:1.25rem;bottom:calc(var(--badge-h) + .5rem);z-index:var(--z-snap);display:grid;grid-template-columns:repeat(5,auto);gap:.35rem;padding:.6rem;border-radius:16px;background:var(--chrome);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--line);box-shadow:var(--shadow);opacity:0;transform:translateY(12px) scale(.96);pointer-events:none;transition:opacity .15s,transform .2s cubic-bezier(.2,1.2,.4,1)}
 .snap.left{right:auto;left:1.25rem}
 .snap.on{opacity:1;transform:none}
 .snap p{grid-column:1/-1;margin:0 0 .15rem;font-size:.75rem;font-weight:600;color:var(--ink-2)}
@@ -349,7 +353,7 @@ main.hero .role{color:var(--pop)}
 @keyframes bhop{40%{translate:0 -10px;scale:1.05 .95}}
 .bsay{position:relative;margin:0;padding:.45rem .75rem;border-radius:12px;background:var(--surface);border:2px solid var(--ink);font:500 .875rem/1.2 var(--sans);opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .25s}
 .bsay.on{opacity:1;transform:none}
-@media (max-width:720px){.buddy{left:.75rem;bottom:5.5rem} .bbtn{width:58px;height:64px}}
+@media (max-width:720px){.buddy{left:.75rem;bottom:calc(var(--badge-h) + 1.75rem)} .bbtn{width:58px;height:64px}}
 @media (prefers-reduced-motion:reduce){.bbtn,.bbtn *{animation:none!important;transition:none!important}}
 .bsay{color:var(--ink);visibility:hidden} .bsay.on{visibility:visible}
 /* helper body is Jarell's traced sticky note; a soft fill behind it, eyes on top */
@@ -382,7 +386,7 @@ main.hero .role{color:var(--pop)}
 .scrim{display:none}
 @media (max-width:720px){
   .scrim.on{display:block;position:fixed;inset:0;z-index:110;background:color-mix(in srgb,#000 40%,transparent)}
-  .win,.win.max{left:10px!important;right:10px!important;top:10svh!important;bottom:calc(12px + env(safe-area-inset-bottom))!important;width:auto!important;height:auto!important;border-radius:var(--r-win)}
+  .win,.win.max{left:10px!important;right:10px!important;top:10svh!important;bottom:calc(var(--badge-h) + 8px + env(safe-area-inset-bottom))!important;width:auto!important;height:auto!important;border-radius:var(--r-win)}
   .win .bar{padding-top:.3rem}
   .win.contents .toc{display:block;position:absolute;inset:57px 0 0;background:var(--surface);z-index:4;border:0}
 }
@@ -391,17 +395,19 @@ main.hero .role{color:var(--pop)}
   .folders{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem .25rem;max-width:22rem}
   .folder{font-size:.8125rem!important;overflow-wrap:normal;word-break:normal;hyphens:none;padding:.4rem 0}
   .folder svg{width:56px;height:46px}
-  .buddy{left:auto;right:max(.5rem,env(safe-area-inset-right));bottom:calc(.75rem + env(safe-area-inset-bottom));align-items:flex-end}
+  .buddy{left:auto;right:max(.5rem,env(safe-area-inset-right));bottom:calc(var(--badge-h) + .5rem + env(safe-area-inset-bottom));align-items:flex-end}
   .bbtn{width:48px;height:54px}
   .dock{gap:.15rem;padding:.3rem}
 }
 /* Phones: smaller hero so the folders sit higher; the tagline is the quietest line */
 @media (max-width:720px){
   main.hero{gap:.4rem;padding-bottom:1rem}
-  main.hero h1{font-size:clamp(2.6rem,13vw,3.4rem)!important}
-  main.hero .role{font-size:.9375rem;margin-top:.35rem}
-  main.hero .tag{font-size:.75rem}
-  .folders{margin-top:1rem!important}
+  main.hero h1{font-size:clamp(2.3rem,11.5vw,3rem)!important}
+  main.hero .role{font-size:.8125rem;margin-top:.25rem}
+  main.hero .tag{font-size:.6875rem}
+  .folders{margin-top:.6rem!important;gap:.9rem .25rem!important}
+  .folder svg{width:46px;height:38px} .folder{font-size:.75rem!important;padding:.25rem 0;gap:.3rem}
+  .desk{padding-bottom:calc(var(--badge-h) + 4.5rem)}
   /* windows start just under the top bar, with less empty space above */
   .win,.win.max{top:calc(48px + env(safe-area-inset-top))!important}
 }

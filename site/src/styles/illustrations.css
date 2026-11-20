@@ -33,6 +33,10 @@
 @keyframes pen{0%{stroke-dashoffset:1;opacity:1}72%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 @keyframes inkfill{from{opacity:0}to{opacity:1}}
 
+/* homepage pieces draw faster than the rest of the site so the intro stays snappy */
+.hero-art .art.in .pen{animation-duration:.55s}
+.hero-art .art.in .fills{animation-duration:.3s;animation-delay:.38s}
+
 /* ---------- shared keyframes ---------- */
 @keyframes sketch{from{clip-path:inset(-15% 100% -15% -15%)}to{clip-path:inset(-15% -15% -15% -15%)}}
 @keyframes swipe{from{clip-path:inset(-8% 100% -8% -8%)}to{clip-path:inset(-8% -8% -8% -8%)}}
