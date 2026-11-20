@@ -33,7 +33,9 @@
 @keyframes pen{0%{stroke-dashoffset:1;opacity:1}65%{stroke-dashoffset:0;opacity:1}100%{stroke-dashoffset:0;opacity:0}}
 @keyframes inkfill{from{opacity:0}to{opacity:1}}
 
-/* homepage pieces draw faster than the rest of the site so the intro stays snappy */
+/* homepage pieces only draw in (outline, then fill). Their little actions wait for the idle replays and hover, so nothing else moves during the intro. */
+.hero-art .art.in{animation:none!important}
+.hero-art .art.in path:not(.pen){animation:none!important}
 .hero-art .art.in .pen{animation-duration:.3s}
 .hero-art .art.in .fills{animation-duration:.2s;animation-delay:.16s}
 

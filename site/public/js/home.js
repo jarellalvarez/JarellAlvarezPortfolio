@@ -38,10 +38,11 @@ document.querySelectorAll('.folder').forEach(f=>{
   f.addEventListener('dragstart',e=>e.preventDefault());
 });
 
-/* QA H-04: folders start scattered and snap into the row, once per load */
+/* QA H-04: folders ease into the row, once per load */
 if(!calm){const fs=[...document.querySelectorAll('.folder')];
-  fs.forEach((f,i)=>f.animate([{transform:`translate(${(Math.random()-.5)*innerWidth*.9}px,${(Math.random()-.5)*innerHeight*.8}px) rotate(${(Math.random()-.5)*70}deg) scale(.6)`,opacity:0},{opacity:1,offset:.25},{transform:'none',opacity:1}],
-    {duration:mobile()?320:380,delay:650+i*35,easing:'cubic-bezier(.2,1.35,.4,1)',fill:'backwards'}))}
+  // one simple move: each folder eases up into place and fades in, one after another
+  fs.forEach((f,i)=>f.animate([{transform:'translateY(14px)',opacity:0},{transform:'none',opacity:1}],
+    {duration:mobile()?380:450,delay:650+i*45,easing:'cubic-bezier(.2,1,.3,1)',fill:'backwards'}))}
 
 /* Windows work like browser windows with tabs. A folder opens as a tab in the front window.
    Drag a tab out of the strip and it becomes its own window. Click the desktop and windows tuck away. */
