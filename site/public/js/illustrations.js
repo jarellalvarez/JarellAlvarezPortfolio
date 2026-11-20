@@ -25,7 +25,7 @@
       const pens = document.createElementNS(NS, 'g'); pens.setAttribute('class', 'pens'); let j = 0;
       paths.forEach(p => { if (p.getAttribute('fill') === '#fff') return; const c = p.cloneNode(false); c.setAttribute('class', 'pen'); c.setAttribute('pathLength', '1'); c.style.setProperty('--j', j++); pens.appendChild(c); });
       svg.appendChild(pens); svg.style.setProperty('--sw', (vb.width * 0.009).toFixed(2));
-      svg.style.setProperty('--st', (j > 1 ? 0.6 / (j - 1) : 0).toFixed(3) + 's'); svg.style.setProperty('--fd', (j > 1 ? 1.1 : 0.7) + 's');
+      svg.style.setProperty('--st', (j > 1 ? 0.3 / (j - 1) : 0).toFixed(3) + 's'); svg.style.setProperty('--fd', (j > 1 ? 0.6 : 0.35) + 's');
       svg.classList.add('pre');
     }
     watch(el);
@@ -35,7 +35,7 @@
     const svg = el.firstElementChild; if (!svg || !svg.classList) return;
     svg.classList.remove('pre'); if (calm) return;
     svg.classList.remove('in', 'play'); void svg.getBoundingClientRect(); svg.classList.add(kind);
-    clearTimeout(svg._t); svg._t = setTimeout(() => svg.classList.remove(kind), kind === 'in' ? 3200 : 2400);
+    clearTimeout(svg._t); svg._t = setTimeout(() => svg.classList.remove(kind), kind === 'in' ? 2200 : 2000);
   }
   const busy = el => { const s = el.firstElementChild; return !s || s.classList.contains('in') || s.classList.contains('play') || s.classList.contains('pre'); };
 
@@ -72,7 +72,7 @@
   // homepage drawings around the title: each drawing arrives in turn, then moves now and then and when the pointer comes near
   const bg = [...document.querySelectorAll('.hero-art .dd[data-art]')];
   if (bg.length) {
-    bg.forEach((d, n) => { d.dataset.delay = 430 + n * 90; mount(d); });
+    bg.forEach((d, n) => { d.dataset.delay = 300 + n * 60; mount(d); });
     if (!calm) {
       (function idle() { setTimeout(() => { const d = bg[Math.floor(Math.random() * bg.length)]; if (!document.hidden && innerWidth > 900 && !busy(d)) play(d, 'play'); idle(); }, 4200 + Math.random() * 3800); })();
       let q = 0; addEventListener('pointermove', e => { if (e.pointerType !== 'mouse' || q) return; q = requestAnimationFrame(() => { q = 0; bg.forEach(d => { const r = d.getBoundingClientRect(),

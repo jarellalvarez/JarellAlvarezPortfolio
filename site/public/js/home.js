@@ -41,7 +41,7 @@ document.querySelectorAll('.folder').forEach(f=>{
 /* QA H-04: folders start scattered and snap into the row, once per load */
 if(!calm){const fs=[...document.querySelectorAll('.folder')];
   fs.forEach((f,i)=>f.animate([{transform:`translate(${(Math.random()-.5)*innerWidth*.9}px,${(Math.random()-.5)*innerHeight*.8}px) rotate(${(Math.random()-.5)*70}deg) scale(.6)`,opacity:0},{opacity:1,offset:.25},{transform:'none',opacity:1}],
-    {duration:mobile()?450:600,delay:1050+i*55,easing:'cubic-bezier(.2,1.35,.4,1)',fill:'backwards'}))}
+    {duration:mobile()?320:380,delay:650+i*35,easing:'cubic-bezier(.2,1.35,.4,1)',fill:'backwards'}))}
 
 /* Windows work like browser windows with tabs. A folder opens as a tab in the front window.
    Drag a tab out of the strip and it becomes its own window. Click the desktop and windows tuck away. */
@@ -342,9 +342,9 @@ function greenMenu(w){
   const f=[...document.querySelectorAll('.folders .folder')].find(x=>/MAVI/.test(x.textContent));if(!f)return;
   const tip=document.createElement('div');tip.className='coach';tip.setAttribute('role','status');
   const step=n=>{tip.innerHTML=`<p><b>${n} of 2</b> ${n===1?'Folders move. Try dragging MAVI Client Portal.':'Nice. Now click it to open the case study.'}</p><button type="button">Skip</button>`;tip.querySelector('button').onclick=done;put()};
-  const put=()=>{const r=f.getBoundingClientRect();tip.style.left=Math.max(8,Math.min(innerWidth-tip.offsetWidth-8,r.left+r.width/2-tip.offsetWidth/2))+'px';tip.style.top=Math.max(8,r.top-tip.offsetHeight-14)+'px'};
+  const put=()=>{const r=f.getBoundingClientRect();tip.style.left=Math.max(8,Math.min(innerWidth-tip.offsetWidth-8,r.left+r.width/2-tip.offsetWidth/2))+'px';tip.classList.add('below');tip.style.top=Math.min(innerHeight-tip.offsetHeight-BM,r.bottom+12)+'px'};
   setTimeout(()=>{f.classList.add('stray');f.style.transform='translate(0,-14px) rotate(-6deg)';document.body.append(tip);step(1);setTimeout(put,calm?0:560);
     document.addEventListener('folderdragged',()=>{step(2);setTimeout(put,50)},{once:true});
     f.addEventListener('click',()=>{if(tip.isConnected&&tip.textContent.startsWith('2'))done()});
-    addEventListener('resize',()=>tip.isConnected&&put())},calm?0:1100);
+    addEventListener('resize',()=>{if(!tip.isConnected)return;if(mobile())done();else put()})},calm?0:900);
 })();

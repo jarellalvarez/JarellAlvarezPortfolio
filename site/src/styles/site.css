@@ -82,7 +82,7 @@ h1{font-family:var(--display);font-weight:var(--dw);letter-spacing:-.03em;font-s
 .mail svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;display:none}
 .mail.shown{background:none;color:var(--ink)} .mail.shown svg{display:block}
 .mail:active{transform:scale(.97)}
-.mail .tip{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translate(-50%,4px);padding:.2rem .6rem;border-radius:var(--r-sm);background:var(--ink);color:var(--bg);font-size:.75rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s}
+.mail .tip{position:absolute;left:50%;bottom:calc(100% + 8px);transform:translate(-50%,4px);padding:.2rem .6rem;border-radius:var(--r-sm);background:var(--tip-bg);color:var(--bg);font-size:.75rem;font-weight:500;opacity:0;pointer-events:none;transition:opacity .15s,transform .15s}
 .mail .tip.on{opacity:1;transform:translate(-50%,0)}
 .cta{margin-top:3rem;padding:2rem;border-radius:var(--r-card);background:var(--surface);border:1px solid var(--line)}
 .cta h2{font-family:var(--display);font-weight:var(--hw);letter-spacing:-.02em;font-size:clamp(var(--t-2),3vw,var(--t-4));line-height:1.1;text-wrap:balance;max-width:22ch}

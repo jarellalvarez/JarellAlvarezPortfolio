@@ -42,8 +42,8 @@ h1{font-family:var(--display);font-size:clamp(3.25rem,13.2vw,13.5rem);font-weigh
 .tag{font-family:var(--serif);font-style:var(--tag-style);font-size:clamp(1.0625rem,1.7vw,1.5rem);color:var(--ink-2)}
 
 /* folders */
-.folders{display:flex;gap:1.1rem;list-style:none;padding:0;margin-top:clamp(1.25rem,4vh,3rem)}
-.folder{position:relative;display:grid;justify-items:center;gap:.5rem;width:8.5rem;font-size:.9375rem!important;padding:.6rem .25rem .5rem;border-radius:var(--r-md);font-size:.8125rem;font-weight:500;line-height:1.2;text-decoration:none}
+.folders{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(.4rem,1.4vw,1.1rem);list-style:none;padding:0;margin-top:clamp(1.25rem,4vh,3rem)}
+.folder{position:relative;display:grid;justify-items:center;gap:.5rem;width:clamp(6.25rem,11.4vw,8.5rem);font-size:.9375rem!important;padding:.6rem .25rem .5rem;border-radius:var(--r-md);font-size:.8125rem;font-weight:500;line-height:1.2;text-decoration:none}
 .folder svg{width:84px;height:69px;overflow:visible;transition:transform .18s cubic-bezier(.2,.8,.2,1)}
 .folder .back{fill:var(--folder)} .folder .front{fill:var(--bg);stroke:var(--folder);stroke-width:2}
 .folder .glyph{fill:var(--folder)}
@@ -69,7 +69,7 @@ h1{font-family:var(--display);font-size:clamp(3.25rem,13.2vw,13.5rem);font-weigh
 .dock a{position:relative;width:44px;height:44px;display:grid;place-items:center;border-radius:13px;transform-origin:50% 100%;will-change:transform}
 .dock a:hover,.dock a:focus-visible{background:var(--line)}
 .dock svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
-.tip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);padding:.2rem .55rem;border-radius:var(--r-sm);background:var(--ink);color:var(--bg);font-size:.75rem;font-weight:500;white-space:nowrap;opacity:0;pointer-events:none}
+.tip{position:absolute;bottom:calc(100% + 10px);left:50%;transform:translateX(-50%);padding:.2rem .55rem;border-radius:var(--r-sm);background:var(--tip-bg);color:var(--bg);font-size:.75rem;font-weight:500;white-space:nowrap;opacity:0;pointer-events:none}
 .dock a:hover .tip,.dock a:focus-visible .tip,.ctl:hover .tip,.ctl:focus-visible .tip{opacity:1}
 
 /* window */
@@ -207,11 +207,11 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 @media (prefers-reduced-motion:no-preference){
   .folder:hover svg,.folder:focus-visible svg{animation:hop-f .5s cubic-bezier(.3,1.5,.5,1)}
   @keyframes hop-f{0%{transform:none}30%{transform:translateY(-10px) scale(1.08,.94) rotate(-3deg)}60%{transform:translateY(-3px) scale(.97,1.04)}100%{transform:translateY(-3px) scale(1.06)}}
-  /* intro rhythm: words first (0 to .3s), then the hand-drawn pieces (from .45s, one every .09s), then folders (from 1s), then dock, helper and shapes */
-  .hero h1{animation:rise .45s var(--ease-out) both} .hero .role{animation:rise .45s .08s var(--ease-out) both} .hero .tag{animation:rise .45s .16s var(--ease-out) both}
-  .dock{animation:dock-in .5s 1.45s cubic-bezier(.2,1.3,.4,1) both}
-  .buddy{animation:dock-in .5s 1.6s var(--spring) both}
-  .toys{animation:fade-in .5s 1.75s ease-out both}
+  /* intro rhythm: words first (0 to .25s), then the hand-drawn pieces (from .3s, one every .06s), then folders (from .65s), then dock, helper and shapes; all done by about 1.3s */
+  .hero h1{animation:rise .35s var(--ease-out) both} .hero .role{animation:rise .35s .06s var(--ease-out) both} .hero .tag{animation:rise .35s .12s var(--ease-out) both}
+  .dock{animation:dock-in .4s .95s cubic-bezier(.2,1.3,.4,1) both}
+  .buddy{animation:dock-in .4s 1.05s var(--spring) both}
+  .toys{animation:fade-in .4s 1.15s ease-out both}
   @keyframes fade-in{from{opacity:0}}
   @keyframes rise{from{opacity:0;transform:translateY(24px)}}
   @keyframes dock-in{from{opacity:0;transform:translateY(40px)}}
@@ -318,10 +318,12 @@ main.hero{grid-template-columns:minmax(0,100%)} main.hero>*{max-width:100%}
 .snap-menu::before{content:"";position:absolute;left:0;right:0;top:-10px;height:10px}
 /* First-visit tip for dragging folders */
 .folder.stray{transition:transform .5s cubic-bezier(.2,1.4,.4,1)}
-.coach{position:fixed;z-index:var(--z-coach);display:flex;align-items:center;gap:.75rem;max-width:min(22rem,calc(100vw - 1rem));padding:.6rem .6rem .6rem .9rem;border-radius:12px;background:var(--ink);color:var(--bg);font-size:.875rem;box-shadow:var(--shadow);animation:coach .3s cubic-bezier(.2,1.3,.4,1) both}
+.coach{position:fixed;z-index:var(--z-coach);display:flex;align-items:center;gap:.6rem;max-width:min(19rem,calc(100vw - 1rem));padding:.4rem .45rem .4rem .7rem;border-radius:10px;background:var(--tip-bg);color:var(--bg);font-size:.8125rem;line-height:1.3;box-shadow:var(--shadow);animation:coach .3s cubic-bezier(.2,1.3,.4,1) both}
 .coach p{margin:0} .coach b{margin-right:.35rem;font-weight:700;opacity:.75}
-.coach button{flex:none;min-height:32px;padding:0 .75rem;border-radius:8px;border:1px solid color-mix(in srgb,var(--bg) 40%,transparent);background:none;color:inherit;font:500 .8125rem/1 var(--sans);cursor:pointer}
-.coach::after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:12px;background:inherit;transform:translateX(-50%) rotate(45deg);border-radius:2px}
+.coach button{flex:none;min-height:28px;min-width:44px;padding:0 .6rem;border-radius:8px;border:1px solid color-mix(in srgb,var(--bg) 40%,transparent);background:none;color:inherit;font:500 .8125rem/1 var(--sans);cursor:pointer}
+.coach::after{content:"";position:absolute;left:50%;bottom:-6px;width:12px;height:6px;background:inherit;transform:translateX(-50%);clip-path:polygon(0 0,100% 0,50% 100%)}
+.coach.below::after{bottom:auto;top:-6px;clip-path:polygon(50% 0,0 100%,100% 100%)}
+@media (max-width:720px){.coach{display:none}} /* folders are not draggable on phones, so no tip there */
 @keyframes coach{from{opacity:0;transform:translateY(8px)}}
 @media (prefers-reduced-motion:reduce){.coach{animation:none}}
 .coach{pointer-events:none} .coach button{pointer-events:auto}

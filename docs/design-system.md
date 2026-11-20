@@ -46,7 +46,7 @@ Jarell's Illustrator drawings, inlined so each part can move. Sizes come from on
 | Dock (`Dock.astro`) | rest, hover (label tooltip), focus-visible, copied (contact) | Four items. |
 | Buttons (`.btn`, `.btn.solid`, `.rm`, `.mail`) | rest, hover, active (scale .97), focus-visible, disabled | 44px minimum target on touch. |
 | Lightbox (`lightbox.js`) | closed, loading (thumbnail first), open, zoomed, panning | Close: X, Esc, backdrop. Zoom: one click or tap on the picture (click again to zoom out), + / - / 0, wheel, pinch. Focus trapped, returns to the picture. |
-| Tooltip (`.tip`) | hidden, shown on hover and focus | Never the only way to get information. |
+| Tooltip (`.tip`, drag coach) | hidden, shown on hover and focus | Background is `--tip-bg` (ink at 80%), text is solid page colour, 12 to 13px. `tests/themes.test.mjs` requires 4.5:1 in all 12 themes over the page, a card and a folder. Never the only way to get information. The drag coach is desktop only and sits under the folder it points at. |
 | Ask Jarell (`ask.js`, `chat.js`) | closed, spotlight, window pane, top-bar panel, answering, AI answer label, no match (email) | Pills: 3 normally, 1 after a typed question, "..." menu. |
 | Style panel | closed, open, randomize | Theme, font, size, mode. |
 | Lock card | locked, wrong password, unlocked | Locked text and images are encrypted at build time. |

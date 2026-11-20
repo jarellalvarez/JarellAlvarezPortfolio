@@ -22,3 +22,13 @@ for (const { name, vars } of blocks) {
     assert.ok(ratio(vars.bg, vars.ink) >= 4.5, 'solid buttons (bg text on ink)');
   });
 }
+
+// Tooltips use the ink colour at 80% as their background, so what shows through is 20% of whatever is behind them.
+const mix = (a, b, t) => '#' + [1, 3, 5].map(i => Math.round(parseInt(a.slice(i, i + 2), 16) * t + parseInt(b.slice(i, i + 2), 16) * (1 - t)).toString(16).padStart(2, '0')).join('');
+for (const { name, vars } of blocks) {
+  test(`${name}: tooltip text (page colour) on the 80% ink background passes 4.5:1 over the page, a card and a folder`, () => {
+    for (const under of [vars.bg, vars.surface, vars.shape, vars.folder]) {
+      const r = ratio(vars.bg, mix(vars.ink, under, 0.8)); assert.ok(r >= 4.5, `over ${under}: ${r.toFixed(2)}`);
+    }
+  });
+}
