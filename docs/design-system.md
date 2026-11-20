@@ -1,6 +1,6 @@
 # Design system
 
-One source of truth: `site/src/styles/tokens.css` (type, spacing, shape, motion, layers) and `site/src/styles/themes.css` (color). Every other stylesheet reads these variables. The live reference page is `/design-system/`.
+One source of truth: `site/src/styles/tokens.css` (type, spacing, shape, motion, layers) and `site/src/styles/themes.css` (color). Every other stylesheet reads these variables. The live reference page is `/design-system/`. The Figma version is the page "Portfolio 2026 Design System" in the Portfolio Hi-Fi file (variables, text styles, components, illustrations, frames).
 
 ## Color
 Six palettes, each with a light and a dark version: Ivory (default), Stone, Sage, Ink, Clay, High contrast. Switched by `html[data-palette]` and `html[data-theme]`. `tests/themes.test.mjs` fails the build if any pair drops below these ratios.

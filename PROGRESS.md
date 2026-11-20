@@ -18,6 +18,8 @@ Branch: `claude/confident-wozniak-8n4wv1`. Nothing goes to `master`, no deploy, 
   - Low, fixed: close/reopen race (timer now cleared), dead load listener removed, MutationObserver batched per frame, headings now reserve their final drawing size before the file loads (aspect ratios baked into the script, with a test that keeps them in step with the SVG files), idle drawing timer skips phones and hidden tabs, image lookup handles filenames with spaces, stale arrow comment.
   - Not found: any leak of locked text or locked images, secrets, em dashes, reduced-motion or focus failures, sideways scroll. No disagreements.
   - After the fixes: 39 tests pass; lightbox rechecked at 1440 and 390 (double click zooms and resets, backdrop closes, focus returns).
+- Nov 20 follow-ups: lightbox now zooms with one click or tap on the picture (click again to zoom out; drag pans; backdrop closes), checked at 1440 and 390 wide. About Slack link replaced with the invite you sent (I cannot open Slack invites from here, so click it once yourself). `docs/editing-the-site.md` explains how to edit text and images without me.
+- Figma (file 5TjQUqil2gUNCFHOoAzBnt, page "Portfolio 2026 Design System"): all six palettes in light and dark (12 collections, one per mode because the plan allows 1 mode each), text styles in Bricolage Grotesque (16: Body and Heading across the type scale), real folder drawing inside the Folder component (Rest, Hover, Open), logo, all 33 illustrations in a labelled sheet (including the three logo shapes, self portrait), and frames for Homepage, Homepage on phone, Floating window, Expanded case study, Case study with lock card, Lightbox, About, Work, Kind words, Earlier work, Design system page, 404, Ask Jarell window and Style panel (wireframe level, built from the component instances). The environment now allows the host mcp.figma.com (needed to upload SVGs).
 
 ## In progress
 - (nothing)
@@ -26,7 +28,7 @@ Branch: `claude/confident-wozniak-8n4wv1`. Nothing goes to `master`, no deploy, 
 
 ## Needs Jarell
 - Higher-res exports (too small to look sharp on a 2x screen; sizes are the minimum width in px): Copperleaf: value-model 775 (needs 1600), design-process 805 (1600), dual-track-agile 806 (1600), framework-designer 806 (1600), layout-explorations 887 (1600), research-1 and research-2 900 (1800), wireframing 900 (1800), pendo-resource-center 940 (1800), design-team-feedback 1004 (1800), resource-guide 1095 (1800). UI Avenue screens are 1536 (fine at the 720px column, a little soft in the lightbox; originals welcome). Headshot source is 800px: a 1500px export would sharpen About.
-- Figma limits: the plan allows only 1 variable mode per collection, so dark colors are a second collection ("Color / Ivory dark") instead of a mode; the other five palettes are not in Figma yet. Figma has no Bricolage Grotesque (frames use Inter); folders use one placeholder label and plain rounded squares instead of the real folder drawing; the other drawings are not imported. Tell me if you want any of these brought across.
+- Figma notes: dark colors are separate collections (plan allows 1 mode). Illustrations are static vectors, not animated. Frames are wireframe-level: real copy only where it exists on the site; no invented text.
 - Image descriptions: every image already has a description (a test now fails the build if one is missing). Some are short working titles ("competition 2"); better captions are yours to write.
 
 ## Open questions
