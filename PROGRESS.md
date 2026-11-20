@@ -28,6 +28,8 @@ Branch: `claude/confident-wozniak-8n4wv1`. Nothing goes to `master`, no deploy, 
 
 ## Queued for the next QA batch (not built yet, on purpose)
 - MAVI Client Portal folder, the one lifted and tilted by the drag tip: add a soft oval shadow under the folder icon, like the reference image Jarell sent (a flat, blurred ellipse a little below the folder and above its label, about as wide as the icon, low opacity, uses the ink colour, off under reduced motion only if it animates). Check it in light and dark and on the other palettes. Do not build until Jarell asks.
+- Homepage role line: change "Senior Product Designer and Design Lead, Vancouver" to "Senior Product and Design Instructor, Vancouver" (Jarell's wording, kept as he wrote it). Question for him before building: is it meant to read "Senior Product Designer and Design Instructor"? When built, find every place the old line appears (homepage `index.astro`, page titles and descriptions, About summary, Ask answers in `content/ask.json`, share text, Figma frames) and keep them consistent. No em dashes.
+- Animation feel: keep the current speed but ease in and ease out properly so it does not feel rushed, and have fewer things moving at the same moment. Plan when built: gentler curves for the intro and line-draw (ease-in-out, less spring and overshoot), fewer simultaneous movers (drawings arrive in a slower, clearer sequence than the folders, the idle replays and hover wiggles calmer, at most one extra action at a time), drop the least useful flourishes (for example the dock, helper and shapes entrance can be one gentle fade). Re-measure timing, show frame strips, and keep reduced motion unchanged.
 
 ## Next
 
