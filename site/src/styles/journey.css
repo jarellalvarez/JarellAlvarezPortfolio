@@ -3,7 +3,7 @@
 .j-skip{position:fixed;left:.75rem;top:.75rem;z-index:200;padding:.5rem .9rem;border-radius:var(--r-pill);background:var(--ink);color:var(--bg);font-weight:600;transform:translateY(-200%)}
 .j-skip:focus-visible{transform:none}
 .j-stage{position:fixed;inset:0;z-index:0;pointer-events:none}
-.j-track{height:650vh}
+.j-track{height:650vh;pointer-events:none}
 .j-wins,.j-pvs{list-style:none;padding:0;margin:0}
 .j-win{position:absolute;left:calc(50% + 50px);top:15vh;width:min(600px,calc(100vw - 260px));display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);pointer-events:auto;visibility:hidden;opacity:0;will-change:transform,opacity}
 .j-bar{display:flex;align-items:center;gap:7px;height:34px;padding:0 12px;background:color-mix(in srgb,var(--ink) 6%,var(--surface));font-size:.875rem;font-weight:600}
@@ -15,14 +15,14 @@
 .j-txt p{margin:.25rem 0 .5rem;color:var(--ink-2);font-size:.9375rem}
 .j-go{font-weight:600;font-size:.875rem;border-bottom:2px solid var(--pop)}
 .j-win:hover .j-go,.j-win:focus-visible .j-go{color:var(--pop)}
-.j-pvs{position:absolute;left:calc(50% + 50px);top:41vh;width:min(780px,calc(100vw - 240px));display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;pointer-events:none}
+.j-pvs{position:absolute;left:calc(50% + 50px);top:41vh;width:min(780px,calc(100vw - 240px));transform:translateX(-50%);z-index:5;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;pointer-events:none}
 .j-pv{pointer-events:auto;visibility:hidden;opacity:0;will-change:transform,opacity}
 .j-pv a{display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
 .j-pv img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top}
-.j-pv span{display:block;padding:.6rem .8rem .75rem}
+.j-pv a>div{padding:.6rem .8rem .75rem}
 .j-pv h2{font:600 1.0625rem/1.2 var(--display);margin:0}
 .j-pv a:hover h2,.j-pv a:focus-visible h2{color:var(--pop)}
-.j-end{position:absolute;inset:0;background:var(--ink);color:var(--bg);padding:max(9vh,3rem) 7vw 0 calc(7vw + 90px);pointer-events:auto;visibility:hidden;will-change:transform}
+.j-end{position:absolute;inset:0;overflow:auto;background:var(--ink);color:var(--bg);padding:max(9vh,3rem) 7vw 0 calc(7vw + 90px);pointer-events:auto;visibility:hidden;will-change:transform}
 .j-end h2{font:700 clamp(3rem,7vw,6rem)/.95 var(--display);letter-spacing:-.04em;margin:0}
 .j-end p{max-width:36rem;margin:1rem 0 0;font-size:1.1875rem;line-height:1.4;color:color-mix(in srgb,var(--bg) 92%,transparent)}
 .j-end .j-again{font-weight:600;margin-top:1.25rem}
@@ -32,6 +32,7 @@
 .j-chip:hover{background:color-mix(in srgb,var(--bg) 16%,transparent)} .j-chip.solid:hover{background:color-mix(in srgb,var(--bg) 88%,var(--pop))}
 .j-art{position:absolute;color:var(--bg);opacity:.9;pointer-events:none}
 .j-art.m{right:calc(7vw + 20px);bottom:calc(var(--badge-h) + 1.5rem);width:min(260px,26vw)} .j-art.v{right:7vw;top:12vh;width:72px}
+@media (max-height:720px){.j-art.m{display:none}}
 /* scroll hint */
 .j-hint{position:fixed;left:50%;bottom:1.25rem;transform:translateX(-50%);z-index:16;display:flex;flex-direction:column;align-items:center;gap:.1rem;color:var(--ink-2);font:500 .9375rem/1.2 var(--sans);pointer-events:none;transition:opacity .3s}
 .j-arrow{width:46px;rotate:90deg;color:var(--ink-2);animation:j-bob 2s ease-in-out infinite}
@@ -48,15 +49,19 @@
 .rail.on-dark{color:var(--bg)} .rail.on-dark .logo{background:var(--bg)}
 .rail.on-dark::before{background:color-mix(in srgb,var(--bg) 14%,transparent);border-color:color-mix(in srgb,var(--bg) 30%,transparent)}
 body.j-dark nav.top .style-btn{color:var(--bg);border-color:color-mix(in srgb,var(--bg) 55%,transparent);background:color-mix(in srgb,var(--ink) 40%,transparent)}
-body.j-on .coach{display:none}
+body.j-on .coach,body.j-scrolled .coach{display:none}
+.j-end :focus-visible,.rail.on-dark :focus-visible{outline-color:var(--bg)}
+/* stage mode: the fixed home screen sits above the stage so the Style button stays usable; its empty areas must not block the stage */
+body.j-on .desk{pointer-events:none} body.j-on nav.top *{pointer-events:auto} body.j-on .desk::before,body.j-on .desk::after{opacity:0!important}
+.copy-toast{position:fixed;left:50%;bottom:4.5rem;transform:translateX(-50%);z-index:200;padding:.5rem .9rem;border-radius:var(--r-md);background:var(--tip-bg);color:var(--bg);font:500 .875rem/1.3 var(--sans);pointer-events:none}
 @media (prefers-reduced-transparency:reduce){.rail::before{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}}
 /* page scrolls on desktop */
-@media (min-width:721px) and (prefers-reduced-motion:no-preference){html,body{height:auto} body{overflow:visible} html{overflow-y:auto}}
+@media (min-width:721px) and (min-height:561px) and (prefers-reduced-motion:no-preference){html,body{height:auto} body{overflow:visible} html{overflow-y:auto}}
 /* flow mode: phones and reduced motion */
-@media (max-width:720px),(prefers-reduced-motion:reduce){
+@media (max-width:720px),(max-height:560px),(prefers-reduced-motion:reduce){
   html,body{height:auto} body{overflow:visible!important} html{overflow-y:auto}
   .desk{position:relative!important;inset:auto!important;min-height:100svh}
-  .j-track{height:auto;padding:3rem 1rem calc(2rem + var(--badge-h))}
+  .j-track{height:auto;pointer-events:auto;padding:3rem 1rem calc(2rem + var(--badge-h))}
   .j-stage{position:static;pointer-events:auto;max-width:44rem;margin:0 auto}
   .j-win{position:relative;left:auto;top:auto;width:100%;visibility:visible;opacity:1;transform:none!important;margin:0 0 1.25rem}
   .j-pvs{position:static;width:100%;grid-template-columns:repeat(2,1fr);margin:0 0 2rem;transform:none!important}

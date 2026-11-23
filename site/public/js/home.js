@@ -12,10 +12,13 @@ const toys=$('.toys'); function play(){const m=['hop','tumble','pop'][Math.floor
 toys.onclick=play; if(!calm)(function loop(){setTimeout(()=>{play();loop()},6000+Math.random()*2000)})();
 /* QA D-03: copy the email, then show the address itself so it can be read and selected */
 const copyStatus=$('#copy-status');
+// the live region and a small toast sit outside the dock, which is hidden on desktop
+document.body.appendChild(copyStatus);const toast=document.createElement('div');toast.className='copy-toast';toast.hidden=true;toast.setAttribute('aria-hidden','true');document.body.appendChild(toast);
 document.querySelectorAll('[data-copy]').forEach(a=>a.addEventListener('click',async e=>{e.preventDefault();const t=document.querySelector('[data-tip]'),email='jarellalvarez@gmail.com';let ok=true;
   try{await navigator.clipboard.writeText(email)}catch{ok=false}
-  t.textContent=(ok?'Copied: ':'')+email;t.classList.add('copied');copyStatus.textContent=ok?'Email address copied: '+email:email;
-  clearTimeout(t._h);t._h=setTimeout(()=>{t.textContent='Contact, copy email';t.classList.remove('copied');copyStatus.textContent=''},3000)}));
+  const msg=(ok?'Copied: ':'')+email;copyStatus.textContent=ok?'Email address copied: '+email:email;
+  if(t&&t.offsetParent){t.textContent=msg;t.classList.add('copied')}else{toast.textContent=msg;toast.hidden=false}
+  clearTimeout(t._h);t._h=setTimeout(()=>{t.textContent='Contact, copy email';t.classList.remove('copied');copyStatus.textContent='';toast.hidden=true},3000)}));
 
 /* Folders that leave the site ask first */
 const leave=$('#leave');
@@ -27,7 +30,7 @@ document.querySelectorAll('.folder[target="_blank"]').forEach(a=>a.addEventListe
 document.querySelectorAll('.folder').forEach(f=>{
   let st=null,moved=false;
   f.addEventListener('pointercancel',()=>{st=null;moved=false;f.classList.remove('dragging')});
-  f.addEventListener('pointerdown',e=>{moved=false;if(e.pointerType!=='mouse'||e.button!==0||mobile()||document.body.classList.contains('j-on'))return;const m=new DOMMatrix(getComputedStyle(f).transform);st={x:e.clientX,y:e.clientY,tx:m.e,ty:m.f,r:f.getBoundingClientRect()};moved=false});
+  f.addEventListener('pointerdown',e=>{moved=false;if(e.pointerType!=='mouse'||e.button!==0||mobile()||document.body.classList.contains('j-on')||document.body.classList.contains('j-scrolled'))return;const m=new DOMMatrix(getComputedStyle(f).transform);st={x:e.clientX,y:e.clientY,tx:m.e,ty:m.f,r:f.getBoundingClientRect()};moved=false});
   f.addEventListener('pointermove',e=>{if(!st)return;const dx=e.clientX-st.x,dy=e.clientY-st.y;
     if(!moved&&Math.hypot(dx,dy)<5)return;
     if(!moved){moved=true;f.setPointerCapture(e.pointerId);f.classList.add('dragging')}

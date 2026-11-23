@@ -12,7 +12,7 @@ const { wins = [], pvs = [] } = Astro.props;
         <a class="j-win" href={w.href}>
           <span class="j-bar" aria-hidden="true"><u></u><u></u><u></u><em></em><b>{w.label}</b></span>
           {w.preview && <img src={w.preview} alt="" loading="lazy" decoding="async" />}
-          <span class="j-txt"><h2>{w.label}</h2><p>{w.text}</p><span class="j-go">Open the case study</span></span>
+          <div class="j-txt"><h2>{w.label}</h2><p>{w.text}</p><span class="j-go">Open the case study</span></div>
         </a>
       ))}
     </div>
@@ -21,12 +21,12 @@ const { wins = [], pvs = [] } = Astro.props;
         <li class="j-pv">
           <a href={v.href} target={v.external ? '_blank' : undefined} rel={v.external ? 'noopener' : undefined}>
             {v.preview && <img src={v.preview} alt="" loading="lazy" decoding="async" />}
-            <span><h2>{v.label}</h2></span>
+            <div><h2>{v.label}</h2></div>
           </a>
         </li>
       ))}
     </ul>
-    <section class="j-end" id="journey-end" aria-labelledby="j-end-h">
+    <section class="j-end" id="journey-end" tabindex="-1" aria-labelledby="j-end-h">
       <h2 id="j-end-h">That's the tour.</h2>
       <p>Thanks for scrolling all the way down. I'm a senior product designer with 9+ years in SaaS, enterprise and AI-assisted products, a design instructor at BCIT, and the founder of Vancouver Design Community. Off screen you'll find me playing volleyball, hiking, and reading fantasy with a book club.</p>
       <p class="j-again">Want to go again? Head back to the dashboard, or visit somewhere new.</p>
@@ -46,3 +46,9 @@ const { wins = [], pvs = [] } = Astro.props;
   </section>
 </div>
 <div class="j-hint"><span>Scroll to explore</span><span class="dd j-arrow" data-art="arrow" aria-hidden="true"></span></div>
+<noscript><style>
+  .desk{position:relative!important;inset:auto!important;min-height:100svh} html,body{height:auto} body{overflow:visible!important}
+  .j-track{height:auto;pointer-events:auto;padding:3rem 1rem 6rem} .j-stage{position:static;pointer-events:auto;max-width:44rem;margin:0 auto}
+  .j-win{position:relative;left:auto;top:auto;width:100%;visibility:visible;opacity:1;margin:0 0 1.25rem} .j-pvs{position:static;width:100%;grid-template-columns:repeat(2,1fr);margin:0 0 2rem;transform:none}
+  .j-pv{visibility:visible;opacity:1} .j-end{position:relative;inset:auto;visibility:visible;border-radius:22px;padding:2.5rem 1.5rem 3rem} .rail,.j-hint{display:none}
+</style></noscript>

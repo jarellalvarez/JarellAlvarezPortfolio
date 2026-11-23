@@ -44,4 +44,4 @@ Ground rules: Ruben's points are one person's observations. Nothing below is app
 | --- | --- | --- |
 | 2026-11-23 | Audit | Done, no code changed |
 | 2026-11-23 | A. Navigation | **Approved: option C.** Desktop shows the top bar only (larger type), dock hidden. Phones show a labelled dock (Home, Work, Resume, Contact), top bar is logo plus Style. Built, tested at 8 sizes (axe clean on desktop and phones, light and dark). |
-| 2026-11-23 | D. Scroll previews | **Direction approved, options pending.** First screen stays as it is; scrolling unfolds a preview sequence of the folders. Needs option choice before code. |
+| 2026-11-23 | D. Scroll previews | **Approved: option 3, windows cascade**, plus a glass side rail the nav glides into (fade to 10%, then travel), a scroll hint, preview cards for About, Community, Photography and Kind words, and a full-screen end screen. Built on the working branch, independent Opus 5.5 review done (5 high, 6 medium findings fixed). Awaiting Jarell's visual review and end-copy approval. |
