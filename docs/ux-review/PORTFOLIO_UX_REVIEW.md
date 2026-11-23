@@ -8,7 +8,7 @@ Ground rules: Ruben's points are one person's observations. Nothing below is app
 
 | # | Ruben's observation | Observed problem? | Evidence from the source and the running site | Risk / effort | Jarell decision |
 | --- | --- | --- | --- | --- | --- |
-| A | Top-right nav and bottom bar look duplicated | **Yes, confirmed.** On the home page the dock (Home, Work, Resume, Contact) repeats the top bar (logo = Home, Work, About, Resume, Contact) with the same destinations. Only About is not in the dock. Inner pages have a header only, no dock. | `HomeNav.astro` vs `Dock.astro`; Playwright link inventory | Low to medium | **Pending (topic 1, options attached)** |
+| A | Top-right nav and bottom bar look duplicated | **Yes, confirmed. Fixed (option C).** On the home page the dock (Home, Work, Resume, Contact) repeats the top bar (logo = Home, Work, About, Resume, Contact) with the same destinations. Only About is not in the dock. Inner pages have a header only, no dock. | `HomeNav.astro` vs `Dock.astro`; Playwright link inventory | Low to medium | **Pending (topic 1, options attached)** |
 | B | Resume should pop more | **Partly.** Resume is in 4 places (top bar text link, dock icon, solid button on About, CTA card). In the top bar it looks like every other link. | `HomeNav.astro`, `Dock.astro`, `about.astro`, `Cta.astro`; PDF opens in a new tab | Low | Not started |
 | C | Replace seven icons with a left rail that scales logos on scroll | **Unclear / likely no.** The seven icons are folders (3 case studies, About, Community, Photography, Kind words) that open windows or outside sites. The home page does not scroll on desktop, so scroll-scaling has nothing to attach to. | `index.astro`, `Folder.astro` | Medium | Not started (I would challenge this) |
 | D | Richer previews while scrolling | **Already partly there.** Hover gives a typed preview card. The home page is a one-screen desktop, so scroll storytelling would change the concept. | `home.css` `.peek` | Medium | Not started (challenge) |
@@ -43,3 +43,5 @@ Ground rules: Ruben's points are one person's observations. Nothing below is app
 | Date | Topic | Decision |
 | --- | --- | --- |
 | 2026-11-23 | Audit | Done, no code changed |
+| 2026-11-23 | A. Navigation | **Approved: option C.** Desktop shows the top bar only (larger type), dock hidden. Phones show a labelled dock (Home, Work, Resume, Contact), top bar is logo plus Style. Built, tested at 8 sizes (axe clean on desktop and phones, light and dark). |
+| 2026-11-23 | D. Scroll previews | **Direction approved, options pending.** First screen stays as it is; scrolling unfolds a preview sequence of the folders. Needs option choice before code. |

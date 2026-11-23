@@ -408,7 +408,7 @@ main.hero .role{color:var(--pop)}
   .folders{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem .25rem;max-width:22rem}
   .folder{font-size:.8125rem!important;overflow-wrap:normal;word-break:normal;hyphens:none;padding:.4rem 0}
   .folder svg{width:56px;height:46px}
-  .buddy{left:auto;right:max(.5rem,env(safe-area-inset-right));bottom:calc(var(--badge-h) + .5rem + env(safe-area-inset-bottom) + 2px);align-items:flex-end}
+  .buddy{left:auto;right:max(.5rem,env(safe-area-inset-right));bottom:calc(var(--badge-h) + .5rem + env(safe-area-inset-bottom) + 6px);align-items:flex-end}
   .bbtn{width:48px;height:54px}
   .dock{gap:.15rem;padding:.3rem}
 }
@@ -461,3 +461,19 @@ main.hero .role{color:var(--pop)}
   .folder .tile{width:48px;height:48px;border-radius:12px} .folder .tile svg{width:24px;height:24px}
 }
 @media (max-width:359px){.folder .lbl{padding:.3rem .35rem;white-space:normal;overflow-wrap:anywhere;max-width:100%}}
+
+/* Navigation (agreed option C): desktop uses the top bar only, with larger type. Phones get a labelled dock at the thumb, and a top bar of just the logo and Style. */
+.dock .dl{display:none}
+@media (min-width:721px){
+  .dock{display:none}
+  nav.top ul{gap:1.8rem;font-size:1.125rem}
+}
+@media (max-width:720px){
+  nav.top ul{display:none}
+  nav.top{justify-content:space-between}
+  .dock{justify-self:start;margin-left:max(.75rem,env(safe-area-inset-left));gap:.1rem;padding:.3rem .35rem}
+  .dock a{width:auto;min-width:56px;height:auto;min-height:52px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.2rem;padding:.3rem .2rem}
+  .dock .tip:not(.copied){display:none!important}
+  .dock .dl{display:block;font-size:.75rem;font-weight:500;line-height:1;color:var(--ink)}
+}
+@media (max-width:359px){.dock a{min-width:50px}}
