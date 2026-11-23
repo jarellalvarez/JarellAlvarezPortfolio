@@ -1,0 +1,48 @@
+---
+// The scroll tour under the home screen. Desktop: a pinned stage (windows cascade, preview cards, end screen), driven by scroll.
+// Phones and reduced motion: the same content as a plain stack. All text comes from the same data as the folders.
+import { links } from '../lib/links.mjs';
+const { wins = [], pvs = [] } = Astro.props;
+---
+<a class="j-skip" href="#journey-end">Skip to the end of the tour</a>
+<div class="j-track" id="journey">
+  <section class="j-stage" aria-label="A quick tour of my work">
+    <div class="j-wins">
+      {wins.map(w => (
+        <a class="j-win" href={w.href}>
+          <span class="j-bar" aria-hidden="true"><u></u><u></u><u></u><em></em><b>{w.label}</b></span>
+          {w.preview && <img src={w.preview} alt="" loading="lazy" decoding="async" />}
+          <span class="j-txt"><h2>{w.label}</h2><p>{w.text}</p><span class="j-go">Open the case study</span></span>
+        </a>
+      ))}
+    </div>
+    <ul class="j-pvs" aria-label="More places">
+      {pvs.map(v => (
+        <li class="j-pv">
+          <a href={v.href} target={v.external ? '_blank' : undefined} rel={v.external ? 'noopener' : undefined}>
+            {v.preview && <img src={v.preview} alt="" loading="lazy" decoding="async" />}
+            <span><h2>{v.label}</h2></span>
+          </a>
+        </li>
+      ))}
+    </ul>
+    <section class="j-end" id="journey-end" aria-labelledby="j-end-h">
+      <h2 id="j-end-h">That's the tour.</h2>
+      <p>Thanks for scrolling all the way down. I'm a senior product designer with 9+ years in SaaS, enterprise and AI-assisted products, a design instructor at BCIT, and the founder of Vancouver Design Community. Off screen you'll find me playing volleyball, hiking, and reading fantasy with a book club.</p>
+      <p class="j-again">Want to go again? Head back to the dashboard, or visit somewhere new.</p>
+      <ul class="j-chips">
+        <li><button type="button" class="j-chip solid" id="j-top">Back to the dashboard</button></li>
+        <li><a class="j-chip" href="/work/">Work</a></li>
+        <li><a class="j-chip" href="/about/">About</a></li>
+        <li><a class="j-chip" href="/resume.pdf" target="_blank" rel="noopener">Resume</a></li>
+        <li><a class="j-chip" href={links.photography} target="_blank" rel="noopener">Photography</a></li>
+        <li><a class="j-chip" href={links.vdc} target="_blank" rel="noopener">Community</a></li>
+        <li><button type="button" class="j-chip" id="j-ask">Ask Jarell</button></li>
+        <li><a class="j-chip" href="#contact" data-copy>Say hi (copy email)</a></li>
+      </ul>
+      <span class="dd j-art m" data-art="vancouver-mountains" aria-hidden="true"></span>
+      <span class="dd j-art v" data-art="volleyball" aria-hidden="true"></span>
+    </section>
+  </section>
+</div>
+<div class="j-hint"><span>Scroll to explore</span><span class="dd j-arrow" data-art="arrow" aria-hidden="true"></span></div>

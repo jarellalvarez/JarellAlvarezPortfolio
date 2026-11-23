@@ -3,9 +3,12 @@ import Base from '../layouts/Base.astro';
 import HomeNav from '../components/HomeNav.astro';
 import Folder from '../components/Folder.astro';
 import Shapes from '../components/Shapes.astro';
+import Rail from '../components/Rail.astro';
+import Journey from '../components/Journey.astro';
 import Dock from '../components/Dock.astro';
 import Window from '../components/Window.astro';
 import '../styles/home.css';
+import '../styles/journey.css';
 import { studies } from '../lib/content.mjs';
 import glyphs from '../lib/home-glyphs.json';
 import { links } from '../lib/links.mjs';
@@ -61,9 +64,12 @@ const extras = [
   <Shapes />
   <Dock />
 </div>
+<Rail />
+<Journey wins={work.map(f => ({ href: f.href, label: f.label, text: f.previewText, preview: f.preview }))} pvs={extras.map(f => ({ href: f.href === '#kind' ? '/kind-words/' : f.href, label: f.label, preview: f.preview, external: !!f.external }))} />
 
 <Window />
     <script is:inline src="/js/home.js"></script>
     <script is:inline src="/js/buddy.js"></script>
+    <script is:inline src="/js/journey.js"></script>
   </body>
 </Base>

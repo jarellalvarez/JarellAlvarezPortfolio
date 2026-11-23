@@ -27,7 +27,7 @@ document.querySelectorAll('.folder[target="_blank"]').forEach(a=>a.addEventListe
 document.querySelectorAll('.folder').forEach(f=>{
   let st=null,moved=false;
   f.addEventListener('pointercancel',()=>{st=null;moved=false;f.classList.remove('dragging')});
-  f.addEventListener('pointerdown',e=>{moved=false;if(e.pointerType!=='mouse'||e.button!==0||mobile())return;const m=new DOMMatrix(getComputedStyle(f).transform);st={x:e.clientX,y:e.clientY,tx:m.e,ty:m.f,r:f.getBoundingClientRect()};moved=false});
+  f.addEventListener('pointerdown',e=>{moved=false;if(e.pointerType!=='mouse'||e.button!==0||mobile()||document.body.classList.contains('j-on'))return;const m=new DOMMatrix(getComputedStyle(f).transform);st={x:e.clientX,y:e.clientY,tx:m.e,ty:m.f,r:f.getBoundingClientRect()};moved=false});
   f.addEventListener('pointermove',e=>{if(!st)return;const dx=e.clientX-st.x,dy=e.clientY-st.y;
     if(!moved&&Math.hypot(dx,dy)<5)return;
     if(!moved){moved=true;f.setPointerCapture(e.pointerId);f.classList.add('dragging')}

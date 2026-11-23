@@ -123,3 +123,10 @@ test('the drawing sizes baked into illustrations.js match the SVG files', () => 
   const js = readFileSync(new URL('../public/js/illustrations.js', import.meta.url), 'utf8'), AR = JSON.parse(js.match(/const AR = (\{[^}]*\})/)[1]);
   for (const [n, r] of Object.entries(AR)) { const [w, h] = readFileSync(new URL(`../public/illustrations/${n}.svg`, import.meta.url), 'utf8').match(/viewBox="([\d. -]+)"/)[1].split(' ').slice(2).map(Number); assert.ok(Math.abs(w / h - r) < 0.002, `${n} ratio is out of date`); }
 });
+
+test('scroll tour copy has no em dashes and its end screen links exist', () => {
+  const j = readFileSync(new URL('../src/components/Journey.astro', import.meta.url), 'utf8');
+  assert.ok(!j.includes('—'), 'no em dash in the tour copy');
+  for (const href of ['/work/', '/about/', '/resume.pdf']) assert.ok(j.includes(`href="${href}"`), `${href} link`);
+  assert.ok(j.includes('id="j-top"') && j.includes('id="journey-end"'));
+});
