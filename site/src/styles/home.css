@@ -442,14 +442,14 @@ main.hero .role{color:var(--pop)}
 @media (max-width:720px){
   .folders{gap:.8rem .5rem!important;max-width:21rem!important;justify-content:center}
   .folders li:not(.m-hide){display:flex;justify-content:center}
-  .folder{position:relative;gap:.35rem!important;width:100%!important;max-width:96px;padding:0!important;background:none!important}
+  .folder{position:relative;gap:.35rem!important;width:100%!important;max-width:104px;padding:0!important;background:none!important}
   .folder>svg{display:none!important}
   .folder .tile{order:-1;display:grid;place-items:center;width:58px;height:58px;border-radius:14px;background:var(--shape);box-shadow:inset 0 0 0 1px var(--line);transition:transform .15s var(--ease-out)}
   .folder .tile.work{background:color-mix(in srgb,var(--pop) 14%,var(--surface))}
   .folder .tile svg{width:28px;height:28px;fill:none;stroke:var(--ink);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
   .folder .tile.work svg{stroke:var(--pop)}
   .folder .tile svg{rotate:none!important;transform:none!important;animation:none!important}
-  .folder .lbl{font-size:.75rem!important;font-weight:600;line-height:1;padding:.3rem .55rem;border-radius:var(--r-pill);background:var(--chrome);box-shadow:inset 0 0 0 1px var(--line);overflow-wrap:anywhere;text-align:center;max-width:100%}
+  .folder .lbl{font-size:.75rem!important;font-weight:600;line-height:1;padding:.3rem .55rem;border-radius:var(--r-pill);background:var(--chrome);box-shadow:inset 0 0 0 1px var(--line);white-space:nowrap;text-align:center}
   .folder .l-rest{display:none}
   .folder:active .tile{transform:scale(.94)}
   .folder.was-open::before{content:"";position:absolute;top:-3px;left:calc(50% + 19px);width:11px;height:11px;border-radius:50%;background:var(--pop);box-shadow:0 0 0 2px var(--bg);z-index:1}
@@ -460,4 +460,4 @@ main.hero .role{color:var(--pop)}
   .folders{gap:.6rem .5rem!important;margin-top:.6rem!important}
   .folder .tile{width:48px;height:48px;border-radius:12px} .folder .tile svg{width:24px;height:24px}
 }
-@media (max-width:359px){.folder .lbl{padding:.3rem .35rem}}
+@media (max-width:359px){.folder .lbl{padding:.3rem .35rem;white-space:normal;overflow-wrap:anywhere;max-width:100%}}
