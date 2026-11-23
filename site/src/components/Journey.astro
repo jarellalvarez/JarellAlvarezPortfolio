@@ -12,7 +12,14 @@ const { wins = [], pvs = [] } = Astro.props;
         <a class="j-win" href={w.href}>
           <span class="j-bar" aria-hidden="true"><u></u><u></u><u></u><em></em><b>{w.label}</b></span>
           {w.preview && <img src={w.preview} alt="" loading="lazy" decoding="async" />}
-          <div class="j-txt"><h2>{w.label}</h2><p>{w.text}</p><span class="j-go">Open the case study</span></div>
+          <div class="j-txt">
+            <h2>{w.title || w.label}</h2>
+            <p class="j-sub">{w.sub || w.label}</p>
+            <p class="j-sum">{w.text}</p>
+            {w.stat && <p class="j-stat"><strong>{w.stat.value}</strong> {w.stat.label}</p>}
+            {w.tags && w.tags.length > 0 && <ul class="j-tags">{w.tags.map(t => <li>{t}</li>)}</ul>}
+            <span class="j-go">Open the case study</span>
+          </div>
         </a>
       ))}
     </div>
@@ -45,10 +52,20 @@ const { wins = [], pvs = [] } = Astro.props;
     </section>
   </section>
 </div>
-<div class="j-hint"><span>Scroll to explore</span><span class="dd j-arrow" data-art="arrow" aria-hidden="true"></span></div>
+<div class="j-hint"><span id="j-hint-t">Scroll to explore</span><span class="dd j-arrow" data-art="arrow" aria-hidden="true"></span></div>
+<nav class="j-prog" aria-label="Tour progress">
+  <ol>
+    <li><button type="button" data-s="0"><span>hello</span></button></li>
+    <li><button type="button" data-s="1"><span>mavi</span></button></li>
+    <li><button type="button" data-s="2"><span>copperleaf</span></button></li>
+    <li><button type="button" data-s="3"><span>ui avenue</span></button></li>
+    <li><button type="button" data-s="4"><span>more places</span></button></li>
+    <li><button type="button" data-s="5"><span>goodbye</span></button></li>
+  </ol>
+</nav>
 <noscript><style>
   .desk{position:relative!important;inset:auto!important;min-height:100svh} html,body{height:auto} body{overflow:visible!important}
   .j-track{height:auto;pointer-events:auto;padding:3rem 1rem 6rem} .j-stage{position:static;pointer-events:auto;max-width:44rem;margin:0 auto}
-  .j-win{position:relative;left:auto;top:auto;width:100%;visibility:visible;opacity:1;margin:0 0 1.25rem} .j-pvs{position:static;width:100%;grid-template-columns:repeat(2,1fr);margin:0 0 2rem;transform:none}
+  .j-win{position:relative;left:auto;top:auto;width:100%;visibility:visible;opacity:1;margin:0 0 1.25rem} .j-pvs{position:static;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 2rem;transform:none}
   .j-pv{visibility:visible;opacity:1} .j-end{position:relative;inset:auto;visibility:visible;border-radius:22px;padding:2.5rem 1.5rem 3rem} .rail,.j-hint{display:none}
 </style></noscript>

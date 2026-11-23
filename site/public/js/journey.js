@@ -4,7 +4,7 @@
 (() => {
   const stage = document.querySelector('.j-stage'); if (!stage) return;
   const track = document.querySelector('.j-track'), rail = document.querySelector('.rail'), nav = document.querySelector('nav.top'), hero = document.querySelector('.desk .hero'),
-    toys = document.querySelector('.toys'), hint = document.querySelector('.j-hint'), end = stage.querySelector('.j-end'),
+    toys = document.querySelector('.toys'), hint = document.querySelector('.j-hint'), hintT = document.getElementById('j-hint-t'), prog = document.querySelector('.j-prog'), marks = [...document.querySelectorAll('.j-prog li')], end = stage.querySelector('.j-end'),
     wins = [...stage.querySelectorAll('.j-win')], pvs = [...stage.querySelectorAll('.j-pv')], flow = matchMedia('(max-width:720px), (max-height:560px), (prefers-reduced-motion:reduce)');
   const topEls = () => [nav.querySelector(':scope > a'), ...nav.querySelectorAll('ul a')], railEls = () => [rail.querySelector('.r-logo .logo'), ...rail.querySelectorAll('.r-item span')];
   const cl = (x, a, b) => Math.min(1, Math.max(0, (x - a) / (b - a))), ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2, lerp = (a, b, t) => a + (b - a) * t;
@@ -32,7 +32,10 @@
     // first screen leaves
     const h = ease(cl(p, .06, .17)); hero.style.transform = `translate(${h * 40}px,${-h * 150}px) scale(${1 - h * .5})`; hero.style.opacity = 1 - cl(p, .1, .3); hero.style.pointerEvents = p > .03 ? 'none' : ''; hero.inert = p > .2;
     if (toys) { toys.style.opacity = 1 - cl(p, .02, .15); toys.inert = p > .2; }
-    hint.style.opacity = 1 - cl(p, 0, .03);
+    // scroll cue: invites the first scroll, then keeps encouraging until the end screen arrives
+    const ht = p < .02 ? 'Scroll to explore' : 'Keep scrolling'; if (hintT.textContent !== ht) hintT.textContent = ht; hint.style.opacity = 1 - cl(p, .78, .84);
+    const starts = [0, .14, .28, .42, .6, .8]; let cur = 0; starts.forEach((s, i) => { if (p >= s - .001) cur = i; });
+    marks.forEach((li, i) => { li.classList.toggle('on', i === cur); li.classList.toggle('prev', i === cur - 1); const b = li.firstElementChild; if (i === cur) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
     // three windows cascade, then recede
     const rec = ease(cl(p, .56, .66));
     wins.forEach((w, i) => { const s = .14 + i * .14, t = ease(cl(p, s, s + .16)); w.style.transform = `translate(-50%,${(1 - t) * vh * 1.05 + i * 30 - rec * 70}px) rotate(${(i - 1) * 1.2 * t}deg) scale(${lerp(.94, 1, t) * lerp(1, .8, rec)})`; w.style.opacity = t > 0 ? lerp(1, .35, rec) : 0; w.style.zIndex = i; vis(w, t > .02 && rec < .98); });
@@ -40,7 +43,7 @@
     pvs.forEach((v, i) => { const s = .6 + i * .04, t = ease(cl(p, s, s + .12)); v.style.transform = `translateY(${(1 - t) * vh * .8}px) rotate(${(i % 2 ? 1 : -1) * 1.5 * t}deg)`; v.style.opacity = t > 0 ? 1 : 0; vis(v, t > .02 && cl(p, .8, .9) < .5); });
     // the end screen
     const e = ease(cl(p, .8, .95)); end.style.transform = `translateY(${(1 - e) * 105}vh)`; vis(end, e > .02);
-    rail.classList.toggle('on-dark', e > .5); document.body.classList.toggle('j-dark', e > .5);
+    rail.classList.toggle('on-dark', e > .5); prog.classList.toggle('on-dark', e > .5); document.body.classList.toggle('j-dark', e > .5);
   }
   function update() {
     raf = 0; if (needMeasure) { needMeasure = false; measure(); }
@@ -55,6 +58,12 @@
   document.getElementById('j-top')?.addEventListener('click', () => { go(0); const h = document.querySelector('.hero h1'); if (h) { h.tabIndex = -1; setTimeout(() => h.focus({ preventScroll: true }), calm ? 0 : 700); } });
   document.getElementById('j-ask')?.addEventListener('click', () => document.querySelector('.bbtn')?.click());
   document.querySelector('.j-skip')?.addEventListener('click', e => { if (!flow.matches) { e.preventDefault(); go(track.offsetHeight - innerHeight); } setTimeout(() => end.focus({ preventScroll: true }), calm ? 0 : 900); });
+  const starts = [0, .14, .28, .42, .6, .8];
+  marks.forEach((li, i) => li.firstElementChild.addEventListener('click', () => { const max = track.offsetHeight - innerHeight; go(i === 0 ? 0 : Math.ceil(max * (starts[i] + .004))); }));
+  // links that leave the site ask first, like the folders do
+  const leave = document.getElementById('leave'), lp = document.getElementById('leave-p');
+  if (leave && lp) document.querySelectorAll('.j-pv a[target=_blank], .j-chip[target=_blank]').forEach(a => { let host = ''; try { host = new URL(a.href).host; } catch {} if (!host || host === location.host) return;
+    a.addEventListener('click', e => { e.preventDefault(); const name = (a.querySelector('h2') || a).textContent.trim(); lp.textContent = `This opens ${name} (${host}) in a new tab.`; leave.returnValue = ''; leave.showModal(); leave.onclose = () => { if (leave.returnValue === 'go') window.open(a.href, '_blank', 'noopener'); }; }); });
   const art = () => document.querySelectorAll('.j-arrow,.j-art').forEach(d => { const I = window.Illustrations; if (I) I.mount(d).then(() => I.play(d, 'in')); });
   if (document.readyState === 'complete') art(); else addEventListener('load', art);
   document.fonts?.ready.then(() => { needMeasure = true; queue(); }); needMeasure = true; queue();

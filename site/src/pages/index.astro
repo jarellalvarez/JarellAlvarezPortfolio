@@ -24,6 +24,7 @@ const work = studies().map(s => ({
   preview: s.preview || (s.slug === 'mavi' ? '/img/preview-mavi.webp' : null),
   previewText: ({ mavi: 'A self-serve client portal, aligned across five teams in two weeks.', copperleaf: 'Research, three tested ideas and a shipped guide for an enterprise tool.' })[s.slug] || s.meta.summary,
   open: true,
+  detail: { title: s.meta.title, sub: [s.meta.company, s.meta.role].join(' \u00b7 '), stat: (s.meta.stats || [])[0], tags: s.meta.tags || [] },
 }));
 const about = 'Senior product designer in Vancouver, making complex software easier to use.';
 const extras = [
@@ -38,7 +39,7 @@ const extras = [
   description="Senior product designer and design instructor in Vancouver. B2B SaaS, enterprise software and complex workflows made easier to use."
 >
   <body>
-<Journey wins={work.map(f => ({ href: f.href, label: f.label, text: f.previewText, preview: f.preview }))} pvs={extras.map(f => ({ href: f.href === '#kind' ? '/kind-words/' : f.href, label: f.label, preview: f.preview, external: !!f.external }))} />
+<Journey wins={work.map(f => ({ href: f.href, label: f.label, text: f.previewText, preview: f.preview, ...f.detail }))} pvs={extras.map(f => ({ href: f.href === '#kind' ? '/kind-words/' : f.href, label: f.label, preview: f.preview, external: !!f.external }))} />
 <div class="desk">
   <HomeNav />
   <main class="hero">

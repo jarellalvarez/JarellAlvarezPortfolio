@@ -9,6 +9,7 @@ protected: true
 summary: A self-serve client portal, designed and aligned across five teams in under two weeks.
 status: draft 2, for Jarell's review. Title is a placeholder
 order: 1
+tags: [AI-assisted hiring, Client portal, Product design]
 preview: /img/preview-mavi.webp
 stats:
   - value: "12 days"
