@@ -342,12 +342,12 @@ function greenMenu(w){
   // a refresh shows it again (browsers can't tell a normal refresh from a hard one)
   if(performance.getEntriesByType('navigation')[0]?.type==='reload')seen=null;
   if(seen||mobile()||!matchMedia('(hover:hover) and (pointer:fine)').matches)return;
-  const done=()=>{try{localStorage.setItem('tip-drag-2','1')}catch{}tip.remove();f.classList.remove('stray')};
+  const done=()=>{try{localStorage.setItem('tip-drag-2','1')}catch{}tip.remove();f.classList.remove('stray');document.body.classList.remove('coach-on')};
   const f=[...document.querySelectorAll('.folders .folder')].find(x=>/MAVI/.test(x.textContent));if(!f)return;
   const tip=document.createElement('div');tip.className='coach';tip.setAttribute('role','status');
   const step=n=>{tip.innerHTML=`<p><b>${n} of 2</b> ${n===1?'Folders move. Try dragging MAVI Client Portal.':'Nice. Now click it to open the case study.'}</p><button type="button">Skip</button>`;tip.querySelector('button').onclick=done;put()};
-  const put=()=>{const r=f.getBoundingClientRect();tip.style.left=Math.max(8,Math.min(innerWidth-tip.offsetWidth-8,r.left+r.width/2-tip.offsetWidth/2))+'px';tip.classList.add('below');tip.style.top=Math.min(innerHeight-tip.offsetHeight-BM,r.bottom+12)+'px'};
-  setTimeout(()=>{f.classList.add('stray');f.style.transform='translate(0,-14px) rotate(-6deg)';document.body.append(tip);step(1);setTimeout(put,calm?0:560);
+  const put=()=>{const r=f.getBoundingClientRect();tip.style.left=Math.max(8,Math.min(innerWidth-tip.offsetWidth-8,r.left+r.width/2-tip.offsetWidth/2))+'px';tip.classList.remove('below');tip.style.top=Math.max(8,r.top-tip.offsetHeight-14)+'px'};
+  setTimeout(()=>{f.classList.add('stray');f.style.transform='translate(0,-10px)';document.body.classList.add('coach-on');document.body.append(tip);step(1);setTimeout(put,calm?0:560);
     f.addEventListener('pointerdown',()=>f.classList.remove('stray'),{once:true});f.addEventListener('click',()=>f.classList.remove('stray'),{once:true}); // the ground shadow goes as soon as the folder is touched
     document.addEventListener('folderdragged',()=>{f.classList.remove('stray');step(2);setTimeout(put,50)},{once:true});
     f.addEventListener('click',()=>{if(tip.isConnected&&tip.textContent.startsWith('2'))done()});

@@ -44,7 +44,9 @@
     say.textContent = LINES[li]; say.classList.add('on'); act('hop');
     t = setTimeout(() => { say.classList.remove('on'); li++; if (li >= LINES.length) { li = 0; rounds++; } if (calm || rounds >= 2) { quiet = true; return; } t = setTimeout(next, 8000); }, 5000);
   }
-  addEventListener('scroll', () => { if (document.body.classList.contains('j-on')) say.classList.remove('on'); }, { passive: true });
+  // while the scroll tour plays, one short friendly line per stop (never repeated, never while the chat is open)
+  const TOUR = { 1: 'This is MAVI, a client portal I led from brief to build.', 2: 'Copperleaf: research for an enterprise tool, shipped as a guide.', 3: 'UI Avenue, a Shopify analytics app I helped start.', 4: 'A few more places: about me, community, photos and kind words.', 5: "That's the tour. Ask me anything below." }, told = new Set(); let tt = 0;
+  document.addEventListener('journey:stop', e => { const i = e.detail.i, m = TOUR[i]; if (!m || told.has(i) || quiet || open() || document.hidden || calm) return; told.add(i); clearTimeout(t); clearTimeout(tt); say.textContent = m; say.classList.add('on'); act('hop'); tt = setTimeout(() => say.classList.remove('on'), 5000); });
   t = setTimeout(next, calm ? 600 : 3500);
   addEventListener('beforeunload', hush);
   btn.addEventListener('pointerenter', () => btn.classList.add('curious')); btn.addEventListener('pointerleave', () => btn.classList.remove('curious'));

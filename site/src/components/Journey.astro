@@ -27,8 +27,8 @@ const { wins = [], pvs = [] } = Astro.props;
       {pvs.map(v => (
         <li class="j-pv">
           <a href={v.href} target={v.external ? '_blank' : undefined} rel={v.external ? 'noopener' : undefined}>
-            {v.preview && <img src={v.preview} alt="" loading="lazy" decoding="async" />}
-            <div><h2>{v.label}</h2></div>
+            {v.preview && <img src={v.preview} alt="" loading="lazy" decoding="async" style={v.focus ? `object-position:${v.focus}` : undefined} />}
+            <div><h3>{v.label}</h3>{v.text && <p>{v.text}</p>}</div>
           </a>
         </li>
       ))}

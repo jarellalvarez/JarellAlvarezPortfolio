@@ -64,3 +64,6 @@ Notes: SEO 69 on MAVI is the intentional `noindex` on locked pages. MAVI perform
 
 ## Shipped Nov 24
 - Tour round 3 plus review fixes, tags in the folder hover cards, "My work" / "Learn more" group headings on the home screen. Jarell approved end-screen wording and tags; STUDY_PASSWORD set in Netlify.
+
+## Round 4 (Nov 24, on working branch, not shipped)
+Previews 63 to 67% of the screen, scroll threshold 8px, quieter "Keep scrolling", drag tip above MAVI folder, helper narrates each stop, eyes visible in About card, card titles h3 with descriptions, group headings aligned with first folder, MAVI folder straight. 52 tests pass.
