@@ -57,13 +57,14 @@
     const max = maxScroll(), p = max > 0 ? cl(scrollY / max, 0, 1) : 0; if (p === last) return; last = p; render(p);
   }
   const queue = () => { if (!raf) raf = requestAnimationFrame(update); };
-  let settleT = 0, held = false; const settle = () => { if (flow.matches || calm || busy || held) return; const i = nearest(), to = STOPS[i] * maxScroll(); if (Math.abs(scrollY - to) > 3) goTo(i); };
+  let settleT = 0, held = false; const settle = () => { if (flow.matches || calm || busy || held) return; const i = nearest(), to = STOPS[i] * maxScroll(); if (Math.abs(scrollY - to) > 3) goTo(i); else announce(i); };
   addEventListener('pointerdown', () => { held = true; }, true); addEventListener('pointerup', () => { held = false; clearTimeout(settleT); settleT = setTimeout(settle, 300); }, true); addEventListener('pointercancel', () => { held = false; }, true);
   addEventListener('scroll', () => { queue(); clearTimeout(settleT); settleT = setTimeout(settle, 700); }, { passive: true }); addEventListener('resize', () => { needMeasure = true; queue(); }); flow.addEventListener('change', () => { last = -1; needMeasure = true; queue(); });
   new MutationObserver(() => { needMeasure = true; queue(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-font', 'data-size', 'data-palette'] });
   const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
 
   /* Guided scroll: a gesture plays the whole next stage (the same idea as a stepped, scene-by-scene portfolio) */
+  let lastStop = -1; const announce = i => { if (i === lastStop) return; lastStop = i; document.dispatchEvent(new CustomEvent('journey:stop', { detail: { i } })); };
   let anim = 0, busy = false, lockUntil = 0, acc = 0, accT = 0, touchY = null;
   const nearest = () => { const p = maxScroll() > 0 ? scrollY / maxScroll() : 0; let b = 0, d = 9; STOPS.forEach((s, i) => { const dd = Math.abs(s - p); if (dd < d) { d = dd; b = i; } }); return b; };
   const ez = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
@@ -71,7 +72,7 @@
     if (flow.matches || calm || i < 0 || i >= STOPS.length || (busy && !force)) return;
     cancelAnimationFrame(anim); const from = scrollY, to = Math.round(STOPS[i] * maxScroll()), dist = Math.abs(to - from); if (!dist) { busy = false; return; }
     busy = true; const dur = Math.min(1500, 650 + dist / Math.max(1, maxScroll()) * 3000), t0 = performance.now();
-    const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 450; document.dispatchEvent(new CustomEvent('journey:stop', { detail: { i } })); } };
+    const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 450; announce(i); } };
     anim = requestAnimationFrame(tick);
   }
   const ignore = el => !!(el && el.closest && el.closest('.win,dialog,.style-panel,.askpanel,.bchatui,.more-menu,.lb,input,textarea,select,[contenteditable]'));
@@ -79,7 +80,7 @@
   addEventListener('wheel', e => {
     if (flow.matches || calm || e.ctrlKey || ignore(e.target) || canScroll(e.target, e.deltaY)) return; e.preventDefault();
     const now = performance.now(); if (busy || now < lockUntil) { lockUntil = Math.max(lockUntil, now + 140); return; }
-    if (now - accT > 180) acc = 0; accT = now; acc += e.deltaY; if (Math.abs(acc) > 8) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
+    if (now - accT > 180) acc = 0; accT = now; acc += e.deltaY; if (Math.abs(acc) > 3) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
   }, { passive: false });
   addEventListener('keydown', e => {
     if (flow.matches || calm || e.altKey || e.metaKey || e.ctrlKey || ignore(e.target) || document.querySelector('dialog[open]') || (e.target.closest && e.target.closest('.j-end') && canScroll(e.target, ['ArrowUp','PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey) ? -1 : 1))) return;

@@ -41,12 +41,23 @@
   function next() {
     clearTimeout(t); if (quiet) return;
     if (!canSay()) { t = setTimeout(next, 4000); return; }
-    say.textContent = LINES[li]; say.classList.add('on'); act('hop');
-    t = setTimeout(() => { say.classList.remove('on'); li++; if (li >= LINES.length) { li = 0; rounds++; } if (calm || rounds >= 2) { quiet = true; return; } t = setTimeout(next, 8000); }, 5000);
+    show(LINES[li]); act('hop');
+    t = setTimeout(() => { say.classList.remove('on'); cur = ''; li++; if (li >= LINES.length) { li = 0; rounds++; } if (calm || rounds >= 2) { quiet = true; return; } t = setTimeout(next, 8000); }, 5000);
   }
-  // while the scroll tour plays, one short friendly line per stop (never repeated, never while the chat is open)
-  const TOUR = { 1: 'This is MAVI, a client portal I led from brief to build.', 2: 'Copperleaf: research for an enterprise tool, shipped as a guide.', 3: 'UI Avenue, a Shopify analytics app I helped start.', 4: 'A few more places: about me, community, photos and kind words.', 5: "That's the tour. Ask me anything below." }, told = new Set(); let tt = 0;
-  document.addEventListener('journey:stop', e => { const i = e.detail.i, m = TOUR[i]; if (!m || told.has(i) || quiet || open() || document.hidden || calm) return; told.add(i); clearTimeout(t); clearTimeout(tt); say.textContent = m; say.classList.add('on'); act('hop'); tt = setTimeout(() => say.classList.remove('on'), 5000); });
+  // while the scroll tour plays, the helper always shows the line for the stop you are on (it stays until the next stop, and comes back when you scroll up)
+  const TOUR = { 1: 'This is MAVI, a client portal I led from brief to build.', 2: 'Copperleaf: research for an enterprise tool, shipped as a guide.', 3: 'UI Avenue, a Shopify analytics app I helped start.', 4: 'A few more places: about me, community, photos and kind words.', 5: "That's the tour. Ask me anything below." };
+  let typeT = 0, cur = '';
+  const show = m => {
+    if (cur === m && say.classList.contains('on')) return; cur = m; clearInterval(typeT);
+    say.classList.add('on'); say.classList.remove('pop'); void say.offsetWidth; if (!calm) say.classList.add('pop');
+    if (calm) { say.textContent = m; return; }
+    let n = 0; say.textContent = ''; typeT = setInterval(() => { say.textContent = m.slice(0, n += 2); if (n >= m.length) { say.textContent = m; clearInterval(typeT); } }, 12);
+  };
+  document.addEventListener('journey:stop', e => {
+    const m = TOUR[e.detail.i];
+    if (!m) { if (cur) { cur = ''; clearInterval(typeT); say.classList.remove('on'); } return; }  // back on the home screen: the idle lines take over
+    if (open()) return; clearTimeout(t); show(m);
+  });
   t = setTimeout(next, calm ? 600 : 3500);
   addEventListener('beforeunload', hush);
   btn.addEventListener('pointerenter', () => btn.classList.add('curious')); btn.addEventListener('pointerleave', () => btn.classList.remove('curious'));

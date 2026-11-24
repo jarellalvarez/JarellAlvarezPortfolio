@@ -5,6 +5,7 @@ import '../styles/style-panel.css';
 import '../styles/ask.css';
 import '../styles/illustrations.css';
 import '../styles/lightbox.css';
+import '../styles/appbar.css';
 const { title, description, noindex = false } = Astro.props;
 const url = new URL(Astro.url.pathname, Astro.site);
 ---
@@ -32,6 +33,7 @@ const url = new URL(Astro.url.pathname, Astro.site);
     <slot name="head" />
   </head>
   <slot />
+  <script is:inline src="/js/appbar.js"></script>
   <script is:inline src="/js/style.js"></script>
   <script is:inline src="/js/back.js"></script>
   <script is:inline src="/js/ask.js"></script>

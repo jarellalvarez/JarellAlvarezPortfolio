@@ -197,3 +197,13 @@ main>.back{justify-self:start;width:fit-content}
 /* Locked page: "No password?" and the email button wrap instead of overflowing; full-width button on phones */
 .gate .gate-ask{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem .75rem}
 @media (max-width:640px){.gate .gate-ask .mail{flex:1 1 100%;justify-content:center}}
+@media (max-width:720px){header.top a.hide-m{display:none!important}}
+.cta{scroll-margin-top:5rem}
+
+/* Scroll reveal and press feedback (added by site.js; nothing hidden without JS) */
+.rv{opacity:0;transform:translateY(16px);transition:opacity .45s var(--ease-out,ease-out) var(--rd,0ms),transform .5s var(--ease-out,ease-out) var(--rd,0ms)}
+main h2.rv,main .h-sec.rv{transform:translateX(-14px)}
+.hero-photo.rv,main figure.rv{transform:translateY(16px) scale(.96)}
+.rv.rv-in{opacity:1;transform:none}
+.btn:active,.said:active,.cards a:active,.list a:active{transform:scale(.98)}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}

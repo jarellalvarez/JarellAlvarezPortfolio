@@ -61,3 +61,12 @@ document.querySelectorAll('.mail').forEach(b => {
   // rebuild after a locked case study is unlocked
   new MutationObserver(build).observe(document.getElementById('story') || document.createElement('i'), { childList: true });
 })();
+
+/* Scroll reveal: headings, figures, quotes and cards rise in once as they enter the screen (transform and opacity only; off with reduced motion) */
+(() => {
+  if (matchMedia('(prefers-reduced-motion:reduce)').matches || !('IntersectionObserver' in window)) return;
+  const els = [...document.querySelectorAll('main :is(h2,h3,figure,blockquote,.said,.facts>*,.cards>*,.exec,.hero-photo,.h-sec,.story>p,.timeline>*,.list a)')].filter(e => !e.closest('.locked-body,.gate,.contents,#toc'));
+  const vh = innerHeight; els.forEach((e, i) => { if (e.getBoundingClientRect().top > vh * .92) { e.classList.add('rv'); e.style.setProperty('--rd', (i % 3) * 60 + 'ms'); } });
+  const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('rv-in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: .05 });
+  els.filter(e => e.classList.contains('rv')).forEach(e => io.observe(e));
+})();

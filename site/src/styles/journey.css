@@ -5,21 +5,23 @@
 .j-stage{position:fixed;inset:0;z-index:0;pointer-events:none} .desk{z-index:1}
 .j-track{height:520vh;pointer-events:none}
 .j-wins,.j-pvs{list-style:none;padding:0;margin:0}
-.j-win{position:absolute;left:calc(50% + 50px);top:15vh;width:min(600px,calc(100vw - 260px));display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);pointer-events:auto;visibility:hidden;opacity:0;will-change:transform,opacity}
+.j-win{position:absolute;left:calc(50% + 50px);top:15vh;width:min(780px,calc(100vw - 300px));display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);pointer-events:auto;visibility:hidden;opacity:0;will-change:transform,opacity}
 .j-bar{display:flex;align-items:center;gap:7px;height:34px;padding:0 12px;background:color-mix(in srgb,var(--ink) 6%,var(--surface));font-size:.875rem;font-weight:600}
 .j-bar u{width:11px;height:11px;border-radius:50%;display:block;background:var(--ctl-close)} .j-bar u:nth-child(2){background:var(--ctl-min)} .j-bar u:nth-child(3){background:var(--ctl-max)}
 .j-bar em{width:22px;height:18px;border-radius:4px;background:var(--folder);margin-left:10px;display:block}
-.j-win img{display:block;width:100%;height:clamp(110px,22vh,190px);object-fit:cover;object-position:top}
-.j-txt{display:block;padding:.7rem 1.1rem .9rem}
+.j-win img{display:block;width:100%;height:clamp(143px,28vh,247px);object-fit:cover;object-position:top}
+.j-txt{display:block;padding:1.1rem 1.6rem 1.4rem}
 .j-txt h2{font:700 1.375rem/1.15 var(--display);margin:0}
-.j-txt p{margin:.2rem 0 0;font-size:.9375rem}
-.j-sub{color:var(--ink-2)} .j-sum{margin-top:.5rem!important}
+.j-txt p{margin:.35rem 0 0;font-size:.9375rem;line-height:1.5;color:color-mix(in srgb,var(--ink) 80%,var(--bg))}
+.j-sub{color:var(--ink-2)!important} .j-sum{margin-top:.75rem!important}
 .j-stat{margin-top:.4rem!important;color:var(--ink)} .j-stat strong{font-weight:700}
-.j-tags{display:flex;flex-wrap:wrap;gap:.4rem;list-style:none;padding:0;margin:.6rem 0 .7rem}
+.j-tags{display:flex;flex-wrap:wrap;gap:.45rem;list-style:none;padding:0;margin:1rem 0 1.25rem}
 .j-tags li{padding:.2rem .65rem;border:1px solid var(--line);border-radius:var(--r-pill);font-size:.8125rem;color:var(--ink-2)}
-.j-go{font-weight:600;font-size:.875rem;border-bottom:2px solid var(--pop)}
+.j-go{display:inline-block;font-weight:600;font-size:.9375rem;padding:.55rem 0 .35rem;border-bottom:2px solid var(--pop)}
+.j-gl{width:18px;height:18px;margin-left:10px;fill:var(--folder);display:block}
+.j-stat{margin-top:.75rem!important}
 .j-win:hover .j-go,.j-win:focus-visible .j-go{color:var(--pop)}
-.j-pvs{position:absolute;left:calc(50% + 50px);top:47%;width:min(calc(100vw - 190px),1440px);height:77vh;transform:translate(-50%,-50%);z-index:5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:1.1rem;pointer-events:none}
+.j-pvs{position:absolute;left:calc(50% + 70px);top:47%;width:min(calc(100vw - 230px),1440px);height:77vh;transform:translate(-50%,-50%);z-index:5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:1.1rem;pointer-events:none}
 .j-pv{min-height:0;pointer-events:auto;visibility:hidden;opacity:0;will-change:transform,opacity}
 .j-pv a{display:grid;grid-template-rows:minmax(0,1fr) auto;height:100%;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
 .j-pv img{display:block;width:100%;height:100%;min-height:0;object-fit:cover;object-position:top}
@@ -40,7 +42,7 @@
 @media (max-height:720px){.j-art.m{display:none}}
 /* scroll hint */
 .j-hint{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:16;display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:.4rem 1.1rem .3rem;border-radius:var(--r-pill);color:color-mix(in srgb,var(--ink) 80%,var(--bg));font:500 .9375rem/1.2 var(--sans);pointer-events:none}
-body.j-on .j-hint{font-size:.8125rem;gap:.2rem;padding:0;color:color-mix(in srgb,var(--ink) 65%,var(--bg))}
+body.j-on .j-hint{font-size:.8125rem;gap:.2rem;padding:0;color:color-mix(in srgb,var(--ink) 76%,var(--bg))}
 body.j-on .j-hint .j-arrow,body.j-on .j-hint .j-arrow svg{width:22px;height:22px}
 .j-arrow{display:grid;place-items:center;width:34px;height:34px;color:inherit;animation:j-bob 2s ease-in-out infinite}
 .j-arrow svg{width:34px;height:auto;rotate:90deg;overflow:visible}
@@ -92,11 +94,15 @@ body.j-on .desk{pointer-events:none} body.j-on nav.top *{pointer-events:auto} bo
   .j-track{height:auto;pointer-events:auto;padding:3rem 1rem calc(2rem + var(--badge-h))}
   .j-stage{position:static;pointer-events:auto;max-width:44rem;margin:0 auto}
   .j-win{position:relative;left:auto;top:auto;width:100%;visibility:visible;opacity:1;transform:none!important;margin:0 0 1.25rem}
-  .j-pvs{position:static;width:100%;grid-template-columns:repeat(2,minmax(0,1fr));margin:0 0 2rem;transform:none!important}
-  .j-pv h3{font-size:.9375rem}
+  .j-pvs{position:static;width:100%;height:auto;grid-template-columns:minmax(0,1fr);grid-template-rows:none;gap:1.25rem;margin:0 0 2rem;transform:none!important}
+  .j-pv a{grid-template-rows:auto auto;height:auto}
+  .j-pv img{height:auto;aspect-ratio:16/10}
+  .j-pv h3{font-size:1.0625rem}
+  .j-pv p{-webkit-line-clamp:unset;display:block}
+  .j-pv a>div{padding:1rem 1.1rem 1.2rem}
   .j-pv{visibility:visible;opacity:1;transform:none!important}
   .j-end{position:relative;inset:auto;visibility:visible;transform:none!important;border-radius:22px;padding:2.5rem 1.5rem 7rem}
-  .j-art.m{right:1rem;bottom:1rem;width:150px} .j-art.v{right:1rem;top:1.25rem;width:56px}
+  .j-art.m{right:1rem;bottom:1rem;width:150px} .j-art.v{right:auto;left:1.25rem;top:auto;bottom:1.25rem;width:40px}
   .rail,.j-hint,.j-prog{display:none}
   .j-end h2{font-size:clamp(2.6rem,12vw,4rem)}
 }
@@ -110,4 +116,4 @@ body.j-dark nav.top .logo{background:var(--bg)}
 .fgroup{justify-items:start}
 .fgroup .fh{padding-left:.25rem}
 body.coach-on .hero-art [data-art="cursor"],body.coach-on .hero-art [data-art="squiggly-arrow"]{opacity:0!important}
-@media (min-width:721px){body.j-on .buddy{flex-direction:row-reverse;align-items:flex-end} body.j-on .bsay{max-width:20rem;margin-bottom:.4rem}}
+@media (min-width:721px){body.j-on .bsay{max-width:10.25rem}}

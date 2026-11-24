@@ -490,3 +490,8 @@ main.hero .role{color:var(--pop)}
 
 /* MAVI folder sits straight (the first-visit lift no longer tilts it) */
 #work li:nth-child(1) .folder svg{rotate:0deg}
+
+/* helper bubble: little bounce on arrival */
+.bsay.pop{animation:bsay-pop .32s cubic-bezier(.3,1.6,.5,1)}
+@keyframes bsay-pop{0%{transform:translateY(8px) scale(.85)}60%{transform:translateY(-2px) scale(1.04)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.bsay.pop{animation:none}}

@@ -3,20 +3,22 @@
 import Base from './Base.astro';
 import Header from '../components/Header.astro';
 import Cta from '../components/Cta.astro';
+import Dock from '../components/Dock.astro';
 import '../styles/site.css';
 const { cta = true, bodyClass = '', ...rest } = Astro.props;
 ---
 <Base {...rest}>
   <body class={bodyClass}>
-    <Header />
+    <Header contact={cta ? '#contact' : '/#contact'} />
     <main>
       <a class="back" href="/" id="back-link">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5L12 4.5l8 7"/><path d="M6.5 10v9.5h11V10"/><path d="M10 19.5v-5h4v5"/></svg>
         <span id="back-label">Back to Home</span>
       </a>
       <slot />
       {cta && <Cta />}
     </main>
+    <Dock sub={true} contact={cta ? '#contact' : '/#contact'} />
     <slot name="after" />
     <script is:inline src="/js/site.js"></script>
   </body>

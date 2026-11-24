@@ -75,7 +75,7 @@ const extras = [
   <Shapes />
   <Dock />
 </div>
-<Journey wins={work.map(f => ({ href: f.href, label: f.label, text: f.previewText, preview: f.preview, ...f.detail }))} pvs={extras.map(f => ({ text: f.previewText, focus: f.focus, href: f.href === '#kind' ? '/kind-words/' : f.href, label: f.label, preview: f.preview, external: !!f.external }))} />
+<Journey wins={work.map(f => ({ glyph: f.glyph, href: f.href, label: f.label, text: f.previewText, preview: f.preview, ...f.detail }))} pvs={extras.map(f => ({ text: f.previewText, focus: f.focus, href: f.href === '#kind' ? '/kind-words/' : f.href, label: f.label, preview: f.preview, external: !!f.external }))} />
 <Rail />
 
 <Window />

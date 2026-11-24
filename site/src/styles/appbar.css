@@ -1,0 +1,21 @@
+/* Phone app bar: floating pill, then a full-width bottom bar after the first scroll (transition on a fixed element only, so no page reflow) */
+@media (max-width:720px){
+  .dock{position:fixed!important;z-index:30;bottom:calc(.6rem + env(safe-area-inset-bottom))!important;left:calc(50% - 130px)!important;right:auto!important;margin:0!important;width:auto!important;display:flex;justify-content:center;align-items:center;gap:.1rem;padding:.3rem .35rem;border-radius:20px;background:var(--chrome);-webkit-backdrop-filter:blur(18px) saturate(160%);backdrop-filter:blur(18px) saturate(160%);box-shadow:inset 0 0 0 1px var(--line),var(--shadow);transition:left .38s cubic-bezier(.2,.8,.2,1),right .38s cubic-bezier(.2,.8,.2,1),bottom .38s cubic-bezier(.2,.8,.2,1),border-radius .38s,padding .38s}
+  .dock a,.dock .dock-ask{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.2rem;min-width:56px;min-height:52px;padding:.3rem .2rem;border:0;background:none;border-radius:13px;color:var(--ink);text-decoration:none;font:inherit}
+  .dock svg{width:22px;height:22px;fill:none;stroke:var(--ink);stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
+  .dock .dl{display:block;font-size:.75rem;font-weight:500;line-height:1}
+  .dock .tip{display:none}
+  .dock-ask svg{width:24px;height:26px;stroke-width:5}
+  body.bar-full .dock{justify-self:stretch!important;align-self:end!important;left:0!important;right:0!important;bottom:0!important;border-radius:18px 18px 0 0;padding:.4rem .5rem calc(.4rem + env(safe-area-inset-bottom));justify-content:space-around;box-shadow:0 -1px 0 var(--line),0 -10px 28px -16px rgba(0,0,0,.35)}
+  body.bar-full .desk .dock,body.bar-full .dock{gap:0}
+  .buddy{transition:right .38s cubic-bezier(.2,.8,.2,1),bottom .38s cubic-bezier(.2,.8,.2,1),transform .38s cubic-bezier(.2,.8,.2,1);transform-origin:100% 100%}
+  body.bar-full .buddy{right:.4rem!important;bottom:calc(.3rem + env(safe-area-inset-bottom))!important;transform:scale(.7)}
+  body.bar-full .dock{padding-right:5rem}
+  body>main{padding-bottom:6rem}
+  .desk{padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))!important}
+  .buddy{right:calc(50% - 130px)!important}
+  body.bar-full .buddy{right:.4rem!important}
+  body.bar-full .bsay{display:none}
+}
+@media (min-width:721px){.dock{display:none}}
+@media (prefers-reduced-motion:reduce){.dock,.buddy{transition:none!important}}
