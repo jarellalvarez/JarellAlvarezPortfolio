@@ -3,7 +3,7 @@
 .j-skip{position:fixed;left:.75rem;top:.75rem;z-index:200;padding:.5rem .9rem;border-radius:var(--r-pill);background:var(--ink);color:var(--bg);font-weight:600;transform:translateY(-200%)}
 .j-skip:focus-visible{transform:none}
 .j-stage{position:fixed;inset:0;z-index:0;pointer-events:none}
-.j-track{height:650vh;pointer-events:none}
+.j-track{height:520vh;pointer-events:none}
 .j-wins,.j-pvs{list-style:none;padding:0;margin:0}
 .j-win{position:absolute;left:calc(50% + 50px);top:15vh;width:min(600px,calc(100vw - 260px));display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);pointer-events:auto;visibility:hidden;opacity:0;will-change:transform,opacity}
 .j-bar{display:flex;align-items:center;gap:7px;height:34px;padding:0 12px;background:color-mix(in srgb,var(--ink) 6%,var(--surface));font-size:.875rem;font-weight:600}
@@ -19,12 +19,12 @@
 .j-tags li{padding:.2rem .65rem;border:1px solid var(--line);border-radius:var(--r-pill);font-size:.8125rem;color:var(--ink-2)}
 .j-go{font-weight:600;font-size:.875rem;border-bottom:2px solid var(--pop)}
 .j-win:hover .j-go,.j-win:focus-visible .j-go{color:var(--pop)}
-.j-pvs{position:absolute;left:calc(50% + 50px);top:41vh;width:min(780px,calc(100vw - 240px));transform:translateX(-50%);z-index:5;display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;pointer-events:none}
-.j-pv{pointer-events:auto;visibility:hidden;opacity:0;will-change:transform,opacity}
-.j-pv a{display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow)}
-.j-pv img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;object-position:top}
-.j-pv a>div{padding:.6rem .8rem .75rem}
-.j-pv h2{font:600 1.0625rem/1.2 var(--display);margin:0}
+.j-pvs{position:absolute;left:calc(50% + 50px);top:50%;width:min(calc(100vw - 260px),1180px);height:72vh;transform:translate(-50%,-50%);z-index:5;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(2,minmax(0,1fr));gap:1.1rem;pointer-events:none}
+.j-pv{min-height:0;pointer-events:auto;visibility:hidden;opacity:0;will-change:transform,opacity}
+.j-pv a{display:grid;grid-template-rows:minmax(0,1fr) auto;height:100%;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.j-pv img{display:block;width:100%;height:100%;min-height:0;object-fit:cover;object-position:top}
+.j-pv a>div{padding:.7rem 1rem .85rem}
+.j-pv h2{font:700 1.375rem/1.15 var(--display);margin:0}
 .j-pv a:hover h2,.j-pv a:focus-visible h2{color:var(--pop)}
 .j-end{position:absolute;inset:0;overflow:auto;background:var(--ink);color:var(--bg);padding:max(9vh,3rem) 7vw 0 calc(7vw + 90px);pointer-events:auto;visibility:hidden;will-change:transform}
 .j-end h2{font:700 clamp(3rem,7vw,6rem)/.95 var(--display);letter-spacing:-.04em;margin:0}
@@ -38,12 +38,13 @@
 .j-art.m{right:calc(7vw + 20px);bottom:calc(var(--badge-h) + 1.5rem);width:min(260px,26vw)} .j-art.v{right:7vw;top:12vh;width:72px}
 @media (max-height:720px){.j-art.m{display:none}}
 /* scroll hint */
-.j-hint{position:fixed;left:50%;bottom:1.1rem;transform:translateX(-50%);z-index:16;display:flex;flex-direction:column;align-items:center;gap:.1rem;padding:.3rem 1rem .1rem;border-radius:var(--r-pill);color:var(--ink);font:500 .9375rem/1.2 var(--sans);pointer-events:none}
+.j-hint{position:fixed;left:50%;bottom:1rem;transform:translateX(-50%);z-index:16;display:flex;flex-direction:column;align-items:center;gap:.5rem;padding:.4rem 1.1rem .3rem;border-radius:var(--r-pill);color:color-mix(in srgb,var(--ink) 80%,var(--bg));font:500 .9375rem/1.2 var(--sans);pointer-events:none}
 body.j-on .j-hint{background:var(--chrome);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:inset 0 0 0 1px var(--line)}
-.j-arrow{width:46px;rotate:90deg;color:var(--ink-2);animation:j-bob 2s ease-in-out infinite}
-@keyframes j-bob{0%,100%{translate:0 -2px}50%{translate:0 6px}}
+.j-arrow{display:grid;place-items:center;width:34px;height:34px;color:inherit;animation:j-bob 2s ease-in-out infinite}
+.j-arrow svg{width:34px;height:auto;rotate:90deg;overflow:visible}
+@keyframes j-bob{0%,100%{translate:0 0}50%{translate:0 5px}}
 /* side rail */
-.rail{position:fixed;left:14px;top:14px;z-index:18;width:90px;padding:1rem .3rem 1.1rem;display:flex;flex-direction:column;align-items:center;gap:1.1rem;color:var(--ink);opacity:0;border-radius:30px}
+.rail{position:fixed;left:14px;top:50%;translate:0 -50%;z-index:18;width:90px;padding:.8rem .3rem;display:flex;flex-direction:column;align-items:center;gap:0;color:var(--ink);opacity:0;border-radius:30px}
 /* liquid glass: frosted and saturated, a bright specular rim, a soft sheen from the top left, a deep soft shadow */
 .rail::before{content:"";position:absolute;inset:0;z-index:-1;border-radius:inherit;opacity:var(--glass,0);
   background:linear-gradient(140deg,color-mix(in srgb,#fff 58%,transparent),color-mix(in srgb,#fff 14%,transparent) 52%,color-mix(in srgb,#fff 34%,transparent));
@@ -54,25 +55,22 @@ body.j-on .j-hint{background:var(--chrome);-webkit-backdrop-filter:blur(14px);ba
 html[data-theme=dark] .rail::before{background:linear-gradient(140deg,rgba(255,255,255,.22),rgba(255,255,255,.05) 52%,rgba(255,255,255,.14));border-color:rgba(255,255,255,.3);box-shadow:inset 0 1.5px 0 rgba(255,255,255,.4),inset 0 -1.5px 0 rgba(255,255,255,.08),inset 0 0 26px rgba(255,255,255,.06),0 22px 44px -18px rgba(0,0,0,.7)}
 html[data-theme=dark] .rail::after{background:radial-gradient(130% 55% at 18% 0%,rgba(255,255,255,.2),transparent 60%)}
 .rail ul{list-style:none;padding:0;margin:0;display:grid;gap:.35rem}
-.rail .r-logo{display:block;width:36px;height:36px}
-.rail .logo{width:36px;height:36px;display:block;background:var(--ink);-webkit-mask:url(/img/headerLogo.svg) center/contain no-repeat;mask:url(/img/headerLogo.svg) center/contain no-repeat}
 .rail .r-item{display:grid;justify-items:center;gap:.25rem;min-width:70px;min-height:56px;padding:.4rem .3rem;border-radius:18px;color:inherit;text-decoration:none;font-size:.8125rem;font-weight:500;line-height:1.1;transition:background .2s,transform .2s var(--ease-out)}
 .rail .r-item svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round}
 .rail .r-item:hover,.rail .r-item:focus-visible{background:color-mix(in srgb,#fff 45%,transparent);transform:scale(1.04)}
 html[data-theme=dark] .rail .r-item:hover,html[data-theme=dark] .rail .r-item:focus-visible{background:rgba(255,255,255,.14)}
-.rail.on-dark{color:var(--bg)} .rail.on-dark .logo{background:var(--bg)}
+.rail.on-dark{color:var(--bg)}
 .rail.on-dark::before{background:linear-gradient(140deg,rgba(255,255,255,.2),rgba(255,255,255,.05) 52%,rgba(255,255,255,.12));border-color:rgba(255,255,255,.32)}
-/* progress marks on the right */
-.j-prog{position:fixed;right:18px;top:50%;transform:translateY(-50%);z-index:17;color:var(--ink)}
-.j-prog ol{list-style:none;margin:0;padding:0;display:grid;gap:.15rem}
-.j-prog button{display:flex;align-items:center;justify-content:flex-end;gap:.7rem;min-height:34px;width:100%;padding:0 .2rem;border:0;background:none;color:inherit;font:500 1.125rem/1 var(--sans);cursor:pointer}
-.j-prog button span{opacity:0;color:var(--ink-2);transition:opacity .3s;white-space:nowrap}
-.j-prog button::after{content:"";flex:none;width:6px;height:14px;border-radius:3px;background:color-mix(in srgb,var(--ink) 28%,transparent);transition:height .35s var(--ease-out),background .3s}
-.j-prog li.on button span{opacity:1;color:var(--ink)} .j-prog li.prev button span{opacity:1}
-.j-prog li.on button::after{height:36px;background:var(--ink)}
+/* progress marks on the right: small and quiet */
+.j-prog{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:17;color:var(--ink)}
+.j-prog ol{list-style:none;margin:0;padding:0;display:grid;gap:2px}
+.j-prog button{display:flex;align-items:center;justify-content:flex-end;gap:.55rem;min-height:28px;width:100%;padding:0 .1rem;border:0;background:none;color:inherit;font:500 .8125rem/1 var(--sans);cursor:pointer}
+.j-prog button span{opacity:0;color:color-mix(in srgb,var(--ink) 82%,var(--bg));transition:opacity .3s;white-space:nowrap}
+.j-prog button::after{content:"";flex:none;width:3px;height:10px;border-radius:2px;background:color-mix(in srgb,var(--ink) 22%,transparent);transition:height .35s var(--ease-out),background .3s}
+.j-prog li.on button span{opacity:1} .j-prog li.prev button span{opacity:.8}
+.j-prog li.on button::after{height:22px;background:color-mix(in srgb,var(--ink) 75%,transparent)}
 .j-prog button:hover span,.j-prog button:focus-visible span{opacity:1}
-.j-prog.on-dark{color:var(--bg)} .j-prog.on-dark button span{color:color-mix(in srgb,var(--bg) 70%,transparent)} .j-prog.on-dark li.on button span{color:var(--bg)}
-.j-prog.on-dark button::after{background:color-mix(in srgb,var(--bg) 40%,transparent)} .j-prog.on-dark li.on button::after{background:var(--bg)}
+.j-prog.on-dark{color:var(--bg)} .j-prog.on-dark button span{color:color-mix(in srgb,var(--bg) 88%,var(--ink))} .j-prog.on-dark button::after{background:color-mix(in srgb,var(--bg) 35%,transparent)} .j-prog.on-dark li.on button::after{background:var(--bg)}
 .j-prog.on-dark :focus-visible{outline-color:var(--bg)}
 body.j-dark nav.top .style-btn{color:var(--bg);border-color:color-mix(in srgb,var(--bg) 55%,transparent);background:color-mix(in srgb,var(--ink) 40%,transparent)}
 body.j-on .coach,body.j-scrolled .coach{display:none}
@@ -87,8 +85,8 @@ body.j-on .desk{pointer-events:none} body.j-on nav.top *{pointer-events:auto} bo
 @media (min-width:721px) and (min-height:561px) and (prefers-reduced-motion:no-preference){html,body{height:auto} body{overflow:visible} html{overflow-y:auto}}
 /* flow mode: phones and reduced motion */
 @media (max-width:720px),(max-height:560px),(prefers-reduced-motion:reduce){
-  html,body{height:auto} body{overflow:visible!important} html{overflow-y:auto}
-  .desk{position:relative!important;inset:auto!important;min-height:100svh}
+  html,body{height:auto} body{overflow:visible!important;display:flex;flex-direction:column} html{overflow-y:auto}
+  .desk{position:relative!important;inset:auto!important;min-height:100svh;order:-1} /* the tour sits before the desk in the page source (stacking), but below it on screen */
   .j-track{height:auto;pointer-events:auto;padding:3rem 1rem calc(2rem + var(--badge-h))}
   .j-stage{position:static;pointer-events:auto;max-width:44rem;margin:0 auto}
   .j-win{position:relative;left:auto;top:auto;width:100%;visibility:visible;opacity:1;transform:none!important;margin:0 0 1.25rem}

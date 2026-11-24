@@ -57,7 +57,7 @@ const shown=w=>w.isConnected&&!w._min&&!w._closing;
 const wins=()=>[...document.querySelectorAll('.win')].filter(shown);
 const topWin=()=>wins().sort((a,b)=>b.style.zIndex-a.style.zIndex)[0];
 const clamp=(v,lo,hi)=>Math.max(lo,Math.min(hi,v));
-const BM=60; // px kept free at the bottom right for the "Powered by Netlify" badge (same as --badge-h in tokens.css)
+const BM=0; // px kept free at the bottom right for a host badge (same as --badge-h in tokens.css, currently none)
 function focusWin(w){w.style.zIndex=++zTop;document.querySelectorAll('.win.focused').forEach(x=>x.classList.remove('focused'));w.classList.add('focused')}
 function place(w){w.style.transform=`translate(${w._x}px,${w._y}px)`}
 function setMax(w,on){const r=w._active.querySelector('.read'),ratio=r.scrollTop/Math.max(1,r.scrollHeight-r.clientHeight);w.classList.toggle('max',on);

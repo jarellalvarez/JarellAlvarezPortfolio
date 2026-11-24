@@ -13,7 +13,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   background:linear-gradient(var(--line) 1px,transparent 1px) 0 0/100% 64px,linear-gradient(90deg,var(--line) 1px,transparent 1px) 0 0/64px 100%;
   -webkit-mask:radial-gradient(ellipse 70% 60% at 50% 45%,#000 0,transparent 75%);mask:radial-gradient(ellipse 70% 60% at 50% 45%,#000 0,transparent 75%);opacity:.5}
 /* the three logo pieces, bottom right. They play every few seconds. */
-.toys{position:fixed;right:1.5rem;bottom:calc(var(--badge-h) + .25rem);display:flex;align-items:flex-end;gap:5px;padding:.5rem;border-radius:12px;z-index:5;color:var(--toy)}
+.toys{position:fixed;right:1.5rem;bottom:1rem;display:flex;align-items:flex-end;gap:5px;padding:.5rem;border-radius:12px;z-index:5;color:var(--toy)}
 .toys i{display:block;height:34px;background:currentColor;transform-origin:50% 100%;will-change:transform}
 .toys i:nth-child(1){width:17px;border-radius:0 0 0 17px}
 .toys i:nth-child(2){width:34px;clip-path:polygon(0 0,100% 100%,0 100%)}
@@ -347,7 +347,7 @@ body.nosel,body.nosel *{user-select:none;-webkit-user-select:none}
 main.hero .role{color:var(--pop)}
 /* Helper: a hand-doodled sticky note, bottom left */
 .buddy{position:fixed;left:1.25rem;bottom:1rem;z-index:60;display:flex;flex-direction:column;align-items:flex-start;gap:.5rem}
-.bbtn{width:76px;height:84px;padding:0;border:0;background:none;cursor:pointer;transform-origin:50% 100%;border-radius:14px}
+.bbtn{width:91px;height:101px;padding:0;border:0;background:none;cursor:pointer;transform-origin:50% 100%;border-radius:14px}
 .bbtn:focus-visible{outline:2px solid var(--ink);outline-offset:4px}
 .bbtn svg{width:100%;height:100%;overflow:visible;fill:none;stroke:var(--ink);stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
 .bbtn .note{fill:color-mix(in srgb,var(--pop) 18%,var(--surface))}
@@ -364,9 +364,9 @@ main.hero .role{color:var(--pop)}
 @keyframes bwig{25%{rotate:-7deg}50%{rotate:6deg}75%{rotate:-3deg}}
 @keyframes btap{20%,60%{translate:0 -3px;rotate:4deg}40%,80%{translate:0 0;rotate:0deg}}
 @keyframes bhop{40%{translate:0 -10px;scale:1.05 .95}}
-.bsay{position:relative;margin:0;padding:.45rem .75rem;border-radius:12px;background:var(--surface);border:2px solid var(--ink);font:500 .875rem/1.2 var(--sans);opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .25s}
+.bsay{position:relative;margin:0;max-width:min(16rem,70vw);padding:.5rem .85rem;border-radius:12px;background:var(--surface);border:2px solid var(--ink);font:500 .875rem/1.2 var(--sans);opacity:0;transform:translateY(6px);pointer-events:none;transition:opacity .2s,transform .25s}
 .bsay.on{opacity:1;transform:none}
-@media (max-width:720px){.buddy{left:.75rem;bottom:calc(var(--badge-h) + 1.75rem)} .bbtn{width:58px;height:64px}}
+@media (max-width:720px){.buddy{left:.75rem;bottom:calc(var(--badge-h) + 1.75rem)} .bbtn{width:70px;height:77px}}
 @media (prefers-reduced-motion:reduce){.bbtn,.bbtn *{animation:none!important;transition:none!important}}
 .bsay{color:var(--ink);visibility:hidden} .bsay.on{visibility:visible}
 /* helper body is Jarell's traced sticky note; a soft fill behind it, eyes on top */
@@ -408,8 +408,8 @@ main.hero .role{color:var(--pop)}
   .folders{grid-template-columns:repeat(3,minmax(0,1fr));gap:1.5rem .25rem;max-width:22rem}
   .folder{font-size:.8125rem!important;overflow-wrap:normal;word-break:normal;hyphens:none;padding:.4rem 0}
   .folder svg{width:56px;height:46px}
-  .buddy{left:auto;right:max(.5rem,env(safe-area-inset-right));bottom:calc(var(--badge-h) + .5rem + env(safe-area-inset-bottom) + 6px);align-items:flex-end}
-  .bbtn{width:48px;height:54px}
+  .buddy{left:auto;right:max(.8rem,env(safe-area-inset-right));bottom:calc(.6rem + env(safe-area-inset-bottom));align-items:flex-end}
+  .bbtn{width:58px;height:65px}
   .dock{gap:.15rem;padding:.3rem}
 }
 /* Phones: smaller hero so the folders sit higher; the tagline is the quietest line */
@@ -423,7 +423,7 @@ main.hero .role{color:var(--pop)}
   main.hero .tag{font-size:.8125rem}
   .folders{margin-top:1.25rem!important;gap:1.5rem .25rem!important}
   .folder svg{width:60px;height:50px} .folder{font-size:.8125rem!important;padding:.25rem 0;gap:.4rem}
-  .dock{position:relative;bottom:auto;margin-bottom:calc(var(--badge-h) + .5rem + env(safe-area-inset-bottom))}
+  .dock{position:relative;bottom:auto;margin-bottom:calc(.6rem + env(safe-area-inset-bottom))}
   /* roomy phones fill the height with larger pieces; short ones tighten so nothing scrolls */
   @media (min-height:760px){main.hero h1{font-size:clamp(2.8rem,14.5vw,4rem)!important} main.hero .role{font-size:1rem} main.hero .tag{font-size:.9375rem} .folders{margin-top:2rem!important;gap:2rem .25rem!important} .folder svg{width:72px;height:60px} .folder{font-size:.875rem!important}}
   @media (max-height:620px){main.hero{gap:.3rem;padding-top:.25rem} main.hero h1{font-size:clamp(2.3rem,11.5vw,2.9rem)!important} main.hero .role{font-size:.8125rem} main.hero .tag{font-size:.75rem} .folders{margin-top:.75rem!important;gap:.9rem .25rem!important} .folder svg{width:48px;height:40px} .folder{font-size:.75rem!important;gap:.25rem}}
@@ -471,9 +471,10 @@ main.hero .role{color:var(--pop)}
 @media (max-width:720px){
   nav.top ul{display:none}
   nav.top{justify-content:space-between}
-  .dock{justify-self:start;margin-left:max(.75rem,env(safe-area-inset-left));gap:.1rem;padding:.3rem .35rem}
+  .dock{justify-self:start;margin-left:max(.8rem,env(safe-area-inset-left));gap:.1rem;padding:.3rem .35rem}
+  .dock a,.dock a:hover{text-decoration:none}
   .dock a{width:auto;min-width:56px;height:auto;min-height:52px;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:.2rem;padding:.3rem .2rem}
   .dock .tip:not(.copied){display:none!important}
-  .dock .dl{display:block;font-size:.75rem;font-weight:500;line-height:1;color:var(--ink)}
+  .dock .dl{display:block;font-size:.75rem;font-weight:500;line-height:1;color:var(--ink);text-decoration:none}
 }
 @media (max-width:359px){.dock a{min-width:50px}}

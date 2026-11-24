@@ -32,10 +32,23 @@
   // blink, and an idle move every so often
   if (!calm) { (function blink() { setTimeout(() => { btn.classList.add('blink'); setTimeout(() => btn.classList.remove('blink'), 140); blink(); }, 2500 + Math.random() * 3500); })();
     (function idle() { setTimeout(() => { if (!open()) act(Math.random() < .5 ? 'wiggle' : 'tap'); idle(); }, 9000 + Math.random() * 6000); })(); }
-  // say hi once, a few seconds in
-  setTimeout(() => { if (!open()) { say.classList.add('on'); act('hop'); setTimeout(() => say.classList.remove('on'), 5000); } }, calm ? 0 : 4000);
+  // speech bubbles: it opens with what it is for, then moves through a few topics, with a long quiet gap between each, two rounds at most.
+  // It never talks while the chat is open, while the tour plays, or in a background tab, and stops for good once someone uses it.
+  const LINES = ['I can answer any questions here', 'Curious about my work?', 'Ask me about my case studies', 'Or what I do off screen'];
+  let li = 0, rounds = 0, quiet = false, t = 0;
+  const canSay = () => !quiet && !open() && !document.hidden && !document.body.classList.contains('j-on');
+  const hush = () => { quiet = true; clearTimeout(t); say.classList.remove('on'); };
+  function next() {
+    clearTimeout(t); if (quiet) return;
+    if (!canSay()) { t = setTimeout(next, 4000); return; }
+    say.textContent = LINES[li]; say.classList.add('on'); act('hop');
+    t = setTimeout(() => { say.classList.remove('on'); li++; if (li >= LINES.length) { li = 0; rounds++; } if (calm || rounds >= 2) { quiet = true; return; } t = setTimeout(next, 8000); }, 5000);
+  }
+  addEventListener('scroll', () => { if (document.body.classList.contains('j-on')) say.classList.remove('on'); }, { passive: true });
+  t = setTimeout(next, calm ? 600 : 3500);
+  addEventListener('beforeunload', hush);
   btn.addEventListener('pointerenter', () => btn.classList.add('curious')); btn.addEventListener('pointerleave', () => btn.classList.remove('curious'));
-  btn.addEventListener('click', () => { say.classList.remove('on'); act('hop'); window.toggleWin(btn); });
+  btn.addEventListener('click', () => { hush(); act('hop'); window.toggleWin(btn); });
 
   window.buddyHop = () => act('hop');
 })();
