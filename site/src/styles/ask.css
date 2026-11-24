@@ -73,3 +73,7 @@
 .askpanel .apx:hover{background:color-mix(in srgb,var(--ink) 8%,transparent)}
 .askpanel .bchatui{display:grid;grid-template-rows:1fr auto auto;min-height:0}
 @media (max-width:640px){.askpanel{left:.5rem!important;right:.5rem;top:4.5rem!important;width:auto;height:calc(100svh - 5.5rem)}}
+.blog .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+.blog .bfade{animation:bfade .35s ease-out}
+@keyframes bfade{from{opacity:0;transform:translateY(4px)}}
+@media (prefers-reduced-motion:reduce){.blog .bfade{animation:none}}

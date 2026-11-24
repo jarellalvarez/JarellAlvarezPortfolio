@@ -14,6 +14,14 @@
         <button type="submit" aria-label="Send">↑</button></form>`;
     const log = root.querySelector('.blog'), form = root.querySelector('form'), input = form.querySelector('input'), menu = root.querySelector('.bmenu'), pills = root.querySelector('.bpills');
     const add = (who, html) => { const li = document.createElement('li'); li.className = who; li.innerHTML = html; log.append(li); log.scrollTop = log.scrollHeight; return li; };
+    // a bot answer types in while the helper's mouth moves with it (the full text stays available to screen readers from the start)
+    const speak = li => {
+      const p = li.querySelector('p'); if (!p || !window.Talk) return; const full = p.textContent, rest = [...li.children].filter(x => x !== p);
+      p.innerHTML = '<span class="sr"></span><span class="tw" aria-hidden="true"></span>'; p.firstChild.textContent = full; const tw = p.lastChild;
+      rest.forEach(x => { x.hidden = true; });
+      const h = window.Talk.say(full, n => { tw.textContent = full.slice(0, n); log.scrollTop = log.scrollHeight; }, () => { p.textContent = full; rest.forEach(x => { x.hidden = false; x.classList.add('bfade'); }); log.scrollTop = log.scrollHeight; });
+      li.addEventListener('click', () => h.finish && h.finish(), { once: true });
+    };
     let data = [], lastGroup = null;
     const asked = () => new Set(past());
     // suggestions you have not asked yet (three, or one after a typed question), leaning toward the topic just discussed, plus a "…" pill for the full list
@@ -27,12 +35,12 @@
     const answer = async (q, typed) => {
       closeMenu(); remember(q); add('me', esc(q));
       const hit = window.Ask?.find(q)[0];
-      if (hit) { lastGroup = hit.group; add('bot', `<p>${esc(hit.a)}</p>${hit.link ? `<a href="${esc(hit.link)}"${/^https?:/.test(hit.link) ? ' target="_blank" rel="noopener"' : ''}>${hit.link.startsWith('mailto') ? 'Email Jarell' : 'See more'}</a>` : ''}`); }
+      if (hit) { lastGroup = hit.group; speak(add('bot', `<p>${esc(hit.a)}</p>${hit.link ? `<a href="${esc(hit.link)}"${/^https?:/.test(hit.link) ? ' target="_blank" rel="noopener"' : ''}>${hit.link.startsWith('mailto') ? 'Email Jarell' : 'See more'}</a>` : ''}`)); }
       else {
         const wait = add('bot', '<p class="dots" aria-label="Thinking">…</p>'); let ai = null;
         try { ai = await window.askFallback?.(q); } catch {}
         wait.innerHTML = ai ? `<p>${esc(ai)}</p><small>AI answer, based on Jarell's site. It can be wrong.</small>` : `<p>I don't have a written answer for that yet.</p>${mail(q)}`;
-        log.scrollTop = log.scrollHeight;
+        log.scrollTop = log.scrollHeight; speak(wait);
       }
       renderPills(typed ? 1 : 3); window.buddyHop?.();
     };

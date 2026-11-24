@@ -188,7 +188,7 @@ async function fill(p,key,url){
 async function openWin(a){
   const key=keyOf(a),name=nameOf(a);
   if(panes.has(key)){const p=panes.get(key),w=p._win;activate(p);if(w._min)restore(w);else{focusWin(w);p.querySelector('.read').focus({preventScroll:true})}renderTray();return}
-  const p=ptpl.content.firstElementChild.cloneNode(true);p.id='pane-'+(++uid);p._key=key;p._opener=a;p._page=key==='kind'?'/kind-words/':key==='ask'?'#':a.getAttribute('href');panes.set(key,p);
+  const p=ptpl.content.firstElementChild.cloneNode(true);p.id='pane-'+(++uid);p._key=key;p._opener=a;p._page=key==='kind'?'/kind-words/':key==='ask'?'#':a.getAttribute('href');panes.set(key,p);{const v=p.querySelector('.vfp');if(key==='ask')v.remove();else v.href=p._page}
   makeTab(p);label(p,name,name);
   let w=topWin();const fresh=!w;
   // Ask Jarell opens as a smaller chat window near the helper; everything else opens centered
