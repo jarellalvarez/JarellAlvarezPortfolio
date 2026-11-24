@@ -3,7 +3,7 @@
 ## Shipped on master (round 4, 0e10652)
 Scroll tour with guided stepping, 2x2 previews (60%+ of the screen), group headings "My work" / "Learn more", tags in folder hover cards, helper lines per tour stop, drag tip above the MAVI folder.
 
-## On the branch, not shipped (round 5, awaiting "ship it")
+## Shipped on master (round 5, c0b5cdc, Nov 24)
 - Tour windows 30% bigger, lighter body text, more padding, folder glyph in the title bar.
 - Helper bubble: bounces in, types out, always shows the current stop's line (also scrolling up), narrower on desktop so it clears the cards.
 - Scroll more sensitive on desktop (3px threshold).
