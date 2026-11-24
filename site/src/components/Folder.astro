@@ -1,6 +1,6 @@
 ---
 // One desktop folder. `open` makes it open in a window instead of navigating ("kind" for Kind words, true for a case study).
-const { href, label, glyph, art, tile, work, short, preview, previewText, open, external, mobileHide } = Astro.props;
+const { href, label, glyph, art, tile, work, short, preview, previewText, open, external, mobileHide, tags } = Astro.props;
 // art: full custom desktop icon (replaces the folder). tile: line glyph on a 24 grid for the phone app icon. short: shorter phone label.
 const DEFAULT_GLYPH = '<rect class="glyph" x="22" y="22" width="12" height="12"/>';
 ---
@@ -12,7 +12,7 @@ const DEFAULT_GLYPH = '<rect class="glyph" x="22" y="22" width="12" height="12"/
     <span class="lbl">{short ? <>{short}<span class="l-rest">{label.slice(short.length)}</span></> : label}</span>
     {tile && <span class={'tile' + (work ? ' work' : '')} aria-hidden="true"><Fragment set:html={'<svg viewBox="0 0 24 24">' + tile + '</svg>'} /></span>}
     {(preview || previewText) && (
-      <span class="peek" aria-hidden="true">{preview && <img data-src={preview} alt=""/>}<span>{previewText}</span></span>
+      <span class="peek" aria-hidden="true">{preview && <img data-src={preview} alt=""/>}<span>{previewText}</span>{tags && tags.length > 0 && <em class="ptags">{tags.map(t => <b>{t}</b>)}</em>}</span>
     )}
   </a>
 </li>

@@ -56,10 +56,20 @@ const extras = [
       <p class="tag">Good design starts with better questions.</p>
     </div>
 
-    <ul class="folders" id="work" aria-label="Work and more">
-      {work.map(f => <Folder {...f} />)}
-      {extras.map(f => <Folder {...f} />)}
-    </ul>
+    <div class="fgroups">
+      <section class="fgroup" aria-labelledby="fh-work">
+        <h2 class="fh" id="fh-work">My work</h2>
+        <ul class="folders" id="work" aria-label="My work">
+          {work.map(f => <Folder {...f} tags={f.detail.tags} />)}
+        </ul>
+      </section>
+      <section class="fgroup" aria-labelledby="fh-more">
+        <h2 class="fh" id="fh-more">Learn more</h2>
+        <ul class="folders" aria-label="Learn more">
+          {extras.map(f => <Folder {...f} />)}
+        </ul>
+      </section>
+    </div>
   </main>
 
   <Shapes />

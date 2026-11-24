@@ -61,3 +61,6 @@ Notes: SEO 69 on MAVI is the intentional `noindex` on locked pages. MAVI perform
 - Opus review fixes: hero and shapes inert earlier, logo visible on the dark end screen, tour now after the desk in source order (tab order matches screen), scrollable end screen keeps its own scroll, pinch zoom allowed, touch handlers only bound in stage mode, idle snap waits for scrollbar drag to end.
 - Checks: 52 tests, axe clean at 6 stops light and dark, guided stepping, phone alignment at 5 sizes.
 - Not shipped: waiting on Jarell's "ship it".
+
+## Shipped Nov 24
+- Tour round 3 plus review fixes, tags in the folder hover cards, "My work" / "Learn more" group headings on the home screen. Jarell approved end-screen wording and tags; STUDY_PASSWORD set in Netlify.
