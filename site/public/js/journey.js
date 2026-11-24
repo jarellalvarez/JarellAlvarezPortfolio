@@ -35,8 +35,8 @@
     const ul = nav.querySelector('ul'); if (ul) ul.inert = p > .14;
     rail.style.opacity = swap; rail.style.setProperty('--glass', ease(cl(p, .12, .17))); rail.inert = p < .14;
     // first screen leaves
-    const h = ease(cl(p, .04, .16)); hero.style.transform = `translate(${h * 40}px,${-h * 150}px) scale(${1 - h * .5})`; hero.style.opacity = 1 - cl(p, .06, .2); hero.style.pointerEvents = p > .03 ? 'none' : ''; hero.inert = p > .2;
-    if (toys) { toys.style.opacity = 1 - cl(p, .02, .15); toys.inert = p > .2; }
+    const h = ease(cl(p, .04, .16)); hero.style.transform = `translate(${h * 40}px,${-h * 150}px) scale(${1 - h * .5})`; hero.style.opacity = 1 - cl(p, .06, .2); hero.style.pointerEvents = p > .03 ? 'none' : ''; hero.inert = p > .1;
+    if (toys) { toys.style.opacity = 1 - cl(p, .02, .15); toys.inert = p > .1; }
     // scroll cue: invites the first scroll, then keeps encouraging until the end screen arrives
     const ht = p < .02 ? 'Scroll to explore' : 'Keep scrolling'; if (hintT.textContent !== ht) hintT.textContent = ht; hint.style.opacity = 1 - cl(p, .8, .9);
     let cur = 0; MID.forEach((s, i) => { if (p >= s) cur = i; });
@@ -45,7 +45,7 @@
     const rec = ease(cl(p, .46, .56));
     wins.forEach((w, i) => { const s = .06 + i * .14, t = ease(cl(p, s, s + .14)); w.style.transform = `translate(-50%,${(1 - t) * vh * 1.05 + i * 30 - rec * 70}px) rotate(${(i - 1) * 1.2 * t}deg) scale(${lerp(.94, 1, t) * lerp(1, .8, rec)})`; w.style.opacity = t > 0 ? lerp(1, .3, rec) : 0; w.style.zIndex = i; vis(w, t > .02 && rec < .98); });
     // four previews stack into a 2x2 grid
-    pvs.forEach((v, i) => { const s = .47 + i * .035, t = ease(cl(p, s, s + .08)); v.style.transform = `translateY(${(1 - t) * vh * .9}px) rotate(${(i % 2 ? 1 : -1) * 2 * (1 - t)}deg) scale(${lerp(.9, 1, t)})`; v.style.opacity = t > 0 ? 1 : 0; v.style.zIndex = i; vis(v, t > .02 && cl(p, .74, .86) < .5); });
+    pvs.forEach((v, i) => { const s = .47 + i * .035, t = ease(cl(p, s, s + .08)); v.style.transform = `translateY(${(1 - t) * vh * .9}px) rotate(${(i % 2 ? 1 : -1) * 2 * (1 - t)}deg) scale(${lerp(.9, 1, t)})`; v.style.opacity = t > 0 ? 1 : 0; v.style.zIndex = i; vis(v, t > .02 && cl(p, .72, .98) < .6); });
     // the end screen
     const e = ease(cl(p, .72, .98)); end.style.transform = `translateY(${(1 - e) * 105}vh)`; vis(end, e > .02);
     rail.classList.toggle('on-dark', e > .5); prog.classList.toggle('on-dark', e > .5); document.body.classList.toggle('j-dark', e > .5);
@@ -57,8 +57,9 @@
     const max = maxScroll(), p = max > 0 ? cl(scrollY / max, 0, 1) : 0; if (p === last) return; last = p; render(p);
   }
   const queue = () => { if (!raf) raf = requestAnimationFrame(update); };
-  let settleT = 0; const settle = () => { if (flow.matches || calm || busy) return; const i = nearest(), to = STOPS[i] * maxScroll(); if (Math.abs(scrollY - to) > 3) goTo(i); };
-  addEventListener('scroll', () => { queue(); clearTimeout(settleT); settleT = setTimeout(settle, 420); }, { passive: true }); addEventListener('resize', () => { needMeasure = true; queue(); }); flow.addEventListener('change', () => { last = -1; needMeasure = true; queue(); });
+  let settleT = 0, held = false; const settle = () => { if (flow.matches || calm || busy || held) return; const i = nearest(), to = STOPS[i] * maxScroll(); if (Math.abs(scrollY - to) > 3) goTo(i); };
+  addEventListener('pointerdown', () => { held = true; }, true); addEventListener('pointerup', () => { held = false; clearTimeout(settleT); settleT = setTimeout(settle, 300); }, true); addEventListener('pointercancel', () => { held = false; }, true);
+  addEventListener('scroll', () => { queue(); clearTimeout(settleT); settleT = setTimeout(settle, 700); }, { passive: true }); addEventListener('resize', () => { needMeasure = true; queue(); }); flow.addEventListener('change', () => { last = -1; needMeasure = true; queue(); });
   new MutationObserver(() => { needMeasure = true; queue(); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-font', 'data-size', 'data-palette'] });
   const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
 
@@ -74,21 +75,24 @@
     anim = requestAnimationFrame(tick);
   }
   const ignore = el => !!(el && el.closest && el.closest('.win,dialog,.style-panel,.askpanel,.bchatui,.more-menu,.lb,input,textarea,select,[contenteditable]'));
+  const canScroll = (el, dir) => { for (; el && el !== document.body; el = el.parentElement) { const cs = getComputedStyle(el); if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 1 && (dir > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0)) return true; } return false; };
   addEventListener('wheel', e => {
-    if (flow.matches || calm || e.ctrlKey || ignore(e.target)) return; e.preventDefault();
+    if (flow.matches || calm || e.ctrlKey || ignore(e.target) || canScroll(e.target, e.deltaY)) return; e.preventDefault();
     const now = performance.now(); if (busy || now < lockUntil) { lockUntil = Math.max(lockUntil, now + 140); return; }
     if (now - accT > 180) acc = 0; accT = now; acc += e.deltaY; if (Math.abs(acc) > 28) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
   }, { passive: false });
   addEventListener('keydown', e => {
-    if (flow.matches || calm || e.altKey || e.metaKey || e.ctrlKey || ignore(e.target) || document.querySelector('dialog[open]')) return;
+    if (flow.matches || calm || e.altKey || e.metaKey || e.ctrlKey || ignore(e.target) || document.querySelector('dialog[open]') || (e.target.closest && e.target.closest('.j-end') && canScroll(e.target, ['ArrowUp','PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey) ? -1 : 1))) return;
     const k = e.key, onBody = e.target === document.body || e.target === document.documentElement; let d = 0;
     if (k === 'ArrowDown' || k === 'PageDown') d = 1; else if (k === 'ArrowUp' || k === 'PageUp') d = -1; else if (k === ' ' && onBody) d = e.shiftKey ? -1 : 1;
     else if (k === 'Home') { e.preventDefault(); goTo(0); return; } else if (k === 'End') { e.preventDefault(); goTo(STOPS.length - 1); return; }
     if (d && (onBody || k !== ' ')) { e.preventDefault(); goTo(nearest() + d); }
   });
-  addEventListener('touchstart', e => { touchY = flow.matches ? null : e.touches[0].clientY; }, { passive: true });
-  addEventListener('touchmove', e => { if (touchY !== null && !calm && !ignore(e.target)) e.preventDefault(); }, { passive: false });
-  addEventListener('touchend', e => { if (touchY === null || calm || ignore(e.target)) { touchY = null; return; } const dy = touchY - e.changedTouches[0].clientY; touchY = null; if (Math.abs(dy) > 40) goTo(nearest() + (dy > 0 ? 1 : -1)); });
+  const tStart = e => { touchY = e.touches.length === 1 ? e.touches[0].clientY : null; };
+  const tMove = e => { if (touchY !== null && e.touches.length === 1 && !calm && !ignore(e.target) && !canScroll(e.target, touchY - e.touches[0].clientY)) e.preventDefault(); };
+  const tEnd = e => { if (touchY === null || calm || ignore(e.target)) { touchY = null; return; } const dy = touchY - e.changedTouches[0].clientY; touchY = null; if (Math.abs(dy) > 40 && !canScroll(e.target, dy)) goTo(nearest() + (dy > 0 ? 1 : -1)); };
+  let touching = false; const bindTouch = () => { const on = !flow.matches && !calm; if (on === touching) return; touching = on; const f = on ? 'addEventListener' : 'removeEventListener'; window[f]('touchstart', tStart, { passive: true }); window[f]('touchmove', tMove, { passive: false }); window[f]('touchend', tEnd); };
+  bindTouch(); flow.addEventListener('change', bindTouch);
   marks.forEach((li, i) => li.firstElementChild.addEventListener('click', () => { if (calm) scrollTo(0, Math.round(STOPS[i] * maxScroll() + (i ? 2 : 0))); else goTo(i, true); }));
   const go = top => scrollTo({ top, behavior: calm ? 'auto' : 'smooth' });
   document.getElementById('j-top')?.addEventListener('click', () => { if (calm) go(0); else goTo(0, true); const h = document.querySelector('.hero h1'); if (h) { h.tabIndex = -1; setTimeout(() => h.focus({ preventScroll: true }), calm ? 0 : 1500); } });

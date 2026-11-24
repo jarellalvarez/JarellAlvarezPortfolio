@@ -2,7 +2,7 @@
    Flow mode (phones, reduced motion): the same content as a plain stack. */
 .j-skip{position:fixed;left:.75rem;top:.75rem;z-index:200;padding:.5rem .9rem;border-radius:var(--r-pill);background:var(--ink);color:var(--bg);font-weight:600;transform:translateY(-200%)}
 .j-skip:focus-visible{transform:none}
-.j-stage{position:fixed;inset:0;z-index:0;pointer-events:none}
+.j-stage{position:fixed;inset:0;z-index:0;pointer-events:none} .desk{z-index:1}
 .j-track{height:520vh;pointer-events:none}
 .j-wins,.j-pvs{list-style:none;padding:0;margin:0}
 .j-win{position:absolute;left:calc(50% + 50px);top:15vh;width:min(600px,calc(100vw - 260px));display:block;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:var(--shadow);pointer-events:auto;visibility:hidden;opacity:0;will-change:transform,opacity}
@@ -86,7 +86,7 @@ body.j-on .desk{pointer-events:none} body.j-on nav.top *{pointer-events:auto} bo
 /* flow mode: phones and reduced motion */
 @media (max-width:720px),(max-height:560px),(prefers-reduced-motion:reduce){
   html,body{height:auto} body{overflow:visible!important;display:flex;flex-direction:column} html{overflow-y:auto}
-  .desk{position:relative!important;inset:auto!important;min-height:100svh;order:-1} /* the tour sits before the desk in the page source (stacking), but below it on screen */
+  .desk{position:relative!important;inset:auto!important;min-height:100svh}
   .j-track{height:auto;pointer-events:auto;padding:3rem 1rem calc(2rem + var(--badge-h))}
   .j-stage{position:static;pointer-events:auto;max-width:44rem;margin:0 auto}
   .j-win{position:relative;left:auto;top:auto;width:100%;visibility:visible;opacity:1;transform:none!important;margin:0 0 1.25rem}
@@ -99,3 +99,7 @@ body.j-on .desk{pointer-events:none} body.j-on nav.top *{pointer-events:auto} bo
   .j-end h2{font-size:clamp(2.6rem,12vw,4rem)}
 }
 @media (prefers-reduced-motion:reduce){.j-arrow{animation:none}}
+
+body.j-dark nav.top .logo{background:var(--bg)}
+@media (max-width:900px) and (min-width:721px){.j-prog{display:none}}
+.j-prog li.prev .lbl,.j-prog .prev a{opacity:.9}

@@ -39,7 +39,6 @@ const extras = [
   description="Senior product designer and design instructor in Vancouver. B2B SaaS, enterprise software and complex workflows made easier to use."
 >
   <body>
-<Journey wins={work.map(f => ({ href: f.href, label: f.label, text: f.previewText, preview: f.preview, ...f.detail }))} pvs={extras.map(f => ({ href: f.href === '#kind' ? '/kind-words/' : f.href, label: f.label, preview: f.preview, external: !!f.external }))} />
 <div class="desk">
   <HomeNav />
   <main class="hero">
@@ -66,6 +65,7 @@ const extras = [
   <Shapes />
   <Dock />
 </div>
+<Journey wins={work.map(f => ({ href: f.href, label: f.label, text: f.previewText, preview: f.preview, ...f.detail }))} pvs={extras.map(f => ({ href: f.href === '#kind' ? '/kind-words/' : f.href, label: f.label, preview: f.preview, external: !!f.external }))} />
 <Rail />
 
 <Window />

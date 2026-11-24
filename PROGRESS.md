@@ -55,3 +55,9 @@ Branch: `claude/confident-wozniak-8n4wv1`. Nothing goes to `master`, no deploy, 
 | /work/mavi/ | 64 | 100 | 100 | 69 | 0.048 | 6.7 s |
 
 Notes: SEO 69 on MAVI is the intentional `noindex` on locked pages. MAVI performance is low because the locked images are embedded (base64) in the encrypted page and the test server does not gzip; the home page scored about 96 earlier on a compressing server, so re-measure on Netlify or Nginx. Small CLS on case studies comes from images in the encrypted part before they have a size (width/height are set for public images only through `<picture>`; locked images also carry width/height, so this is worth a look after launch).
+
+## Tour round 3 review fixes (Nov 24)
+- Guided scroll, 2x2 previews, logo stays top left, bigger helper with calm bubbles, bottom bar, smaller progress marks, scroll hint spacing.
+- Opus review fixes: hero and shapes inert earlier, logo visible on the dark end screen, tour now after the desk in source order (tab order matches screen), scrollable end screen keeps its own scroll, pinch zoom allowed, touch handlers only bound in stage mode, idle snap waits for scrollbar drag to end.
+- Checks: 52 tests, axe clean at 6 stops light and dark, guided stepping, phone alignment at 5 sizes.
+- Not shipped: waiting on Jarell's "ship it".
