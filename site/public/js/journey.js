@@ -81,8 +81,8 @@
   addEventListener('wheel', e => {
     if (flow.matches || calm || e.ctrlKey || ignore(e.target) || canScroll(e.target, e.deltaY)) return; if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; e.preventDefault();
     // a flick that speeds up again after the last one fades is a new gesture: it moves on right away, even mid-glide; the tail of one flick is ignored
-    const now = performance.now(), ad = Math.abs(e.deltaY), fresh = ad > lastAbs + 3 && now - accT > 40; lastAbs = ad;
-    if (busy || now < lockUntil) { if (fresh && ad > 8) { const cur = busy && aim >= 0 ? aim : nearest(), d = e.deltaY > 0 ? 1 : -1; accT = now; goTo(cur + d, true); } else lockUntil = Math.max(lockUntil, now + 60); accT = now; return; }
+    const now = performance.now(), ad = Math.abs(e.deltaY), fresh = (ad > lastAbs + 3 && now - accT > 40) || now - accT > 120; lastAbs = ad;
+    if (busy || now < lockUntil) { if (fresh && ad > 4) { const cur = busy && aim >= 0 ? aim : nearest(), d = e.deltaY > 0 ? 1 : -1; accT = now; goTo(cur + d, true); } else lockUntil = Math.max(lockUntil, now + 60); accT = now; return; }
     if (now - accT > 180) acc = 0; accT = now; acc += e.deltaY; if (Math.abs(acc) > 3) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
   }, { passive: false });
   addEventListener('keydown', e => {
