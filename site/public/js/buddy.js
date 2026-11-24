@@ -9,7 +9,7 @@
     <svg viewBox="0 0 90 100" aria-hidden="true">
       <rect class="note" x="10" y="12" width="70" height="72" rx="4"/>
       <path class="drawn" d="M13 16h64v66H13z" transform="translate(0 0)"/>
-      <g class="brows"><path d="M24 30c5-4 11-4 15-1"/><path d="M50 29c5-3 11-2 15 2"/></g>
+      <g class="brows"><path class="bl" d="M24 30c5-4 11-4 15-1"/><path class="br" d="M50 29c5-3 11-2 15 2"/></g>
       <g class="eyes"><ellipse cx="32" cy="44" rx="8" ry="9"/><ellipse cx="58" cy="44" rx="8" ry="9"/>
         <circle class="pupil" cx="32" cy="45" r="3.6"/><circle class="pupil" cx="58" cy="45" r="3.6"/></g>
       <path class="mouth" d="M38 58c4 3 10 3 14 0"/>
@@ -51,7 +51,8 @@
     if (cur === m && say.classList.contains('on')) return; cur = m; clearInterval(typeT);
     say.classList.add('on'); say.classList.remove('pop'); void say.offsetWidth; if (!calm) say.classList.add('pop');
     if (calm) { say.textContent = m; return; }
-    let n = 0; say.textContent = ''; typeT = setInterval(() => { say.textContent = m.slice(0, n += 2); if (n >= m.length) { say.textContent = m; clearInterval(typeT); } }, 12);
+    say.textContent = ''; if (window.Talk) { window.Talk.say(m, n => { say.textContent = m.slice(0, n); }, null, { mood: 'happy' }); return; }
+    let n = 0; typeT = setInterval(() => { say.textContent = m.slice(0, n += 2); if (n >= m.length) { say.textContent = m; clearInterval(typeT); } }, 12);
   };
   document.addEventListener('journey:stop', e => {
     const m = TOUR[e.detail.i];
@@ -60,7 +61,6 @@
   });
   t = setTimeout(next, calm ? 600 : 3500);
   addEventListener('beforeunload', hush);
-  btn.addEventListener('pointerenter', () => btn.classList.add('curious')); btn.addEventListener('pointerleave', () => btn.classList.remove('curious'));
   btn.addEventListener('click', () => { hush(); act('hop'); window.toggleWin(btn); });
 
   window.buddyHop = () => act('hop');

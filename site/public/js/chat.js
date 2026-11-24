@@ -15,11 +15,11 @@
     const log = root.querySelector('.blog'), form = root.querySelector('form'), input = form.querySelector('input'), menu = root.querySelector('.bmenu'), pills = root.querySelector('.bpills');
     const add = (who, html) => { const li = document.createElement('li'); li.className = who; li.innerHTML = html; log.append(li); log.scrollTop = log.scrollHeight; return li; };
     // a bot answer types in while the helper's mouth moves with it (the full text stays available to screen readers from the start)
-    const speak = li => {
+    const speak = (li, mood) => {
       const p = li.querySelector('p'); if (!p || !window.Talk) return; const full = p.textContent, rest = [...li.children].filter(x => x !== p);
       p.innerHTML = '<span class="sr"></span><span class="tw" aria-hidden="true"></span>'; p.firstChild.textContent = full; const tw = p.lastChild;
       rest.forEach(x => { x.hidden = true; });
-      const h = window.Talk.say(full, n => { tw.textContent = full.slice(0, n); log.scrollTop = log.scrollHeight; }, () => { p.textContent = full; rest.forEach(x => { x.hidden = false; x.classList.add('bfade'); }); log.scrollTop = log.scrollHeight; });
+      const h = window.Talk.say(full, n => { tw.textContent = full.slice(0, n); log.scrollTop = log.scrollHeight; }, () => { p.textContent = full; rest.forEach(x => { x.hidden = false; x.classList.add('bfade'); }); log.scrollTop = log.scrollHeight; }, { mood });
       li.addEventListener('click', () => h.finish && h.finish(), { once: true });
     };
     let data = [], lastGroup = null;
@@ -35,12 +35,13 @@
     const answer = async (q, typed) => {
       closeMenu(); remember(q); add('me', esc(q));
       const hit = window.Ask?.find(q)[0];
-      if (hit) { lastGroup = hit.group; speak(add('bot', `<p>${esc(hit.a)}</p>${hit.link ? `<a href="${esc(hit.link)}"${/^https?:/.test(hit.link) ? ' target="_blank" rel="noopener"' : ''}>${hit.link.startsWith('mailto') ? 'Email Jarell' : 'See more'}</a>` : ''}`)); }
+      if (hit) { lastGroup = hit.group; speak(add('bot', `<p>${esc(hit.a)}</p>${hit.link ? `<a href="${esc(hit.link)}"${/^https?:/.test(hit.link) ? ' target="_blank" rel="noopener"' : ''}>${hit.link.startsWith('mailto') ? 'Email Jarell' : 'See more'}</a>` : ''}`), 'happy'); }
       else {
-        const wait = add('bot', '<p class="dots" aria-label="Thinking">…</p>'); let ai = null;
+        const wait = add('bot', '<p class="dots" aria-label="Thinking">…</p>'); let ai = null; window.Face?.think(true);
         try { ai = await window.askFallback?.(q); } catch {}
+        window.Face?.think(false);
         wait.innerHTML = ai ? `<p>${esc(ai)}</p><small>AI answer, based on Jarell's site. It can be wrong.</small>` : `<p>I don't have a written answer for that yet.</p>${mail(q)}`;
-        log.scrollTop = log.scrollHeight; speak(wait);
+        log.scrollTop = log.scrollHeight; speak(wait, ai ? 'happy' : 'sorry');
       }
       renderPills(typed ? 1 : 3); window.buddyHop?.();
     };
@@ -57,7 +58,7 @@
       if (e.key === 'ArrowDown' || e.key === 'ArrowUp') { e.preventDefault(); it[(i + (e.key === 'ArrowDown' ? 1 : -1) + it.length) % it.length].focus(); } });
     root.addEventListener('pointerdown', e => { if (!menu.hidden && !e.target.closest('.bmenu,.bmore')) closeMenu(); });
     form.onsubmit = e => { e.preventDefault(); const q = input.value.trim(); if (q) { input.value = ''; answer(q, true); } };
-    add('bot', '<p>Hi! I can answer questions about Jarell\'s work, experience and life outside work. Pick a question below or type your own.</p>');
+    speak(add('bot', '<p>Hi! I can answer questions about Jarell\'s work, experience and life outside work. Pick a question below or type your own.</p>'), 'happy');
     try { data = await window.Ask.load(); renderPills(); }
     catch { add('bot', '<p>Answers did not load. <a href="mailto:jarellalvarez@gmail.com">Email Jarell</a>.</p>'); }
   };

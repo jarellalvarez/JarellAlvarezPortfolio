@@ -356,7 +356,7 @@ main.hero .role{color:var(--pop)}
 .bbtn .eyes ellipse{fill:var(--surface)}
 .bbtn .pupil{fill:var(--ink);stroke:none}
 .bbtn .brows,.bbtn .eyes{transition:transform .18s var(--spring)}
-.bbtn.curious .brows{transform:translateY(-4px)}
+
 .bbtn.blink .eyes{transform:scaleY(.1);transform-origin:50% 44px;transform-box:view-box}
 .bbtn.wiggle{animation:bwig .7s ease-in-out}
 .bbtn.tap{animation:btap .8s ease-in-out}
@@ -514,3 +514,10 @@ main.hero .role{color:var(--pop)}
 /* talking: the mouth poses and head punches are drawn by talk.js; the tongue line and the brows share the face's line style */
 .bbtn .tongue,.ask-mini .tongue{stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;opacity:.55}
 .bbtn .brows{transition:transform .12s cubic-bezier(.3,1.5,.5,1)}
+/* face moods: brows, eyes and pupils ease between expressions; the open mouth has a light inside and a tongue line */
+.bbtn .brows path,.ask-mini .brows path,.bbtn .eyes ellipse,.ask-mini .eyes ellipse{transition:transform .16s cubic-bezier(.3,1.4,.5,1)}
+.bbtn .pupil,.ask-mini .pupil{transition:translate .2s cubic-bezier(.3,1.4,.5,1),opacity .1s}
+.bbtn .brows,.ask-mini .brows{transform:none!important}
+.ask-mini .brows path{stroke-width:3.6}
+.bbtn .mouth,.ask-mini .mouth{transition:fill .1s}
+.bbtn,.ask-mini{transition:rotate .22s cubic-bezier(.3,1.4,.5,1)}
