@@ -47,11 +47,11 @@
   // while the scroll tour plays, the helper always shows the line for the stop you are on (it stays until the next stop, and comes back when you scroll up)
   const TOUR = { 1: 'This is MAVI, a client portal I led from brief to build.', 2: 'Copperleaf: research for an enterprise tool, shipped as a guide.', 3: 'UI Avenue, a Shopify analytics app I helped start.', 4: 'A few more places: about me, community, photos and kind words.', 5: "That's the tour. Ask me anything below." };
   let typeT = 0, cur = '';
-  const show = m => {
+  const show = (m, mood = 'happy') => {
     if (cur === m && say.classList.contains('on')) return; cur = m; clearInterval(typeT);
     say.classList.add('on'); say.classList.remove('pop'); void say.offsetWidth; if (!calm) say.classList.add('pop');
     if (calm) { say.textContent = m; return; }
-    say.textContent = ''; if (window.Talk) { window.Talk.say(m, n => { say.textContent = m.slice(0, n); }, null, { mood: 'happy' }); return; }
+    say.textContent = ''; if (window.Talk) { window.Talk.say(m, n => { say.textContent = m.slice(0, n); }, null, { mood }); return; }
     let n = 0; typeT = setInterval(() => { say.textContent = m.slice(0, n += 2); if (n >= m.length) { say.textContent = m; clearInterval(typeT); } }, 12);
   };
   document.addEventListener('journey:stop', e => {
@@ -63,5 +63,7 @@
   addEventListener('beforeunload', hush);
   btn.addEventListener('click', () => { hush(); act('hop'); window.toggleWin(btn); });
 
+  // the face can say a line on its own (used when the visitor looks like leaving)
+  let sayT = 0; window.buddySay = m => { if (open() || document.body.classList.contains('j-on') && false) return; clearTimeout(sayT); show(m, 'sorry'); sayT = setTimeout(() => { say.classList.remove('on'); cur = ''; }, 4200); };
   window.buddyHop = () => act('hop');
 })();

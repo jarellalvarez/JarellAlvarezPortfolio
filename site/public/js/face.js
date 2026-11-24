@@ -4,7 +4,7 @@
    Reduced motion: every method does nothing, the face stays still. */
 (() => {
   const NS = 'http://www.w3.org/2000/svg', calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const API = ['pose', 'mouthRelease', 'flash', 'nod', 'wink', 'punch', 'tilt', 'glance', 'think', 'typing', 'talkMood', 'hover'];
+  const API = ['pose', 'mouthRelease', 'flash', 'nod', 'wink', 'punch', 'tilt', 'glance', 'think', 'typing', 'talkMood', 'hover', 'wave', 'hello', 'leaving', 'back'];
   if (calm) { window.Face = Object.fromEntries(API.map(k => [k, () => {}])); return; }
 
   // mouth poses: [width, top lip curve, bottom lip curve] in the face's 90 x 100 units. Curves above the line (negative) turn the mouth down.
@@ -19,6 +19,8 @@
     curious:   { bl: [0, 3],   br: [-6, -2], eye: [1, 1],     pup: [1.8, -1],  mouth: 'pursed',  tilt: -5 },
     concerned: { bl: [-3, -15], br: [-3, 15], eye: [.94, .92], pup: [0, 1.4],  mouth: 'frown',   tilt: 2 },
     sorry:     { bl: [-2, -18], br: [-2, 18], eye: [.9, .8],   pup: [0, 1.8],   mouth: 'frown2',  tilt: -4 },
+    leaving:   { bl: [-6, -18], br: [-6, 18], eye: [1.12, 1.16], pup: [0, -3.2], mouth: 'frown2', tilt: -5 },
+    sleepy:    { bl: [3, 0],   br: [3, 0],   eye: [1, .22],   pup: [0, 2],     mouth: 'neutral', tilt: 0 },
     thinking:  { bl: [0, 2],   br: [-6, -3], eye: [1, 1],     pup: [2.8, -3],   mouth: 'pursed',  tilt: 4 },
   };
   const S = { flash: null, think: false, talk: null, typing: false, hover: false, lock: false, lift: false, tilt: 0, glance: null };
@@ -80,6 +82,26 @@
       faces().forEach(f => { const e = f.eyes[1], p = f.pupils[1]; if (!e) return; e.style.transform = 'scale(1.05,.08)'; if (p) p.style.opacity = 0; });
       Face.flash('delight', 760); setTimeout(() => faces().forEach(f => { const p = f.pupils[1]; if (p) p.style.opacity = ''; }), 300); setTimeout(render, 320);
     },
+    // a wave: the head sways side to side a few times (slow and small when it is a sad goodbye)
+    wave(sad) {
+      const a = sad ? 4 : 11, d = sad ? 1500 : 950;
+      heads().forEach(h => h.animate([{ rotate: '0deg', translate: '0 0' }, { rotate: `${-a}deg`, translate: `0 ${sad ? 0 : -5}px`, offset: .2 }, { rotate: `${a}deg`, offset: .4 }, { rotate: `${-a * .8}deg`, offset: .6 }, { rotate: `${a * .6}deg`, offset: .8 }, { rotate: '0deg', translate: '0 0' }],
+        { duration: d, easing: 'ease-in-out', composite: 'add' }));
+    },
+    // arriving: it wakes with wide eyes, waves and grins. The big hello is once a visit; later pages get a small smile.
+    hello() {
+      let first = true; try { first = !sessionStorage.getItem('hello'); sessionStorage.setItem('hello', '1'); } catch {}
+      if (!first) return Face.flash('happy', 1100);
+      Face.flash('sleepy', 380); setTimeout(() => { Face.flash('wow', 520); Face.punch(1); }, 380);
+      setTimeout(() => { Face.flash('delight', 1500); Face.wave(); }, 900);
+    },
+    // about to leave: worried face, a slow sad wave, and (on the homepage) a line from the helper
+    leaving() {
+      const now = performance.now(); if (now - (Face._left || -1e9) < 20000 || S.talk || S.typing) return; Face._left = now;
+      Face.flash('leaving', 2600); Face.wave(true);
+      window.buddySay && window.buddySay("Leaving already? Ask me anything first.");
+    },
+    back() { Face.flash('delight', 1400); Face.wave(); },
     // a stressed syllable: tilt and bounce (alternating sides), brows lift, eyes widen a touch
     punch(side) {
       heads().forEach(h => { const s = (h.getBoundingClientRect().width || 60) / 91; h.animate([
@@ -114,6 +136,13 @@
     if (t.closest('[data-copy], .mail')) return Face.wink();
     Face.nod();
   }, true);
+  // heading for the exit: the cursor leaves through the top of the window (tabs, address bar, close), or a "leave the site" prompt opens
+  document.addEventListener('mouseout', e => { if (!e.relatedTarget && e.clientY <= 6 && e.clientX > 0 && e.clientX < innerWidth) Face.leaving(); });
+  new MutationObserver(() => { if (document.querySelector('dialog#leave[open]')) Face.flash('sorry', 2400); }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] });
+  // back after being away
+  let away = false; document.addEventListener('visibilitychange', () => { if (document.hidden) away = true; else if (away) { away = false; setTimeout(Face.back, 250); } });
+  // arriving
+  const hi = () => setTimeout(Face.hello, 600); if (document.readyState === 'complete') hi(); else addEventListener('load', hi, { once: true });
   // the scroll tour: a nod at each new stop
   document.addEventListener('journey:stop', e => { if (lastStop !== undefined && e.detail.i !== lastStop) Face.nod(.8); lastStop = e.detail.i; });
   // idle: now and then it glances around, raises a brow or smiles
