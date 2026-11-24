@@ -511,6 +511,6 @@ main.hero .role{color:var(--pop)}
   .vfp::after{content:"\2197";font-weight:500}
   .vfp:active{transform:scale(.97)}
 }
-/* the helper bobs gently while it talks */
-.bbtn.talking{animation:btalk .55s ease-in-out infinite alternate}
-@keyframes btalk{from{rotate:-1.6deg;translate:0 0}to{rotate:1.6deg;translate:0 -2px}}
+/* talking: the mouth poses and head punches are drawn by talk.js; the tongue line and the brows share the face's line style */
+.bbtn .tongue,.ask-mini .tongue{stroke:var(--ink);stroke-width:1.6;stroke-linecap:round;opacity:.55}
+.bbtn .brows{transition:transform .12s cubic-bezier(.3,1.5,.5,1)}
