@@ -6,6 +6,7 @@
   .dock .dl{display:block;font-size:.75rem;font-weight:500;line-height:1}
   .dock .tip{display:none}
   .dock-ask svg{width:22px;height:22px;stroke-width:7.5}
+  body:has(.style-panel.on) .dock{z-index:70}
   .dock .dock-ask{cursor:pointer}
   .dock .late{display:none} body.bar-full .dock .late{display:flex}
   .desk{z-index:auto!important}
