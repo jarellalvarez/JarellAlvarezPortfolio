@@ -208,3 +208,19 @@ main h2.rv,main .h-sec.rv{transform:translateX(-14px)}
 .btn:active,.said:active,.cards a:active,.list a:active{transform:scale(.98)}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
 @media print{.rv{opacity:1!important;transform:none!important}}
+
+/* Phones: the top bar is just the name, More and Style. Work, Resume, Contact and Ask live in the bottom bar. */
+.hmore{display:none;position:relative}
+@media (max-width:720px){
+  .hmore{display:block}
+  header.top .ask-mini.hide-m{display:none!important}
+}
+.hmore-btn{display:inline-flex;align-items:center;gap:.35rem;min-height:44px;padding:0 .5rem;border:0;background:none;color:var(--ink);font:inherit;font-weight:500;cursor:pointer;border-radius:12px}
+.hmore-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .25s var(--ease-out,ease-out)}
+.hmore-btn[aria-expanded=true] svg{transform:rotate(180deg)}
+.hmore-menu{position:absolute;right:0;top:calc(100% + 6px);z-index:60;min-width:11rem;list-style:none;margin:0;padding:.35rem;border-radius:14px;background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);transform-origin:100% 0}
+.hmore-menu:not([hidden]){animation:hm-in .2s var(--ease-out,ease-out)}
+.hmore-menu a{display:flex!important;align-items:center;min-height:44px;padding:0 .8rem!important;border-radius:10px;justify-content:flex-start!important;color:var(--ink)}
+.hmore-menu a:hover,.hmore-menu a:focus-visible{background:color-mix(in srgb,var(--ink) 8%,transparent)}
+@keyframes hm-in{from{opacity:0;transform:translateY(-6px) scale(.97)}}
+@media (prefers-reduced-motion:reduce){.hmore-menu:not([hidden]){animation:none}.hmore-btn svg{transition:none}}

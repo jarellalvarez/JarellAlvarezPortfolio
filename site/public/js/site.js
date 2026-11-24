@@ -72,3 +72,13 @@ document.querySelectorAll('.mail').forEach(b => {
   addEventListener('focusin', e => e.target.classList?.contains('rv') && e.target.classList.add('rv-in'));
   document.addEventListener('click', e => { const a = e.target.closest?.('.rm'); if (a) setTimeout(() => document.querySelectorAll('.rv').forEach(x => x.classList.add('rv-in')), 0); });
 })();
+
+// Phone header: More drop-down (Home, About, Community, Photography)
+(() => {
+  const btn = document.querySelector('.hmore-btn'), menu = document.getElementById('hmore-menu'); if (!btn || !menu) return;
+  const set = open => { menu.hidden = !open; btn.setAttribute('aria-expanded', open); };
+  btn.addEventListener('click', () => set(menu.hidden));
+  document.addEventListener('pointerdown', e => { if (!menu.hidden && !e.target.closest('.hmore')) set(false); });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !menu.hidden) { set(false); btn.focus(); } });
+  menu.addEventListener('click', () => set(false));
+})();

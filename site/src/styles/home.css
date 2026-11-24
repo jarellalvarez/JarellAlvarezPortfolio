@@ -140,7 +140,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
   .win,.win.max{left:0!important;top:0!important;width:100vw!important;height:100svh!important;border-radius:0;transform:none!important}
   .win.max .body{grid-template-columns:1fr} .win.max .toc{display:none}
   .win.max.contents .toc{display:block;position:absolute;inset:49px 0 0;background:var(--surface);z-index:4;border:0}
-  .bar{cursor:default} .max-btn{display:none!important} .toc-btn{display:grid}
+  .bar{cursor:default} .toc-btn{display:grid}
   .toys{display:none}
 }
 @media (prefers-reduced-motion:reduce){.toys i{animation:none!important}*{transition-duration:.01ms!important;scroll-behavior:auto!important}.folder svg,.peek{transform:none!important}.peek{left:calc(50% - 100px)}}
@@ -229,7 +229,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 @media (max-width:720px){
   .win .bar{padding-top:max(.45rem,env(safe-area-inset-top));min-height:56px}
   .win .read{padding-bottom:env(safe-area-inset-bottom)}
-  .win .light{width:44px;height:44px} .win .light::before{width:18px;height:18px} .win .light svg{opacity:1}
+  .win .light{width:38px;height:38px} .win .light::before{width:18px;height:18px} .win .light svg{opacity:1}
   .dock{margin-bottom:calc(.25rem + env(safe-area-inset-bottom))}
   .folder svg{width:68px;height:56px} .folder{padding:.6rem .1rem}
 }
@@ -271,7 +271,7 @@ article img{display:block;width:100%;height:auto;border-radius:8px;margin:1.5rem
 /* A folder whose window is tucked away */
 .folder.was-open{border-radius:16px;background:color-mix(in srgb,var(--ink) 6%,transparent);box-shadow:inset 0 0 0 1.5px color-mix(in srgb,var(--ink) 28%,transparent)}
 @media (max-width:720px){
-  .min-btn{display:none!important} .tray{display:none}
+  .tray{display:none}
   .tab{touch-action:auto;min-width:96px} .tab .tx{opacity:1}
 }
 .bar>.lights,.bar>.open-page,.bar>.toc-btn{flex:none}
@@ -495,3 +495,11 @@ main.hero .role{color:var(--pop)}
 .bsay.pop{animation:bsay-pop .32s cubic-bezier(.3,1.6,.5,1)}
 @keyframes bsay-pop{0%{transform:translateY(8px) scale(.85)}60%{transform:translateY(-2px) scale(1.04)}100%{transform:none}}
 @media (prefers-reduced-motion:reduce){.bsay.pop{animation:none}}
+
+/* Phones: expand fills the whole screen; the window can also be tucked back into its icon */
+@media (max-width:720px){
+  body .win.max{left:0!important;right:0!important;top:0!important;bottom:0!important;border-radius:0}
+  body .win.max .bar{padding-top:max(.45rem,env(safe-area-inset-top))}
+  body .win.max.contents .toc{inset:calc(56px + env(safe-area-inset-top)) 0 0}
+  .win .bar{gap:.15rem}
+}

@@ -1,15 +1,25 @@
 ---
 const { contact = '#contact' } = Astro.props;
 import StylePanel from './StylePanel.astro';
+import { links } from '../lib/links.mjs';
 ---
 <header class="top" id="top-bar">
   <a class="me" href="/">Jarell Alvarez</a>
   <span class="sp"></span>
-  <a href="/work/">Work</a>
-  <a href="/about/">About</a>
+  <a class="hide-m" href="/work/">Work</a>
+  <a class="hide-m" href="/about/">About</a>
   <a class="hide-m" href="/resume.pdf" target="_blank" rel="noopener">Resume</a>
   <a class="hide-m" href={contact}>Contact</a>
-  <button class="ask-mini" type="button" data-chat aria-label="Ask Jarell a question" title="Ask Jarell">
+  <div class="hmore">
+    <button class="hmore-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="hmore-menu">More <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 4.5L6 8l3.5-3.5"/></svg></button>
+    <ul class="hmore-menu" id="hmore-menu" hidden>
+      <li><a href="/">Home</a></li>
+      <li><a href="/about/">About</a></li>
+      <li><a href={links.vdc} target="_blank" rel="noopener">Community</a></li>
+      <li><a href={links.photography} target="_blank" rel="noopener">Photography</a></li>
+    </ul>
+  </div>
+  <button class="ask-mini hide-m" type="button" data-chat aria-label="Ask Jarell a question" title="Ask Jarell">
     <svg viewBox="0 0 90 100" aria-hidden="true"><rect class="pad" x="10" y="12" width="70" height="72" rx="6"/><g class="eyes"><ellipse cx="32" cy="44" rx="8" ry="9"/><ellipse cx="58" cy="44" rx="8" ry="9"/><circle class="pupil" cx="33" cy="45" r="3.6"/><circle class="pupil" cx="59" cy="45" r="3.6"/></g><path d="M38 60c4 3 10 3 14 0"/></svg>
   </button>
   <StylePanel />

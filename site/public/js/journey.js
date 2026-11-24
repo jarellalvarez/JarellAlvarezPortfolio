@@ -43,11 +43,12 @@
     marks.forEach((li, i) => { li.classList.toggle('on', i === cur); li.classList.toggle('prev', i === cur - 1); const b = li.firstElementChild; if (i === cur) b.setAttribute('aria-current', 'step'); else b.removeAttribute('aria-current'); });
     // three windows cascade, then recede
     const rec = ease(cl(p, .46, .56));
-    wins.forEach((w, i) => { const s = .06 + i * .14, t = ease(cl(p, s, s + .14)); w.style.transform = `translate(-50%,${(1 - t) * vh * 1.05 + i * 30 - rec * 70}px) rotate(${(i - 1) * 1.2 * t}deg) scale(${lerp(.94, 1, t) * lerp(1, .8, rec)})`; w.style.opacity = t > 0 ? lerp(1, .3, rec) : 0; w.style.zIndex = i; vis(w, t > .02 && rec < .98); });
+    wins.forEach((w, i) => { const s = .06 + i * .14, t = ease(cl(p, s, s + .14)); w.style.transform = `translate(-50%,${(1 - t) * vh * 1.05 + i * 30 - rec * 70}px) rotate(${(i - 1) * 1.2 * t}deg) scale(${lerp(.94, 1, t) * lerp(1, .8, rec)})`; w.style.opacity = t > 0 ? 1 : 0; w.style.zIndex = i; vis(w, t > .02 && rec < .98); });
     // four previews stack into a 2x2 grid
-    pvs.forEach((v, i) => { const s = .47 + i * .035, t = ease(cl(p, s, s + .08)); v.style.transform = `translateY(${(1 - t) * vh * .9}px) rotate(${(i % 2 ? 1 : -1) * 2 * (1 - t)}deg) scale(${lerp(.9, 1, t)})`; v.style.opacity = t > 0 ? 1 : 0; v.style.zIndex = i; vis(v, t > .02 && cl(p, .72, .98) < .6); });
+    pvs.forEach((v, i) => { const s = .47 + i * .035, t = ease(cl(p, s, s + .08)); const o = ease(cl(p, .69 + (pvs.length - 1 - i) * .035, .69 + (pvs.length - 1 - i) * .035 + .1)), k = Math.min(t, 1 - o);
+      v.style.transform = `translateY(${(1 - k) * vh * .9}px) rotate(${(i % 2 ? 1 : -1) * 2 * (1 - k)}deg) scale(${lerp(.9, 1, k)})`; v.style.opacity = t > 0 ? 1 : 0; v.style.zIndex = i; vis(v, t > .02 && o < .98); });
     // the end screen
-    const e = ease(cl(p, .72, .98)); end.style.transform = `translateY(${(1 - e) * 105}vh)`; vis(end, e > .02);
+    const e = ease(cl(p, .74, 1)); end.style.transform = `translateY(${(1 - e) * 105}vh)`; vis(end, e > .02);
     rail.classList.toggle('on-dark', e > .5); prog.classList.toggle('on-dark', e > .5); document.body.classList.toggle('j-dark', e > .5);
   }
   function update() {
@@ -65,22 +66,24 @@
 
   /* Guided scroll: a gesture plays the whole next stage (the same idea as a stepped, scene-by-scene portfolio) */
   let lastStop = -1; const announce = i => { if (i === lastStop) return; lastStop = i; document.dispatchEvent(new CustomEvent('journey:stop', { detail: { i } })); };
-  let anim = 0, busy = false, lockUntil = 0, acc = 0, accT = 0, touchY = null;
+  let anim = 0, busy = false, lockUntil = 0, acc = 0, accT = 0, touchY = null, aim = -1, lastAbs = 0;
   const nearest = () => { const p = maxScroll() > 0 ? scrollY / maxScroll() : 0; let b = 0, d = 9; STOPS.forEach((s, i) => { const dd = Math.abs(s - p); if (dd < d) { d = dd; b = i; } }); return b; };
   const ez = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   function goTo(i, force) {
     if (flow.matches || calm || i < 0 || i >= STOPS.length || (busy && !force)) return;
     cancelAnimationFrame(anim); const from = scrollY, to = Math.round(STOPS[i] * maxScroll()), dist = Math.abs(to - from); if (!dist) { busy = false; return; }
-    busy = true; const dur = Math.min(1500, 650 + dist / Math.max(1, maxScroll()) * 3000), t0 = performance.now();
-    const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 450; announce(i); } };
+    aim = i; busy = true; const dur = Math.min(1050, 480 + dist / Math.max(1, maxScroll()) * 2200), t0 = performance.now();
+    const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 120; announce(i); } };
     anim = requestAnimationFrame(tick);
   }
   const ignore = el => !!(el && el.closest && el.closest('.win,dialog,.style-panel,.askpanel,.bchatui,.more-menu,.lb,input,textarea,select,[contenteditable]'));
   const canScroll = (el, dir) => { for (; el && el !== document.body; el = el.parentElement) { const cs = getComputedStyle(el); if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 1 && (dir > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0)) return true; } return false; };
   addEventListener('wheel', e => {
     if (flow.matches || calm || e.ctrlKey || ignore(e.target) || canScroll(e.target, e.deltaY)) return; if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; e.preventDefault();
-    const now = performance.now(); if (busy || now < lockUntil) { lockUntil = Math.max(lockUntil, now + 140); return; }
-    if (now - accT > 180) acc = 0; accT = now; acc += e.deltaY; if (Math.abs(acc) > 6) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
+    // a flick that speeds up again after the last one fades is a new gesture: it moves on right away, even mid-glide; the tail of one flick is ignored
+    const now = performance.now(), ad = Math.abs(e.deltaY), fresh = ad > lastAbs + 3 && now - accT > 40; lastAbs = ad;
+    if (busy || now < lockUntil) { if (fresh && ad > 8) { const cur = busy && aim >= 0 ? aim : nearest(), d = e.deltaY > 0 ? 1 : -1; accT = now; goTo(cur + d, true); } else lockUntil = Math.max(lockUntil, now + 60); accT = now; return; }
+    if (now - accT > 180) acc = 0; accT = now; acc += e.deltaY; if (Math.abs(acc) > 3) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
   }, { passive: false });
   addEventListener('keydown', e => {
     if (flow.matches || calm || e.altKey || e.metaKey || e.ctrlKey || ignore(e.target) || document.querySelector('dialog[open]') || (e.target.closest && e.target.closest('.j-end') && canScroll(e.target, ['ArrowUp','PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey) ? -1 : 1))) return;
@@ -91,7 +94,7 @@
   });
   const tStart = e => { touchY = e.touches.length === 1 ? e.touches[0].clientY : null; };
   const tMove = e => { if (touchY !== null && e.touches.length === 1 && !calm && !ignore(e.target) && !canScroll(e.target, touchY - e.touches[0].clientY)) e.preventDefault(); };
-  const tEnd = e => { if (touchY === null || calm || ignore(e.target)) { touchY = null; return; } const dy = touchY - e.changedTouches[0].clientY; touchY = null; if (Math.abs(dy) > 24 && !canScroll(e.target, dy)) goTo(nearest() + (dy > 0 ? 1 : -1)); };
+  const tEnd = e => { if (touchY === null || calm || ignore(e.target)) { touchY = null; return; } const dy = touchY - e.changedTouches[0].clientY; touchY = null; if (Math.abs(dy) > 14 && !canScroll(e.target, dy)) goTo(nearest() + (dy > 0 ? 1 : -1)); };
   let touching = false; const bindTouch = () => { const on = !flow.matches && !calm; if (on === touching) return; touching = on; const f = on ? 'addEventListener' : 'removeEventListener'; window[f]('touchstart', tStart, { passive: true }); window[f]('touchmove', tMove, { passive: false }); window[f]('touchend', tEnd); };
   bindTouch(); flow.addEventListener('change', bindTouch);
   marks.forEach((li, i) => li.firstElementChild.addEventListener('click', () => { if (calm) scrollTo(0, Math.round(STOPS[i] * maxScroll() + (i ? 2 : 0))); else goTo(i, true); }));
@@ -103,7 +106,15 @@
   const leave = document.getElementById('leave'), lp = document.getElementById('leave-p');
   if (leave && lp) document.querySelectorAll('.j-pv a[target=_blank], .j-chip[target=_blank]').forEach(a => { let host = ''; try { host = new URL(a.href).host; } catch {} if (!host || host === location.host) return;
     a.addEventListener('click', e => { e.preventDefault(); const name = (a.querySelector('h3') || a).textContent.trim(); lp.textContent = `This opens ${name} (${host}) in a new tab.`; leave.returnValue = ''; leave.showModal(); leave.onclose = () => { if (leave.returnValue === 'go') window.open(a.href, '_blank', 'noopener'); }; }); });
-  const art = () => document.querySelectorAll('.j-arrow,.j-art').forEach(d => { const I = window.Illustrations; if (I) I.mount(d).then(() => I.play(d, 'in')); });
+  const art = () => document.querySelectorAll('.j-arrow,.j-art').forEach(d => { const I = window.Illustrations; if (!I) return; I.mount(d).then(() => { if (!d.classList.contains('j-art')) I.play(d, 'in'); }); });
+  // the two drawings on the last screen play again when you hover or tap them
+  document.querySelectorAll('.j-art').forEach(d => { let on = false; const again = () => { if (on || !window.Illustrations) return; on = true; window.Illustrations.play(d, 'play'); setTimeout(() => { on = false; }, 1400); }; d.addEventListener('pointerenter', again); d.addEventListener('click', again); });
   if (document.readyState === 'complete') art(); else addEventListener('load', art);
   document.fonts?.ready.then(() => { needMeasure = true; queue(); }); needMeasure = true; queue();
+  /* Phones: the same cards, previews and end screen rise in as they scroll into view (a lighter echo of the desktop cascade) */
+  if (!calm && 'IntersectionObserver' in window && matchMedia('(max-width:720px)').matches) {
+    const els = [...stage.querySelectorAll('.j-win, .j-pv, .j-end h2, .j-end p, .j-chips li')];
+    const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('m-in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: .08 });
+    els.forEach((el, i) => { el.classList.add('m-rv'); el.style.setProperty('--md', (el.matches('.j-chips li') ? (i % 8) * 45 : 0) + 'ms'); if (el.matches('.j-win')) el.style.setProperty('--mr', (els.indexOf(el) % 2 ? 1.2 : -1.2) + 'deg'); io.observe(el); });
+  }
 })();

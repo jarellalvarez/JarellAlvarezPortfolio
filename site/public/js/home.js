@@ -267,20 +267,23 @@ function minimize(w,away){
   const item=w._active._opener;
   const done=()=>{if(!w._min)return;w.classList.add('minimized');if(!away)item?.focus({preventScroll:true})};
   if(calm||!item)return done();
+  if(mobile())return void w.animate([{translate:'0 0',scale:1,opacity:1},{translate:'0 36px',scale:.94,opacity:0}],{duration:200,easing:'cubic-bezier(.4,0,.6,1)'}).finished.then(done,done);
   const r=w.getBoundingClientRect(),t=item.getBoundingClientRect();
   w.animate([{transform:w.style.transform,opacity:1},{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top+t.height/2-r.height/2}px) scale(.06)`,opacity:0}],{duration:220,easing:'cubic-bezier(.4,0,.6,1)'}).onfinish=done;
 }
 function restore(w){
   const t=w._active._opener?.getBoundingClientRect();
   w._min=false;w.classList.remove('minimized');focusWin(w);
-  if(!calm&&t){const r=w.getBoundingClientRect();
+  if(!calm&&mobile())w.animate([{translate:'0 48px',scale:.94,opacity:0},{translate:'0 0',scale:1,opacity:1}],{duration:300,easing:'cubic-bezier(.2,1,.3,1)'});
+  else if(!calm&&t){const r=w.getBoundingClientRect();
     w.animate([{transform:`translate(${t.left+t.width/2-r.width/2}px,${t.top+t.height/2-r.height/2}px) scale(.06)`,opacity:0},{transform:w.style.transform,opacity:1}],{duration:240,easing:'cubic-bezier(.2,1.2,.4,1)'})}
   renderTray();w._active.querySelector('.read').focus({preventScroll:true});
 }
 
 /* Windows grow out of the folder that opened them and shrink back into it on close */
 function grow(w,from,back){
-  if(calm||!from||mobile()||w.classList.contains('max'))return Promise.resolve();
+  if(calm||!from||w.classList.contains('max'))return Promise.resolve();
+  if(mobile())return w.animate(back?[{translate:'0 0',scale:1,opacity:1},{translate:'0 40px',scale:.94,opacity:0}]:[{translate:'0 56px',scale:.94,opacity:0},{translate:'0 0',scale:1,opacity:1}],{duration:back?200:320,easing:back?'cubic-bezier(.4,0,.6,1)':'cubic-bezier(.2,1,.3,1)'}).finished.catch(()=>{});
   const f=from.getBoundingClientRect(),r=w.getBoundingClientRect();
   const start=`translate(${f.left+f.width/2-r.width/2}px,${f.top+f.height/2-r.height/2}px) scale(.12)`, end=w.style.transform||'none';
   const a=w.animate(back?[{transform:end,opacity:1},{transform:start,opacity:0}]:[{transform:start,opacity:0},{transform:end,opacity:1}],
