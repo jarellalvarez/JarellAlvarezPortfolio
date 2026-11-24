@@ -55,8 +55,8 @@
   };
   document.addEventListener('journey:stop', e => {
     const m = TOUR[e.detail.i];
-    if (!m) { if (cur) { cur = ''; clearInterval(typeT); say.classList.remove('on'); } return; }  // back on the home screen: the idle lines take over
-    if (open()) return; clearTimeout(t); show(m);
+    if (!m) { if (cur) { cur = ''; clearInterval(typeT); say.classList.remove('on'); } if (!quiet) { clearTimeout(t); t = setTimeout(next, 8000); } return; }  // back on the home screen: the idle lines take over
+    if (open()) { cur = ''; say.classList.remove('on'); return; } clearTimeout(t); show(m);
   });
   t = setTimeout(next, calm ? 600 : 3500);
   addEventListener('beforeunload', hush);

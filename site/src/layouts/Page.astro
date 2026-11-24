@@ -9,7 +9,7 @@ const { cta = true, bodyClass = '', ...rest } = Astro.props;
 ---
 <Base {...rest}>
   <body class={bodyClass}>
-    <Header contact={cta ? '#contact' : '/#contact'} />
+    <Header contact={cta ? '#contact' : '/'} />
     <main>
       <a class="back" href="/" id="back-link">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11.5L12 4.5l8 7"/><path d="M6.5 10v9.5h11V10"/><path d="M10 19.5v-5h4v5"/></svg>
@@ -18,7 +18,7 @@ const { cta = true, bodyClass = '', ...rest } = Astro.props;
       <slot />
       {cta && <Cta />}
     </main>
-    <Dock sub={true} contact={cta ? '#contact' : '/#contact'} />
+    <Dock sub={true} contact={cta ? '#contact' : '/'} />
     <slot name="after" />
     <script is:inline src="/js/site.js"></script>
   </body>

@@ -69,4 +69,6 @@ document.querySelectorAll('.mail').forEach(b => {
   const vh = innerHeight; els.forEach((e, i) => { if (e.getBoundingClientRect().top > vh * .92) { e.classList.add('rv'); e.style.setProperty('--rd', (i % 3) * 60 + 'ms'); } });
   const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('rv-in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: .05 });
   els.filter(e => e.classList.contains('rv')).forEach(e => io.observe(e));
+  addEventListener('focusin', e => e.target.classList?.contains('rv') && e.target.classList.add('rv-in'));
+  document.addEventListener('click', e => { const a = e.target.closest?.('.rm'); if (a) setTimeout(() => document.querySelectorAll('.rv').forEach(x => x.classList.add('rv-in')), 0); });
 })();

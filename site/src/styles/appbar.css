@@ -10,7 +10,10 @@
   body.bar-full .desk .dock,body.bar-full .dock{gap:0}
   .buddy{transition:right .38s cubic-bezier(.2,.8,.2,1),bottom .38s cubic-bezier(.2,.8,.2,1),transform .38s cubic-bezier(.2,.8,.2,1);transform-origin:100% 100%}
   body.bar-full .buddy{right:.4rem!important;bottom:calc(.3rem + env(safe-area-inset-bottom))!important;transform:scale(.7)}
-  body.bar-full .dock{padding-right:5rem}
+  body.bar-full:has(.buddy) .dock{padding-right:5rem}
+  .buddy{pointer-events:none} .buddy .bbtn{pointer-events:auto}
+  body.bar-full .askpanel{height:calc(100svh - 5.5rem - 4.6rem - env(safe-area-inset-bottom))!important}
+  body.bar-full .buddy{min-width:44px}
   body>main{padding-bottom:6rem}
   .desk{padding-bottom:calc(5.5rem + env(safe-area-inset-bottom))!important}
   .buddy{right:calc(50% - 130px)!important}

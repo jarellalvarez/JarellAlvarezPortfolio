@@ -1,0 +1,4 @@
+# Opus audit of round 5 (Nov 24) and what was done
+Fixed: home Contact tap blocked by helper box; Back pill label restored to the real destination; leave-site dialog heading (h3); bar padding only when the helper exists; Ask panel no longer overlaps the bottom bar; wheel threshold 6px and ignores sideways swipes; idle helper lines resume at the top; reveal items show on focus, after Read more and in print; `/` instead of `/#contact` on pages without a contact block.
+Left for later: oversized preview-mavi.webp (1600px shown at 600px) and CTA face image (800px at 96px); width/height on 7 home images; phone home LCP 2.06s throttled (folder entrance animation); duplicate Ask buttons on inner pages.
+Performance (Playwright, throttled phone): home FCP .8s LCP 2.06s CLS .037; about LCP .76s; mavi LCP 1.1s. Desktop all under .25s, CLS under .04. No console errors.

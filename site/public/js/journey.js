@@ -78,9 +78,9 @@
   const ignore = el => !!(el && el.closest && el.closest('.win,dialog,.style-panel,.askpanel,.bchatui,.more-menu,.lb,input,textarea,select,[contenteditable]'));
   const canScroll = (el, dir) => { for (; el && el !== document.body; el = el.parentElement) { const cs = getComputedStyle(el); if (/(auto|scroll)/.test(cs.overflowY) && el.scrollHeight > el.clientHeight + 1 && (dir > 0 ? el.scrollTop + el.clientHeight < el.scrollHeight - 1 : el.scrollTop > 0)) return true; } return false; };
   addEventListener('wheel', e => {
-    if (flow.matches || calm || e.ctrlKey || ignore(e.target) || canScroll(e.target, e.deltaY)) return; e.preventDefault();
+    if (flow.matches || calm || e.ctrlKey || ignore(e.target) || canScroll(e.target, e.deltaY)) return; if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; e.preventDefault();
     const now = performance.now(); if (busy || now < lockUntil) { lockUntil = Math.max(lockUntil, now + 140); return; }
-    if (now - accT > 180) acc = 0; accT = now; acc += e.deltaY; if (Math.abs(acc) > 3) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
+    if (now - accT > 180) acc = 0; accT = now; acc += e.deltaY; if (Math.abs(acc) > 6) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
   }, { passive: false });
   addEventListener('keydown', e => {
     if (flow.matches || calm || e.altKey || e.metaKey || e.ctrlKey || ignore(e.target) || document.querySelector('dialog[open]') || (e.target.closest && e.target.closest('.j-end') && canScroll(e.target, ['ArrowUp','PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey) ? -1 : 1))) return;
@@ -102,7 +102,7 @@
   // links that leave the site ask first, like the folders do
   const leave = document.getElementById('leave'), lp = document.getElementById('leave-p');
   if (leave && lp) document.querySelectorAll('.j-pv a[target=_blank], .j-chip[target=_blank]').forEach(a => { let host = ''; try { host = new URL(a.href).host; } catch {} if (!host || host === location.host) return;
-    a.addEventListener('click', e => { e.preventDefault(); const name = (a.querySelector('h2') || a).textContent.trim(); lp.textContent = `This opens ${name} (${host}) in a new tab.`; leave.returnValue = ''; leave.showModal(); leave.onclose = () => { if (leave.returnValue === 'go') window.open(a.href, '_blank', 'noopener'); }; }); });
+    a.addEventListener('click', e => { e.preventDefault(); const name = (a.querySelector('h3') || a).textContent.trim(); lp.textContent = `This opens ${name} (${host}) in a new tab.`; leave.returnValue = ''; leave.showModal(); leave.onclose = () => { if (leave.returnValue === 'go') window.open(a.href, '_blank', 'noopener'); }; }); });
   const art = () => document.querySelectorAll('.j-arrow,.j-art').forEach(d => { const I = window.Illustrations; if (I) I.mount(d).then(() => I.play(d, 'in')); });
   if (document.readyState === 'complete') art(); else addEventListener('load', art);
   document.fonts?.ready.then(() => { needMeasure = true; queue(); }); needMeasure = true; queue();

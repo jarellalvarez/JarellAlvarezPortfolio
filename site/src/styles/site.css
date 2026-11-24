@@ -207,3 +207,4 @@ main h2.rv,main .h-sec.rv{transform:translateX(-14px)}
 .rv.rv-in{opacity:1;transform:none}
 .btn:active,.said:active,.cards a:active,.list a:active{transform:scale(.98)}
 @media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+@media print{.rv{opacity:1!important;transform:none!important}}

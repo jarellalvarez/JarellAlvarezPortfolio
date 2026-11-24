@@ -15,7 +15,7 @@
   const prev = trail[trail.length - 2];
   const target = prev || { path: '/', name: 'Home' };
   const short = target.name.length > 40 ? target.name.slice(0, 38) + '…' : target.name;
-  link.href = target.path; /* the label stays "Back to Home"; the link still goes one step back */ link.setAttribute('aria-label', 'Back to ' + target.name);
+  link.href = target.path; label.textContent = 'Back to ' + short; link.setAttribute('aria-label', 'Back to ' + target.name);
   link.addEventListener('click', e => {
     if (prev && document.referrer.startsWith(location.origin) && new URL(document.referrer).pathname === prev.path) { e.preventDefault(); history.back(); }
   });
