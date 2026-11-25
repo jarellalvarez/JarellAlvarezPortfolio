@@ -3,7 +3,7 @@
    The text is revealed in step with the mouth. Reduced motion: no movement, the text just appears. Skippable: clicking the answer finishes it. */
 (() => {
   const calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const BASE = 100, REST = 70, PAUSE = { ',': 190, ';': 220, ':': 220, '.': 330, '!': 330, '?': 330 };
+  const BASE = 110, REST = 80, PAUSE = { ',': 190, ';': 220, ':': 220, '.': 330, '!': 330, '?': 330 };
   const FLAT = new Set(['the', 'a', 'an', 'of', 'to', 'in', 'on', 'at', 'and', 'or', 'is', 'it', 'i', 'my', 'me', 'be', 'as', 'so', 'for', 'with']);
   const POS = /^(great|love|loved|happy|glad|thanks|thank|yes|fun|enjoy|enjoyed|excited|proud|awesome|best|welcome|hi|hello|good)$/, NEG = /^(sorry|unfortunately|don't|can't|cannot|never|not|yet|wrong)$/;
   const pose = g => /^(oo|ou|ow|u)/i.test(g) ? 'oo' : /^(o|oa)/i.test(g) ? 'round' : /^(a|ai|au)/i.test(g) ? 'wide' : /^(ee|ea|ie|i|y)/i.test(g) ? 'ee' : 'small';
@@ -43,7 +43,11 @@
     const end = () => { cancelAnimationFrame(raf); F.mouthRelease(); F.talkMood(null); if (cur === handle) cur = null; };
     const tick = now => {
       const el = now - t0;
-      while (n < ev.length && ev[n].at <= el) { const e = ev[n]; F.pose(e.pose); if (e.hit) { side = -side; F.punch(side); } if (e.fx) e.fx(); if (e.upto > shown) { shown = e.upto; reveal(shown); } n++; }
+      while (n < ev.length && ev[n].at <= el) { const e = ev[n]; F.pose(e.pose); if (e.hit) { side = -side; F.punch(side); } if (e.fx) e.fx(); n++; }
+      // the text flows at the pace of the mouth: characters are spread evenly between one syllable and the next
+      const a = ev[Math.max(0, n - 1)], b = ev[Math.min(ev.length - 1, n)], span = Math.max(1, (n < ev.length ? b.at : a.at + 120) - a.at);
+      const want = Math.floor(a.upto + ((n < ev.length ? b.upto : text.length) - a.upto) * Math.min(1, Math.max(0, (el - a.at) / span)));
+      if (want > shown && !over) { shown = want; reveal(shown); }
       if (n >= ev.length && !over) { over = true; shown = text.length; reveal(shown); done && done(); F.pose(F.POSE.smile); endAt = el + 260; }
       if (over && el > endAt) return end();
       raf = requestAnimationFrame(tick);

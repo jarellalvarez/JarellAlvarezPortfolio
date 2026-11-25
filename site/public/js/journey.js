@@ -72,8 +72,8 @@
   function goTo(i, force) {
     if (flow.matches || calm || i < 0 || i >= STOPS.length || (busy && !force)) return;
     cancelAnimationFrame(anim); const from = scrollY, to = Math.round(STOPS[i] * maxScroll()), dist = Math.abs(to - from); if (!dist) { busy = false; return; }
-    aim = i; busy = true; const dur = Math.min(1050, 480 + dist / Math.max(1, maxScroll()) * 2200), t0 = performance.now();
-    const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 120; announce(i); } };
+    aim = i; busy = true; const dur = Math.min(2900, 1500 + dist / Math.max(1, maxScroll()) * 6500), t0 = performance.now();
+    const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 450; announce(i); } };
     anim = requestAnimationFrame(tick);
   }
   const ignore = el => !!(el && el.closest && el.closest('.win,dialog,.style-panel,.askpanel,.bchatui,.more-menu,.lb,input,textarea,select,[contenteditable]'));
@@ -81,9 +81,11 @@
   addEventListener('wheel', e => {
     if (flow.matches || calm || e.ctrlKey || ignore(e.target) || canScroll(e.target, e.deltaY)) return; if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; e.preventDefault();
     // a flick that speeds up again after the last one fades is a new gesture: it moves on right away, even mid-glide; the tail of one flick is ignored
-    const now = performance.now(), ad = Math.abs(e.deltaY), fresh = (ad > lastAbs + 3 && now - accT > 40) || now - accT > 120; lastAbs = ad;
-    if (busy || now < lockUntil) { if (fresh && ad > 4) { const cur = busy && aim >= 0 ? aim : nearest(), d = e.deltaY > 0 ? 1 : -1; accT = now; goTo(cur + d, true); } else lockUntil = Math.max(lockUntil, now + 60); accT = now; return; }
-    if (now - accT > 180) acc = 0; accT = now; acc += e.deltaY; if (Math.abs(acc) > 3) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
+    // one gesture plays one whole stage. While it plays, the wheel does nothing. Right after, only a new flick counts, not the tail of the last one.
+    const now = performance.now(), ad = Math.abs(e.deltaY), gap = now - accT, fresh = (ad > lastAbs + 3 && gap > 40) || gap > 140; lastAbs = ad; accT = now;
+    if (busy) return;
+    if (now < lockUntil) { if (!fresh) lockUntil = Math.max(lockUntil, now + 80); else return; if (now < lockUntil) return; }
+    if (gap > 180) acc = 0; acc += e.deltaY; if (Math.abs(acc) > 3) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
   }, { passive: false });
   addEventListener('keydown', e => {
     if (flow.matches || calm || e.altKey || e.metaKey || e.ctrlKey || ignore(e.target) || document.querySelector('dialog[open]') || (e.target.closest && e.target.closest('.j-end') && canScroll(e.target, ['ArrowUp','PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey) ? -1 : 1))) return;

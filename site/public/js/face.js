@@ -4,24 +4,24 @@
    Reduced motion: every method does nothing, the face stays still. */
 (() => {
   const NS = 'http://www.w3.org/2000/svg', calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const API = ['pose', 'mouthRelease', 'flash', 'nod', 'wink', 'punch', 'tilt', 'glance', 'think', 'typing', 'talkMood', 'hover', 'wave', 'hello', 'leaving', 'back'];
+  const API = ['pose', 'mouthRelease', 'flash', 'nod', 'wink', 'punch', 'tilt', 'glance', 'think', 'typing', 'talkMood', 'hover', 'wave', 'hello', 'leaving', 'back', 'look'];
   if (calm) { window.Face = Object.fromEntries(API.map(k => [k, () => {}])); return; }
 
   // mouth poses: [width, top lip curve, bottom lip curve] in the face's 90 x 100 units. Curves above the line (negative) turn the mouth down.
-  const POSE = { neutral: [14, 5, 5], smile: [19, 10, 10], grin: [24, 6, 18], frown: [14, -4, -4], frown2: [11, -7, -7], pursed: [8, 2, 3.5], oh: [14, -1, 31],
-    small: [17, 1, 21], wide: [24, 0, 33], round: [13, 0, 28], ee: [27, 2, 14], oo: [8, 0, 17], fv: [17, 3, 8], mm: [14, 4.5, 4.5] };
+  const POSE = { neutral: [14, 5, 5], smile: [19, 10, 10], grin: [24, 6, 18], frown: [14, -4, -4], frown2: [11, -7, -7], pursed: [8, 2, 3.5], oh: [12, -1, 26],
+    small: [15, 1, 17], wide: [20, 0, 26], round: [11, 0, 22], ee: [23, 2, 11], oo: [7, 0, 14], fv: [15, 3, 7], mm: [13, 4.5, 4.5] };
   // moods: brows [lift, tilt] each, eyes [sx, sy], pupils, mouth pose, head tilt (deg). Brow tilt: left negative / right positive = worried.
   const MOOD = {
     neutral:   { bl: [0, 0],   br: [0, 0],   eye: [1, 1],     pup: [0, 0],     mouth: 'neutral', tilt: 0 },
     happy:     { bl: [-2, 0],  br: [-2, 0],  eye: [1, .78],   pup: [0, 0],     mouth: 'smile',   tilt: 0 },
-    delight:   { bl: [-3.5, 0], br: [-3.5, 0], eye: [1.04, .62], pup: [0, 0],   mouth: 'grin',    tilt: -3 },
+    delight:   { bl: [-3.5, 0], br: [-3.5, 0], eye: [1.04, .62], pup: [0, 0],   mouth: 'grin',    tilt: -1.5 },
     wow:       { bl: [-6, 0],  br: [-6, 0],  eye: [1.12, 1.2], pup: [0, 0],    mouth: 'oh',      tilt: 0 },
-    curious:   { bl: [0, 3],   br: [-6, -2], eye: [1, 1],     pup: [1.8, -1],  mouth: 'pursed',  tilt: -5 },
-    concerned: { bl: [-3, -15], br: [-3, 15], eye: [.94, .92], pup: [0, 1.4],  mouth: 'frown',   tilt: 2 },
-    sorry:     { bl: [-2, -18], br: [-2, 18], eye: [.9, .8],   pup: [0, 1.8],   mouth: 'frown2',  tilt: -4 },
-    leaving:   { bl: [-6, -18], br: [-6, 18], eye: [1.12, 1.16], pup: [0, -3.2], mouth: 'frown2', tilt: -5 },
+    curious:   { bl: [0, 3],   br: [-6, -2], eye: [1, 1],     pup: [1.8, -1],  mouth: 'pursed',  tilt: -2 },
+    concerned: { bl: [-3, -15], br: [-3, 15], eye: [.94, .92], pup: [0, 1.4],  mouth: 'frown',   tilt: 1 },
+    sorry:     { bl: [-2, -18], br: [-2, 18], eye: [.9, .8],   pup: [0, 1.8],   mouth: 'frown2',  tilt: -2 },
+    leaving:   { bl: [-6, -18], br: [-6, 18], eye: [1.12, 1.16], pup: [0, -3.2], mouth: 'frown2', tilt: -2 },
     sleepy:    { bl: [3, 0],   br: [3, 0],   eye: [1, .22],   pup: [0, 2],     mouth: 'neutral', tilt: 0 },
-    thinking:  { bl: [0, 2],   br: [-6, -3], eye: [1, 1],     pup: [2.8, -3],   mouth: 'pursed',  tilt: 4 },
+    thinking:  { bl: [0, 2],   br: [-6, -3], eye: [1, 1],     pup: [2.8, -3],   mouth: 'pursed',  tilt: 2 },
   };
   const S = { flash: null, think: false, talk: null, typing: false, hover: false, lock: false, lift: false, tilt: 0, glance: null };
   const T = {}; const later = (k, fn, ms) => { clearTimeout(T[k]); T[k] = setTimeout(fn, ms); };
@@ -51,7 +51,7 @@
     faces().forEach(f => {
       const set = (b, v, org) => { if (!b) return; b.style.transformBox = 'fill-box'; b.style.transformOrigin = org; b.style.transform = `translateY(${v[0] + lift}px) rotate(${v[1]}deg)`; };
       set(f.bl, m.bl, '100% 50%'); set(f.br, m.br, '0% 50%');
-      f.eyes.forEach(e => { e.style.transformBox = 'fill-box'; e.style.transformOrigin = '50% 50%'; e.style.transform = `scale(${m.eye[0] * (S.lift ? 1.1 : 1)},${m.eye[1] * (S.lift ? 1.12 : 1)})`; });
+      f.eyes.forEach(e => { e.style.transformBox = 'fill-box'; e.style.transformOrigin = '50% 50%'; e.style.transform = `scale(${m.eye[0] * (S.lift ? 1.03 : 1)},${m.eye[1] * (S.lift ? 1.04 : 1)})`; });
       f.pupils.forEach(p => { p.style.translate = `${m.pup[0] + g[0]}px ${m.pup[1] + g[1]}px`; });
       f.head.style.rotate = `${m.tilt + S.tilt}deg`;
       if (!S.lock) { const mp = m.mouth; if (current() === 'neutral') rest(f); else draw(f, POSE[mp]); }
@@ -74,8 +74,8 @@
     // approval nod: a double dip and rise, with a happy squint
     nod(power = 1) {
       heads().forEach(h => { const s = (h.getBoundingClientRect().width || 60) / 91 * power; h.animate([
-        { translate: '0 0', scale: '1 1' }, { translate: `0 ${6 * s}px`, scale: '1.03 .92', offset: .22 }, { translate: `0 ${-2 * s}px`, scale: '.99 1.04', offset: .42 },
-        { translate: `0 ${5 * s}px`, scale: '1.02 .94', offset: .66 }, { translate: '0 0', scale: '1 1' }], { duration: 460, easing: 'cubic-bezier(.3,1.3,.5,1)' }); });
+        { translate: '0 0', scale: '1 1' }, { translate: `0 ${2.5 * s}px`, scale: '1.01 .975', offset: .3 }, { translate: `0 ${-.5 * s}px`, scale: '1 1.005', offset: .5 },
+        { translate: `0 ${2 * s}px`, scale: '1.005 .98', offset: .75 }, { translate: '0 0', scale: '1 1' }], { duration: 760, easing: 'ease-in-out' }); });
       Face.flash('happy', 620);
     },
     wink() {
@@ -84,15 +84,15 @@
     },
     // a wave: the head sways side to side a few times (slow and small when it is a sad goodbye)
     wave(sad) {
-      const a = sad ? 4 : 11, d = sad ? 1500 : 950;
-      heads().forEach(h => h.animate([{ rotate: '0deg', translate: '0 0' }, { rotate: `${-a}deg`, translate: `0 ${sad ? 0 : -5}px`, offset: .2 }, { rotate: `${a}deg`, offset: .4 }, { rotate: `${-a * .8}deg`, offset: .6 }, { rotate: `${a * .6}deg`, offset: .8 }, { rotate: '0deg', translate: '0 0' }],
+      const a = sad ? 2.5 : 5, d = sad ? 1800 : 1300;
+      heads().forEach(h => h.animate([{ rotate: '0deg', translate: '0 0' }, { rotate: `${-a}deg`, translate: `0 ${sad ? 0 : -1.5}px`, offset: .2 }, { rotate: `${a}deg`, offset: .4 }, { rotate: `${-a * .8}deg`, offset: .6 }, { rotate: `${a * .6}deg`, offset: .8 }, { rotate: '0deg', translate: '0 0' }],
         { duration: d, easing: 'ease-in-out', composite: 'add' }));
     },
     // arriving: it wakes with wide eyes, waves and grins. The big hello is once a visit; later pages get a small smile.
     hello() {
       let first = true; try { first = !sessionStorage.getItem('hello'); sessionStorage.setItem('hello', '1'); } catch {}
       if (!first) return Face.flash('happy', 1100);
-      Face.flash('sleepy', 380); setTimeout(() => { Face.flash('wow', 520); Face.punch(1); }, 380);
+      Face.flash('sleepy', 380); setTimeout(() => { Face.flash('wow', 520); }, 380);
       setTimeout(() => { Face.flash('delight', 1500); Face.wave(); }, 900);
     },
     // about to leave: worried face, a slow sad wave, and (on the homepage) a line from the helper
@@ -101,13 +101,15 @@
       Face.flash('leaving', 2600); Face.wave(true);
       window.buddySay && window.buddySay("Leaving already? Ask me anything first.");
     },
+    // follows the scroll with its eyes: down when you go forward, up (with a raised brow) when you go back
+    look(dir) { Face.glance(0, dir * 3.2, 1300); if (dir < 0) Face.flash('curious', 1000); },
     back() { Face.flash('delight', 1400); Face.wave(); },
     // a stressed syllable: tilt and bounce (alternating sides), brows lift, eyes widen a touch
     punch(side) {
       heads().forEach(h => { const s = (h.getBoundingClientRect().width || 60) / 91; h.animate([
-        { translate: '0 0', scale: '1 1' }, { translate: `${side * 3 * s}px ${-10 * s}px`, scale: '1.07 .96', offset: .35 },
-        { translate: `0 ${2.5 * s}px`, scale: '.98 1.04', offset: .7 }, { translate: '0 0', scale: '1 1' }], { duration: 300, easing: 'cubic-bezier(.3,1.4,.5,1)' });
-        h.animate([{ rotate: '0deg' }, { rotate: `${side * 7}deg`, offset: .35 }, { rotate: `${side * -2}deg`, offset: .7 }, { rotate: '0deg' }], { duration: 300, easing: 'cubic-bezier(.3,1.4,.5,1)', composite: 'add' }); });
+        { translate: '0 0', scale: '1 1' }, { translate: `${side * .8 * s}px ${-2 * s}px`, scale: '1.012 .995', offset: .4 },
+        { translate: `0 ${.5 * s}px`, scale: '.998 1.004', offset: .75 }, { translate: '0 0', scale: '1 1' }], { duration: 420, easing: 'ease-in-out' });
+        h.animate([{ rotate: '0deg' }, { rotate: `${side * 2}deg`, offset: .4 }, { rotate: `${side * -.6}deg`, offset: .75 }, { rotate: '0deg' }], { duration: 420, easing: 'ease-in-out', composite: 'add' }); });
       S.lift = true; render(); later('lift', () => { S.lift = false; render(); }, 240);
     },
   };
@@ -144,7 +146,11 @@
   // arriving
   const hi = () => setTimeout(Face.hello, 600); if (document.readyState === 'complete') hi(); else addEventListener('load', hi, { once: true });
   // the scroll tour: a nod at each new stop
-  document.addEventListener('journey:stop', e => { if (lastStop !== undefined && e.detail.i !== lastStop) Face.nod(.8); lastStop = e.detail.i; });
+  document.addEventListener('journey:stop', e => {
+    if (lastStop !== undefined && e.detail.i !== lastStop) { const dir = e.detail.i > lastStop ? 1 : -1; Face.look(dir); if (dir > 0) setTimeout(() => Face.nod(.6), 700); }
+    lastStop = e.detail.i; });
+  // ordinary scrolling (phones, inner pages): its eyes follow the page down or up now and then
+  let sy = scrollY, sT = 0; addEventListener('scroll', () => { const d = scrollY - sy; if (Math.abs(d) < 160 || performance.now() - sT < 2200 || S.talk || S.typing) return; sy = scrollY; sT = performance.now(); Face.look(d > 0 ? 1 : -1); }, { passive: true });
   // idle: now and then it glances around, raises a brow or smiles
   (function idle() { setTimeout(() => {
     if (!document.hidden && !S.talk && !S.typing && !S.hover && !S.think && !S.flash && faces().length) {
