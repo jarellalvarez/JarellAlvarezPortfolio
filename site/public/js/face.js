@@ -4,7 +4,7 @@
    Reduced motion: every method does nothing, the face stays still. */
 (() => {
   const NS = 'http://www.w3.org/2000/svg', calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const API = ['pose', 'mouthRelease', 'flash', 'nod', 'wink', 'punch', 'tilt', 'glance', 'think', 'typing', 'talkMood', 'hover', 'wave', 'hello', 'leaving', 'back', 'look', 'eager'];
+  const API = ['pose', 'mouthRelease', 'flash', 'nod', 'wink', 'punch', 'tilt', 'glance', 'think', 'typing', 'talkMood', 'hover', 'wave', 'hello', 'leaving', 'back', 'look', 'eager', 'ride'];
   if (calm) { window.Face = Object.fromEntries(API.map(k => [k, () => {}])); return; }
 
   // mouth poses: [width, top lip curve, bottom lip curve] in the face's 90 x 100 units. Curves above the line (negative) turn the mouth down.
@@ -19,12 +19,14 @@
     curious:   { bl: [0, 3],   br: [-6, -2], eye: [1, 1],     pup: [1.8, -1],  mouth: 'pursed',  tilt: -2 },
     concerned: { bl: [-3, -15], br: [-3, 15], eye: [.94, .92], pup: [0, 1.4],  mouth: 'frown',   tilt: 1 },
     sorry:     { bl: [-2, -18], br: [-2, 18], eye: [.9, .8],   pup: [0, 1.8],   mouth: 'frown2',  tilt: -2 },
+    climb:     { bl: [-4, -10], br: [-4, 10], eye: [1.1, 1.14], pup: [0, -2.4], mouth: 'oo', tilt: -4 },
+    drop:      { bl: [-7, 0], br: [-7, 0], eye: [1.2, 1.28], pup: [0, -1], mouth: 'wide', tilt: 0 },
     eager:     { bl: [-4, -2], br: [-4, 2], eye: [1.07, 1.1], pup: [0, 0], mouth: 'smile', tilt: 0 },
     leaving:   { bl: [-6, -18], br: [-6, 18], eye: [1.12, 1.16], pup: [0, -3.2], mouth: 'frown2', tilt: -2 },
     sleepy:    { bl: [3, 0],   br: [3, 0],   eye: [1, .22],   pup: [0, 2],     mouth: 'neutral', tilt: 0 },
     thinking:  { bl: [0, 2],   br: [-6, -3], eye: [1, 1],     pup: [2.8, -3],   mouth: 'pursed',  tilt: 2 },
   };
-  const S = { flash: null, think: false, talk: null, typing: false, hover: false, eager: false, lock: false, lift: false, tilt: 0, glance: null };
+  const S = { flash: null, think: false, talk: null, typing: false, hover: false, eager: false, ride: null, lock: false, lift: false, tilt: 0, glance: null };
   const T = {}; const later = (k, fn, ms) => { clearTimeout(T[k]); T[k] = setTimeout(fn, ms); };
   const cache = new WeakMap();
   const parts = svg => {
@@ -46,7 +48,7 @@
   };
   const rest = f => { f.mouth.setAttribute('d', f.d0); f.mouth.style.fill = ''; f.tg.style.display = 'none'; };
 
-  const current = () => S.flash || (S.think && 'thinking') || (S.typing && 'concerned') || S.talk || (S.eager && 'eager') || (S.hover && 'delight') || 'neutral';
+  const current = () => S.flash || (S.think && 'thinking') || (S.typing && 'concerned') || S.talk || S.ride || (S.eager && 'eager') || (S.hover && 'delight') || 'neutral';
   function apply() {
     const m = MOOD[current()], lift = S.lift ? -3.5 : 0, g = S.glance || [0, 0];
     faces().forEach(f => {
@@ -54,7 +56,7 @@
       set(f.bl, m.bl, '100% 50%'); set(f.br, m.br, '0% 50%');
       f.eyes.forEach(e => { e.style.transformBox = 'fill-box'; e.style.transformOrigin = '50% 50%'; e.style.transform = `scale(${m.eye[0] * (S.lift ? 1.03 : 1)},${m.eye[1] * (S.lift ? 1.04 : 1)})`; });
       f.pupils.forEach(p => { p.style.translate = `${m.pup[0] + g[0]}px ${m.pup[1] + g[1]}px`; });
-      f.head.style.rotate = `${m.tilt + S.tilt}deg`;
+      if (!S.riding) f.head.style.rotate = `${m.tilt + S.tilt}deg`;
       if (!S.lock) { const mp = m.mouth; if (current() === 'neutral') rest(f); else draw(f, POSE[mp]); }
     });
   }
@@ -104,6 +106,24 @@
     },
     // follows the scroll with its eyes: down when you go forward, up (with a raised brow) when you go back
     look(dir) { Face.glance(0, dir * 3.2, 1300); if (dir < 0) Face.flash('curious', 1000); },
+    // a rollercoaster ride: a nervous climb, a screaming drop that banks and shakes, then a happy "wheee" as it rolls into the station.
+    // ms = how long the scroll takes. The shake only runs while the ride does.
+    ride(ms = 1400) {
+      if (S.riding) return; S.riding = true; const t0 = performance.now(); let raf = 0;
+      const climb = ms * .3, drop = ms * .82, hs = heads();
+      const tick = now => {
+        const t = now - t0; if (t > ms) return stop();
+        const dropping = t > climb && t < drop, k = dropping ? Math.min(1, (t - climb) / 220) : 0;
+        const sway = dropping ? Math.sin(t / 55) * 5 * k + Math.sin(t / 130) * 3 : Math.sin(t / 240) * .8;
+        const lean = t < climb ? -4 : dropping ? 3 * k : 0;
+        hs.forEach(h => { h.style.rotate = `${lean + sway}deg`; h.style.translate = dropping ? `${Math.sin(t / 37) * .9}px ${Math.sin(t / 29) * 1.2 * k}px` : '0 0'; });
+        raf = requestAnimationFrame(tick);
+      };
+      const stop = () => { cancelAnimationFrame(raf); S.riding = false; S.ride = null; hs.forEach(h => { h.style.translate = ''; h.style.rotate = ''; }); render(); };
+      S.ride = 'climb'; render(); raf = requestAnimationFrame(tick);
+      later('r1', () => { S.ride = 'drop'; render(); }, climb);
+      later('r2', () => { S.ride = null; render(); Face.flash('delight', Math.max(600, ms * .3)); }, drop);
+    },
     back() { Face.flash('delight', 1400); Face.wave(); },
     // a stressed syllable: tilt and bounce (alternating sides), brows lift, eyes widen a touch
     punch() { S.lift = true; render(); later('lift', () => { S.lift = false; render(); }, 320); },
@@ -152,10 +172,13 @@
   const hi = () => setTimeout(Face.hello, 600); if (document.readyState === 'complete') hi(); else addEventListener('load', hi, { once: true });
   // the scroll tour: a nod at each new stop
   document.addEventListener('journey:stop', e => {
-    if (lastStop !== undefined && e.detail.i !== lastStop) { const dir = e.detail.i > lastStop ? 1 : -1; Face.look(dir); if (dir > 0) setTimeout(() => Face.nod(.6), 700); }
+    lastStop = e.detail.i;
     lastStop = e.detail.i; });
   // ordinary scrolling (phones, inner pages): its eyes follow the page down or up now and then
-  let sy = scrollY, sT = 0; addEventListener('scroll', () => { const d = scrollY - sy; if (Math.abs(d) < 160 || performance.now() - sT < 2200 || S.talk || S.typing) return; sy = scrollY; sT = performance.now(); Face.look(d > 0 ? 1 : -1); }, { passive: true });
+  let sy = scrollY, st = performance.now(), sT = 0; addEventListener('scroll', () => {
+    const now = performance.now(), d = scrollY - sy, dt = Math.max(1, now - st); if (S.riding || S.talk || S.typing || now - sT < 2200) { sy = scrollY; st = now; return; }
+    if (Math.abs(d) < 160 && !(Math.abs(d) > 70 && Math.abs(d) / dt > 1.4)) return;
+    sy = scrollY; st = now; sT = now; if (Math.abs(d) / dt > 1.1) Face.ride(1500); else Face.look(d > 0 ? 1 : -1); }, { passive: true });
   // idle: now and then it glances around, raises a brow or smiles
   (function idle() { setTimeout(() => {
     if (!document.hidden && !S.talk && !S.typing && !S.hover && !S.think && !S.flash && faces().length) {

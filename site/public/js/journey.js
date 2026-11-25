@@ -72,7 +72,7 @@
   function goTo(i, force) {
     if (flow.matches || calm || i < 0 || i >= STOPS.length || (busy && !force)) return;
     cancelAnimationFrame(anim); const from = scrollY, to = Math.round(STOPS[i] * maxScroll()), dist = Math.abs(to - from); if (!dist) { busy = false; return; }
-    aim = i; busy = true; const dur = Math.min(1550, 820 + dist / Math.max(1, maxScroll()) * 2700), t0 = performance.now();
+    aim = i; busy = true; const dur = Math.min(1550, 820 + dist / Math.max(1, maxScroll()) * 2700), t0 = performance.now(); window.Face?.ride(dur);
     const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 300; announce(i); } };
     anim = requestAnimationFrame(tick);
   }
