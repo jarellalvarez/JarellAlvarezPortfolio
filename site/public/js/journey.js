@@ -73,7 +73,7 @@
     if (flow.matches || calm || i < 0 || i >= STOPS.length || (busy && !force)) return;
     cancelAnimationFrame(anim); const from = scrollY, to = Math.round(STOPS[i] * maxScroll()), dist = Math.abs(to - from); if (!dist) { busy = false; return; }
     aim = i; busy = true; const dur = Math.min(2900, 1500 + dist / Math.max(1, maxScroll()) * 6500), t0 = performance.now();
-    const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 450; announce(i); } };
+    const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 300; announce(i); } };
     anim = requestAnimationFrame(tick);
   }
   const ignore = el => !!(el && el.closest && el.closest('.win,dialog,.style-panel,.askpanel,.bchatui,.more-menu,.lb,input,textarea,select,[contenteditable]'));
@@ -84,8 +84,8 @@
     // one gesture plays one whole stage. While it plays, the wheel does nothing. Right after, only a new flick counts, not the tail of the last one.
     const now = performance.now(), ad = Math.abs(e.deltaY), gap = now - accT, fresh = (ad > lastAbs + 3 && gap > 40) || gap > 140; lastAbs = ad; accT = now;
     if (busy) return;
-    if (now < lockUntil) { if (!fresh) lockUntil = Math.max(lockUntil, now + 80); else return; if (now < lockUntil) return; }
-    if (gap > 180) acc = 0; acc += e.deltaY; if (Math.abs(acc) > 3) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
+    if (now < lockUntil) { if (!fresh) { lockUntil = Math.max(lockUntil, now + 80); return; } }   // a new, separate nudge always counts; only the fading tail of the last one is ignored
+    if (gap > 180) acc = 0; acc += e.deltaY; if (Math.abs(acc) >= 2) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
   }, { passive: false });
   addEventListener('keydown', e => {
     if (flow.matches || calm || e.altKey || e.metaKey || e.ctrlKey || ignore(e.target) || document.querySelector('dialog[open]') || (e.target.closest && e.target.closest('.j-end') && canScroll(e.target, ['ArrowUp','PageUp'].includes(e.key) || (e.key === ' ' && e.shiftKey) ? -1 : 1))) return;
@@ -96,7 +96,7 @@
   });
   const tStart = e => { touchY = e.touches.length === 1 ? e.touches[0].clientY : null; };
   const tMove = e => { if (touchY !== null && e.touches.length === 1 && !calm && !ignore(e.target) && !canScroll(e.target, touchY - e.touches[0].clientY)) e.preventDefault(); };
-  const tEnd = e => { if (touchY === null || calm || ignore(e.target)) { touchY = null; return; } const dy = touchY - e.changedTouches[0].clientY; touchY = null; if (Math.abs(dy) > 14 && !canScroll(e.target, dy)) goTo(nearest() + (dy > 0 ? 1 : -1)); };
+  const tEnd = e => { if (touchY === null || calm || ignore(e.target)) { touchY = null; return; } const dy = touchY - e.changedTouches[0].clientY; touchY = null; if (Math.abs(dy) > 8 && !canScroll(e.target, dy)) goTo(nearest() + (dy > 0 ? 1 : -1)); };
   let touching = false; const bindTouch = () => { const on = !flow.matches && !calm; if (on === touching) return; touching = on; const f = on ? 'addEventListener' : 'removeEventListener'; window[f]('touchstart', tStart, { passive: true }); window[f]('touchmove', tMove, { passive: false }); window[f]('touchend', tEnd); };
   bindTouch(); flow.addEventListener('change', bindTouch);
   marks.forEach((li, i) => li.firstElementChild.addEventListener('click', () => { if (calm) scrollTo(0, Math.round(STOPS[i] * maxScroll() + (i ? 2 : 0))); else goTo(i, true); }));
