@@ -1,0 +1,43 @@
+{
+  "extraKnownMarketplaces": {
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      }
+    },
+    "ponytail": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/DietrichGebert/ponytail.git"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "caveman@caveman": true,
+    "ponytail@ponytail": true
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = \"true\" ] || exit 0; [ -x \"$HOME/.local/bin/rtk\" ] || curl -fsSL https://raw.githubusercontent.com/rtk-ai/rtk/v1.2.1/install.sh | RTK_VERSION=v1.2.1 sh >/dev/null 2>&1; [ -n \"$CLAUDE_ENV_FILE\" ] && echo 'export PATH=\"$HOME/.local/bin:$PATH\"' >> \"$CLAUDE_ENV_FILE\"; exit 0"
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ \"$CLAUDE_CODE_REMOTE\" = \"true\" ] && [ -x \"$HOME/.local/bin/rtk\" ] && exec \"$HOME/.local/bin/rtk\" hook claude; exit 0"
+          }
+        ]
+      }
+    ]
+  }
+}
