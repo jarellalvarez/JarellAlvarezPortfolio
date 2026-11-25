@@ -521,3 +521,13 @@ main.hero .role{color:var(--pop)}
 .ask-mini .brows path{stroke-width:3.6}
 .bbtn .mouth,.ask-mini .mouth{transition:fill .1s}
 .bbtn,.ask-mini{transition:rotate .5s cubic-bezier(.25,.7,.3,1)}
+
+.bbtn .pupil,.ask-mini .pupil{transition:translate .4s cubic-bezier(.25,.7,.3,1),opacity .03s linear}
+/* speed lines: cartoon streaks that fall past the face during a scroll ride. They live inside the face button, so they bob with the head. */
+.bbtn,.ask-mini{position:relative}
+.speed{position:absolute;left:-22%;right:-22%;top:-12%;bottom:-12%;pointer-events:none;opacity:0;transition:opacity .3s ease-out}
+.speed svg{display:block;width:100%;height:100%;overflow:visible;fill:none;stroke:var(--ink);stroke-width:2.4;stroke-linecap:round}
+.speed path{opacity:0;animation:speedfall .46s linear infinite}
+.riding .speed{opacity:.4} .dropping .speed{opacity:.9} .dropping .speed path{animation-duration:.3s}
+@keyframes speedfall{0%{transform:translateY(-26px);opacity:0}25%{opacity:.8}75%{opacity:.8}100%{transform:translateY(26px);opacity:0}}
+@media (prefers-reduced-motion:reduce){.speed{display:none}}

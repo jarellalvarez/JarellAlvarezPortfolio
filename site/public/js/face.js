@@ -26,7 +26,7 @@
     sleepy:    { bl: [3, 0],   br: [3, 0],   eye: [1, .22],   pup: [0, 2],     mouth: 'neutral', tilt: 0 },
     thinking:  { bl: [0, 2],   br: [-6, -3], eye: [1, 1],     pup: [2.8, -3],   mouth: 'pursed',  tilt: 2 },
   };
-  const S = { flash: null, think: false, talk: null, typing: false, hover: false, eager: false, ride: null, lock: false, lift: false, tilt: 0, glance: null };
+  const S = { flash: null, think: false, talk: null, typing: false, hover: false, eager: false, ride: null, wink: false, winkAnim: false, lock: false, lift: false, tilt: 0, glance: null };
   const T = {}; const later = (k, fn, ms) => { clearTimeout(T[k]); T[k] = setTimeout(fn, ms); };
   const cache = new WeakMap();
   const parts = svg => {
@@ -54,8 +54,8 @@
     faces().forEach(f => {
       const set = (b, v, org) => { if (!b) return; b.style.transformBox = 'fill-box'; b.style.transformOrigin = org; b.style.transform = `translateY(${v[0] + lift}px) rotate(${v[1]}deg)`; };
       set(f.bl, m.bl, '100% 50%'); set(f.br, m.br, '0% 50%');
-      f.eyes.forEach(e => { e.style.transformBox = 'fill-box'; e.style.transformOrigin = '50% 50%'; e.style.transform = `scale(${m.eye[0] * (S.lift ? 1.03 : 1) * (1 + .08 * rz)},${m.eye[1] * (S.lift ? 1.04 : 1) * (1 + .1 * rz)})`; });
-      f.pupils.forEach(p => { p.style.translate = `${m.pup[0] + g[0]}px ${m.pup[1] + g[1]}px`; });
+      f.eyes.forEach((e, i) => { e.style.transformBox = 'fill-box'; e.style.transformOrigin = '50% 50%'; e.style.transition = i === 1 && S.winkAnim ? 'transform .08s linear' : ''; e.style.transform = S.wink && i === 1 ? 'scale(1.05,.1)' : `scale(${m.eye[0] * (S.lift ? 1.03 : 1) * (1 + .08 * rz)},${m.eye[1] * (S.lift ? 1.04 : 1) * (1 + .1 * rz)})`; });
+      f.pupils.forEach((p, i) => { if (i === 1) p.style.transition = `translate .4s cubic-bezier(.25,.7,.3,1), opacity 0s linear ${S.wink ? '.065s' : '0s'}`; p.style.opacity = S.wink && i === 1 ? 0 : ''; p.style.translate = `${m.pup[0] + g[0]}px ${m.pup[1] + g[1]}px`; });
       if (!S.riding) f.head.style.rotate = `${m.tilt + S.tilt}deg`;
       if (!S.lock) { const mp = m.mouth; if (current() === 'neutral') rest(f); else draw(f, POSE[mp]); }
     });
@@ -81,10 +81,7 @@
         { translate: `0 ${2 * s}px`, scale: '1.005 .98', offset: .75 }, { translate: '0 0', scale: '1 1' }], { duration: 760, easing: 'ease-in-out' }); });
       Face.flash('happy', 620);
     },
-    wink() {
-      faces().forEach(f => { const e = f.eyes[1], p = f.pupils[1]; if (!e) return; e.style.transform = 'scale(1.05,.08)'; if (p) p.style.opacity = 0; });
-      Face.flash('delight', 760); setTimeout(() => faces().forEach(f => { const p = f.pupils[1]; if (p) p.style.opacity = ''; }), 300); setTimeout(render, 320);
-    },
+    wink() { S.winkAnim = true; S.wink = true; Face.flash('delight', 760); later('wink', () => { S.wink = false; render(); }, 300); later('winkAnim', () => { S.winkAnim = false; render(); }, 700); },
     // a wave: the head sways side to side a few times (slow and small when it is a sad goodbye)
     wave(sad) {
       const a = sad ? 2.5 : 5, d = sad ? 1800 : 1300;
@@ -110,6 +107,9 @@
     // ms = how long the scroll takes. The shake only runs while the ride does.
     ride(ms = 1400) {
       if (S.riding) return; S.riding = true; const t0 = performance.now(); let raf = 0;
+      heads().forEach(h => { if (!h.querySelector('.speed')) { const L = [[8, 14, 26], [17, 40, 30], [4, 62, 22], [24, 74, 20], [12, 28, 18], [122, 18, 26], [113, 44, 30], [126, 66, 22], [106, 76, 20], [118, 32, 18]];
+        h.insertAdjacentHTML('afterbegin', '<span class="speed" aria-hidden="true"><svg viewBox="0 0 130 100">' + L.map(([x, y, n], k) => `<path d="M${x} ${y}v${n}" style="animation-delay:${-(k * .071).toFixed(3)}s"/>`).join('') + '</svg></span>'); }
+        h.classList.add('riding'); });
       const climb = ms * .3, drop = ms * .82, hs = heads(), sm = x => x * x * (3 - 2 * x);
       const tick = now => {
         const t = now - t0; if (t > ms) return stop();
@@ -123,10 +123,10 @@
         if (p) { const w = .6 * Math.sin(t / 34) + .4 * Math.sin(t / 19 + 1), amp = env * (dropping ? 1 : .55); const q = [p[0] * (1 + .09 * w * amp), p[1], p[1] + (p[2] - p[1]) * (1 + .16 * Math.sin(t / 27 + 2) * amp)]; faces().forEach(f => draw(f, q)); }
         raf = requestAnimationFrame(tick);
       };
-      const stop = () => { cancelAnimationFrame(raf); S.riding = false; S.ride = null; hs.forEach(h => { h.style.translate = ''; h.style.rotate = ''; }); render(); };
+      const stop = () => { cancelAnimationFrame(raf); S.riding = false; S.ride = null; hs.forEach(h => { h.style.translate = ''; h.style.rotate = ''; h.classList.remove('riding', 'dropping'); }); render(); };
       S.ride = 'climb'; render(); raf = requestAnimationFrame(tick);
-      later('r1', () => { S.ride = 'drop'; render(); }, climb);
-      later('r2', () => { S.ride = null; render(); if (!S.talk && !S.typing) Face.flash('delight', Math.max(600, ms * .3)); }, drop);
+      later('r1', () => { S.ride = 'drop'; hs.forEach(h => h.classList.add('dropping')); render(); }, climb);
+      later('r2', () => { S.ride = null; hs.forEach(h => h.classList.remove('dropping')); render(); if (!S.talk && !S.typing) Face.flash('delight', Math.max(600, ms * .3)); }, drop);
     },
     back() { Face.flash('delight', 1400); Face.wave(); },
     // a stressed syllable: tilt and bounce (alternating sides), brows lift, eyes widen a touch
