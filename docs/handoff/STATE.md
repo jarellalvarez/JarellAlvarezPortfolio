@@ -1,9 +1,9 @@
-# Current state and decisions (as of Nov 24, round 5)
+# Current state and decisions (as of Nov 25, rounds 6 to 8 shipped)
 
 ## Shipped on master (round 4, 0e10652)
 Scroll tour with guided stepping, 2x2 previews (60%+ of the screen), group headings "My work" / "Learn more", tags in folder hover cards, helper lines per tour stop, drag tip above the MAVI folder.
 
-## On the branch, not shipped (round 5, awaiting "ship it")
+## Shipped on master (round 5)
 - Tour windows 30% bigger, lighter body text, more padding, folder glyph in the title bar.
 - Helper bubble: bounces in, types out, always shows the current stop's line (also scrolling up), narrower on desktop so it clears the cards.
 - Scroll more sensitive on desktop (3px threshold).
@@ -24,3 +24,10 @@ Scroll tour with guided stepping, 2x2 previews (60%+ of the screen), group headi
 
 ## Decision log (short)
 Nov 12: light default, ivory + charcoal, Bricolage Grotesque, accent picker. Nov 14: window controls like macOS on the right, Earlier work pages, Back button. Nov 16: Netlify credits: deploy only on "ship it". Nov 17: Ask Jarell as a window, AI fallback (Haiku) behind `ANTHROPIC_API_KEY`. Nov 19: Illustrator SVGs inline with line-draw animation, lightbox, design tokens, Figma system. Nov 23: scroll tour ("windows cascade") with side rail and end screen. Nov 24: rounds 3 to 5 (guided scroll, previews, helper, app bar).
+
+## Shipped on master (rounds 6 to 8, Nov 24 to 25, up to 8eb884a)
+- Phone: Ask in the bottom bar, More menu in the top bar, bar always on top, room under the last screen, expand and minimize on windows, View full page pill, richer scroll motion.
+- Desktop tour: one gesture per stage, gentle 2 to 4px nudge, about 1.4s soft glide, opaque windows, reverse exit under the end screen.
+- Ask Jarell: moods, cartoon mouth poses, calm head, fast talking synced to the text, hover perk-up, hello, leaving and welcome-back faces, eyes follow scroll.
+- Back pill always "Back to Home". "View full page" label on desktop windows.
+- Full details and gotchas are in `docs/handoff/HANDOFF.md`.
