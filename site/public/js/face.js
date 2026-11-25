@@ -4,7 +4,7 @@
    Reduced motion: every method does nothing, the face stays still. */
 (() => {
   const NS = 'http://www.w3.org/2000/svg', calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const API = ['pose', 'mouthRelease', 'flash', 'nod', 'wink', 'punch', 'tilt', 'glance', 'think', 'typing', 'talkMood', 'hover', 'wave', 'hello', 'leaving', 'back', 'look'];
+  const API = ['pose', 'mouthRelease', 'flash', 'nod', 'wink', 'punch', 'tilt', 'glance', 'think', 'typing', 'talkMood', 'hover', 'wave', 'hello', 'leaving', 'back', 'look', 'eager'];
   if (calm) { window.Face = Object.fromEntries(API.map(k => [k, () => {}])); return; }
 
   // mouth poses: [width, top lip curve, bottom lip curve] in the face's 90 x 100 units. Curves above the line (negative) turn the mouth down.
@@ -19,11 +19,12 @@
     curious:   { bl: [0, 3],   br: [-6, -2], eye: [1, 1],     pup: [1.8, -1],  mouth: 'pursed',  tilt: -2 },
     concerned: { bl: [-3, -15], br: [-3, 15], eye: [.94, .92], pup: [0, 1.4],  mouth: 'frown',   tilt: 1 },
     sorry:     { bl: [-2, -18], br: [-2, 18], eye: [.9, .8],   pup: [0, 1.8],   mouth: 'frown2',  tilt: -2 },
+    eager:     { bl: [-4, -2], br: [-4, 2], eye: [1.07, 1.1], pup: [0, 0], mouth: 'smile', tilt: 0 },
     leaving:   { bl: [-6, -18], br: [-6, 18], eye: [1.12, 1.16], pup: [0, -3.2], mouth: 'frown2', tilt: -2 },
     sleepy:    { bl: [3, 0],   br: [3, 0],   eye: [1, .22],   pup: [0, 2],     mouth: 'neutral', tilt: 0 },
     thinking:  { bl: [0, 2],   br: [-6, -3], eye: [1, 1],     pup: [2.8, -3],   mouth: 'pursed',  tilt: 2 },
   };
-  const S = { flash: null, think: false, talk: null, typing: false, hover: false, lock: false, lift: false, tilt: 0, glance: null };
+  const S = { flash: null, think: false, talk: null, typing: false, hover: false, eager: false, lock: false, lift: false, tilt: 0, glance: null };
   const T = {}; const later = (k, fn, ms) => { clearTimeout(T[k]); T[k] = setTimeout(fn, ms); };
   const cache = new WeakMap();
   const parts = svg => {
@@ -45,7 +46,7 @@
   };
   const rest = f => { f.mouth.setAttribute('d', f.d0); f.mouth.style.fill = ''; f.tg.style.display = 'none'; };
 
-  const current = () => S.flash || (S.think && 'thinking') || (S.typing && 'concerned') || S.talk || (S.hover && 'delight') || 'neutral';
+  const current = () => S.flash || (S.think && 'thinking') || (S.typing && 'concerned') || S.talk || (S.eager && 'eager') || (S.hover && 'delight') || 'neutral';
   function apply() {
     const m = MOOD[current()], lift = S.lift ? -3.5 : 0, g = S.glance || [0, 0];
     faces().forEach(f => {
@@ -105,12 +106,12 @@
     look(dir) { Face.glance(0, dir * 3.2, 1300); if (dir < 0) Face.flash('curious', 1000); },
     back() { Face.flash('delight', 1400); Face.wave(); },
     // a stressed syllable: tilt and bounce (alternating sides), brows lift, eyes widen a touch
-    punch(side) {
-      heads().forEach(h => { const s = (h.getBoundingClientRect().width || 60) / 91; h.animate([
-        { translate: '0 0', scale: '1 1' }, { translate: `${side * .8 * s}px ${-2 * s}px`, scale: '1.012 .995', offset: .4 },
-        { translate: `0 ${.5 * s}px`, scale: '.998 1.004', offset: .75 }, { translate: '0 0', scale: '1 1' }], { duration: 420, easing: 'ease-in-out' });
-        h.animate([{ rotate: '0deg' }, { rotate: `${side * 2}deg`, offset: .4 }, { rotate: `${side * -.6}deg`, offset: .75 }, { rotate: '0deg' }], { duration: 420, easing: 'ease-in-out', composite: 'add' }); });
-      S.lift = true; render(); later('lift', () => { S.lift = false; render(); }, 240);
+    punch() { S.lift = true; render(); later('lift', () => { S.lift = false; render(); }, 320); },
+    // anticipation: a quick perk-up (brows and eyes up, a small lift) when the pointer meets something it could click, then it settles
+    eager(on) {
+      const was = S.eager; S.eager = on; render();
+      if (on && !was) heads().forEach(h => h.animate([{ translate: '0 0', scale: '1' }, { translate: `0 ${-2.5 * ((h.getBoundingClientRect().width || 60) / 91)}px`, scale: '1.025', offset: .45 }, { translate: '0 0', scale: '1' }], { duration: 650, easing: 'ease-in-out' }));
+      clearTimeout(T.eagerOff); if (on) T.eagerOff = setTimeout(() => { S.eager = false; render(); }, 1500);
     },
   };
   window.Face = Face;
@@ -131,13 +132,17 @@
   document.addEventListener('click', e => {
     const t = e.target.closest?.('a,button,[role=button],.folder,.j-win'); if (!t) return;
     const now = performance.now(); if (now - lastClick < 450) return; lastClick = now;
-    if (t.closest('.bbtn,.ask-mini,.dock-ask')) { Face.flash('delight', 900); Face.punch(1); return; }
+    if (t.closest('.bbtn,.ask-mini,.dock-ask')) { Face.flash('delight', 900); return; }
     if (t.closest('.bform button, .bpill, .bmenu')) return;       // the chat reacts to those itself
     if (t.closest('.close-btn')) return Face.flash('sorry', 750);
     if (t.closest('.max-btn, .style-btn, .style-panel button')) return Face.flash('wow', 700);
     if (t.closest('[data-copy], .mail')) return Face.wink();
     Face.nod();
   }, true);
+  // hovering something clickable: a small perk-up in anticipation, then it settles
+  const HOT = 'a[href],button,[role=button],.folder,.j-win,summary,.j-chip'; let hot = null;
+  document.addEventListener('pointerover', e => { if (e.pointerType && e.pointerType !== 'mouse') return; const t = e.target.closest?.(HOT); if (!t || isFace(t) || t.closest('.bform')) return; if (t === hot) return; hot = t; clearTimeout(T.eagerCalm); Face.eager(true); });
+  document.addEventListener('pointerout', e => { const t = e.target.closest?.(HOT); if (!t || t !== hot || (e.relatedTarget && t.contains(e.relatedTarget))) return; hot = null; clearTimeout(T.eagerCalm); T.eagerCalm = setTimeout(() => Face.eager(false), 350); });
   // heading for the exit: the cursor leaves through the top of the window (tabs, address bar, close), or a "leave the site" prompt opens
   document.addEventListener('mouseout', e => { if (!e.relatedTarget && e.clientY <= 6 && e.clientX > 0 && e.clientX < innerWidth) Face.leaving(); });
   new MutationObserver(() => { if (document.querySelector('dialog#leave[open]')) Face.flash('sorry', 2400); }).observe(document.body, { subtree: true, attributes: true, attributeFilter: ['open'] });

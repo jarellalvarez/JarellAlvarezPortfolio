@@ -27,7 +27,7 @@
       });
       if (!groups.length) push(F.POSE.fv, 40, end - (w.length - core.length));
       const q = tail === '?', ex = tail === '!', cm = tail === ',' || tail === ';' || tail === ':', dot = tail === '.';
-      push(dot || ex ? F.POSE.smile : F.POSE.neutral, PAUSE[tail] || REST, end, false, q ? () => { F.tilt(8, 900); F.flash('curious', 900); } : ex ? () => { F.flash('wow', 500); F.punch(1); } : cm ? () => F.tilt(-3, 300) : null);
+      push(dot || ex ? F.POSE.smile : F.POSE.neutral, PAUSE[tail] || REST, end, false, q ? () => { F.tilt(4, 1100); F.flash('curious', 900); } : ex ? () => F.flash('wow', 500) : null);
       i = end;
     });
     return { ev, total: t };
@@ -43,7 +43,7 @@
     const end = () => { cancelAnimationFrame(raf); F.mouthRelease(); F.talkMood(null); if (cur === handle) cur = null; };
     const tick = now => {
       const el = now - t0;
-      while (n < ev.length && ev[n].at <= el) { const e = ev[n]; F.pose(e.pose); if (e.hit) { side = -side; F.punch(side); } if (e.fx) e.fx(); n++; }
+      while (n < ev.length && ev[n].at <= el) { const e = ev[n]; F.pose(e.pose); if (e.hit) F.punch(); if (e.fx) e.fx(); n++; }
       // the text flows at the pace of the mouth: characters are spread evenly between one syllable and the next
       const a = ev[Math.max(0, n - 1)], b = ev[Math.min(ev.length - 1, n)], span = Math.max(1, (n < ev.length ? b.at : a.at + 120) - a.at);
       const want = Math.floor(a.upto + ((n < ev.length ? b.upto : text.length) - a.upto) * Math.min(1, Math.max(0, (el - a.at) / span)));

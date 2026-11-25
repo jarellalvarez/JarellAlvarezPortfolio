@@ -68,11 +68,11 @@
   let lastStop = -1; const announce = i => { if (i === lastStop) return; lastStop = i; document.dispatchEvent(new CustomEvent('journey:stop', { detail: { i } })); };
   let anim = 0, busy = false, lockUntil = 0, acc = 0, accT = 0, touchY = null, aim = -1, lastAbs = 0;
   const nearest = () => { const p = maxScroll() > 0 ? scrollY / maxScroll() : 0; let b = 0, d = 9; STOPS.forEach((s, i) => { const dd = Math.abs(s - p); if (dd < d) { d = dd; b = i; } }); return b; };
-  const ez = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const ez = t => .5 - .5 * Math.cos(Math.PI * t);
   function goTo(i, force) {
     if (flow.matches || calm || i < 0 || i >= STOPS.length || (busy && !force)) return;
     cancelAnimationFrame(anim); const from = scrollY, to = Math.round(STOPS[i] * maxScroll()), dist = Math.abs(to - from); if (!dist) { busy = false; return; }
-    aim = i; busy = true; const dur = Math.min(2900, 1500 + dist / Math.max(1, maxScroll()) * 6500), t0 = performance.now();
+    aim = i; busy = true; const dur = Math.min(1550, 820 + dist / Math.max(1, maxScroll()) * 2700), t0 = performance.now();
     const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 300; announce(i); } };
     anim = requestAnimationFrame(tick);
   }
@@ -113,10 +113,24 @@
   document.querySelectorAll('.j-art').forEach(d => { let on = false; const again = () => { if (on || !window.Illustrations) return; on = true; window.Illustrations.play(d, 'play'); setTimeout(() => { on = false; }, 1400); }; d.addEventListener('pointerenter', again); d.addEventListener('click', again); });
   if (document.readyState === 'complete') art(); else addEventListener('load', art);
   document.fonts?.ready.then(() => { needMeasure = true; queue(); }); needMeasure = true; queue();
-  /* Phones: the same cards, previews and end screen rise in as they scroll into view (a lighter echo of the desktop cascade) */
+  /* Phones: a fuller echo of the desktop cascade. Cards fly in alternately from the sides with a slight turn, their contents follow one by one,
+     the pictures settle with a small zoom and drift as you scroll, cards shrink back as they leave the top, and the home screen lifts away. */
   if (!calm && 'IntersectionObserver' in window && matchMedia('(max-width:720px)').matches) {
-    const els = [...stage.querySelectorAll('.j-win, .j-pv, .j-end h2, .j-end p, .j-chips li')];
-    const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('m-in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -8% 0px', threshold: .08 });
-    els.forEach((el, i) => { el.classList.add('m-rv'); el.style.setProperty('--md', (el.matches('.j-chips li') ? (i % 8) * 45 : 0) + 'ms'); if (el.matches('.j-win')) el.style.setProperty('--mr', (els.indexOf(el) % 2 ? 1.2 : -1.2) + 'deg'); io.observe(el); });
+    const cards = [...stage.querySelectorAll('.j-win, .j-pv')], endEl = stage.querySelector('.j-end');
+    const tag = (host, sel) => [...host.querySelectorAll(sel)].forEach((c, i) => { c.classList.add('m-c'); c.style.setProperty('--ci', i); });
+    cards.forEach((c, i) => { c.classList.add('m-rv'); c.style.setProperty('--mr', (i % 2 ? 2.6 : -2.6) + 'deg'); c.style.setProperty('--mx', (i % 2 ? 46 : -46) + 'px'); tag(c, c.matches('.j-win') ? '.j-txt > h2,.j-txt > p,.j-tags li,.j-go' : 'h3,p'); });
+    if (endEl) { endEl.classList.add('m-rv'); tag(endEl, 'h2,p,.j-chips li'); }
+    const io = new IntersectionObserver(es => es.forEach(x => { if (x.isIntersecting) { x.target.classList.add('m-in'); io.unobserve(x.target); } }), { rootMargin: '0px 0px -10% 0px', threshold: .1 });
+    [...cards, endEl].filter(Boolean).forEach(el => io.observe(el));
+    const imgs = new Map(cards.map(c => [c, c.querySelector('img')])), heroEl = document.querySelector('main.hero'); let q = 0;
+    const frame = () => {
+      q = 0; const vh = innerHeight;
+      cards.forEach(c => { const r = c.getBoundingClientRect(); if (r.bottom < -60 || r.top > vh + 60) return;
+        const out = Math.min(1, Math.max(0, (vh * .14 - r.top) / (vh * .55)));
+        c.style.scale = (1 - out * .07).toFixed(3); c.style.translate = `0 ${(-out * 12).toFixed(1)}px`;
+        const im = imgs.get(c); if (im) im.style.translate = `0 ${(-((r.top + r.height / 2) / vh - .5) * 18).toFixed(1)}px`; });
+      if (heroEl) { const k = Math.min(1, scrollY / (vh * .7)); heroEl.style.opacity = (1 - k * .6).toFixed(3); heroEl.style.translate = `0 ${(-k * 36).toFixed(1)}px`; heroEl.style.scale = (1 - k * .06).toFixed(3); }
+    };
+    addEventListener('scroll', () => { if (!q) q = requestAnimationFrame(frame); }, { passive: true }); frame();
   }
 })();

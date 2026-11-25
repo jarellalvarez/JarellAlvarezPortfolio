@@ -120,11 +120,16 @@ body.coach-on .hero-art [data-art="cursor"],body.coach-on .hero-art [data-art="s
 
 /* Phones: scroll-in motion for the tour cards, and a small entrance for the home screen */
 @media (max-width:720px) and (prefers-reduced-motion:no-preference){
-  .m-rv{opacity:0;transform:translateY(46px) rotate(var(--mr,0deg)) scale(.95)!important;transition:opacity .5s var(--ease-out,ease-out) var(--md,0ms),transform .75s cubic-bezier(.2,.9,.25,1.05) var(--md,0ms)}
+  .m-rv{opacity:0;transform:translate(var(--mx,0px),90px) rotate(var(--mr,0deg)) scale(.9)!important;transition:opacity .6s ease-out,transform 1s cubic-bezier(.2,1.1,.3,1)}
   .m-rv.m-in{opacity:1;transform:none!important}
-  .j-pv.m-rv,.j-end p.m-rv,.j-end h2.m-rv,.j-chips li.m-rv{--mr:0deg}
-  .j-pv.m-rv{transform:translateY(40px) scale(.96)!important}
-  .j-pv.m-rv.m-in{transform:none!important}
+  .j-end.m-rv{transform:translateY(70px) scale(.96)!important} .j-end.m-rv.m-in{transform:none!important}
+  .m-c{opacity:0;transform:translateY(20px);transition:opacity .5s ease-out,transform .7s cubic-bezier(.2,1,.3,1)}
+  .m-in .m-c{opacity:1;transform:none;transition-delay:calc(.25s + var(--ci,0)*70ms)}
+  .j-chips .m-c{transform:translateY(14px) scale(.85)} .m-in .j-chips .m-c,.j-chips .m-c.m-c{transition-timing-function:cubic-bezier(.2,1.4,.3,1)}
+  .j-win img,.j-pv img{scale:1.12;transform:scale(1.18);transition:transform 1.4s cubic-bezier(.2,.8,.2,1)} .m-in img{transform:none}
+  .j-bar u{transform:scale(0);transition:transform .45s cubic-bezier(.2,1.7,.3,1)} .m-in .j-bar u{transform:none} .m-in .j-bar u:nth-child(2){transition-delay:.08s} .m-in .j-bar u:nth-child(3){transition-delay:.16s}
+  .folder .tile{animation:m-float 4.4s ease-in-out infinite} .folders li:nth-child(2n) .tile{animation-delay:-1.5s} .folders li:nth-child(3n) .tile{animation-delay:-2.8s}
+  @keyframes m-float{50%{translate:0 -3px}}
   main.hero h1,main.hero .role,main.hero .tag{animation:m-rise .7s cubic-bezier(.2,.9,.25,1) backwards}
   main.hero .role{animation-delay:.08s} main.hero .tag{animation-delay:.16s}
   .folders li{animation:m-pop .6s cubic-bezier(.2,1.2,.3,1) backwards}
