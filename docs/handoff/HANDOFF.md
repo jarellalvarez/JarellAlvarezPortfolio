@@ -45,6 +45,15 @@ Ask Jarell face (`site/public/js/face.js`, `talk.js`)
 - Talking: text and mouth share one timeline, fast and snappy (about 3s per answer, capped at 3.2s). No head bobbing while talking (only a slight brow lift); the head stays calm. Click an answer to finish it.
 - Reduced motion turns all of it off. The phone bottom-bar face is a static icon.
 
+## Round 9 (Nov 25, branch `perf/image-sizes`, not on master yet)
+This section replaces the older notes above where they disagree (glide time, wheel lock, speed lines).
+- Images: `preview-mavi.webp` resized to 1200px (73 KB to 46 KB). The CTA face uses a new 192px `jarell-alvarez-192.webp`. Tour images get their real width and height at build time (`Journey.astro`, using sharp).
+- Tour scrolling (`journey.js`): each step glides in about 0.66 to 0.94s on an ease-out curve. After a 250ms beat, a fresh flick mid-glide skips ahead one step from where the page is. A flick is "fresh" after a 140ms gap or a clear speed-up inside a trackpad's momentum stream (`ad > lastAbs * 1.4 + 2`), so one hard swipe moves one step and quick mouse notches do not stack. This was tuned with Jarell's real MacBook trackpad and mouse logs.
+- Helper: the greeting is "Welcome in! Got a question? Ask me here". When a step starts he cuts any half-said line, waits 220ms, then starts the next stop's line while still riding (`journey:go` event, `buddy.js`). Answers talk about 30% faster (`talk.js`, capped at 2.2s).
+- Face (`face.js`, `home.css`): speed lines are 10 short, softer lines close to him, 3 of them over his face; they fade a beat after the ride and rise instead of fall when scrolling up. A second flick stretches the same ride instead of overlapping. Three steps in 2.5s give a bead of sweat; four in 4s turn him green and woozy when the ride ends, then he smiles (once every 12s at most).
+- Homepage CSS timings were rescaled several times; net they are about 12% quicker than round 8 (0.985 x 0.95 x 0.85 x 1.1). Comments kept their original times.
+- Not checked: the green sick tint in the five non-default colour themes, real phones, keyboard and tablet skipping (those still wait for each step).
+
 ## Gotchas
 - Local build needs `ALLOW_PREVIEW_PASSWORD=1 npm run build` (production refuses without `STUDY_PASSWORD`). Never use that for the live build. Rebuilding replaces `dist`, so restart the `python3 -m http.server 4329` after each build.
 - Wait more than 5s after load before testing the face; the arrival hello is still playing before that.

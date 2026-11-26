@@ -36,7 +36,7 @@
   function say(text, reveal, done, opt = {}) {
     const F = window.Face; if (cur) cur.finish();
     if (calm || !text || !F) { reveal(text.length); done && done(); return { finish() {} }; }
-    let { ev, total } = plan(text, F); const k = total > 3200 ? 3200 / total : 1; // long answers speed up so nothing drags
+    let { ev, total } = plan(text, F); const k = Math.min(.7, 2200 / total); // about 30% quicker than natural, and long answers speed up more so nothing drags
     ev = ev.map(e => ({ ...e, at: e.at * k }));
     let n = 0, shown = 0, side = 1; const t0 = performance.now(); let raf = 0, over = false, endAt = 0;
     F.talkMood(opt.mood || 'happy');

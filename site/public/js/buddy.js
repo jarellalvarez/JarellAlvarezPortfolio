@@ -34,7 +34,7 @@
     (function idle() { setTimeout(() => { if (!open()) act(Math.random() < .5 ? 'wiggle' : 'tap'); idle(); }, 9000 + Math.random() * 6000); })(); }
   // speech bubbles: it opens with what it is for, then moves through a few topics, with a long quiet gap between each, two rounds at most.
   // It never talks while the chat is open, while the tour plays, or in a background tab, and stops for good once someone uses it.
-  const LINES = ['I can answer any questions here', 'Curious about my work?', 'Ask me about my case studies', 'Or what I do off screen'];
+  const LINES = ['Welcome in! Got a question? Ask me here', 'Curious about my work?', 'Ask me about my case studies', 'Or what I do off screen'];
   let li = 0, rounds = 0, quiet = false, t = 0;
   const canSay = () => !quiet && !open() && !document.hidden && !document.body.classList.contains('j-on');
   const hush = () => { quiet = true; clearTimeout(t); say.classList.remove('on'); };
@@ -54,11 +54,14 @@
     say.textContent = ''; if (window.Talk) { window.Talk.say(m, n => { say.textContent = m.slice(0, n); }, null, { mood }); return; }
     let n = 0; typeT = setInterval(() => { say.textContent = m.slice(0, n += 2); if (n >= m.length) { say.textContent = m; clearInterval(typeT); } }, 12);
   };
-  document.addEventListener('journey:stop', e => {
-    const m = TOUR[e.detail.i];
+  const atStop = i => {
+    const m = TOUR[i];
     if (!m) { if (cur) { cur = ''; clearInterval(typeT); say.classList.remove('on'); } if (!quiet) { clearTimeout(t); t = setTimeout(next, 8000); } return; }  // back on the home screen: the idle lines take over
     if (open()) { cur = ''; say.classList.remove('on'); return; } clearTimeout(t); show(m);
-  });
+  };
+  document.addEventListener('journey:stop', e => atStop(e.detail.i));
+  // the moment a glide starts, he cuts any half-said line, takes a short breath, then starts the next stop's line while still on the ride
+  let goT = 0; document.addEventListener('journey:go', e => { if (cur) { window.Talk?.stop(); clearInterval(typeT); cur = ''; say.classList.remove('on'); } clearTimeout(goT); goT = setTimeout(() => atStop(e.detail.i), calm ? 0 : 220); });
   t = setTimeout(next, calm ? 600 : 3500);
   addEventListener('beforeunload', hush);
   btn.addEventListener('click', () => { hush(); act('hop'); window.toggleWin(btn); });

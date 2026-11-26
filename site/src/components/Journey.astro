@@ -2,7 +2,14 @@
 // The scroll tour under the home screen. Desktop: a pinned stage (windows cascade, preview cards, end screen), driven by scroll.
 // Phones and reduced motion: the same content as a plain stack. All text comes from the same data as the folders.
 import { links } from '../lib/links.mjs';
+import sharp from 'sharp';
 const { wins = [], pvs = [] } = Astro.props;
+// Real pixel size of each preview, so the browser can reserve its box before it loads. CSS still sets the shown size.
+const dims = {};
+for (const x of [...wins, ...pvs]) if (x.preview?.startsWith('/')) {
+  const { width, height } = await sharp(`public${x.preview}`).metadata();
+  dims[x.preview] = { width, height };
+}
 ---
 <a class="j-skip" href="#journey-end">Skip to the end of the tour</a>
 <div class="j-track" id="journey">
@@ -11,7 +18,7 @@ const { wins = [], pvs = [] } = Astro.props;
       {wins.map(w => (
         <a class="j-win" href={w.href}>
           <span class="j-bar" aria-hidden="true"><u></u><u></u><u></u>{w.glyph ? <svg class="j-gl" viewBox="19 19 18 18" set:html={w.glyph} /> : <em></em>}<b>{w.label}</b></span>
-          {w.preview && <img src={w.preview} alt="" loading="lazy" decoding="async" />}
+          {w.preview && <img src={w.preview} {...dims[w.preview]} alt="" loading="lazy" decoding="async" />}
           <div class="j-txt">
             <h2>{w.title || w.label}</h2>
             <p class="j-sub">{w.sub || w.label}</p>
@@ -27,7 +34,7 @@ const { wins = [], pvs = [] } = Astro.props;
       {pvs.map(v => (
         <li class="j-pv">
           <a href={v.href} target={v.external ? '_blank' : undefined} rel={v.external ? 'noopener' : undefined}>
-            {v.preview && <img src={v.preview} alt="" loading="lazy" decoding="async" style={v.focus ? `object-position:${v.focus}` : undefined} />}
+            {v.preview && <img src={v.preview} {...dims[v.preview]} alt="" loading="lazy" decoding="async" style={v.focus ? `object-position:${v.focus}` : undefined} />}
             <div><h3>{v.label}</h3>{v.text && <p>{v.text}</p>}</div>
           </a>
         </li>

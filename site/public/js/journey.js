@@ -66,14 +66,14 @@
 
   /* Guided scroll: a gesture plays the whole next stage (the same idea as a stepped, scene-by-scene portfolio) */
   let lastStop = -1; const announce = i => { if (i === lastStop) return; lastStop = i; document.dispatchEvent(new CustomEvent('journey:stop', { detail: { i } })); };
-  let anim = 0, busy = false, lockUntil = 0, acc = 0, accT = 0, touchY = null, aim = -1, lastAbs = 0;
+  let goT = 0, anim = 0, busy = false, lockUntil = 0, acc = 0, accT = 0, touchY = null, aim = -1, lastAbs = 0;
   const nearest = () => { const p = maxScroll() > 0 ? scrollY / maxScroll() : 0; let b = 0, d = 9; STOPS.forEach((s, i) => { const dd = Math.abs(s - p); if (dd < d) { d = dd; b = i; } }); return b; };
-  const ez = t => .5 - .5 * Math.cos(Math.PI * t);
+  const ez = t => 1 - (1 - t) ** 3;   // starts at once, lands softly: the page answers the gesture right away
   function goTo(i, force) {
     if (flow.matches || calm || i < 0 || i >= STOPS.length || (busy && !force)) return;
     cancelAnimationFrame(anim); const from = scrollY, to = Math.round(STOPS[i] * maxScroll()), dist = Math.abs(to - from); if (!dist) { busy = false; return; }
-    aim = i; busy = true; const dur = Math.min(1550, 820 + dist / Math.max(1, maxScroll()) * 2700), t0 = performance.now(); window.Face?.ride(dur);
-    const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 300; announce(i); } };
+    aim = i; busy = true; goT = performance.now(); document.dispatchEvent(new CustomEvent('journey:go', { detail: { i } })); const dur = Math.min(935, 462 + dist / Math.max(1, maxScroll()) * 1430), t0 = performance.now(); window.Face?.ride(dur, to > from ? 1 : -1);
+    const tick = now => { const t = Math.min(1, (now - t0) / dur); scrollTo(0, from + (to - from) * ez(t)); if (t < 1) anim = requestAnimationFrame(tick); else { busy = false; lockUntil = performance.now() + 80; announce(i); } };
     anim = requestAnimationFrame(tick);
   }
   const ignore = el => !!(el && el.closest && el.closest('.win,dialog,.style-panel,.askpanel,.bchatui,.more-menu,.lb,input,textarea,select,[contenteditable]'));
@@ -81,9 +81,10 @@
   addEventListener('wheel', e => {
     if (flow.matches || calm || e.ctrlKey || ignore(e.target) || canScroll(e.target, e.deltaY)) return; if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return; e.preventDefault();
     // a flick that speeds up again after the last one fades is a new gesture: it moves on right away, even mid-glide; the tail of one flick is ignored
-    // one gesture plays one whole stage. While it plays, the wheel does nothing. Right after, only a new flick counts, not the tail of the last one.
-    const now = performance.now(), ad = Math.abs(e.deltaY), gap = now - accT, fresh = (ad > lastAbs + 3 && gap > 40) || gap > 140; lastAbs = ad; accT = now;
-    if (busy) return;
+    // one gesture plays one whole stage. While it plays, only a fresh flick counts (see below). Right after, only a new flick counts, not the tail of the last one.
+    const now = performance.now(), ad = Math.abs(e.deltaY), gap = now - accT, fresh = gap > 140 || ad > lastAbs * 1.4 + 2; lastAbs = ad; accT = now;   // a pause, or a clear speed-up inside a trackpad's momentum stream, is a new flick
+    // after a short beat, a fresh flick mid-glide skips ahead one stage from where the page is now; the tail of the same flick never counts
+    if (busy) { if (fresh && ad >= 2 && now - goT > 250) goTo(aim + (e.deltaY > 0 ? 1 : -1), true); return; }
     if (now < lockUntil) { if (!fresh) { lockUntil = Math.max(lockUntil, now + 80); return; } }   // a new, separate nudge always counts; only the fading tail of the last one is ignored
     if (gap > 180) acc = 0; acc += e.deltaY; if (Math.abs(acc) >= 2) { const d = acc > 0 ? 1 : -1; acc = 0; goTo(nearest() + d); }
   }, { passive: false });

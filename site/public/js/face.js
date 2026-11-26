@@ -4,12 +4,12 @@
    Reduced motion: every method does nothing, the face stays still. */
 (() => {
   const NS = 'http://www.w3.org/2000/svg', calm = matchMedia('(prefers-reduced-motion:reduce)').matches;
-  const API = ['pose', 'mouthRelease', 'flash', 'nod', 'wink', 'punch', 'tilt', 'glance', 'think', 'typing', 'talkMood', 'hover', 'wave', 'hello', 'leaving', 'back', 'look', 'eager', 'ride'];
+  const API = ['pose', 'mouthRelease', 'flash', 'nod', 'wink', 'punch', 'tilt', 'glance', 'think', 'typing', 'talkMood', 'hover', 'wave', 'hello', 'leaving', 'back', 'look', 'eager', 'ride', 'sweat', 'sick'];
   if (calm) { window.Face = Object.fromEntries(API.map(k => [k, () => {}])); return; }
 
   // mouth poses: [width, top lip curve, bottom lip curve] in the face's 90 x 100 units. Curves above the line (negative) turn the mouth down.
   const POSE = { neutral: [14, 5, 5], smile: [19, 10, 10], grin: [24, 6, 18], frown: [14, -4, -4], frown2: [11, -7, -7], pursed: [8, 2, 3.5], oh: [12, -1, 26],
-    small: [15, 1, 17], wide: [20, 0, 26], round: [11, 0, 22], ee: [23, 2, 11], oo: [7, 0, 14], fv: [15, 3, 7], mm: [13, 4.5, 4.5] };
+    small: [15, 1, 17], wide: [20, 0, 26], queasy: [12, -2.5, 2], round: [11, 0, 22], ee: [23, 2, 11], oo: [7, 0, 14], fv: [15, 3, 7], mm: [13, 4.5, 4.5] };
   // moods: brows [lift, tilt] each, eyes [sx, sy], pupils, mouth pose, head tilt (deg). Brow tilt: left negative / right positive = worried.
   const MOOD = {
     neutral:   { bl: [0, 0],   br: [0, 0],   eye: [1, 1],     pup: [0, 0],     mouth: 'neutral', tilt: 0 },
@@ -25,6 +25,7 @@
     leaving:   { bl: [-6, -18], br: [-6, 18], eye: [1.12, 1.16], pup: [0, -3.2], mouth: 'frown2', tilt: -2 },
     sleepy:    { bl: [3, 0],   br: [3, 0],   eye: [1, .22],   pup: [0, 2],     mouth: 'neutral', tilt: 0 },
     thinking:  { bl: [0, 2],   br: [-6, -3], eye: [1, 1],     pup: [2.8, -3],   mouth: 'pursed',  tilt: 2 },
+    sick:      { bl: [1, -12], br: [1, 12],  eye: [.96, .5],   pup: [-1.6, 1.6], mouth: 'queasy',  tilt: 3 },
   };
   const S = { flash: null, think: false, talk: null, typing: false, hover: false, eager: false, ride: null, wink: false, winkAnim: false, lock: false, lift: false, tilt: 0, glance: null };
   const T = {}; const later = (k, fn, ms) => { clearTimeout(T[k]); T[k] = setTimeout(fn, ms); };
@@ -105,16 +106,35 @@
     look(dir) { Face.glance(0, dir * 3.2, 1300); if (dir < 0) Face.flash('curious', 1000); },
     // a rollercoaster ride: a nervous climb, a screaming drop that banks and shakes, then a happy "wheee" as it rolls into the station.
     // ms = how long the scroll takes. The shake only runs while the ride does.
-    ride(ms = 1400) {
-      if (S.riding) return; S.riding = true; const t0 = performance.now(); let raf = 0;
-      heads().forEach(h => { if (!h.querySelector('.speed')) { const L = [[8, 14, 26], [17, 40, 30], [4, 62, 22], [24, 74, 20], [12, 28, 18], [122, 18, 26], [113, 44, 30], [126, 66, 22], [106, 76, 20], [118, 32, 18]];
-        h.insertAdjacentHTML('afterbegin', '<span class="speed" aria-hidden="true"><svg viewBox="0 0 130 100">' + L.map(([x, y, n], k) => `<path d="M${x} ${y}v${n}" style="animation-delay:${-(k * .071).toFixed(3)}s"/>`).join('') + '</svg></span>'); }
+    // too many steps too fast: a bead of sweat runs down his temple
+    sweat() {
+      heads().forEach(h => { if (!h.querySelector('.sweat')) h.insertAdjacentHTML('beforeend', '<span class="sweat" aria-hidden="true"><svg viewBox="0 0 10 14"><path d="M5 .5C5 .5.5 6 .5 9a4.5 4.5 0 0 0 9 0C9.5 6 5 .5 5 .5z"/></svg></span>');
+        h.classList.remove('sweating'); void h.offsetWidth; h.classList.add('sweating'); });
+      later('sweat', () => heads().forEach(h => h.classList.remove('sweating')), 1300);
+    },
+    // several screens in a row: he turns a little green and woozy, then shakes it off and smiles
+    sick() {
+      heads().forEach(h => h.classList.add('sick')); Face.flash('sick', 1700); Face.wave(true);
+      later('unsick', () => { heads().forEach(h => h.classList.remove('sick')); Face.flash('happy', 1100); }, 1700);
+    },
+    ride(ms = 1400, dir = 1) {
+      // count recent steps: three in 2.5s makes him sweat, four in 4s makes him a little sick once the ride ends
+      const n0 = performance.now(); S.steps = (S.steps || []).filter(t => n0 - t < 4000); S.steps.push(n0);
+      if (S.steps.length >= 4 && n0 - (S.sickAt || -1e9) > 12000) S.sickAt = n0, S.queasy = true;
+      else if (S.steps.filter(t => n0 - t < 2500).length >= 3 && n0 - (S.sweatAt || -1e9) > 3000) S.sweatAt = n0, Face.sweat();
+      heads().forEach(h => h.classList.toggle('up', dir < 0));   // the speed lines rise instead of fall when the page goes back up
+      // already riding (a quick second flick): stretch the same ride to end with the new glide, so he never finishes after the page stops
+      if (S.riding) { const now = performance.now(); S.rideEnd = Math.max(S.rideEnd, now + ms); S.ride = 'drop'; heads().forEach(h => h.classList.add('dropping')); render(); later('r2', S.rideFin, S.rideEnd - now - ms * .18); return; }
+      S.riding = true; const t0 = performance.now(); let raf = 0; S.rideEnd = t0 + ms;
+      heads().forEach(h => { if (!h.querySelector('.speed')) { // [x, y, length, in front of the face]; the face itself sits at about x 31 to 100, y 18 to 82
+        const L = [[22, 20, 11], [109, 26, 9], [18, 44, 9], [48, 30, 7, 1], [112, 50, 12], [25, 64, 10], [84, 58, 8, 1], [106, 72, 9], [20, 80, 8], [62, 74, 6, 1]];
+        h.insertAdjacentHTML('afterbegin', '<span class="speed" aria-hidden="true"><svg viewBox="0 0 130 100">' + L.map(([x, y, n, f], k) => `<path${f ? ' class="f"' : ''} d="M${x} ${y}v${n}" style="animation-delay:${-(k * .047).toFixed(3)}s"/>`).join('') + '</svg></span>'); }
         h.classList.add('riding'); });
       const climb = ms * .3, drop = ms * .82, hs = heads(), sm = x => x * x * (3 - 2 * x);
       const tick = now => {
-        const t = now - t0; if (t > ms) return stop();
-        const env = sm(Math.min(1, t / 320)) * sm(Math.min(1, (ms - t) / 380));          // eases in and out, never abrupt
-        const busy = S.talk || S.typing, dropping = t > climb && t < drop, k = dropping ? sm(Math.min(1, (t - climb) / 260)) : 0, a = busy ? .65 : 1;
+        const t = now - t0, len = S.rideEnd - t0; if (t > len) return stop();
+        const env = sm(Math.min(1, t / 320)) * sm(Math.min(1, (len - t) / 380));          // eases in and out, never abrupt
+        const busy = S.talk || S.typing, dropping = S.ride === 'drop', k = dropping ? sm(Math.min(1, (t - climb) / 260)) : 0, a = busy ? .65 : 1;
         const sway = (dropping ? Math.sin(t / 60) * 4.2 * k + Math.sin(t / 140) * 2.4 : Math.sin(t / 260) * .9) * a * env;
         const lean = (t < climb ? -3.5 : dropping ? 2.4 * k : 0) * a * env;
         hs.forEach(h => { h.style.rotate = `${lean + sway}deg`; h.style.translate = dropping ? `${Math.sin(t / 41) * .7 * a * env}px ${Math.sin(t / 31) * 1 * k * a * env}px` : '0 0'; });
@@ -123,10 +143,11 @@
         if (p) { const w = .6 * Math.sin(t / 34) + .4 * Math.sin(t / 19 + 1), amp = env * (dropping ? 1 : .55); const q = [p[0] * (1 + .09 * w * amp), p[1], p[1] + (p[2] - p[1]) * (1 + .16 * Math.sin(t / 27 + 2) * amp)]; faces().forEach(f => draw(f, q)); }
         raf = requestAnimationFrame(tick);
       };
-      const stop = () => { cancelAnimationFrame(raf); S.riding = false; S.ride = null; hs.forEach(h => { h.style.translate = ''; h.style.rotate = ''; h.classList.remove('riding', 'dropping'); }); render(); };
+      const stop = () => { cancelAnimationFrame(raf); S.riding = false; S.ride = null; hs.forEach(h => { h.style.translate = ''; h.style.rotate = ''; h.classList.remove('riding', 'dropping', 'up'); }); render(); };
       S.ride = 'climb'; render(); raf = requestAnimationFrame(tick);
       later('r1', () => { S.ride = 'drop'; hs.forEach(h => h.classList.add('dropping')); render(); }, climb);
-      later('r2', () => { S.ride = null; hs.forEach(h => h.classList.remove('dropping')); render(); if (!S.talk && !S.typing) Face.flash('delight', Math.max(600, ms * .3)); }, drop);
+      S.rideFin = () => { S.ride = null; hs.forEach(h => h.classList.remove('dropping')); render(); if (S.queasy) { S.queasy = false; Face.sick(); } else if (!S.talk && !S.typing) Face.flash('delight', Math.max(600, ms * .3)); };
+      later('r2', S.rideFin, drop);
     },
     back() { Face.flash('delight', 1400); Face.wave(); },
     // a stressed syllable: tilt and bounce (alternating sides), brows lift, eyes widen a touch
@@ -182,7 +203,7 @@
   let sy = scrollY, st = performance.now(), sT = 0; addEventListener('scroll', () => {
     const now = performance.now(), d = scrollY - sy, dt = Math.max(1, now - st); if (S.riding || now - sT < 2200) { sy = scrollY; st = now; return; }
     if (Math.abs(d) < 160 && !(Math.abs(d) > 70 && Math.abs(d) / dt > 1.4)) return;
-    sy = scrollY; st = now; sT = now; if (Math.abs(d) / dt > 1.1) Face.ride(1500); else Face.look(d > 0 ? 1 : -1); }, { passive: true });
+    sy = scrollY; st = now; sT = now; if (Math.abs(d) / dt > 1.1) Face.ride(1500, d > 0 ? 1 : -1); else Face.look(d > 0 ? 1 : -1); }, { passive: true });
   // idle: now and then it glances around, raises a brow or smiles
   (function idle() { setTimeout(() => {
     if (!document.hidden && !S.talk && !S.typing && !S.hover && !S.think && !S.flash && faces().length) {
